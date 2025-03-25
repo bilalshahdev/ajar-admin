@@ -8,6 +8,9 @@ import Loader from "../loader";
 import { Button } from "../ui/button";
 import PasswordInput from "./fields/password-input";
 import TextInput from "./fields/text-input";
+import Link from "next/link";
+import { Input } from "../ui/input";
+import { useState } from "react";
 
 const SignupForm = () => {
   const {
@@ -23,9 +26,16 @@ const SignupForm = () => {
     },
   });
 
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+
   const onSubmit = async (data: Auth) => {
     console.log(data);
   };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsTermsChecked(event.target.checked);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
       <div className="grid gap-2">
@@ -43,15 +53,28 @@ const SignupForm = () => {
           placeholder="Enter password"
           control={control}
         />
+
+        <div className="flex items-center justify-end gap-2">
+          <Input
+            type="checkbox"
+            name="terms"
+            className="w-4 h-4"
+            checked={isTermsChecked}
+            onChange={handleCheckboxChange}
+          />
+          <Link href="#" className="text-sm text-signature underline">
+            Agree with terms and conditions
+          </Link>
+        </div>
       </div>
 
       <Button
         variant={"signature"}
         type="submit"
         className="w-full font-semibold text-white"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isTermsChecked}
       >
-        {isSubmitting ? <Loader /> : "Login"}
+        {isSubmitting ? <Loader /> : "Sign Up"}
       </Button>
     </form>
   );
