@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import PasswordInput from "./fields/password-input";
 import TextInput from "./fields/text-input";
 import Loader from "../loader";
+import { Auth, Login } from "@/types";
 
 const LoginForm = () => {
   const router = useRouter();

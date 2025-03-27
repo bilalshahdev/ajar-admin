@@ -11,6 +11,7 @@ import TextInput from "./fields/text-input";
 import Link from "next/link";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { Auth, Signup } from "@/types";
 
 const SignupForm = () => {
   const {
