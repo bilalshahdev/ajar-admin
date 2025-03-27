@@ -17,6 +17,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import MyImage from "./my-image";
+import { NavMenuItem } from "@/types";
+import Brand from "./brand";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -48,17 +50,9 @@ export default function Sidebar() {
   return (
     <SidebarComponent collapsible="icon" variant="sidebar">
       <SidebarHeader className="h-16 bg-signature">
-        <Link href="/" className={`h-full flex items-center`}>
-          <SidebarMenuButton className="text-xl hover:bg-transparent cursor-pointer">
-            <MyImage
-              src="/images/brand.png"
-              width={100}
-              height={100}
-              alt="logo"
-              className="invert brightness-0"
-            />
-          </SidebarMenuButton>
-        </Link>
+        <div className="h-full flex items-center">
+          <Brand />
+        </div>
       </SidebarHeader>
       <SidebarContent className="flex flex-col justify-between my-2">
         <SidebarGroup>
