@@ -52,7 +52,7 @@ const LoginForm = () => {
       </div>
 
       <Button
-        variant={"signature"}
+        variant={"button"}
         type="submit"
         className="w-full font-semibold text-white"
         disabled={isSubmitting}

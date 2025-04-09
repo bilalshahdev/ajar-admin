@@ -29,3 +29,13 @@ type DashboardStat = {
   icon: IconType;
   bgColor: string;
 };
+
+interface User {
+  _id: number;
+  userId: string;
+  phone: string;
+  email: string;
+  joinedDate: Date;
+  isBlocked: boolean;
+  status: string;
+}

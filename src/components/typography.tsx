@@ -78,4 +78,18 @@ const Small = ({
   );
 };
 
-export { H1, H2, H3, H4, P, Label, Small };
+const XS = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("text-xs text-muted-foreground", className)}>
+      {children}
+    </div>
+  );
+};
+
+export { H1, H2, H3, H4, P, Label, Small, XS };

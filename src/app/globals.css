@@ -5,6 +5,9 @@
 
 @theme inline {
   --color-signature: var(--signature);
+  --color-aqua: var(--aqua);
+  --color-blue: var(--blue);
+  --color-dark: var(--dark);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -46,7 +49,12 @@
 
 :root {
   --radius: 0.625rem;
-  --signature: oklch(65.79% 0.2309 17.07);
+  --aqua: oklch(0.74 0.1478 169.16);
+  --blue: oklch(0.67 0.1788 247.92);
+  --dark: oklch(0.22 0.0383 249.94);
+  --gradient-button: linear-gradient(90deg, var(--aqua), var(--blue));
+  --gradient-header: linear-gradient(90deg, var(--dark), var(--aqua));
+  --signature: var(--aqua);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -55,7 +63,7 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.88 0.0383 249.94 / 0.5);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -74,7 +82,7 @@
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(65.79% 0.2309 17.07 / 0.3);
+  --sidebar-accent: oklch(0.74 0.1478 169.16/ 0.2);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -89,7 +97,7 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --secondary: oklch(0.22 0.0383 249.94);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
@@ -108,10 +116,23 @@
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(65.79% 0.2309 17.07 / 0.4);
+  --sidebar-accent: oklch(0.74 0.1478 169.16/ 0.2);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer utilities {
+  .bg-header {
+    background: var(--gradient-header);
+  }
+  .bg-button {
+    background: var(--gradient-button);
+  }
+  .bg-button-low {
+    background: var(--gradient-button);
+    opacity: 0.2;
+  }
 }
 
 @layer base {

@@ -49,12 +49,12 @@ export default function Sidebar() {
 
   return (
     <SidebarComponent collapsible="icon" variant="sidebar">
-      <SidebarHeader className="h-16 bg-signature">
+      <SidebarHeader className="h-16 bg-dark">
         <div className="h-full flex items-center">
           <Brand />
         </div>
       </SidebarHeader>
-      <SidebarContent className="flex flex-col justify-between my-2">
+      <SidebarContent className="flex flex-col justify-between bg-background">
         <SidebarGroup>
           <SidebarMenu className="flex flex-col gap-2">
             {sidebarMenu.map((item: NavMenuItem) => (
@@ -65,7 +65,7 @@ export default function Sidebar() {
                   asChild
                 >
                   <Link href={item.path}>
-                    <item.icon />
+                    <item.icon className={isMenuActive(item.path) ? "text-aqua" : "text-foreground"} />
                     <span>{item.title}</span>
                   </Link>
                 </SidebarMenuButton>

@@ -32,20 +32,20 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--primary))", // Use your brand primary color
+    color: "hsl(var(--primary))", 
   },
 } satisfies ChartConfig;
 
 const BarChart = () => {
   return (
-    <ChartCard className="space-y-4 h-full">
+    <ChartCard className="space-y-4 h-full bg-background">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
           <Small>performance</Small>
           <H4>Total ADs</H4>
         </div>
       </div>
-      <ChartCard className="bg-background border p-0">
+      <ChartCard className="bg-secondary border p-0">
         <Small className="flex items-center gap-2 border-b p-2 capitalize">
           <BiLineChart />
           <span>chart</span>

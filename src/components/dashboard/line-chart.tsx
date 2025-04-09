@@ -38,7 +38,7 @@ const LineChart = () => {
   const filters = ["all", "weekly", "monthly", "yearly"];
   const [filter, setFilter] = useState(filters[0]);
   return (
-    <ChartCard className="space-y-4 h-full">
+    <ChartCard className="space-y-4 h-full bg-background">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
           <Small>overview</Small>
@@ -59,7 +59,7 @@ const LineChart = () => {
           </Select>
         </div>
       </div>
-      <ChartCard className="bg-background border p-0">
+      <ChartCard className="bg-secondary border p-0">
         <Small className="flex items-center gap-2 border-b p-2 capitalize">
           <BiLineChart />
           <span>chart</span>
