@@ -29,8 +29,7 @@ const AuthForm = ({
           />
           <p>{login ? "Login to your account" : "Create an account"}</p>
         </div>
-        <div className="flex flex-col items-center justify-center w-xs">
-          {" "}
+        <div className="flex flex-col items-center w-xs max-h-80 p-4 overflow-y-auto">
           {children}
         </div>
         <div className="text-center">

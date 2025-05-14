@@ -49,7 +49,7 @@ export default function Sidebar() {
 
   return (
     <SidebarComponent collapsible="icon" variant="sidebar">
-      <SidebarHeader className="h-16 bg-dark">
+      <SidebarHeader className="h-16 bg-blue">
         <div className="h-full flex items-center">
           <Brand />
         </div>

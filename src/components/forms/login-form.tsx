@@ -10,10 +10,12 @@ import { Button } from "../ui/button";
 import PasswordInput from "./fields/password-input";
 import TextInput from "./fields/text-input";
 import Loader from "../loader";
-import { Auth, Login } from "@/types";
+import { Login } from "@/types";
+import { useLogin } from "@/hooks/useAuth";
 
 const LoginForm = () => {
   const router = useRouter();
+  const { mutate: login, isPending, error } = useLogin();
   const {
     control,
     handleSubmit,
@@ -22,21 +24,35 @@ const LoginForm = () => {
   } = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
+      role: "user",
     },
   });
 
-  const onSubmit = async (data: Auth) => {
-    console.log(data);
+  const onSubmit = async (data: Login) => {
+    try {
+      login(data, {
+        onSuccess: ({ data }) => {
+          router.push("/");
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("userid", data.user._id);
+        },
+        onError: (err) => {
+          console.log("Login failed:", err);
+        },
+      });
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
       <div className="grid gap-2">
         <TextInput
           label="email id"
-          name="username"
-          placeholder="Enter username"
+          name="email"
+          placeholder="Enter email"
           control={control}
           icon={<FaEnvelope />}
         />
@@ -64,4 +80,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-

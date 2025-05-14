@@ -6,17 +6,6 @@ interface NavMenuItem {
   icon: React.ElementType;
 }
 
-type Auth = {
-  username: string;
-  password: string;
-};
-
-type Login = Auth;
-
-type Signup = Auth & {
-  confirmPassword: string;
-};
-
 type MenuItem = {
   href: string;
   label: string;
@@ -39,3 +28,33 @@ interface User {
   isBlocked: boolean;
   status: string;
 }
+
+// {
+//   "email" : "a@b.com",
+//  "password" : "0000000",
+//  "role" : "user"
+// }
+
+type Login = {
+  email: string;
+  password: string;
+  role: "user" | "admin";
+};
+
+type Signup = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  user_type: "user" | "admin";
+  phone?: string;
+  dob?: string;
+  nationality?: string;
+  image?: File;
+};
+
+type AsyncResponse<T> = {
+  data: any;
+  error: string | null;
+  status: "success" | "error";
+};
