@@ -9,7 +9,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export const PageTitle = ({ title }: { title: string }) => {
   const router = useRouter();
-  const shadow = false;
 
   return (
     <Container className="h-14">

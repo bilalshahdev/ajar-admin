@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { ChangeEvent, InputHTMLAttributes } from "react";
-import { useController } from "react-hook-form";
+import { useController, Control } from "react-hook-form";
 
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   note?: string;
-  control: any;
+  control: Control<any>; // Or a more specific form values type if available
   name: string;
   type?: "text" | "email" | "number";
   icon?: React.ReactNode; // Icon prop

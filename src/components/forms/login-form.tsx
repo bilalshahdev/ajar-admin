@@ -15,12 +15,11 @@ import { useLogin } from "@/hooks/useAuth";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { mutate: login, isPending, error } = useLogin();
+  const { mutate: login } = useLogin();
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-    reset,
   } = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {

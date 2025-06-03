@@ -16,7 +16,6 @@ import { Power } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import MyImage from "./my-image";
 import { NavMenuItem } from "@/types";
 import Brand from "./brand";
 

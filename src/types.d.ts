@@ -53,8 +53,19 @@ type Signup = {
   image?: File;
 };
 
+type ErrorFieldDetail = {
+  path: string[];
+  message: string;
+};
+
+type ErrorDetails = {
+  message: string;
+  errors?: ErrorFieldDetail[] | null; // More specific type for errors
+  statusCode?: number | null;
+};
+
 type AsyncResponse<T> = {
-  data: any;
-  error: string | null;
+  data: T | null; // Data can be null in case of error
+  error: ErrorDetails | null;
   status: "success" | "error";
 };

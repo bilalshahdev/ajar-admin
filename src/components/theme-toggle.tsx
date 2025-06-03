@@ -6,13 +6,24 @@ import { useTheme } from "next-themes";
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   return (
-    <div
-      className="cursor-pointer flex items-center text-white"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+    <button
+      type="button"
+      className="cursor-pointer flex items-center text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+      onClick={toggleTheme}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          toggleTheme();
+        }
+      }}
+      aria-label="Toggle theme"
     >
       <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-    </div>
+    </button>
   );
 }
