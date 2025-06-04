@@ -1,5 +1,5 @@
 import UsersList from "@/components/dashboard/users-list";
-import { Label, Small, XS } from "@/components/typography";
+import { XS } from "@/components/typography";
 import { User } from "@/types";
 
 const UserVerificationPage = () => {

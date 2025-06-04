@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputHTMLAttributes, useState } from "react";
-import { useController } from "react-hook-form";
+import { useController, Control } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   note?: string;
-  control: any;
+  control: Control<any>; // Or a more specific form values type if available
   name: string;
   cPassword?: string;
 }

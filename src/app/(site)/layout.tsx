@@ -1,7 +1,6 @@
 import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { cookies } from "next/headers";
 
 const SiteLayout = async ({ children }: { children: React.ReactNode }) => {
   // const cookieStore = await cookies();

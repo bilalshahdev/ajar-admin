@@ -4,18 +4,14 @@ import { PageTitle } from "./titles";
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   children: React.ReactNode;
   title?: string;
-  section?: string;
   m?: boolean;
-  p?: boolean;
   className?: string;
 }
 
 const Container = ({
   children,
   title,
-  section,
   m = true,
-  p = true,
   className,
   ...rest
 }: Props) => {

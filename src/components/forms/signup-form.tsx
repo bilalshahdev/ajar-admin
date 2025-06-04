@@ -3,7 +3,7 @@
 import { useForm, useController } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema } from "@/validations/auth";
-import { Signup } from "@/types";
+import { Signup, ErrorDetails } from "@/types";
 import { useRegister } from "@/hooks/useAuth";
 import { useState } from "react";
 import TextInput from "./fields/text-input";
@@ -61,12 +61,12 @@ const SignupForm = () => {
         console.log(res);
         router.push("/");
       },
-      onError: (error: any) => {
-        if (error?.errors?.length) {
-          error.errors.forEach((err: any) => {
-            if (err.path && err.path.length) {
-              const fieldName = err.path[0];
-              setError(fieldName as keyof Signup, {
+      onError: (error: ErrorDetails) => {
+        if (error?.errors && Array.isArray(error.errors)) {
+          error.errors.forEach((err: { path: string[]; message: string }) => {
+            if (err.path && err.path.length > 0) {
+              const fieldName = err.path[0] as keyof Signup; // Cast to keyof Signup
+              setError(fieldName, { // No need to cast fieldName again
                 type: "server",
                 message: err.message,
               });
@@ -114,10 +114,11 @@ const SignupForm = () => {
 
       {/* DOB using ShadCN Date Picker */}
       <div className="space-y-2">
-        <label>Date of Birth</label>
+        <label htmlFor="dob-button">Date of Birth</label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
+              id="dob-button"
               variant="outline"
               className="w-full justify-start text-left"
             >

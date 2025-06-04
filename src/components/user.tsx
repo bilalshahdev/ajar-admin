@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Small, XS } from "./typography";
 
 const User = () => {
   const user = {

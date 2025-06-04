@@ -53,8 +53,32 @@ type Signup = {
   image?: File;
 };
 
+type ErrorFieldDetail = {
+  path: string[];
+  message: string;
+};
+
+type ErrorDetails = {
+  message: string;
+  errors?: ErrorFieldDetail[] | null; // More specific type for errors
+  statusCode?: number | null;
+};
+
 type AsyncResponse<T> = {
-  data: any;
-  error: string | null;
+  data: T | null; // Data can be null in case of error
+  error: ErrorDetails | null;
   status: "success" | "error";
 };
+
+// Specific type for user data returned on successful login
+interface UserDetailsFromLogin {
+  _id: string; // Assuming _id from login response is a string
+  email?: string;
+  name?: string;
+  // other fields that might be part of the user object in login response
+}
+
+interface LoginSuccessData {
+  token: string;
+  user: UserDetailsFromLogin;
+}

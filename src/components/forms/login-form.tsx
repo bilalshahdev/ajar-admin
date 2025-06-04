@@ -10,17 +10,16 @@ import { Button } from "../ui/button";
 import PasswordInput from "./fields/password-input";
 import TextInput from "./fields/text-input";
 import Loader from "../loader";
-import { Login } from "@/types";
+import { Login, LoginSuccessData } from "@/types"; // Added LoginSuccessData
 import { useLogin } from "@/hooks/useAuth";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { mutate: login, isPending, error } = useLogin();
+  const { mutate: login } = useLogin();
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-    reset,
   } = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -30,20 +29,27 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: Login) => {
+  const onSubmit = async (formData: Login) => { // Renamed data to formData for clarity
     try {
-      login(data, {
-        onSuccess: ({ data }) => {
-          router.push("/");
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("userid", data.user._id);
+      login(formData, {
+        onSuccess: (responseData: LoginSuccessData | null) => { // Updated parameter
+          if (responseData) { // Null check
+            router.push("/");
+            localStorage.setItem("token", responseData.token);
+            localStorage.setItem("userid", responseData.user._id);
+          } else {
+            // Optional: handle case where data is null even on success
+            console.error("Login successful but no data received.");
+            // Potentially show a generic error to the user via toast or state update
+          }
         },
-        onError: (err) => {
-          console.log("Login failed:", err);
+        onError: (err) => { // err here is ErrorDetails from useLogin hook
+          console.log("Login failed:", err.message);
+          // Optionally, display err.message or specific errors from err.errors to the user
         },
       });
-    } catch (error) {
-      console.error("Error during login:", error);
+    } catch (error) { // This catch is for unexpected errors in the onSubmit function itself
+      console.error("Error during login submission:", error);
     }
   };
   return (
