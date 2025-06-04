@@ -69,3 +69,16 @@ type AsyncResponse<T> = {
   error: ErrorDetails | null;
   status: "success" | "error";
 };
+
+// Specific type for user data returned on successful login
+interface UserDetailsFromLogin {
+  _id: string; // Assuming _id from login response is a string
+  email?: string;
+  name?: string;
+  // other fields that might be part of the user object in login response
+}
+
+interface LoginSuccessData {
+  token: string;
+  user: UserDetailsFromLogin;
+}

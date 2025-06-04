@@ -1,6 +1,6 @@
 import { asyncHandler } from "@/lib/asyncHandler";
 import { api } from "@/lib/axios";
-import { Login, Signup } from "@/types";
+import { Login, Signup, AsyncResponse, LoginSuccessData } from "@/types";
 
 export const registerUser = (data: Signup) =>
   asyncHandler(async () => {
@@ -15,8 +15,15 @@ export const registerUser = (data: Signup) =>
     if (data.nationality) formData.append("nationality", data.nationality);
     if (data.image) formData.append("image", data.image);
 
-    return api.post("/users/signup", formData).then((res) => res.data);
+    // Assuming registerUser might also benefit from the new asyncHandler structure
+    // and might return a specific data type upon success.
+    // For now, let's assume its return type is not yet LoginSuccessData,
+    // so we'll type it as `any` for the successful data part.
+    // If it has a defined success response, that should be used instead of `any`.
+    return api.post<{ data: any }>("/users/signup", formData);
   });
 
-export const loginUser = (data: Login) =>
-  asyncHandler(() => api.post("/users/login", data).then((res) => res.data));
+export const loginUser = (
+  data: Login
+): Promise<AsyncResponse<LoginSuccessData | null>> =>
+  asyncHandler<LoginSuccessData>(() => api.post("/users/login", data));
