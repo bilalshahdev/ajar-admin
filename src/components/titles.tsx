@@ -14,7 +14,7 @@ export const PageTitle = ({ title }: { title: string }) => {
     <Container className="h-14">
       {/* Back Button */}
       <div className="flex items-center w-ful h-full gap-4 md:gap-8 capitalize">
-        <Tooltip>
+        {/* <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant={"secondary"}
@@ -27,7 +27,7 @@ export const PageTitle = ({ title }: { title: string }) => {
           <TooltipContent align="start">
             <p className="text-muted-foreground">Go Back</p>
           </TooltipContent>
-        </Tooltip>
+        </Tooltip> */}
 
         <h3 className="h3 md:h4 font-medium w-ful text-center">{title}</h3>
       </div>

@@ -1,28 +1,31 @@
 import { cn } from "../lib/utils";
 import { PageTitle } from "./titles";
+import AddButton from "./addButton";
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   children: React.ReactNode;
   title?: string;
   m?: boolean;
   className?: string;
+  addBtnTitle?: string;
 }
 
 const Container = ({
   children,
   title,
+  addBtnTitle,
   m = true,
   className,
   ...rest
 }: Props) => {
   return (
     <>
-      {title && <PageTitle title={title} />}
+      <div className="flex items-center justify-between pb-4">
+        {title && <PageTitle title={title} />}
+        {addBtnTitle && <AddButton addBtnTitle={addBtnTitle} />}
+      </div>
       <div
-        className={cn(
-          `max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 ${m ? "mb-4" : ""}`,
-          className
-        )}
+        className={cn(`w-full mx-auto ${m ? "mb-" : ""}`, className)}
         {...rest}
       >
         {children}

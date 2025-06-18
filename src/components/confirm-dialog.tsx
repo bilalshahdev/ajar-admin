@@ -1,0 +1,70 @@
+"use client";
+
+import * as React from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
+interface ConfirmDialogProps {
+  title?: string;
+  description?: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  loading?: boolean;
+  variant?: "default" | "destructive";
+  children: React.ReactNode;
+}
+
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+  title = "Are you sure?",
+  description = "This action cannot be undone.",
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  onConfirm,
+  loading = false,
+  variant = "default",
+  children,
+}) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleConfirm = () => {
+    if (onConfirm) onConfirm();
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={loading}
+          >
+            {cancelText}
+          </Button>
+          <Button variant={variant} onClick={handleConfirm} disabled={loading}>
+            {loading ? "Please wait..." : confirmText}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default ConfirmDialog;

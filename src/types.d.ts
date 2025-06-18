@@ -82,3 +82,30 @@ interface LoginSuccessData {
   token: string;
   user: UserDetailsFromLogin;
 }
+
+interface Zone {
+  _id: string;
+  name: string;
+  country: string;
+  currency: string;
+  timeZone: string;
+  language: string;
+  radius: number;
+  latlong: number[];
+  thumbnail: string;
+  status: string;
+  adminNotes: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  thumbnail?: string;
+  zoneId: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

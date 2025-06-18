@@ -1,5 +1,15 @@
+
+import Container from "@/components/container";
+import Zones from "@/components/zones";
+
+
 const ZoneManagementPage = () => {
-  return <div>zone management</div>;
+  return (
+    <Container title="Zone Management" addBtnTitle="Zone">
+      <Zones />
+    </Container>
+  );
 };
 
 export default ZoneManagementPage;
+

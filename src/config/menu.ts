@@ -15,13 +15,13 @@ import {
 
 export const sidebarMenu: NavMenuItem[] = [
   { title: "Dashboard", path: "/", icon: FaTachometerAlt },
-  { title: "Field Management", path: "/field-management", icon: FaUserCog },
+  { title: "Zone Management", path: "/zone-management", icon: FaVectorSquare },
   {
     title: "Category Management",
     path: "/category-management",
     icon: FaShapes,
   },
-  { title: "Zone Management", path: "/zone-management", icon: FaVectorSquare },
+  { title: "Field Management", path: "/field-management", icon: FaUserCog },
   { title: "User Verification", path: "/user-verification", icon: FaUsers },
   { title: "Rental Listing", path: "/rental-listing", icon: FaClipboardList },
   {
