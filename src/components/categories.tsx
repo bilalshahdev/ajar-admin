@@ -8,12 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
 import Link from "next/link";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 import { useAppSelector } from "@/lib/store/hooks";
-import ConfirmDialog from "./confirm-dialog";
 import { Category, Zone } from "@/types";
+import { FaWpforms } from "react-icons/fa";
+import ConfirmDialog from "./confirm-dialog";
+import Tooltip from "./tooltip";
 
 const Categories = () => {
   const categories: Category[] =
@@ -44,14 +46,23 @@ const Categories = () => {
               <TableCell className="capitalize">{cat.status}</TableCell>
 
               <TableCell className="flex gap-4">
-                {/* View */}
-                {/* <Link href={`/category-management/${cat._id}`}>
-                  <FiEye size={18} className="cursor-pointer text-blue-500" />
-                </Link> */}
+                <Link href={`/category-management/${cat._id}/form`}>
+                  <Tooltip content="Category form">
+                    <FaWpforms
+                      size={18}
+                      className="cursor-pointer text-blue-500"
+                    />
+                  </Tooltip>
+                </Link>
 
                 {/* Edit */}
                 <Link href={`/category-management/${cat._id}/edit`}>
-                  <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
+                  <Tooltip content="Edit Category">
+                    <FiEdit2
+                      size={18}
+                      className="cursor-pointer text-blue-500"
+                    />
+                  </Tooltip>
                 </Link>
 
                 {/* Delete */}
@@ -67,7 +78,12 @@ const Categories = () => {
                   loading={false}
                   variant="destructive"
                 >
-                  <FiTrash2 size={18} className="cursor-pointer text-red-500" />
+                  <Tooltip content="Delete Category">
+                    <FiTrash2
+                      size={18}
+                      className="cursor-pointer text-red-500"
+                    />
+                  </Tooltip>
                 </ConfirmDialog>
               </TableCell>
             </TableRow>

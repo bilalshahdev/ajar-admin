@@ -13,7 +13,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="cursor-pointer flex items-center text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+      className="cursor-pointer flex items-center text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
       onClick={toggleTheme}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {

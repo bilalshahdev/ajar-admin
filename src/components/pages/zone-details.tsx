@@ -4,6 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
 import { Zone } from "@/types";
+import MapImg from "../../../public/images/map.jpg";
 import {
   Card,
   CardHeader,
@@ -21,6 +22,8 @@ import {
   FiFileText,
 } from "react-icons/fi";
 import MyImage from "../my-image";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 const ZoneDetails = () => {
   const pathname = usePathname();
@@ -36,12 +39,15 @@ const ZoneDetails = () => {
       </p>
     );
 
+  const categories = useAppSelector((state: any) => state.categories) || [];
+  // display categories also below zone as a zone can have multiple categories
   return (
-    <Card className="mx-auto w-full max-w-4xl overflow-hidden">
+    <Card className="mx-auto w-full max-w-4xl overflow-hidden py-0">
       {/* Banner */}
-      <div className="relative h-44 w-full">
+      <div className="relative h-52 w-full">
         <MyImage
-          src={zone.thumbnail || "/images/zone-placeholder.jpg"}
+          // src={zone.thumbnail || "/images/zone-placeholder.jpg"}
+          src={MapImg}
           alt={zone.name}
           fill
           className="object-cover"
@@ -80,8 +86,14 @@ const ZoneDetails = () => {
             label="Longitude"
             value={zone.latlong?.[1]?.toString()}
           />
-        </div>
+        </div>{" "}
+        <Link href={`/admin/dashboard/zones/${zone._id}/edit`}>
+          <Button variant="button" className="block ml-auto mt-4">
+            Edit Zone
+          </Button>
+        </Link>
       </CardContent>
+      {/* should also add link to edit */}
 
       {/* Admin Notes */}
       {zone.adminNotes && (
@@ -90,6 +102,7 @@ const ZoneDetails = () => {
             <FiFileText className="shrink-0 mt-0.5" />
             <p className="line-clamp-4">{zone.adminNotes}</p>
           </div>
+          
         </CardFooter>
       )}
     </Card>

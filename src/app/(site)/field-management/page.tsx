@@ -1,5 +1,11 @@
-const FieldManagementPage = () => {
-  return <div>field management</div>;
-};
+"use client";
+import Container from "@/components/container";
+import Fields from "@/components/fields";
 
-export default FieldManagementPage;
+export default function FieldManagementPage() {
+  return (
+    <Container title="Field Management" addBtnTitle="Field">
+      <Fields />
+    </Container>
+  );
+}

@@ -21,6 +21,7 @@ interface ConfirmDialogProps {
   loading?: boolean;
   variant?: "default" | "destructive";
   children: React.ReactNode;
+  asChild?: boolean;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -32,6 +33,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   loading = false,
   variant = "default",
   children,
+  asChild,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -42,7 +44,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>

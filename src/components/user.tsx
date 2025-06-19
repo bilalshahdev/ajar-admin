@@ -7,7 +7,7 @@ const User = () => {
     image: "/user.jpg",
   };
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4">
       <div className="text-sm text-white">
         <div className="font-medium">{user.name}</div>
         <div className="text-xs">{user.role}</div>
