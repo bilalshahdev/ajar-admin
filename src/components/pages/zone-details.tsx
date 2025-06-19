@@ -41,7 +41,7 @@ const ZoneDetails = () => {
 
   // display categories also below zone as a zone can have multiple categories
   return (
-    <Card className="mx-auto w-full max-w-4xl overflow-hidden py-0">
+    <Card className="overflow-hidden py-0">
       {/* Banner */}
       <div className="relative h-52 w-full">
         <MyImage
@@ -86,7 +86,7 @@ const ZoneDetails = () => {
             value={zone.latlong?.[1]?.toString()}
           />
         </div>{" "}
-        <Link href={`/admin/dashboard/zones/${zone._id}/edit`}>
+        <Link href={`/zone-management/${zone._id}/edit`}>
           <Button variant="button" className="block ml-auto mt-4">
             Edit Zone
           </Button>
@@ -98,7 +98,7 @@ const ZoneDetails = () => {
             {categories
               ?.filter((cat: any) => cat.zoneId === zone._id)
               ?.map((cat: any) => (
-                <li key={cat._id}>{cat.name}</li>
+                <li className="mb-2 capitalize list-decimal list-inside" key={cat._id}>{cat.name}</li>
               ))}
           </ul>
         </div>
