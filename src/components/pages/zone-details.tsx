@@ -1,28 +1,27 @@
 "use client";
 
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useAppSelector } from "@/lib/store/hooks";
-import { Zone } from "@/types";
-import MapImg from "../../../public/images/map.jpg";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import {
-  FiMapPin,
-  FiClock,
-  FiGlobe,
-  FiDollarSign,
-  FiRss,
-  FiFileText,
-} from "react-icons/fi";
-import MyImage from "../my-image";
+import { useAppSelector } from "@/lib/store/hooks";
+import { Zone } from "@/types";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  FiClock,
+  FiDollarSign,
+  FiFileText,
+  FiGlobe,
+  FiMapPin,
+  FiRss,
+} from "react-icons/fi";
+import MapImg from "../../../public/images/map.jpg";
+import MyImage from "../my-image";
 import { Button } from "../ui/button";
 
 const ZoneDetails = () => {
@@ -31,6 +30,7 @@ const ZoneDetails = () => {
 
   const zones = useAppSelector((state: any) => state.zones) || [];
   const zone: Zone | undefined = zones.find((z: any) => z._id === id);
+  const categories = useAppSelector((state: any) => state.categories) || [];
 
   if (!zone)
     return (
@@ -39,7 +39,6 @@ const ZoneDetails = () => {
       </p>
     );
 
-  const categories = useAppSelector((state: any) => state.categories) || [];
   // display categories also below zone as a zone can have multiple categories
   return (
     <Card className="mx-auto w-full max-w-4xl overflow-hidden py-0">
@@ -92,8 +91,19 @@ const ZoneDetails = () => {
             Edit Zone
           </Button>
         </Link>
-      </CardContent>
-      {/* should also add link to edit */}
+        {categories?.filter((cat: any) => cat.zoneId === zone._id).length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-2">Categories</h3>
+          <ul className="text-sm text-muted-foreground">
+            {categories
+              ?.filter((cat: any) => cat.zoneId === zone._id)
+              ?.map((cat: any) => (
+                <li key={cat._id}>{cat.name}</li>
+              ))}
+          </ul>
+        </div>
+      )}</CardContent>
+    
 
       {/* Admin Notes */}
       {zone.adminNotes && (
@@ -102,7 +112,6 @@ const ZoneDetails = () => {
             <FiFileText className="shrink-0 mt-0.5" />
             <p className="line-clamp-4">{zone.adminNotes}</p>
           </div>
-          
         </CardFooter>
       )}
     </Card>
