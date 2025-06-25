@@ -1,5 +1,11 @@
+import Container from "@/components/container";
+
 const AnalyticsAndRestrictionsPage = () => {
-  return <div>analytics & restrictions</div>;
+  return (
+    <Container title="Analytics & Restrictions">
+      analytics & restrictions
+    </Container>
+  );
 };
 
 export default AnalyticsAndRestrictionsPage;

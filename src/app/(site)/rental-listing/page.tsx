@@ -1,5 +1,7 @@
+import Container from "@/components/container";
+
 const RentalListingPage = () => {
-  return <div>rental listing</div>;
+  return <Container title="Rental Listing">rental listing</Container>;
 };
 
 export default RentalListingPage;

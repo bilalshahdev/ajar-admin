@@ -1,5 +1,7 @@
+import Container from "@/components/container";
+
 const HelpAndSupportPage = () => {
-  return <div>help & support</div>;
+  return <Container title="Help & Support">help & support</Container>;
 };
 
 export default HelpAndSupportPage;

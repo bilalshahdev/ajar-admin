@@ -1,3 +1,4 @@
+import Container from "@/components/container";
 import UsersList from "@/components/dashboard/users-list";
 import { XS } from "@/components/typography";
 import { User } from "@/types";
@@ -131,7 +132,8 @@ const UserVerificationPage = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4 md:gap-8">
+    <Container title="User Verification">
+      <div className="flex flex-col gap-4 md:gap-8">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {UserStats.map((data) => (
           <UserStatsCard key={data.title} {...data} />
@@ -140,6 +142,7 @@ const UserVerificationPage = () => {
 
       <UsersList users={users} />
     </div>
+    </Container>
   );
 };
 

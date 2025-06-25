@@ -9,7 +9,6 @@ interface NavMenuItem {
 type MenuItem = {
   href: string;
   label: string;
-  icon: ElementType;
 };
 
 type DashboardStat = {

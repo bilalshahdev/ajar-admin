@@ -1,5 +1,7 @@
+import Container from "@/components/container";
+
 const AdministrationPage = () => {
-  return <div>administration</div>;
+  return <Container title="Administration">administration</Container>;
 };
 
 export default AdministrationPage;
