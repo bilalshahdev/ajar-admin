@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import { NavMenuItem } from "@/types";
 import Brand from "./brand";
 import GradientIcon from "./gradient-icon";
+import { useLocale } from "next-intl";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -26,9 +27,9 @@ export default function Sidebar() {
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
-
+const locale = useLocale();
   const isMenuActive = (path: string) => {
-    return pathname === path;
+    return pathname === `/${locale}${path == "/" ? "" : path}`;
   };
 
   useEffect(() => {
