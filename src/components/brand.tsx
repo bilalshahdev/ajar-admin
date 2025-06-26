@@ -6,10 +6,10 @@ const Brand = () => {
     <Link href="/">
       <MyImage
         src="/images/brand.png"
-        width={100}
-        height={100}
+        width={80}
+        height={80}
         alt="logo"
-        className="invert brightness-0"
+        // className="invert brightness-0"
       />
       {/* <MyImage
         src="/images/brand-icon.png"
