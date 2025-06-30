@@ -20,16 +20,22 @@ import { NavMenuItem } from "@/types";
 import Brand from "./brand";
 import GradientIcon from "./gradient-icon";
 import { useLocale } from "next-intl";
+import { cn } from "@/lib/utils";
+import getDirection from "@/utils/getDirection";
 
-export default function Sidebar() {
+export default function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
   const [currentPath, setCurrentPath] = useState(pathname);
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
-const locale = useLocale();
+  const locale = useLocale();
   const isMenuActive = (path: string) => {
-    return pathname === `/${locale}${path == "/" ? "" : path}`;
+    const targetPath = `/${locale}${path === "/" ? "" : path}`;
+    if (path === "/") {
+      return pathname === `/${locale}` || pathname === `/${locale}/`;
+    }
+    return pathname.startsWith(targetPath);
   };
 
   useEffect(() => {
@@ -48,9 +54,17 @@ const locale = useLocale();
     isLogoutDialogOpen,
   ]);
 
+  const dir = getDirection(locale);
+  const bgColor = dir === "rtl" ? "bg-aqua" : "bg-blue";
+
   return (
-    <SidebarComponent collapsible="icon" variant="sidebar">
-      <SidebarHeader className="h-16 bg-blue">
+    <SidebarComponent
+      className={cn("", className)}
+      collapsible="icon"
+      variant="sidebar"
+      dir={dir}
+    >
+      <SidebarHeader className={cn("h-16", bgColor)}>
         <div className="h-full flex items-center">
           <Brand />
         </div>
@@ -64,6 +78,11 @@ const locale = useLocale();
                   tooltip={title}
                   isActive={isMenuActive(path)}
                   asChild
+                  className={
+                    isMenuActive(path)
+                      ? "bg-gradient-to-b from-blue-500/20 to-aqua/20"
+                      : "hover:bg-gradient-to-b from-blue-500/20 to-aqua/20"
+                  }
                 >
                   <Link href={path} className="flex items-center gap-2">
                     {isMenuActive(path) ? (

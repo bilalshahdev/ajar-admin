@@ -1,4 +1,22 @@
 import { IconType } from "react-icons/lib";
+// types/leaflet-draw.d.ts
+import "leaflet";
+declare module "leaflet" {
+  namespace Control {
+    class Draw extends Control {
+      constructor(options?: any);
+    }
+  }
+
+  namespace Draw {
+    namespace Event {
+      const CREATED: string;
+      const EDITED: string;
+      const DELETED: string;
+    }
+  }
+}
+
 
 interface NavMenuItem {
   title: string;
@@ -101,8 +119,12 @@ interface Zone {
 export interface Category {
   _id: string;
   name: string;
+  description?: string;
+  categoryId?: string;
+  type: string;
   slug: string;
   thumbnail?: string;
+  icon?: string;
   zoneId: string;
   status: string;
   createdAt: Date;

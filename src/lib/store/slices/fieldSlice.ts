@@ -5,7 +5,6 @@ export interface Field {
   name: string;
   label: string;
   type: string;
-  flutterType: string;
   placeholder?: string;
   order: number;
   tooltip?: string;
@@ -28,7 +27,6 @@ const initialState: Field[] = [
     name: "full_name",
     label: "Full Name",
     type: "text",
-    flutterType: "text",
     placeholder: "Enter full name",
     order: 1,
     visible: true,
@@ -41,7 +39,6 @@ const initialState: Field[] = [
     name: "email",
     label: "Email Address",
     type: "email",
-    flutterType: "email",
     placeholder: "Enter email",
     order: 2,
     visible: true,
@@ -55,7 +52,6 @@ const initialState: Field[] = [
     name: "dob",
     label: "Date of Birth",
     type: "date",
-    flutterType: "date",
     order: 3,
     visible: true,
     validation: { required: true },
@@ -65,7 +61,6 @@ const initialState: Field[] = [
     name: "skills",
     label: "Skills",
     type: "multiselect",
-    flutterType: "multiselect",
     isMultiple: true,
     options: ["HTML", "CSS", "JS", "React", "Node"],
     placeholder: "Select skills",
@@ -78,7 +73,6 @@ const initialState: Field[] = [
     name: "bio",
     label: "Bio",
     type: "text",
-    flutterType: "text",
     placeholder: "Short introduction",
     order: 5,
     visible: true,

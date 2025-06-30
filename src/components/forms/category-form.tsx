@@ -20,14 +20,20 @@ const CategoryForm = ({ id }: { id?: string }) => {
     handleSubmit,
     formState: { isSubmitting },
     reset,
+    watch,
   } = useForm<CategoryFormValues>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
+      type: category?.type || "category",
+      categoryId: category?.categoryId || "",
       name: category?.name || "",
-      zoneId: category?.zoneId || zones?.[0]?._id || "",
+      description: category?.description || "",
       thumbnail: category?.thumbnail || "",
+      icon: category?.icon || "",
     },
   });
+
+  const type = watch("type");
 
   const onSubmit = async (data: CategoryFormValues) => {
     if (id) {
@@ -41,22 +47,45 @@ const CategoryForm = ({ id }: { id?: string }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <SelectInput
+          control={control}
+          name="type"
+          label="Type"
+          options={[
+            { label: "Category", value: "category" },
+            { label: "SubCategory", value: "subCategory" },
+          ]}
+        />
+        {type === "category" && (
+          <SelectInput
+            control={control}
+            name="categoryId"
+            label="Category"
+            options={categories.map((cat: any) => ({
+              label: cat.name,
+              value: cat._id,
+            }))}
+          />
+        )}
         <TextInput
           control={control}
           name="name"
-          label="Category Name"
+          label="Name"
           placeholder="e.g. Restaurants"
         />
-        <SelectInput
+        <TextInput
           control={control}
-          name="zoneId"
-          label="Zone"
-          options={zones.map((z: any) => ({
-            label: z.name,
-            value: z._id,
-          }))}
+          name="description"
+          label="Description"
+          placeholder="e.g. Description"
         />
-        <FileInput control={control} name="thumbnail" label="Thumbnail Image" />
+        <FileInput control={control} name="thumbnail" label="Thumbnail" />
+        <TextInput
+          control={control}
+          name="icon"
+          label="Icon"
+          placeholder="e.g. Icon"
+        />
       </div>
 
       <Button

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
+
 import Providers from "../../components/providers/provider";
+import getDirection from "@/utils/getDirection";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +31,9 @@ export default async function RootLayout({
 }>) {
   const { locale } = await params;
 
+  const dir = getDirection(locale);
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html dir={dir} lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-secondary`}
       >

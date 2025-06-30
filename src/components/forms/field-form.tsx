@@ -1,16 +1,16 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
+import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
 import { FieldFormValues, FieldSchema } from "@/validations/field";
-import TextInput from "./fields/text-input";
-import SelectInput from "./fields/select-input";
 import FormArrayInput from "./fields/form-array-input";
+import SelectInput from "./fields/select-input";
 import Switch from "./fields/switch";
+import TextInput from "./fields/text-input";
 
 const inputTypes = [
   { name: "String", value: "string" },
@@ -33,8 +33,6 @@ const inputTypes = [
   { name: "Location", value: "location" },
 ];
 
-const flutterInputTypes = [...inputTypes];
-
 export default function FieldForm({ id }: { id?: string }) {
   const field = useAppSelector((s: any) =>
     s.fields?.find((f: any) => f._id === id)
@@ -52,7 +50,6 @@ export default function FieldForm({ id }: { id?: string }) {
       name: field?.name || "",
       label: field?.label || "",
       type: field?.type || inputTypes[0].value,
-      flutterType: field?.flutterType || flutterInputTypes[0].value,
       placeholder: field?.placeholder || "",
       order: field?.order ?? 0,
       isMultiple: field?.isMultiple ?? false,
@@ -98,15 +95,7 @@ export default function FieldForm({ id }: { id?: string }) {
           label="Input Type"
           options={inputTypes.map((t) => ({ label: t.name, value: t.value }))}
         />
-        <SelectInput
-          control={control}
-          name="flutterType"
-          label="Flutter Input Type"
-          options={flutterInputTypes.map((t) => ({
-            label: t.name,
-            value: t.value,
-          }))}
-        />
+
         <TextInput
           control={control}
           name="order"

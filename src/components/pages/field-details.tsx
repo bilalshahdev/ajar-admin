@@ -56,11 +56,6 @@ export default function FieldDetail() {
           <TableBody>
             <Detail icon={FiType} label="Type" value={field.type} />
             <Detail
-              icon={FiType}
-              label="Flutter Type"
-              value={field.flutterType}
-            />
-            <Detail
               icon={FiFlag}
               label="Placeholder"
               value={field.placeholder}

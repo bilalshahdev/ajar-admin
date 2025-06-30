@@ -19,7 +19,6 @@ export default function Fields() {
         <TableRow>
           <TableHead>Name</TableHead>
           <TableHead>Type</TableHead>
-          <TableHead>Flutter Type</TableHead>
           <TableHead>Label</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
@@ -29,7 +28,6 @@ export default function Fields() {
           <TableRow key={field._id}>
             <TableCell>{field.name}</TableCell>
             <TableCell className="capitalize">{field.type}</TableCell>
-            <TableCell className="capitalize">{field.flutterType}</TableCell>
             <TableCell>{field.label ?? "—"}</TableCell>
             <TableCell className="flex gap-4">
               <Link href={`/field-management/${field._id}`}>

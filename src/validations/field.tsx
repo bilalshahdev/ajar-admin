@@ -13,10 +13,6 @@ export const FieldSchema = z.object({
     .string({ required_error: "Field type is required" })
     .min(1, "Field type must be specified"),
 
-  flutterType: z
-    .string({ required_error: "Flutter input type is required" })
-    .min(1, "Flutter type must be specified"),
-
   placeholder: z.string().optional(),
 
   order: z.coerce.number().int().nonnegative(),

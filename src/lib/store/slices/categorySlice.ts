@@ -5,26 +5,44 @@ import { Category } from "@/types";
 const initialState: Category[] = [
   {
     _id: "101",
+    type: "category",
     name: "Electronics",
     slug: "electronics",
     thumbnail: "https://cdn.example.com/cat/electronics.jpg",
     zoneId: "1", // Gulf Zone
     status: "active",
+    description: "All kinds of electronic items",
+    icon: "tv",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     _id: "102",
+    type: "category",
     name: "Real Estate",
     slug: "real-estate",
     thumbnail: "https://cdn.example.com/cat/realestate.jpg",
     zoneId: "2", // New York Metro
+    status: "active",
+    icon: "building",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "1101",
+    type: "subCategory",
+    name: "Apartments",
+    slug: "apartments",
+    categoryId: "102", // parent: Real Estate
+    thumbnail: "https://cdn.example.com/cat/apartments.jpg",
+    zoneId: "2",
     status: "active",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     _id: "103",
+    type: "category",
     name: "Events & Entertainment",
     slug: "events-entertainment",
     thumbnail: "https://cdn.example.com/cat/events.jpg",
@@ -35,6 +53,7 @@ const initialState: Category[] = [
   },
   {
     _id: "104",
+    type: "category",
     name: "Tech Start-ups",
     slug: "tech-startups",
     thumbnail: "https://cdn.example.com/cat/startups.jpg",
@@ -45,6 +64,7 @@ const initialState: Category[] = [
   },
   {
     _id: "105",
+    type: "category",
     name: "Food Delivery",
     slug: "food-delivery",
     thumbnail: "https://cdn.example.com/cat/food.jpg",
@@ -55,6 +75,7 @@ const initialState: Category[] = [
   },
   {
     _id: "106",
+    type: "category",
     name: "Gaming & Anime",
     slug: "gaming-anime",
     thumbnail: "https://cdn.example.com/cat/gaming.jpg",
@@ -65,6 +86,7 @@ const initialState: Category[] = [
   },
   {
     _id: "107",
+    type: "category",
     name: "Professional Services",
     slug: "professional-services",
     thumbnail: "https://cdn.example.com/cat/services.jpg",
@@ -75,6 +97,7 @@ const initialState: Category[] = [
   },
   {
     _id: "108",
+    type: "category",
     name: "Travel & Tourism",
     slug: "travel-tourism",
     thumbnail: "https://cdn.example.com/cat/travel.jpg",
@@ -85,6 +108,7 @@ const initialState: Category[] = [
   },
   {
     _id: "109",
+    type: "category",
     name: "Healthcare",
     slug: "healthcare",
     zoneId: "2",
@@ -94,6 +118,7 @@ const initialState: Category[] = [
   },
   {
     _id: "110",
+    type: "category",
     name: "Education",
     slug: "education",
     zoneId: "3",
@@ -102,6 +127,7 @@ const initialState: Category[] = [
     updatedAt: new Date(),
   },
 ];
+
 
 const categorySlice = createSlice({
   name: "categories",

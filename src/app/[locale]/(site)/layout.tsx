@@ -10,7 +10,7 @@ const SiteLayout = async ({ children }: { children: React.ReactNode }) => {
       <Sidebar />
       <div className="w-full">
         <Navbar />
-        <div className="p-4">{children}</div>
+        <div className="m-4 p-4 rounded-lg bg-background">{children}</div>
       </div>
     </SidebarProvider>
   );
