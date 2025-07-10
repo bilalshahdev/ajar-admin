@@ -56,7 +56,7 @@ const CategoryForm = ({ id }: { id?: string }) => {
             { label: "SubCategory", value: "subCategory" },
           ]}
         />
-        {type === "category" && (
+        {type === "subCategory" && (
           <SelectInput
             control={control}
             name="categoryId"

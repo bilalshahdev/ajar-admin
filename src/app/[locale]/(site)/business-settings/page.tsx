@@ -1,7 +1,7 @@
-import Container from "@/components/container";
+import BusinessSettings from "@/components/pages/business-settings/business-settings";
 
 const BusinessSettingsPage = () => {
-  return <Container title="Business Settings">business settings</Container>;
+  return <BusinessSettings />;
 };
 
 export default BusinessSettingsPage;

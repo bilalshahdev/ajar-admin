@@ -59,3 +59,15 @@ export const navMenu: MenuItem[] = [
 //   { href: "/listing", label: "listing" },
 //   { href: "/settings", label: "settings" },
 // ];
+
+export const businessNavMenu: MenuItem[] = [
+  { href: "/", label: "Business Information" },
+  { href: "/payment-methods", label: "Payment Methods" },
+  { href: "/sms-module", label: "SMS Module" },
+  { href: "/mail-config", label: "Mail Config" },
+  { href: "/map-apis", label: "Map API’s" },
+  { href: "/social-logins", label: "Socials Logins" },
+  { href: "/recaptcha", label: "Recaptcha" },
+  { href: "/firebase", label: "Firebase" },
+  { href: "/storage", label: "Storage" },
+];
