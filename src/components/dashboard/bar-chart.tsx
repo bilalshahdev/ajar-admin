@@ -1,7 +1,4 @@
 "use client";
-import { BiLineChart } from "react-icons/bi";
-import { H4, Label, Small } from "../typography";
-import ChartCard from "./chart-card";
 
 import {
   Bar,
@@ -10,39 +7,39 @@ import {
   BarChart as RechartsBarChart,
   XAxis,
 } from "recharts";
-
+import { BiLineChart } from "react-icons/bi";
+import { useMemo } from "react";
 import {
-  ChartConfig,
   ChartContainer,
+  ChartConfig,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { H4, Label, Small } from "../typography";
+import ChartCard from "./chart-card";
+import { FilterOption, earningChartData } from "@/config/data";
+import { calculateTrend } from "@/utils/chart";
 
-// Chart data (same as your screenshot)
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+type BarChartProps = {
+  filter: FilterOption;
+};
 
-// Signature color config
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--primary))", 
-  },
-} satisfies ChartConfig;
+const BarChart = ({ filter }: BarChartProps) => {
+  const chartData = useMemo(() => earningChartData[filter], [filter]);
 
-const BarChart = () => {
+  const chartConfig: ChartConfig = {
+    earnings: {
+      label: "Earnings",
+      color: "hsl(var(--primary))",
+    },
+  };
+  const trendInfo = calculateTrend(chartData, "earnings");
   return (
     <ChartCard className="space-y-4 h-full bg-background">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
-          <Small>performance</Small>
-          <H4>Total ADs</H4>
+          <Small>Performance</Small>
+          <H4>{filter} earnings</H4>
         </div>
       </div>
       <ChartCard className="bg-secondary border p-0">
@@ -52,16 +49,14 @@ const BarChart = () => {
         </Small>
         <div className="p-4">
           <div>
-            <H4>Bar chart</H4>
-            <Small>Showing total visitors</Small>
+            <H4>Total Earnings</H4>
+            <Small>Showing {filter} earnings</Small>
           </div>
           <ChartContainer config={chartConfig}>
             <RechartsBarChart
               accessibilityLayer
               data={chartData}
-              margin={{
-                top: 20,
-              }}
+              margin={{ top: 20 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
@@ -75,7 +70,7 @@ const BarChart = () => {
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="desktop" fill="var(--color-signature)" radius={8}>
+              <Bar dataKey="earnings" fill="var(--color-signature)" radius={8}>
                 <LabelList
                   position="top"
                   offset={12}
@@ -86,8 +81,8 @@ const BarChart = () => {
             </RechartsBarChart>
           </ChartContainer>
           <div>
-            <Label>Trending up by 12%</Label>
-            <Small>jan - may</Small>
+            <Label>{trendInfo.label}</Label>
+            <Small>Period: {filter}</Small>
           </div>
         </div>
       </ChartCard>

@@ -1,62 +1,39 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { BiLineChart } from "react-icons/bi";
-import { H4, Label, Small } from "../typography";
-import ChartCard from "./chart-card";
-
+import { useMemo } from "react";
 import {
-  ChartConfig,
   ChartContainer,
+  ChartConfig,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig;
+import { H4, Label, Small } from "../typography";
+import ChartCard from "./chart-card";
+import { FilterOption, userChartData } from "@/config/data";
+import { calculateTrend } from "@/utils/chart";
 
-const LineChart = () => {
-  const filters = ["all", "weekly", "monthly", "yearly"];
-  const [filter, setFilter] = useState(filters[0]);
+type LineChartProps = {
+  filter: FilterOption;
+};
+
+const LineChart = ({ filter }: LineChartProps) => {
+  const chartData = useMemo(() => userChartData[filter], [filter]);
+
+  const chartConfig: ChartConfig = {
+    users: {
+      label: "Users",
+      color: "hsl(var(--chart-1))",
+    },
+  };
+  const trendInfo = calculateTrend(chartData, "users");
   return (
     <ChartCard className="space-y-4 h-full bg-background">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
-          <Small>overview</Small>
-          <H4>{filter} ADs</H4>
-        </div>
-        <div className="flex gap-2 text-sm">
-          <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-[180px] capitalize">
-              <SelectValue placeholder="Select a filter" />
-            </SelectTrigger>
-            <SelectContent className="capitalize">
-              {filters.map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Small>Overview</Small>
+          <H4>{filter} users</H4>
         </div>
       </div>
       <ChartCard className="bg-secondary border p-0">
@@ -66,17 +43,14 @@ const LineChart = () => {
         </Small>
         <div className="p-4">
           <div>
-            <H4>Area chart</H4>
-            <Small>Showing {filter} visitors</Small>
+            <H4>Users</H4>
+            <Small>Showing {filter} users</Small>
           </div>
           <ChartContainer config={chartConfig}>
             <AreaChart
               accessibilityLayer
               data={chartData}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
+              margin={{ left: 12, right: 12 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
@@ -91,7 +65,7 @@ const LineChart = () => {
                 content={<ChartTooltipContent indicator="line" />}
               />
               <Area
-                dataKey="desktop"
+                dataKey="users"
                 type="natural"
                 fill="var(--color-signature)"
                 fillOpacity={0.4}
@@ -100,8 +74,8 @@ const LineChart = () => {
             </AreaChart>
           </ChartContainer>
           <div>
-            <Label>Trending up by 12%</Label>
-            <Small>jan - may</Small>
+            <Label>{trendInfo.label}</Label>
+            <Small>Period: {filter}</Small>
           </div>
         </div>
       </ChartCard>

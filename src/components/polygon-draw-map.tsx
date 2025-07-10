@@ -6,18 +6,21 @@ import L from "leaflet";
 import "leaflet-draw";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
+import "leaflet-geosearch/dist/geosearch.css";
+
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 const PolygonDrawer = ({
   onPolygonDrawn,
 }: {
-  onPolygonDrawn: (points: { lat: number; lng: number }[]) => void;
+  onPolygonDrawn?: (points: { lat: number; lng: number }[]) => void;
 }) => {
-  const map = useMap(); // ✅ Correct way to get map instance in react-leaflet v4+
+  const map = useMap();
 
   useEffect(() => {
     const drawnItems = new L.FeatureGroup();
     map.addLayer(drawnItems);
-// please ignore type error 
+
     const drawControl = new L.Control.Draw({
       draw: {
         polygon: true,
@@ -43,11 +46,29 @@ const PolygonDrawer = ({
         lng: point.lng,
       }));
 
-      onPolygonDrawn(latlngs);
+      console.log("lat lngs", latlngs);
+
+      onPolygonDrawn?.(latlngs);
     });
+
+    // 🧭 Add search control
+    const provider = new OpenStreetMapProvider();
+    const searchControl = GeoSearchControl({
+      provider,
+      style: "bar",
+      showMarker: true,
+      retainZoomLevel: false,
+      animateZoom: true,
+      autoClose: true,
+      searchLabel: "Enter location",
+      keepResult: true,
+    });
+
+    map.addControl(searchControl);
 
     return () => {
       map.removeControl(drawControl);
+      map.removeControl(searchControl);
     };
   }, [map, onPolygonDrawn]);
 
@@ -57,17 +78,22 @@ const PolygonDrawer = ({
 const PolygonDrawMap = ({
   onPolygonDrawn,
 }: {
-  onPolygonDrawn: (points: { lat: number; lng: number }[]) => void;
+  onPolygonDrawn?: (points: { lat: number; lng: number }[]) => void;
 }) => {
   return (
     <MapContainer
       center={[33.6844, 73.0479]}
       zoom={12}
       scrollWheelZoom={true}
-      style={{ height: "500px", width: "100%" }}
+      style={{
+        height: "500px",
+        width: "100%",
+        zIndex: 0,
+        position: "relative",
+      }}
     >
       <TileLayer
-        attribution='&copy; OpenStreetMap contributors'
+        attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <PolygonDrawer onPolygonDrawn={onPolygonDrawn} />

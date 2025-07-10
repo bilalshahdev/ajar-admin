@@ -10,7 +10,7 @@ import LanguageSwitcher from "./language-switcher";
 
 const Navbar = () => {
   return (
-    <div className="w-full h-16 sticky top-0 z-20 bg-header flex items-center justify-between px-4">
+    <div className="w-full h-16 sticky top-0 z-50 bg-header flex items-center justify-between px-4">
       <div className="flex items-center gap-8">
         <SidebarTrigger />
         <ul className="hidden lg:flex items-center gap-8">

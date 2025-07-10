@@ -8,10 +8,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Zone } from "@/types";
-import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiEye, FiSettings, FiTrash2 } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import ConfirmDialog from "./confirm-dialog";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import ZoneForm from "./forms/zone-form";
 const Zones = () => {
   const zones = useSelector((state: any) => state.zones);
   return (
@@ -33,12 +42,35 @@ const Zones = () => {
               <TableCell>{zone.radius}</TableCell>
               <TableCell className="flex gap-4">
                 {/* View Zone */}
-                <Link href={`/zone-management/${zone._id}`}>
+                {/* <Link href={`/zone-management/${zone._id}`}>
                   <FiEye size={18} className="cursor-pointer text-blue-500" />
+                </Link> */}
+                {/*  Zone Settings */}
+                <Link href={`/zone-management/${zone._id}/settings`}>
+                  <FiSettings
+                    size={18}
+                    className="cursor-pointer text-blue-500"
+                  />
                 </Link>
-                <Link href={`/zone-management/${zone._id}/edit`}>
-                  <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
-                </Link>
+                {/* <Link href={`/zone-management/${zone._id}/edit`}> */}
+                <Dialog>
+                  <DialogTrigger>
+                    <FiEdit2
+                      size={18}
+                      className="cursor-pointer text-blue-500"
+                    />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Edit Zone</DialogTitle>
+                      <DialogDescription>
+                        Edit the zone details below.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <ZoneForm id={zone._id} />
+                  </DialogContent>
+                </Dialog>
+                {/* </Link> */}
                 <ConfirmDialog
                   title="Delete Zone"
                   description="Are you sure you want to delete this zone?"

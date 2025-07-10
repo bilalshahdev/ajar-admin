@@ -15,11 +15,6 @@ export const registerUser = (data: Signup) =>
     if (data.nationality) formData.append("nationality", data.nationality);
     if (data.image) formData.append("image", data.image);
 
-    // Assuming registerUser might also benefit from the new asyncHandler structure
-    // and might return a specific data type upon success.
-    // For now, let's assume its return type is not yet LoginSuccessData,
-    // so we'll type it as `any` for the successful data part.
-    // If it has a defined success response, that should be used instead of `any`.
     return api.post<{ data: any }>("/users/signup", formData);
   });
 

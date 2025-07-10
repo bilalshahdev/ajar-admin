@@ -17,7 +17,6 @@ declare module "leaflet" {
   }
 }
 
-
 interface NavMenuItem {
   title: string;
   path: string;
@@ -129,4 +128,27 @@ export interface Category {
   status: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// types/ZoneSettings.ts
+
+export type CommissionType = "fixed" | "percentage";
+
+export interface Commission {
+  type: CommissionType;
+  leaser: number | { min: number; max: number };
+  renter: number | { min: number; max: number };
+}
+
+export interface SubcategorySettings {
+  subcategory: string;
+  fields: string[];
+  commission: Commission;
+  tax: number;
+  expiry: string; // ISO string for date
+}
+
+export interface ZoneSettingsFormData {
+  zone: string;
+  subcategories: SubcategorySettings[];
 }

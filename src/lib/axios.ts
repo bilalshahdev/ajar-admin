@@ -10,16 +10,6 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Multipart Axios instance (for image/file uploads)
-export const multiPartApi = axios.create({
-  baseURL: `${baseUrl}/api`,
-  withCredentials: true,
-  headers: {
-    // No need to set Content-Type manually for multipart/form-data
-    // axios handles it automatically when you use FormData
-  },
-});
-
 // Request interceptor to include Bearer token (client-side only)
 api.interceptors.request.use((config) => {
   if (isBrowser) {
@@ -29,6 +19,16 @@ api.interceptors.request.use((config) => {
     }
   }
   return config;
+});
+
+// Multipart Axios instance (for image/file uploads)
+export const multiPartApi = axios.create({
+  baseURL: `${baseUrl}/api`,
+  withCredentials: true,
+  headers: {
+    // No need to set Content-Type manually for multipart/form-data
+    // axios handles it automatically when you use FormData
+  },
 });
 
 // Optional: attach same interceptor to axiosMultipart (if needed)
