@@ -1,7 +1,7 @@
-import Container from "@/components/container";
+import RecaptchaForm from "@/components/forms/recaptcha-form";
 
 const RecaptchaPage = () => {
-  return <Container title="Recaptcha">Recaptcha</Container>;
+  return <RecaptchaForm />;
 };
 
 export default RecaptchaPage;

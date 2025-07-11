@@ -1,7 +1,7 @@
-import Container from "@/components/container";
+import FirebaseConfig from "@/components/pages/firebase-config";
 
 const FirebasePage = () => {
-  return <Container title="Firebase">Firebase</Container>;
+  return <FirebaseConfig />;
 };
 
 export default FirebasePage;

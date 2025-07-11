@@ -1,7 +1,7 @@
-import Container from "@/components/container";
+import SmsConfigForm from "@/components/forms/sms-config-form";
 
 const SmsModulePage = () => {
-  return <Container title="SMS Module">SMS Module</Container>;
+  return <SmsConfigForm />;
 };
 
 export default SmsModulePage;

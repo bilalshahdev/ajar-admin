@@ -69,5 +69,5 @@ export const businessNavMenu: MenuItem[] = [
   { href: "/social-logins", label: "Socials Logins" },
   { href: "/recaptcha", label: "Recaptcha" },
   { href: "/firebase", label: "Firebase" },
-  { href: "/storage", label: "Storage" },
+  // { href: "/storage", label: "Storage" },
 ];

@@ -1,35 +1,28 @@
 "use client";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { MdOutlineArrowBack } from "react-icons/md";
 import Container from "./container";
 import { Button } from "./ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export const PageTitle = ({ title }: { title: string }) => {
-  const router = useRouter();
-
   return (
     <Container className="h-12">
-      {/* Back Button */}
-      <div className="flex items-center w-ful h-full gap-4 md:gap-8 capitalize">
-        {/* <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant={"secondary"}
-              onClick={() => router.back()}
-              className="text-foreground px-2"
-            >
-              <MdOutlineArrowBack size={24} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent align="start">
-            <p className="text-muted-foreground">Go Back</p>
-          </TooltipContent>
-        </Tooltip> */}
+      <div className="flex items-center w-full h-full gap-4 md:gap-8 capitalize">
+        <h3 className="text-xl md:text-2xl font-semibold">
+          {title}
+        </h3>
+      </div>
+    </Container>
+  );
+};
 
-        <h3 className="text-xl md:text-2xl font-semibold w-ful text-center">{title}</h3>
+export const PageSubtitle = ({ subtitle }: { subtitle: string }) => {
+  return (
+    <Container className="h-12">
+      <div className="flex items-center w-full h-full gap-4 md:gap-8 capitalize">
+        <h3 className="md:text-lg font-semibold">
+          {subtitle}
+        </h3>
       </div>
     </Container>
   );

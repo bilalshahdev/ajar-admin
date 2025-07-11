@@ -1,11 +1,7 @@
-import Container from "@/components/container"
+import PaymentSettingsForm from "@/components/forms/payment-settings";
 
 const PaymentMethodsPage = () => {
-  return (
-    <Container title="Payment Methods">
-      Payment Methods
-    </Container>
-  )
-}
+  return <PaymentSettingsForm />;
+};
 
-export default PaymentMethodsPage
+export default PaymentMethodsPage;

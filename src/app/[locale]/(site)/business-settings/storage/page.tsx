@@ -1,7 +1,5 @@
-import Container from "@/components/container";
-
 const StoragePage = () => {
-  return <Container title="Storage">Storage</Container>;
+  return <div>Storage</div>;
 };
 
 export default StoragePage;

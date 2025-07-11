@@ -1,7 +1,5 @@
-import Container from "@/components/container";
-
 const MailConfigPage = () => {
-  return <Container title="Mail Config">Mail Config</Container>;
+  return <div>Mail Config</div>;
 };
 
 export default MailConfigPage;

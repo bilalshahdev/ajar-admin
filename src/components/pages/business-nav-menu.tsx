@@ -34,8 +34,8 @@ const BusinessNavMenu = () => {
 
   return (
     <div className="">
-      {/* Desktop view */}
-      <div className="hidden md:flex flex-row gap-4">
+      {/* Web view */}
+      <div className="hidden w-full md:flex justify-between p-4 bg-primary-foreground rounded-md">
         {businessNavMenu.map((item) => (
           <Link
             key={item.label}

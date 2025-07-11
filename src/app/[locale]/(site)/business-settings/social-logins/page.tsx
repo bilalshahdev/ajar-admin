@@ -1,7 +1,7 @@
-import Container from "@/components/container";
+import SocialConfigForm from "@/components/forms/social-config-form";
 
 const SocialLoginsPage = () => {
-  return <Container title="Social Logins">Social Logins</Container>;
+  return <SocialConfigForm />;
 };
 
 export default SocialLoginsPage;

@@ -49,12 +49,12 @@
 
 :root {
   --radius: 0.625rem;
+  --signature: var(--aqua);
   --aqua: oklch(0.74 0.1478 169.16);
   --blue: oklch(0.67 0.1788 247.92);
   --dark: oklch(0.22 0.0383 249.94);
   --gradient-button: linear-gradient(270deg, var(--aqua), var(--blue));
   --gradient-header: linear-gradient(270deg, var(--dark), var(--aqua));
-  --signature: var(--aqua);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
