@@ -1,5 +1,7 @@
+import MapApiForm from "@/components/forms/map-api-form";
+
 const MapApisPage = () => {
-  return <div>Map APIs</div>;
+  return <MapApiForm />;
 };
 
 export default MapApisPage;

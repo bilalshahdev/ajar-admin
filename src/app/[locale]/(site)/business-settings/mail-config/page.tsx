@@ -1,5 +1,11 @@
+import SmtpConfig from "@/components/pages/smtp-config";
+
 const MailConfigPage = () => {
-  return <div>Mail Config</div>;
+  return (
+    <div>
+      <SmtpConfig />
+    </div>
+  );
 };
 
 export default MailConfigPage;

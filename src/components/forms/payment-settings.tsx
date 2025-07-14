@@ -86,15 +86,6 @@ const PaymentSettingsForm = () => {
       {/* Action Buttons */}
       <div className="flex gap-4 mt-6 justify-end">
         <Button
-          type="button"
-          variant="secondary"
-          onClick={() => reset()}
-          className="px-6"
-        >
-          Reset
-        </Button>
-
-        <Button
           type="submit"
           disabled={isSubmitting}
           variant="button"
