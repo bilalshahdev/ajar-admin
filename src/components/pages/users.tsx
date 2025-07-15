@@ -21,7 +21,7 @@ const UserStats = [
   },
   {
     title: "Blocked Users",
-    value: users.filter((user) => user.isBlocked).length.toString(),
+    value: users.filter((user) => user.status === "blocked").length.toString(),
     change: 0,
   },
 ];

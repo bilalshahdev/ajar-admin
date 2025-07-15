@@ -83,7 +83,7 @@ export const users: User[] = [
     phone: "+1 93072059670",
     email: "macster@prettysky.link",
     joinedDate: new Date("2024-01-02T00:00:00Z"),
-    isBlocked: true,
+
     status: "active",
   },
   {
@@ -92,8 +92,8 @@ export const users: User[] = [
     phone: "+1 56272059670",
     email: "Rahil@dinlaan.com",
     joinedDate: new Date("2024-01-03T00:00:00Z"),
-    isBlocked: false,
-    status: "active",
+
+    status: "blocked",
   },
   {
     _id: 3,
@@ -101,7 +101,7 @@ export const users: User[] = [
     phone: "+1 82522059670",
     email: "Mustatr@gmailbrt.com",
     joinedDate: new Date("2024-07-05T00:00:00Z"),
-    isBlocked: false,
+
     status: "active",
   },
   {
@@ -110,7 +110,7 @@ export const users: User[] = [
     phone: "+1 56272059541",
     email: "Rehana@racfq.com",
     joinedDate: new Date("2024-03-24T00:00:00Z"),
-    isBlocked: false,
+
     status: "active",
   },
   {
@@ -119,8 +119,8 @@ export const users: User[] = [
     phone: "+1 8054059670",
     email: "macster@boxgu.com",
     joinedDate: new Date("2024-04-15T00:00:00Z"),
-    isBlocked: false,
-    status: "active",
+
+    status: "blocked",
   },
   {
     _id: 6,
@@ -128,7 +128,7 @@ export const users: User[] = [
     phone: "+1 56513230156",
     email: "macster@khothiai.com",
     joinedDate: new Date("2024-04-18T00:00:00Z"),
-    isBlocked: false,
+
     status: "inactive",
   },
   {
@@ -137,7 +137,7 @@ export const users: User[] = [
     phone: "+1 70247952231",
     email: "Nitya@hulas.co",
     joinedDate: new Date("2024-04-02T00:00:00Z"),
-    isBlocked: false,
+
     status: "inactive",
   },
   {
@@ -146,8 +146,8 @@ export const users: User[] = [
     phone: "+1 8014874263",
     email: "Prajay@hulas.co",
     joinedDate: new Date("2024-01-15T00:00:00Z"),
-    isBlocked: false,
-    status: "inactive",
+
+    status: "pending",
   },
   {
     _id: 9,
@@ -155,7 +155,7 @@ export const users: User[] = [
     phone: "+1 56272059670",
     email: "Mohan@racfq.com",
     joinedDate: new Date("2024-02-13T00:00:00Z"),
-    isBlocked: false,
+
     status: "inactive",
   },
   {
@@ -164,7 +164,7 @@ export const users: User[] = [
     phone: "+1 56272059670",
     email: "Brijesh@dinlaan.com",
     joinedDate: new Date("2024-03-19T00:00:00Z"),
-    isBlocked: false,
+
     status: "inactive",
   },
   {
@@ -173,7 +173,7 @@ export const users: User[] = [
     phone: "+1 56272059670",
     email: "Nityanand@gmail.com",
     joinedDate: new Date("2024-04-30T00:00:00Z"),
-    isBlocked: false,
+
     status: "inactive",
   },
 ];

@@ -41,7 +41,6 @@ interface User {
   phone: string;
   email: string;
   joinedDate: Date;
-  isBlocked: boolean;
   status: string;
 }
 

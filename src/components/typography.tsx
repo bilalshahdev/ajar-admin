@@ -72,7 +72,7 @@ const Small = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("text-sm text-muted-foreground", className)}>
+    <div className={cn("text-sm", className)}>
       {children}
     </div>
   );
