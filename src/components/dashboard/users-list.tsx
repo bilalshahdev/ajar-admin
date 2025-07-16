@@ -8,21 +8,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { TableCell } from "@/components/ui/table";
 import { User } from "@/types";
 import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
 import { DataTable } from "../custom/data-table";
+import { FilterButton } from "../custom/filter-button";
 import { SearchInput } from "../custom/search-input";
 import { Label, Small, XS } from "../typography";
+import Status from "../status-badge";
 
-const statusOptions = ["all", "active", "inactive", "blocked", "pending"];
+const statusOptions = [
+  { label: "All", value: "all" },
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inactive" },
+  { label: "Pending", value: "pending" },
+  { label: "Blocked", value: "blocked" },
+];
 
 const UsersList = ({ users }: { users: User[] }) => {
   const [search, setSearch] = useState("");
@@ -63,7 +65,9 @@ const UsersList = ({ users }: { users: User[] }) => {
       </TableCell>
       <TableCell>{user.phone}</TableCell>
       <TableCell>{user.email}</TableCell>
-      <TableCell>{user.status}</TableCell>
+      <TableCell>
+        <Status value={user.status} />
+      </TableCell>
       <TableCell>
         <div className="">...</div>
       </TableCell>
@@ -81,29 +85,12 @@ const UsersList = ({ users }: { users: User[] }) => {
             debounceDelay={500}
           />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {selectedStatus === "all"
-                  ? "Filter: All"
-                  : `Filter: ${
-                      selectedStatus.charAt(0).toUpperCase() +
-                      selectedStatus.slice(1)
-                    }`}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {statusOptions.map((status) => (
-                <DropdownMenuItem
-                  key={status}
-                  onClick={() => setSelectedStatus(status)}
-                  className="capitalize"
-                >
-                  {status}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <FilterButton
+            label="Status"
+            value={selectedStatus}
+            onChange={(val) => setSelectedStatus(val as string)}
+            options={statusOptions}
+          />
         </div>
       </div>
       <DataTable data={filteredUsers} cols={cols} row={row} />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MyImage from "./my-image";
+import MyImage from "./custom/my-image";
 
 const Brand = () => {
   return (

@@ -151,3 +151,50 @@ export interface ZoneSettingsFormData {
   zone: string;
   subcategories: SubcategorySettings[];
 }
+
+export interface RentalUser {
+  _id: string;
+  name: string;
+  profilePic: string;
+}
+
+export interface Subcategory {
+  name: string;
+  category: {
+    name: string;
+  };
+}
+
+interface RentalRequest {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  date: string;
+  status: string;
+  subcategory: Subcategory;
+  leaser: RentalUser;
+  renter: RentalUser;
+}
+
+type TicketStatus = "active" | "pending" | "rejected";
+type Priority = "Low" | "Medium" | "High";
+
+interface Ticket {
+  _id: string;
+  sender: string;
+  email: string;
+  subject: string;
+  description?: string;
+  createdAt: string; // Date of complaint
+  status: TicketStatus;
+  group?: string;
+  assignedTo?: string;
+  priority?: Priority;
+  response?: string;
+  complainant?: {
+    name: string;
+    profilePic: string;
+  };
+}

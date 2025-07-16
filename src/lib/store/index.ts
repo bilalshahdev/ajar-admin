@@ -5,6 +5,8 @@ import zonesReducer from "./slices/zonesSlice";
 import categoryReducer from "./slices/categorySlice";
 import fieldReducer from "./slices/fieldSlice";
 import formReducer from "./slices/formSlice";
+import rentalRequestsReducer from "./slices/rentalListSlice";
+import ticketReducer from "./slices/ticketSlice";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +15,8 @@ const store = configureStore({
     categories: categoryReducer,
     fields: fieldReducer,
     forms: formReducer,
+    rentalRequests: rentalRequestsReducer,
+    tickets: ticketReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

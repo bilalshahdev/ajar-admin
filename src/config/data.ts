@@ -1,5 +1,7 @@
 // data.ts
 
+import { User } from "@/types";
+
 export type FilterOption = "7 days" | "4 weeks" | "12 months";
 
 export const chartFilters: FilterOption[] = ["7 days", "4 weeks", "12 months"];
@@ -74,7 +76,6 @@ export const earningChartData: Record<
   ],
 };
 
-import { User } from "@/types";
 
 export const users: User[] = [
   {

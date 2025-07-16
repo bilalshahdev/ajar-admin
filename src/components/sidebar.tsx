@@ -71,7 +71,7 @@ export default function Sidebar({ className }: { className?: string }) {
       </SidebarHeader>
       <SidebarContent className="flex flex-col justify-between bg-background">
         <SidebarGroup className="overflow-y-auto">
-          <SidebarMenu className="flex flex-col gap-2">
+          <SidebarMenu className="flex flex-col">
             {sidebarMenu.map(({ icon: Icon, path, title }: NavMenuItem) => (
               <SidebarMenuItem key={path}>
                 <SidebarMenuButton

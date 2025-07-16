@@ -5,7 +5,7 @@ import { InputHTMLAttributes, useState } from "react";
 import { Control, useController } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import MyImage from "@/components/my-image";
+import MyImage from "@/components/custom/my-image";
 
 interface FileInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

@@ -21,7 +21,7 @@ import {
   FiRss,
 } from "react-icons/fi";
 import MapImg from "../../../public/images/map.jpg";
-import MyImage from "../my-image";
+import MyImage from "../custom/my-image";
 import { Button } from "../ui/button";
 
 const ZoneDetails = () => {
