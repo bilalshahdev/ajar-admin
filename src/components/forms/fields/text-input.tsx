@@ -1,16 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React, { ChangeEvent, InputHTMLAttributes } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import React, { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { useController, Control } from "react-hook-form";
 
-interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
+// Allow both input and textarea props
+type CombinedProps = InputHTMLAttributes<HTMLInputElement> &
+  TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+interface TextInputProps extends CombinedProps {
   label?: string;
   note?: string;
-  control: Control<any>; // Or a more specific form values type if available
+  control: Control<any>;
   name: string;
-  type?: "text" | "email" | "number";
-  icon?: React.ReactNode; // Icon prop
+  type?: "text" | "email" | "number" | "textarea";
+  icon?: React.ReactNode;
 }
 
 const TextInput = ({
@@ -18,7 +23,7 @@ const TextInput = ({
   note,
   control,
   name,
-  type,
+  type = "text",
   icon,
   ...props
 }: TextInputProps) => {
@@ -26,11 +31,6 @@ const TextInput = ({
     field,
     fieldState: { error },
   } = useController({ name, control });
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    field.onChange(type === "number" ? Number(value) || 0 : value);
-  };
 
   return (
     <div className="space-y-2">
@@ -44,23 +44,40 @@ const TextInput = ({
       )}
 
       <div className="relative flex items-center">
-        <Input
-          {...field}
-          {...props}
-          type={type}
-          className={`bg-secondary/50 pr-12 ${
-            error ? "border-red-500 focus:ring-red-500" : ""
-          }`}
-          onChange={handleChange}
-        />
-        {icon && (
-          <Button
-            size="icon"
-            type="button"
-            className="absolute inset-y-0 right-0 flex items-center justify-center rounded-md"
-          >
-            {icon}
-          </Button>
+        {type === "textarea" ? (
+          <Textarea
+            {...(field as any)} // safely spread field (react-hook-form will handle it)
+            {...props}
+            className={`bg-secondary/50 w-full ${
+              error ? "border-red-500 focus:ring-red-500" : ""
+            }`}
+            onChange={(e) => field.onChange(e.target.value)}
+          />
+        ) : (
+          <>
+            <Input
+              {...field}
+              {...props}
+              type={type}
+              className={`bg-secondary/50 w-full ${
+                error ? "border-red-500 focus:ring-red-500" : ""
+              }`}
+              onChange={(e) =>
+                field.onChange(
+                  type === "number" ? Number(e.target.value) || 0 : e.target.value
+                )
+              }
+            />
+            {icon && (
+              <Button
+                size="icon"
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center justify-center rounded-md"
+              >
+                {icon}
+              </Button>
+            )}
+          </>
         )}
       </div>
 

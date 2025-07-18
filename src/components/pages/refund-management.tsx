@@ -1,12 +1,8 @@
 "use client";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
-
-import { Button } from "@/components/ui/button";
-import TextInput from "../forms/fields/text-input";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Switch from "../forms/fields/switch";
-import { Textarea } from "../ui/textarea";
+import RefundRequests from "./refund-requests";
+import RefundPoliciesForm from "../forms/refund-policies-form";
 
 const RefundManagement = () => {
   return (
@@ -28,8 +24,12 @@ const RefundManagement = () => {
             Refund Requests
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="refund-policies">Refund Policies</TabsContent>
-        <TabsContent value="refund-requests">Refund Requests</TabsContent>
+        <TabsContent value="refund-policies">
+          <RefundPoliciesForm />
+        </TabsContent>
+        <TabsContent value="refund-requests">
+          <RefundRequests />
+        </TabsContent>
       </Tabs>
     </div>
   );

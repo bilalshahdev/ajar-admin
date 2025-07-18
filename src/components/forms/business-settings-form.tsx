@@ -152,7 +152,6 @@ const BusinessSettingsForm = () => {
         <SelectInput
           control={control}
           name="currency_position"
-          placeholder="Currency Position"
           label="Currency Position"
           options={[
             { label: "Left", value: "left" },

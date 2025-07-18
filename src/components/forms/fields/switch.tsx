@@ -13,13 +13,13 @@ const Switch = ({ control, name, label }: SwitchProps) => (
     name={name}
     control={control}
     render={({ field }) => (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between">
+        <label htmlFor={name}>{label}</label>
         <SwitchUI
           checked={field.value}
           onCheckedChange={field.onChange}
           id={name}
         />
-        <label htmlFor={name}>{label}</label>
       </div>
     )}
   />

@@ -198,3 +198,15 @@ interface Ticket {
     profilePic: string;
   };
 }
+
+type RefundStatus = "pending" | "approved" | "rejected";
+
+interface RefundRequest {
+  _id: string;
+  listing: string;
+  user: string;
+  dateSubmitted: string;
+  amount: number;
+  status: RefundStatus;
+}
+

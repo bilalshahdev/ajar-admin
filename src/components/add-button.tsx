@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // adjust path as needed
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"; // adjust path as needed
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 interface Props {
   addBtnTitle: string;
