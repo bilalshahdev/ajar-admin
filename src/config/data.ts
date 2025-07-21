@@ -1,6 +1,6 @@
 // data.ts
 
-import { User } from "@/types";
+import { Faq, User } from "@/types";
 
 export type FilterOption = "7 days" | "4 weeks" | "12 months";
 
@@ -75,7 +75,6 @@ export const earningChartData: Record<
     { month: "Dec", earnings: 5500 },
   ],
 };
-
 
 export const users: User[] = [
   {
@@ -178,3 +177,180 @@ export const users: User[] = [
     status: "inactive",
   },
 ];
+
+export const staffData = [
+  {
+    _id: "64e4c0f1f5f3a1b1f0a12301",
+    name: "Ayesha Khan",
+    email: "ayesha.khan@example.com",
+    role: "zone-manager",
+    access: [
+      { module: "zones", permissions: ["read", "write"] },
+      { module: "dashboard", permissions: ["read"] },
+    ],
+    image: "https://example.com/images/ayesha.jpg",
+    status: "active",
+    createdAt: new Date("2024-06-15T09:30:00Z"),
+  },
+  {
+    _id: "64e4c0f1f5f3a1b1f0a12302",
+    name: "Bilal Ahmed",
+    email: "bilal.ahmed@example.com",
+    role: "category-manager",
+    access: [
+      { module: "categories", permissions: ["read", "write", "delete"] },
+      { module: "reports", permissions: ["read"] },
+    ],
+    image: "https://example.com/images/bilal.jpg",
+    status: "active",
+    createdAt: new Date("2024-06-20T12:00:00Z"),
+  },
+  {
+    _id: "64e4c0f1f5f3a1b1f0a12303",
+    name: "Sarah Malik",
+    email: "sarah.malik@example.com",
+    role: "form-manager",
+    access: [
+      { module: "forms", permissions: ["read", "write"] },
+      { module: "responses", permissions: ["read", "export"] },
+    ],
+    image: "https://example.com/images/sarah.jpg",
+    status: "blocked",
+    createdAt: new Date("2024-07-01T08:45:00Z"),
+  },
+  {
+    _id: "64e4c0f1f5f3a1b1f0a12304",
+    name: "Usman Tariq",
+    email: "usman.tariq@example.com",
+    role: "zone-manager",
+    access: [
+      { module: "zones", permissions: ["read"] },
+      { module: "alerts", permissions: ["read", "resolve"] },
+    ],
+    image: "https://example.com/images/usman.jpg",
+    status: "active",
+    createdAt: new Date("2024-05-30T14:10:00Z"),
+  },
+  {
+    _id: "64e4c0f1f5f3a1b1f0a12305",
+    name: "Hina Raza",
+    email: "hina.raza@example.com",
+    role: "form-manager",
+    access: [
+      { module: "forms", permissions: ["read", "write", "delete"] },
+      { module: "categories", permissions: ["read"] },
+    ],
+    image: "https://example.com/images/hina.jpg",
+    status: "inactive",
+    createdAt: new Date("2024-06-10T11:15:00Z"),
+  },
+  {
+    _id: "64e4c0f1f5f3a1b1f0a12306",
+    name: "Imran Baig",
+    email: "imran.baig@example.com",
+    role: "category-manager",
+    access: [
+      { module: "categories", permissions: ["read", "write"] },
+      { module: "zones", permissions: ["read"] },
+    ],
+    image: "https://example.com/images/imran.jpg",
+    status: "blocked",
+    createdAt: new Date("2024-07-12T10:00:00Z"),
+  },
+];
+
+export const faqs: Faq[] = [
+  {
+    _id: "faq001",
+    question: "What is your return policy?",
+    answer:
+      "We offer a 14-day return policy on all unused and unopened products with original packaging.",
+    order: 1,
+  },
+  {
+    _id: "faq002",
+    question: "How long does shipping take?",
+    answer:
+      "Shipping typically takes 3–5 business days within the country and 7–14 days for international orders.",
+    order: 2,
+  },
+  {
+    _id: "faq003",
+    question: "Do you offer free shipping?",
+    answer:
+      "Yes, we offer free shipping on orders above $50 within the country.",
+    order: 3,
+  },
+  {
+    _id: "faq004",
+    question: "How can I track my order?",
+    answer:
+      "Once your order is shipped, you will receive an email with a tracking link and order details.",
+    order: 4,
+  },
+  {
+    _id: "faq005",
+    question: "Can I change or cancel my order after placing it?",
+    answer:
+      "Orders can be changed or canceled within 2 hours of placement. Please contact support immediately.",
+    order: 5,
+  },
+  {
+    _id: "faq006",
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept Visa, MasterCard, American Express, PayPal, and Apple Pay.",
+    order: 6,
+  },
+  {
+    _id: "faq007",
+    question: "Is my personal information secure?",
+    answer:
+      "Yes, we use industry-standard encryption and never share your information with third parties.",
+    order: 7,
+  },
+  {
+    _id: "faq008",
+    question: "Do you ship internationally?",
+    answer:
+      "Yes, we ship to over 100 countries. Shipping fees and delivery times vary by destination.",
+    order: 8,
+  },
+  {
+    _id: "faq009",
+    question: "How do I contact customer support?",
+    answer:
+      "You can contact us via our contact form or email us at support@example.com.",
+    order: 9,
+  },
+  {
+    _id: "faq010",
+    question: "Do you offer bulk or wholesale discounts?",
+    answer:
+      "Yes, please reach out to sales@example.com for wholesale inquiries and pricing.",
+    order: 10,
+  },
+];
+
+// access: staff?.access || [
+//   {
+//     module: "zones",
+//     permissions: ["read", "write", "update", "delete"],
+//   },
+//   {
+//     module: "categories",
+//     permissions: ["read", "write", "update", "delete"],
+//   },
+//   {
+//     module: "forms",
+//     permissions: ["read", "write"],
+//   },
+//   {
+//     module: "refunds",
+//     permissions: ["read", "update", "delete"],
+//   },
+//   {
+//     module: "reports",
+//     permissions: ["read"],
+//   },
+// ],

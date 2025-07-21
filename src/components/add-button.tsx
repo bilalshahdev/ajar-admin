@@ -29,7 +29,7 @@ const AddButton = ({ addBtnTitle, isDialog = false, dialogContent }: Props) => {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{ButtonContent}</DialogTrigger>
-        <DialogContent className=" h-[500px] overflow-y-auto">
+        <DialogContent className=" max-h-[500px] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Add {addBtnTitle}</DialogTitle>
             {/* <DialogDescription>

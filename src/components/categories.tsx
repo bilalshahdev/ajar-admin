@@ -1,14 +1,11 @@
 "use client";
 
 import { TableCell } from "@/components/ui/table";
-import Link from "next/link";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 import { useAppSelector } from "@/lib/store/hooks";
 import { Category, Zone } from "@/types";
-import ConfirmDialog from "./confirm-dialog";
+import TableActions from "./actions";
 import { DataTable } from "./custom/data-table";
-import Tooltip from "./tooltip";
 
 const Categories = () => {
   const categories: Category[] =
@@ -32,28 +29,14 @@ const Categories = () => {
       <TableCell>{getZoneName(category.zoneId)}</TableCell>
       <TableCell className="capitalize">{category.status}</TableCell>
       <TableCell className="flex gap-4">
-        <Link href={`/category-management/${category._id}/edit`}>
-          <Tooltip content="Edit Category">
-            <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
-          </Tooltip>
-        </Link>
-
-        <ConfirmDialog
-          title="Delete Category"
-          description="Are you sure you want to delete this category?"
-          confirmText="Delete"
-          cancelText="Cancel"
-          onConfirm={() => {
-            console.log("deleted:", category);
-            // dispatch(removeCategory(cat._id)) — integrate when ready
-          }}
-          loading={false}
-          variant="destructive"
-        >
-          <Tooltip content="Delete Category">
-            <FiTrash2 size={18} className="cursor-pointer text-red-500" />
-          </Tooltip>
-        </ConfirmDialog>
+        <TableActions
+          id={category._id}
+          baseRoute="/category-management"
+          actions={["edit", "delete"]}
+          module="Category"
+          onDelete={(id) => console.log("deleted:", id)}
+          deleteLoading={false}
+        />
       </TableCell>
     </>
   );

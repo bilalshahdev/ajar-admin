@@ -8,6 +8,8 @@ import formReducer from "./slices/formSlice";
 import rentalRequestsReducer from "./slices/rentalListSlice";
 import ticketReducer from "./slices/ticketSlice";
 import refundRequestsReducer from "./slices/refundSlice";
+import staffReducer from "./slices/staffSlice";
+import faqReducer from "./slices/faqSlice";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +21,8 @@ const store = configureStore({
     rentalRequests: rentalRequestsReducer,
     tickets: ticketReducer,
     refundRequests: refundRequestsReducer,
+    staff: staffReducer,
+    faqs: faqReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

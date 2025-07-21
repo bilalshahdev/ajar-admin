@@ -1,20 +1,10 @@
 "use client";
 import { TableCell } from "@/components/ui/table";
 import { Zone } from "@/types";
-import Link from "next/link";
-import { FiEdit2, FiSettings, FiTrash2 } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import ConfirmDialog from "./confirm-dialog";
+import TableActions from "./actions";
 import { DataTable } from "./custom/data-table";
 import ZoneForm from "./forms/zone-form";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
 const Zones = () => {
   const zones = useSelector((state: any) => state.zones);
   const cols = ["Name", "Country", "Radius", "Actions"];
@@ -24,37 +14,19 @@ const Zones = () => {
       <TableCell>{zone.country}</TableCell>
       <TableCell>{zone.radius}</TableCell>
       <TableCell className="flex gap-4">
-        <Link href={`/zone-management/${zone._id}/settings`}>
-          <FiSettings size={18} className="cursor-pointer text-blue-500" />
-        </Link>
-        <Dialog>
-          <DialogTrigger>
-            <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit Zone</DialogTitle>
-              <DialogDescription>
-                Edit the zone details below.
-              </DialogDescription>
-            </DialogHeader>
-            <ZoneForm id={zone._id} />
-          </DialogContent>
-        </Dialog>
-        {/* </Link> */}
-        <ConfirmDialog
-          title="Delete Zone"
-          description="Are you sure you want to delete this zone?"
-          confirmText="Delete"
-          cancelText="Cancel"
-          onConfirm={() => {
-            console.log("deleted, ", zone);
+        <TableActions
+          id={zone._id}
+          baseRoute="/zone-management"
+          module="Zone"
+          actions={["settings", "edit", "delete"]}
+          onDelete={(id) => console.log("deleted:", id)}
+          deleteLoading={false}
+          editDialog={{
+            title: "Edit Zone",
+            description: "Edit the zone details below.",
+            content: <ZoneForm id={zone._id} />,
           }}
-          loading={false}
-          variant="destructive"
-        >
-          <FiTrash2 size={18} className="cursor-pointer text-red-500" />
-        </ConfirmDialog>
+        />
       </TableCell>
     </>
   );

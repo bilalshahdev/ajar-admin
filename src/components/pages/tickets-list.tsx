@@ -19,7 +19,7 @@ const TicketsList = () => {
     "Actions",
   ];
 
-  const row = (ticket: Ticket, index: number) => (
+  const row = (ticket: Ticket) => (
     <>
       <TableCell>
         <Link href={`/tickets/${ticket._id}`}>{ticket._id}</Link>
