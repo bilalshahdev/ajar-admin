@@ -34,14 +34,14 @@ const UsersList = ({ users }: { users: User[] }) => {
     return filterData({
       data: users,
       search,
-      searchKeys: ["userId", "email", "phone"],
+      searchKeys: ["name", "email", "phone"],
       filters: {
         status: selectedStatus !== "all" ? selectedStatus : undefined,
       },
     });
   }, [users, search, selectedStatus]);
 
-  const cols = ["User No", "User ID", "Phone", "Emails", "Status", "Actions"];
+  const cols = ["User No", "Name", "Phone", "Emails", "Status", "Actions"];
 
   const row = (user: User, index: number) => (
     <>
@@ -49,17 +49,13 @@ const UsersList = ({ users }: { users: User[] }) => {
       <TableCell>
         <Dialog>
           <DialogTrigger asChild>
-            <p className="cursor-pointer">{user.userId}</p>
+            <p className="cursor-pointer">{user.name}</p>
           </DialogTrigger>
           <DialogContent className="w-sm text-center">
             <DialogHeader>
               <DialogTitle>User Identity Verification</DialogTitle>
             </DialogHeader>
-            <UserInfo
-              userId={user.userId}
-              email={user.email}
-              phone={user.phone}
-            />
+            <UserInfo name={user.name} email={user.email} phone={user.phone} />
           </DialogContent>
         </Dialog>
       </TableCell>
@@ -101,11 +97,11 @@ const UsersList = ({ users }: { users: User[] }) => {
 export default UsersList;
 
 const UserInfo = ({
-  userId,
+  name,
   email,
   phone,
 }: {
-  userId: string;
+  name: string;
   email: string;
   phone: string;
 }) => {
@@ -122,7 +118,7 @@ const UserInfo = ({
                             /> */}
           </div>
           <div className="flex flex-col items-start">
-            <Small className="font-semibold">{userId}</Small>
+            <Small className="font-semibold">{name}</Small>
             <XS>{email}</XS>
             <XS>{phone}</XS>
           </div>

@@ -32,8 +32,7 @@ export default function RevenueBreakdownBar() {
             <p className="text-xs text-muted-foreground">Overall Insight</p>
           </div>
           <span className="text-sm text-muted-foreground">
-            Sort by:{" "}
-            <span className="text-emerald-500 font-medium">Monthly</span>
+            Sort by: <span className="text-aqua font-medium">Monthly</span>
           </span>
         </div>
 
@@ -67,7 +66,7 @@ export default function RevenueBreakdownBar() {
                         width={90}
                         height={40}
                       >
-                        <div className="bg-emerald-500 text-white text-xs rounded-md px-2 py-1 shadow text-center">
+                        <div className="bg-aqua text-white text-xs rounded-md px-2 py-1 shadow text-center">
                           +6.08% 🚀
                           <div className="font-semibold text-base">$2.80M</div>
                         </div>

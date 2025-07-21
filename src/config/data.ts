@@ -1,6 +1,6 @@
 // data.ts
 
-import { Faq, User } from "@/types";
+import { Faq, Query, User } from "@/types";
 
 export type FilterOption = "7 days" | "4 weeks" | "12 months";
 
@@ -78,8 +78,8 @@ export const earningChartData: Record<
 
 export const users: User[] = [
   {
-    _id: 1,
-    userId: "Mehek Nanwani",
+    _id: "1",
+    name: "Mehek Nanwani",
     phone: "+1 93072059670",
     email: "macster@prettysky.link",
     joinedDate: new Date("2024-01-02T00:00:00Z"),
@@ -87,8 +87,8 @@ export const users: User[] = [
     status: "active",
   },
   {
-    _id: 2,
-    userId: "Rahil Shaik",
+    _id: "2",
+    name: "Rahil Shaik",
     phone: "+1 56272059670",
     email: "Rahil@dinlaan.com",
     joinedDate: new Date("2024-01-03T00:00:00Z"),
@@ -96,8 +96,8 @@ export const users: User[] = [
     status: "blocked",
   },
   {
-    _id: 3,
-    userId: "Mustat Ansari",
+    _id: "3",
+    name: "Mustat Ansari",
     phone: "+1 82522059670",
     email: "Mustatr@gmailbrt.com",
     joinedDate: new Date("2024-07-05T00:00:00Z"),
@@ -105,8 +105,8 @@ export const users: User[] = [
     status: "active",
   },
   {
-    _id: 4,
-    userId: "Rehana Naik",
+    _id: "4",
+    name: "Rehana Naik",
     phone: "+1 56272059541",
     email: "Rehana@racfq.com",
     joinedDate: new Date("2024-03-24T00:00:00Z"),
@@ -114,8 +114,8 @@ export const users: User[] = [
     status: "active",
   },
   {
-    _id: 5,
-    userId: "Priya Patel",
+    _id: "5",
+    name: "Priya Patel",
     phone: "+1 8054059670",
     email: "macster@boxgu.com",
     joinedDate: new Date("2024-04-15T00:00:00Z"),
@@ -123,8 +123,8 @@ export const users: User[] = [
     status: "blocked",
   },
   {
-    _id: 6,
-    userId: "Jiya Goyal",
+    _id: "6",
+    name: "Jiya Goyal",
     phone: "+1 56513230156",
     email: "macster@khothiai.com",
     joinedDate: new Date("2024-04-18T00:00:00Z"),
@@ -132,8 +132,8 @@ export const users: User[] = [
     status: "inactive",
   },
   {
-    _id: 7,
-    userId: "Nitya Sariwal",
+    _id: "7",
+    name: "Nitya Sariwal",
     phone: "+1 70247952231",
     email: "Nitya@hulas.co",
     joinedDate: new Date("2024-04-02T00:00:00Z"),
@@ -141,8 +141,8 @@ export const users: User[] = [
     status: "inactive",
   },
   {
-    _id: 8,
-    userId: "Prajay Naik",
+    _id: "8",
+    name: "Prajay Naik",
     phone: "+1 8014874263",
     email: "Prajay@hulas.co",
     joinedDate: new Date("2024-01-15T00:00:00Z"),
@@ -150,8 +150,8 @@ export const users: User[] = [
     status: "pending",
   },
   {
-    _id: 9,
-    userId: "Mohan Pai",
+    _id: "9",
+    name: "Mohan Pai",
     phone: "+1 56272059670",
     email: "Mohan@racfq.com",
     joinedDate: new Date("2024-02-13T00:00:00Z"),
@@ -159,8 +159,8 @@ export const users: User[] = [
     status: "inactive",
   },
   {
-    _id: 10,
-    userId: "Brijesh Korgaokar",
+    _id: "10",
+    name: "Brijesh Korgaokar",
     phone: "+1 56272059670",
     email: "Brijesh@dinlaan.com",
     joinedDate: new Date("2024-03-19T00:00:00Z"),
@@ -168,8 +168,8 @@ export const users: User[] = [
     status: "inactive",
   },
   {
-    _id: 11,
-    userId: "Nityanand Prabhu",
+    _id: "11",
+    name: "Nityanand Prabhu",
     phone: "+1 56272059670",
     email: "Nityanand@gmail.com",
     joinedDate: new Date("2024-04-30T00:00:00Z"),
@@ -329,6 +329,161 @@ export const faqs: Faq[] = [
     answer:
       "Yes, please reach out to sales@example.com for wholesale inquiries and pricing.",
     order: 10,
+  },
+];
+
+export const contactData = [
+  {
+    _id: "1",
+    phone: "9234522312",
+    email: "dummy1@dcodax.com",
+    address: "123 Main St, Anytown, PK",
+    order: 1,
+  },
+  {
+    _id: "2",
+    phone: "9234122312",
+    email: "dummy2@dcodax.com",
+    address: "22 Main St, Anytown, PK",
+    order: 2,
+  },
+  {
+    _id: "3",
+    phone: "9234122312",
+    email: "dummy3@dcodax.com",
+    address: "32 Main St, Anytown, PK",
+    order: 3,
+  },
+  {
+    _id: "4",
+    phone: "9234122312",
+    email: "dummy4@dcodax.com",
+    address: "42 Main St, Anytown, PK",
+    order: 4,
+  },
+  {
+    _id: "5",
+    phone: "9234122312",
+    email: "dummy5@dcodax.com",
+    address: "52 Main St, Anytown, PK",
+    order: 5,
+  },
+];
+
+export const queryData: Query[] = [
+  {
+    _id: "q1",
+    sentBy: {
+      _id: "u1",
+      name: "Ali Raza",
+      phone: "+923001234567",
+      email: "ali.raza@example.com",
+      joinedDate: new Date("2024-01-10"),
+      status: "active",
+    },
+    sentTo: {
+      _id: "u2",
+      name: "Sara Ahmed",
+      phone: "+923008765432",
+      email: "sara.ahmed@example.com",
+      joinedDate: new Date("2024-03-14"),
+      status: "active",
+    },
+    title: "Login Issue",
+    description: "Unable to login with correct credentials.",
+    status: "pending",
+    createdAt: new Date("2025-07-18T10:15:00Z"),
+  },
+  {
+    _id: "q2",
+    sentBy: {
+      _id: "u3",
+      name: "Bilal Khan",
+      phone: "+923003334455",
+      email: "bilal.khan@example.com",
+      joinedDate: new Date("2023-11-02"),
+      status: "active",
+    },
+    sentTo: {
+      _id: "u4",
+      name: "Ayesha Siddiqi",
+      phone: "+923004446677",
+      email: "ayesha.siddiqi@example.com",
+      joinedDate: new Date("2024-04-20"),
+      status: "inactive",
+    },
+    title: "Payment not processed",
+    description: "Paid via Easypaisa but status is still pending.",
+    status: "resolved",
+    createdAt: new Date("2025-07-17T16:45:00Z"),
+  },
+  {
+    _id: "q3",
+    sentBy: {
+      _id: "u5",
+      name: "Zain Ali",
+      phone: "+923005551234",
+      email: "zain.ali@example.com",
+      joinedDate: new Date("2022-06-19"),
+      status: "banned",
+    },
+    sentTo: {
+      _id: "u1",
+      name: "Ali Raza",
+      phone: "+923001234567",
+      email: "ali.raza@example.com",
+      joinedDate: new Date("2024-01-10"),
+      status: "active",
+    },
+    title: "App Crash Report",
+    description: "App crashes immediately after launching on Android 14.",
+    status: "in-progress",
+    createdAt: new Date("2025-07-15T08:30:00Z"),
+  },
+  {
+    _id: "q4",
+    sentBy: {
+      _id: "u6",
+      name: "Fatima Noor",
+      phone: "+923009998877",
+      email: "fatima.noor@example.com",
+      joinedDate: new Date("2024-02-05"),
+      status: "active",
+    },
+    sentTo: {
+      _id: "u2",
+      name: "Sara Ahmed",
+      phone: "+923008765432",
+      email: "sara.ahmed@example.com",
+      joinedDate: new Date("2024-03-14"),
+      status: "active",
+    },
+    title: "Feature Request",
+    description: "Add biometric login for enhanced security.",
+    status: "pending",
+  },
+  {
+    _id: "q5",
+    sentBy: {
+      _id: "u7",
+      name: "Usman Javed",
+      phone: "+923007771122",
+      email: "usman.javed@example.com",
+      joinedDate: new Date("2023-09-01"),
+      status: "inactive",
+    },
+    sentTo: {
+      _id: "u4",
+      name: "Ayesha Siddiqi",
+      phone: "+923004446677",
+      email: "ayesha.siddiqi@example.com",
+      joinedDate: new Date("2024-04-20"),
+      status: "inactive",
+    },
+    title: "Wrong Account Info",
+    description: "My profile shows wrong email address.",
+    status: "resolved",
+    createdAt: new Date("2025-07-20T14:20:00Z"),
   },
 ];
 

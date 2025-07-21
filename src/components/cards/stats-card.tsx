@@ -15,7 +15,7 @@ const StatsCard = ({
   return (
     <div
       key={title}
-      className={`p-4 rounded-lg shadow dark:shadow-muted flex items-center justify-between`}
+      className={`p-4 bg-card rounded-lg shadow dark:shadow-muted flex items-center justify-between`}
     >
       <div>
         <p className="text-sm text-muted-foreground">{title}</p>

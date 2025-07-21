@@ -35,14 +35,14 @@ const BarChart = ({ filter }: BarChartProps) => {
   };
   const trendInfo = calculateTrend(chartData, "earnings");
   return (
-    <ChartCard className="space-y-4 h-full bg-background">
+    <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
           <Small>Performance</Small>
           <H4>{filter} earnings</H4>
         </div>
       </div>
-      <ChartCard className="bg-secondary border p-0">
+      <ChartCard className="bg-card border p-0">
         <Small className="flex items-center gap-2 border-b p-2 capitalize">
           <BiLineChart />
           <span>chart</span>

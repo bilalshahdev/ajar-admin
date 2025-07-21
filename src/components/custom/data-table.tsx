@@ -35,7 +35,7 @@ export function DataTable<T>({
       <TableHeader className={cn("", headerClassName)}>
         <TableRow className={cn("", rowClassName)}>
           {cols.map((col, i) => (
-            <TableHead className={cn("", headClassName)} key={i}>
+            <TableHead className={cn("capitalize", headClassName)} key={i}>
               {col}
             </TableHead>
           ))}

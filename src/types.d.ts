@@ -36,19 +36,13 @@ type DashboardStat = {
 };
 
 interface User {
-  _id: number;
-  userId: string;
+  _id: string;
+  name: string;
   phone: string;
   email: string;
   joinedDate: Date;
   status: string;
 }
-
-// {
-//   "email" : "a@b.com",
-//  "password" : "0000000",
-//  "role" : "user"
-// }
 
 type Login = {
   email: string;
@@ -215,4 +209,22 @@ interface Faq {
   question: string;
   answer: string;
   order: number;
+}
+
+interface Contact {
+  _id: string;
+  phone: string;
+  email: string;
+  address: string;
+  order: number;
+}
+
+interface Query {
+  _id: string;
+  sentBy: User;
+  sentTo: User;
+  title: string;
+  description: string;
+  status: string;
+  createdAt?: Date;
 }
