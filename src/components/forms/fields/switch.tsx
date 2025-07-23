@@ -2,6 +2,7 @@
 "use client";
 import { Controller, Control } from "react-hook-form";
 import { Switch as SwitchUI } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface SwitchProps {
   control: Control<any>;
@@ -13,8 +14,8 @@ const Switch = ({ control, name, label }: SwitchProps) => (
     name={name}
     control={control}
     render={({ field }) => (
-      <div className="flex items-center justify-between">
-        <label htmlFor={name}>{label}</label>
+      <div className="flex items-center justify-between gap-2">
+        <Label htmlFor={name}>{label}</Label>
         <SwitchUI
           checked={field.value}
           onCheckedChange={field.onChange}

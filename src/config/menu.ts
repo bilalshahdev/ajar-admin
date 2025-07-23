@@ -10,7 +10,7 @@ import {
   FaUndo,
   FaUserFriends,
   FaUsers,
-  FaVectorSquare
+  FaVectorSquare,
 } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
 import { PiQuestionMarkFill } from "react-icons/pi";
@@ -24,7 +24,11 @@ export const sidebarMenu: NavMenuItem[] = [
     path: "/category-management",
     icon: FaShapes,
   },
-  { title: "Field Management", path: "/field-management", icon: TbAdjustmentsHorizontal },
+  {
+    title: "Field Management",
+    path: "/field-management",
+    icon: TbAdjustmentsHorizontal,
+  },
   { title: "User Verification", path: "/user-verification", icon: FaUsers },
   { title: "Rental Listing", path: "/rental-listing", icon: FaClipboardList },
   {
@@ -52,11 +56,10 @@ export const sidebarMenu: NavMenuItem[] = [
 
 // Navigation items with icons
 export const navMenu: MenuItem[] = [
-  { href: "#", label: "leaser" },
-  { href: "#", label: "reports" },
-  { href: "#", label: "blocked" },
-  { href: "#", label: "listing" },
-  { href: "#", label: "settings" },
+  { href: "/user-verification", label: "User" },
+  { href: "/analytics", label: "reports" },
+  { href: "/rental-listing", label: "listing" },
+  { href: "/rental-policies", label: "rental policies" },
 ];
 
 // export const navMenu: MenuItem[] = [

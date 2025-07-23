@@ -62,7 +62,7 @@ const UsersList = ({ users }: { users: User[] }) => {
       <TableCell>{user.phone}</TableCell>
       <TableCell>{user.email}</TableCell>
       <TableCell>
-        <Status value={user.status} />
+        <Status value={user.status || ""} />
       </TableCell>
       <TableCell>
         <div className="">...</div>

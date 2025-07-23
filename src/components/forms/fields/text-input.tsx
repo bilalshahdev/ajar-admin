@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import React, { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { useController, Control } from "react-hook-form";
 
@@ -16,6 +17,7 @@ interface TextInputProps extends CombinedProps {
   name: string;
   type?: "text" | "email" | "number" | "textarea";
   icon?: React.ReactNode;
+  className?: string;
 }
 
 const TextInput = ({
@@ -25,6 +27,7 @@ const TextInput = ({
   name,
   type = "text",
   icon,
+  className,
   ...props
 }: TextInputProps) => {
   const {
@@ -33,7 +36,7 @@ const TextInput = ({
   } = useController({ name, control });
 
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       {label && (
         <Label className="capitalize">
           {label}{" "}
@@ -64,7 +67,9 @@ const TextInput = ({
               }`}
               onChange={(e) =>
                 field.onChange(
-                  type === "number" ? Number(e.target.value) || 0 : e.target.value
+                  type === "number"
+                    ? Number(e.target.value) || 0
+                    : e.target.value
                 )
               }
             />

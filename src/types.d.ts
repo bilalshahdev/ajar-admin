@@ -40,8 +40,9 @@ interface User {
   name: string;
   phone: string;
   email: string;
-  joinedDate: Date;
-  status: string;
+  image?: string;
+  joinedDate?: Date;
+  status?: string;
 }
 
 type Login = {
@@ -227,4 +228,28 @@ interface Query {
   description: string;
   status: string;
   createdAt?: Date;
+}
+
+export interface Message {
+  _id: string;
+  chatId: string;
+  sender: User;
+  receiver: User;
+  body: string;
+  deliveredAt?: Date;
+  readAt?: Date;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+
+export interface Chat {
+  _id: string;
+  participants: User[]; // usually 2 in 1-on-1 chat
+  latestMessage?: Message;
+  unreadCount?: {
+    [userId: string]: number;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }

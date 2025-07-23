@@ -7,11 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface SelectInputProps extends React.HTMLAttributes<HTMLSelectElement> {
   control: any;
   name: string;
-  label: string;
+  label?: string;
   options: any[];
   labelKey?: string;
   valueKey?: string;
@@ -26,14 +27,19 @@ const SelectInput = ({
   labelKey = "label",
   valueKey = "value",
   disabled,
+  className,
 }: SelectInputProps) => (
-  <div className="space-y-2">
-    <Label>{label}</Label>
+  <div className={cn(label ? "space-y-2" : "", className)}>
+    {label && <Label>{label}</Label>}
     <Controller
       control={control}
       name={name}
       render={({ field }) => (
-        <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
+        <Select
+          onValueChange={field.onChange}
+          value={field.value}
+          disabled={disabled}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder={`Select ${label}`} />
           </SelectTrigger>
