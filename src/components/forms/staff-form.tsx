@@ -1,18 +1,17 @@
 "use client";
 
-import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
 
+import Loader from "@/components/loader";
+import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
 import { StaffFormValues, StaffSchema } from "@/validations/staff";
-import { Button } from "@/components/ui/button";
-import Loader from "@/components/loader";
 
-import TextInput from "./fields/text-input";
-import SelectInput from "./fields/select-input";
 import FileInput from "./fields/file-input";
-import FormArrayInput from "./fields/form-array-input";
 import PasswordInput from "./fields/password-input";
+import SelectInput from "./fields/select-input";
+import TextInput from "./fields/text-input";
 
 const roles = [
   { label: "Zone Manager", value: "zone-manager" },

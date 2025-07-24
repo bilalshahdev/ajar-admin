@@ -1,5 +1,5 @@
-import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.example.com",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
       },
     ],
   },
