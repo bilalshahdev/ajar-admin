@@ -35,7 +35,7 @@ const Faqs = () => {
   const cols = ["Question", "Answer", "Actions"];
 
   if (isLoading) {
-    return <TableSkeleton cols={cols.length} rows={12} />;
+    return <TableSkeleton cols={cols.length} rows={10} />;
   }
 
   if (error) {

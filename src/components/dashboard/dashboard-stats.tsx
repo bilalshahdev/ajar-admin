@@ -55,13 +55,14 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
       bgColor: "bg-blue-500",
     },
   ];
+  console.log(dashboardStats)
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {dashboardStats.map(({ title, value, icon: Icon, bgColor }) => (
+      {dashboardStats?.map(({ title, value, icon: Icon, bgColor }) => (
         <StatsCard
           key={title}
           title={title}
-          value={value.toString()}
+          value={value?.toString()}
           icon={<Icon />}
           bgColor={bgColor}
         />

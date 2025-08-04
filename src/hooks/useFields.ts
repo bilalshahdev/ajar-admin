@@ -24,10 +24,11 @@ export const useGetFields = ({
   });
 };
 
-export const useGetField = (fieldId: string) => {
+export const useGetField = (fieldId: string, enabled: boolean) => {
   return useQuery({
     queryKey: ["field", fieldId],
     queryFn: () => getField(fieldId),
+    enabled,
     placeholderData: (previousData) => previousData,
   });
 };

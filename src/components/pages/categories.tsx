@@ -23,7 +23,7 @@ const Categories = () => {
 
   const cols = ["Name", "Type", "Parent", "Actions"];
   if (isLoading) {
-    return <TableSkeleton cols={cols.length} rows={12} />;
+    return <TableSkeleton cols={cols.length} rows={10} />;
   }
 
   if (error) {

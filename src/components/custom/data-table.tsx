@@ -40,12 +40,12 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   return (
     <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">
-      <Table className={cn("h-full", tableClassName)}>
-        {data.length === 0 ? (
-          <div className="h-80 flex items-center justify-center text-muted-foreground text-sm">
-            No Data
-          </div>
-        ) : (
+      {data.length === 0 ? (
+        <div className="h-80 flex items-center justify-center text-muted-foreground text-sm">
+          No Data
+        </div>
+      ) : (
+        <Table className={cn("h-full", tableClassName)}>
           <>
             <TableHeader className={cn("", headerClassName)}>
               <TableRow className={cn("", rowClassName)}>
@@ -67,8 +67,8 @@ export function DataTable<T>({
               ))}
             </TableBody>
           </>
-        )}
-      </Table>
+        </Table>
+      )}
       {pagination && (
         <Pagination
           pagination={{

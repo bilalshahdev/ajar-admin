@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAddField, useGetField, useUpdateField } from "@/hooks/useFields";
 import { FieldFormValues, FieldSchema } from "@/validations/field";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import FormArrayInput from "./fields/form-array-input";
 import SelectInput from "./fields/select-input";
 import Switch from "./fields/switch";
@@ -34,45 +36,99 @@ const inputTypes = [
 ];
 
 export default function FieldForm({ id }: { id?: string }) {
-  const field = useAppSelector((s: any) =>
-    s.fields?.find((f: any) => f._id === id)
-  );
-
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-    watch,
-  } = useForm<FieldFormValues>({
+  const router = useRouter();
+  const { control, handleSubmit, watch, reset } = useForm<FieldFormValues>({
     resolver: zodResolver(FieldSchema),
     defaultValues: {
-      name: field?.name || "",
-      label: field?.label || "",
-      type: field?.type || inputTypes[0].value,
-      placeholder: field?.placeholder || "",
-      order: field?.order ?? 0,
-      isMultiple: field?.isMultiple ?? false,
-      visible: field?.visible ?? true,
-      tooltip: field?.tooltip || "",
-      defaultValue: field?.defaultValue ?? "",
-      readonly: field?.readonly ?? false,
-      options: field?.options ?? [],
+      name: "",
+      label: "",
+      type: inputTypes[0].value,
+      placeholder: "",
+      order: 0,
+      isMultiple: false,
+      visible: true,
+      tooltip: "",
+      defaultValue: "",
+      readonly: false,
+      options: [],
       validation: {
-        required: field?.validation?.required ?? false,
-        pattern: field?.validation?.pattern ?? "",
-        min: field?.validation?.min ?? undefined,
-        max: field?.validation?.max ?? undefined,
+        required: false,
+        pattern: "",
+        min: 0,
+        max: 0,
       },
     },
   });
 
-  const isMultiple = watch("isMultiple");
+  const { data: field, isLoading: isFieldLoading } = useGetField(
+    id || "",
+    !!id
+  );
 
-  const onSubmit = (data: FieldFormValues) => {
-    console.log(id ? "Update Field:" : "Create Field:", data);
-    // TODO: dispatch or API call
+  useEffect(() => {
+    if (field?.data) {
+      const {
+        name,
+        label,
+        type,
+        placeholder,
+        order,
+        isMultiple,
+        visible,
+        tooltip,
+        defaultValue,
+        readonly,
+        options,
+        validation,
+      } = field.data;
+      reset({
+        name,
+        label,
+        type,
+        placeholder,
+        order: order ?? 0, // default to 0
+        isMultiple,
+        visible,
+        tooltip,
+        defaultValue,
+        readonly,
+        options: options || [],
+        validation: {
+          required: validation?.required ?? false,
+          pattern: validation?.pattern ?? "",
+          min: validation?.min ?? 0,
+          max: validation?.max ?? 0,
+        },
+      });
+    }
+  }, [field, reset]);
+
+  // const { data: allCategories, isLoading: isCategoriesLoading } =
+  //   useGet();
+
+  // const type = useWatch({ control, name: "type" });
+
+  const isEditMode = Boolean(id);
+
+  const updateMutation = useUpdateField();
+  const addMutation = useAddField();
+
+  const { mutate: fieldMutation, isPending: fieldLoading } = isEditMode
+    ? updateMutation
+    : addMutation;
+  const onSubmit = async (formData: FieldFormValues) => {
+    const mutationPayload = id ? { id, data: formData } : formData;
+    fieldMutation(mutationPayload as any, {
+      onSuccess: () => {
+        reset();
+        router.push("/field-management");
+      },
+    });
   };
+
+  // if (isFieldLoading && id) return <Loader />;
+
+  const isMultiple = watch("isMultiple");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -162,9 +218,9 @@ export default function FieldForm({ id }: { id?: string }) {
         type="submit"
         variant="button"
         className="w-full"
-        disabled={isSubmitting}
+        disabled={fieldLoading}
       >
-        {isSubmitting ? <Loader /> : id ? "Update Field" : "Create Field"}
+        {fieldLoading ? <Loader /> : id ? "Update Field" : "Create Field"}
       </Button>
     </form>
   );

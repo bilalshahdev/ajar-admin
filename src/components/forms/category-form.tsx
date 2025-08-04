@@ -54,10 +54,6 @@ const CategoryForm = ({ id }: { id?: string }) => {
 
   const isEditMode = Boolean(id);
 
-  //   ./src/components/forms/category-form.tsx
-  // 58:7  Error: React Hook "useUpdateCategory" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
-  // 59:7  Error: React Hook "useAddCategory" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
-
   const updateMutation = useUpdateCategory();
   const addMutation = useAddCategory();
 
