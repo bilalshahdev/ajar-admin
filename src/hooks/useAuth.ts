@@ -3,7 +3,6 @@ import { AsyncResponse, LoginSuccessData, ErrorDetails, Login, Signup } from "@/
 import {
   useMutation,
   UseMutationOptions,
-  // UseMutateFunction, // We'll define our own mutate
 } from "@tanstack/react-query";
 
 type LoginVariables = Login;

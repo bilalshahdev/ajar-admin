@@ -1,9 +1,9 @@
 import Container from "@/components/container";
-import Categories from "@/components/categories";
+import Categories from "@/components/pages/categories";
 
 const CategoryManagementPage = () => {
   return (
-    <Container title="Category Management" addBtnTitle="Category">
+    <Container title="Category Management" addBtnTitle="Category" className="">
       <Categories />
     </Container>
   );

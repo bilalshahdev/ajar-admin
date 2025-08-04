@@ -1,6 +1,13 @@
-const Loader = () => {
+import { cn } from "@/lib/utils";
+
+const Loader = ({ className }: { className?: string }) => {
   return (
-    <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-b-2 border-signature"></div>
+    <div
+      className={cn(
+        "animate-spin rounded-full h-4 w-4 border-t-2 border-b-2",
+        className
+      )}
+    />
   );
 };
 

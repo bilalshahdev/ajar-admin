@@ -11,8 +11,7 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-        button:
-          "bg-button text-white shadow-xs hover:opacity-80",
+        button: "bg-button text-white shadow-xs hover:opacity-80",
         signature:
           "bg-signature text-signature-foreground shadow-xs hover:bg-signature/90",
         destructive:
@@ -38,6 +37,12 @@ const buttonVariants = cva(
     },
   }
 );
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
 
 function Button({
   className,

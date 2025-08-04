@@ -1,37 +1,76 @@
 "use client";
 
+import { useAddFaq, useGetFaq, useUpdateFaq } from "@/hooks/useFaqs";
 import { faqSchema } from "@/validations/faq";
-import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
-import TextInput from "./fields/text-input";
 import { Button } from "../ui/button";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
+import TextInput from "./fields/text-input";
 
-const FaqForm = ({ id }: { id?: string }) => {
-  const faq = useSelector((state: RootState) =>
-    state.faqs.faqs.find((faq) => faq._id === id)
-  );
+const FaqForm = ({
+  id,
+  closeDialog,
+}: {
+  id?: string;
+  closeDialog?: () => void;
+}) => {
+  const isEditMode = Boolean(id);
 
-  const initialData = {
-    question: faq?.question || "",
-    answer: faq?.answer || "",
-    order: faq?.order || 1,
-  };
+  // ✅ Always call hooks at the top
+  const getFaqQuery = useGetFaq(id!, isEditMode); // Always called
+  const faq = getFaqQuery?.data?.data;
+
   const methods = useForm<z.infer<typeof faqSchema>>({
     resolver: zodResolver(faqSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      question: "",
+      answer: "",
+      order: 1,
+    },
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, reset } = methods;
+
+  useEffect(() => {
+    if (faq) {
+      reset({
+        question: faq.question,
+        answer: faq.answer,
+        order: faq.order,
+      });
+    }
+  }, [faq, reset]);
+
+  const addFaqMutation = useAddFaq();
+  const updateFaqMutation = useUpdateFaq();
+
+  // ✅ Only return null later
+  if (isEditMode && !faq && !getFaqQuery.isLoading) {
+    toast.error("Faq not found");
+    return null;
+  }
+
+  const onSubmit = async (data: z.infer<typeof faqSchema>) => {
+    try {
+      if (isEditMode) {
+        await updateFaqMutation.mutateAsync({ id: id!, data });
+      } else {
+        await addFaqMutation.mutateAsync(data);
+      }
+
+      reset();
+      closeDialog?.();
+    } catch (error) {
+      console.error("Faq mutation error:", error);
+    }
+  };
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit((data) => console.log(data))}
-        className="space-y-2"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         <TextInput
           name="question"
           label="Question"

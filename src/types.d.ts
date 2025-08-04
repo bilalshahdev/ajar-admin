@@ -48,7 +48,7 @@ interface User {
 type Login = {
   email: string;
   password: string;
-  role: "user" | "admin";
+  role: "admin" | "staff";
 };
 
 type Signup = {
@@ -56,7 +56,7 @@ type Signup = {
   email: string;
   password: string;
   confirmPassword: string;
-  user_type: "user" | "admin";
+  user_type: "admin";
   phone?: string;
   dob?: string;
   nationality?: string;
@@ -89,37 +89,65 @@ interface UserDetailsFromLogin {
 }
 
 interface LoginSuccessData {
-  token: string;
-  user: UserDetailsFromLogin;
+  data: {
+    token: string;
+    user: UserDetailsFromLogin;
+  };
 }
 
-interface Zone {
+export interface Polygon {
+  lat: number;
+  lng: number;
+  _id: string;
+}
+
+export interface ZoneLanguage {
+  locale: string;
+  translations: {
+    name: string;
+  };
+  _id: string;
+}
+
+export interface SubCategory {
   _id: string;
   name: string;
-  country: string;
-  currency: string;
-  timeZone: string;
-  language: string;
-  radius: number;
-  latlong: number[];
   thumbnail: string;
-  status: string;
-  adminNotes: string;
-  createdAt: Date;
-  updatedAt: Date;
+  icon: string;
+  description: string;
+  language: string;
+  type: string;
+  category: string;
+  languages: any[]; // refine later if needed
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  id: string;
+}
+
+export interface Zone {
+  _id: string;
+  name: string;
+  currency: string;
+  language: string;
+  subCategories: SubCategory[];
+  polygons: Polygon[][];
+  languages: ZoneLanguage[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface Category {
   _id: string;
   name: string;
   description?: string;
-  categoryId?: string;
+  category?: Category;
   type: string;
   slug: string;
   thumbnail?: string;
   icon?: string;
-  zoneId: string;
-  status: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -241,7 +269,6 @@ export interface Message {
   createdAt: Date;
   updatedAt?: Date;
 }
-
 
 export interface Chat {
   _id: string;

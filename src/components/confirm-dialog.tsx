@@ -17,7 +17,7 @@ interface ConfirmDialogProps {
   description?: string;
   confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => void;
+  onConfirm?: (closeDialog: () => void) => void;
   loading?: boolean;
   variant?: "default" | "destructive";
   children: React.ReactNode;
@@ -36,35 +36,36 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   asChild,
 }) => {
   const [open, setOpen] = React.useState(false);
-
-  const handleConfirm = () => {
-    if (onConfirm) onConfirm();
-    setOpen(false);
-  };
+  const closeDialog = () => setOpen(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
+      <>
+        <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </DialogHeader>
 
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(false)}
-            disabled={loading}
-          >
-            {cancelText}
-          </Button>
-          <Button variant={variant} onClick={handleConfirm} disabled={loading}>
-            {loading ? "Please wait..." : confirmText}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+            >
+              {cancelText}
+            </Button>
+            <Button
+              variant={variant}
+              onClick={() => onConfirm?.(closeDialog)}
+              disabled={loading}
+            >
+              {loading ? "Please wait..." : confirmText}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </>
     </Dialog>
   );
 };

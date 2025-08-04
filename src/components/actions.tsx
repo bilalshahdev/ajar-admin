@@ -1,7 +1,3 @@
-import Link from "next/link";
-import { FiEdit2, FiEye, FiSettings, FiTrash2 } from "react-icons/fi";
-import ConfirmDialog from "./confirm-dialog";
-import Tooltip from "./tooltip";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"; // ShadCN UI compatible
+import Link from "next/link";
+import { cloneElement, useState } from "react";
+import { FiEdit2, FiEye, FiSettings, FiTrash2 } from "react-icons/fi";
+import ConfirmDialog from "./confirm-dialog";
+import Tooltip from "./tooltip";
 
 type ActionType = "view" | "edit" | "delete" | "settings";
 
@@ -18,7 +19,7 @@ interface TableActionsProps {
   baseRoute: string;
   actions?: ActionType[];
   module?: string;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string, closeDialog: () => void) => void;
   deleteLoading?: boolean;
 
   // Optional dialog-based edit support
@@ -28,7 +29,6 @@ interface TableActionsProps {
     content: React.ReactNode;
   };
 }
-
 const TableActions: React.FC<TableActionsProps> = ({
   id,
   baseRoute,
@@ -38,6 +38,7 @@ const TableActions: React.FC<TableActionsProps> = ({
   deleteLoading = false,
   editDialog,
 }) => {
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   return (
     <div className="flex gap-4 items-center">
       {actions.includes("view") && (
@@ -59,7 +60,7 @@ const TableActions: React.FC<TableActionsProps> = ({
       {actions.includes("edit") && (
         <>
           {editDialog?.title ? (
-            <Dialog>
+            <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
               <DialogTrigger>
                 <Tooltip content={`Edit ${module}`}>
                   <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
@@ -74,7 +75,15 @@ const TableActions: React.FC<TableActionsProps> = ({
                     </DialogDescription>
                   )}
                 </DialogHeader>
-                {editDialog.content}
+                {editDialog.content &&
+                  cloneElement(
+                    editDialog.content as React.ReactElement<{
+                      closeDialog: () => void;
+                    }>,
+                    {
+                      closeDialog: () => setEditDialogOpen(false),
+                    }
+                  )}
               </DialogContent>
             </Dialog>
           ) : (
@@ -93,7 +102,7 @@ const TableActions: React.FC<TableActionsProps> = ({
           description={`Are you sure you want to delete this ${module.toLowerCase()}?`}
           confirmText="Delete"
           cancelText="Cancel"
-          onConfirm={() => onDelete(id)}
+          onConfirm={(closeDialog) => onDelete(id, closeDialog)}
           loading={deleteLoading}
           variant="destructive"
         >

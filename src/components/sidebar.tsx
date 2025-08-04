@@ -22,8 +22,11 @@ import GradientIcon from "./gradient-icon";
 import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import getDirection from "@/utils/getDirection";
+import ConfirmDialog from "./confirm-dialog";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar({ className }: { className?: string }) {
+  const router = useRouter();
   const pathname = usePathname();
   const [currentPath, setCurrentPath] = useState(pathname);
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
@@ -56,6 +59,13 @@ export default function Sidebar({ className }: { className?: string }) {
 
   const dir = getDirection(locale);
   const bgColor = dir === "rtl" ? "bg-aqua" : "bg-blue";
+
+  const handleConfirm = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    router.replace("/auth/login");
+    // Add logout logic here
+  };
 
   return (
     <SidebarComponent
@@ -100,12 +110,17 @@ export default function Sidebar({ className }: { className?: string }) {
 
         {/* Sidebar Footer for Logout */}
         <SidebarFooter>
-          <SidebarMenuButton
-            className="bg-red-500 hover:bg-red-600 hover:text-white text-white transition-colors"
-            onClick={() => setIsLogoutDialogOpen(true)}
+          <ConfirmDialog
+            title="Logout"
+            description="Are you sure you want to logout?"
+            onConfirm={() => handleConfirm()}
+            variant="destructive"
+            asChild
           >
-            <Power size={16} /> <span>Logout</span>
-          </SidebarMenuButton>
+            <SidebarMenuButton className="bg-red-500 hover:bg-red-600 hover:text-white text-white transition-colors">
+              <Power size={16} /> <span>Logout</span>
+            </SidebarMenuButton>
+          </ConfirmDialog>
         </SidebarFooter>
       </SidebarContent>
     </SidebarComponent>

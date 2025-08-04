@@ -1,25 +1,32 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import { BiLineChart } from "react-icons/bi";
-import { useMemo } from "react";
 import {
-  ChartContainer,
   ChartConfig,
+  ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { FilterOption, UsersChartRecord } from "@/services/stats";
+import getTrendInfo from "@/utils/trendInfo";
+import { getFormattedLabel } from "@/utils/getFormattedLabel";
+import { useMemo } from "react";
+import { BiLineChart } from "react-icons/bi";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { H4, Label, Small } from "../typography";
 import ChartCard from "./chart-card";
-import { FilterOption, userChartData } from "@/config/data";
-import { calculateTrend } from "@/utils/chart";
 
 type LineChartProps = {
   filter: FilterOption;
+  users: UsersChartRecord;
 };
 
-const LineChart = ({ filter }: LineChartProps) => {
-  const chartData = useMemo(() => userChartData[filter], [filter]);
+const LineChart = ({ filter, users }: LineChartProps) => {
+  const chartData = useMemo(() => users.record, [users]);
+
+  const formattedData = chartData.map((item) => ({
+    ...item,
+    value: getFormattedLabel(item.value, filter),
+  }));
 
   const chartConfig: ChartConfig = {
     users: {
@@ -27,7 +34,9 @@ const LineChart = ({ filter }: LineChartProps) => {
       color: "hsl(var(--chart-1))",
     },
   };
-  const trendInfo = calculateTrend(chartData, "users");
+
+  const trend = getTrendInfo(users?.change);
+
   return (
     <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
@@ -49,12 +58,12 @@ const LineChart = ({ filter }: LineChartProps) => {
           <ChartContainer config={chartConfig}>
             <AreaChart
               accessibilityLayer
-              data={chartData}
+              data={formattedData}
               margin={{ left: 12, right: 12 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="month"
+                dataKey="value"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
@@ -65,7 +74,7 @@ const LineChart = ({ filter }: LineChartProps) => {
                 content={<ChartTooltipContent indicator="line" />}
               />
               <Area
-                dataKey="users"
+                dataKey="totalUsers"
                 type="natural"
                 fill="var(--color-signature)"
                 fillOpacity={0.4}
@@ -74,7 +83,7 @@ const LineChart = ({ filter }: LineChartProps) => {
             </AreaChart>
           </ChartContainer>
           <div>
-            <Label>{trendInfo.label}</Label>
+            <Label>{trend.message}</Label>
             <Small>Period: {filter}</Small>
           </div>
         </div>

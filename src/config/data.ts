@@ -1,16 +1,13 @@
 // data.ts
 
+import { FilterOption } from "@/services/stats";
 import { Chat, Faq, Message, Query, User } from "@/types";
-
-export type FilterOption = "7 days" | "4 weeks" | "12 months";
-
-export const chartFilters: FilterOption[] = ["7 days", "4 weeks", "12 months"];
 
 export const userChartData: Record<
   FilterOption,
   { month: string; users: number }[]
 > = {
-  "7 days": [
+  week: [
     { month: "Mon", users: 23 },
     { month: "Tue", users: 45 },
     { month: "Wed", users: 31 },
@@ -19,13 +16,13 @@ export const userChartData: Record<
     { month: "Sat", users: 55 },
     { month: "Sun", users: 88 },
   ],
-  "4 weeks": [
+  month: [
     { month: "Week 1", users: 220 },
     { month: "Week 2", users: 340 },
     { month: "Week 3", users: 190 },
     { month: "Week 4", users: 410 },
   ],
-  "12 months": [
+  year: [
     { month: "Jan", users: 320 },
     { month: "Feb", users: 280 },
     { month: "Mar", users: 450 },
@@ -45,7 +42,7 @@ export const earningChartData: Record<
   FilterOption,
   { month: string; earnings: number }[]
 > = {
-  "7 days": [
+  week: [
     { month: "Mon", earnings: 120 },
     { month: "Tue", earnings: 180 },
     { month: "Wed", earnings: 150 },
@@ -54,13 +51,13 @@ export const earningChartData: Record<
     { month: "Sat", earnings: 280 },
     { month: "Sun", earnings: 350 },
   ],
-  "4 weeks": [
+  month: [
     { month: "Week 1", earnings: 1000 },
     { month: "Week 2", earnings: 1250 },
     { month: "Week 3", earnings: 1100 },
     { month: "Week 4", earnings: 1350 },
   ],
-  "12 months": [
+  year: [
     { month: "Jan", earnings: 3200 },
     { month: "Feb", earnings: 2800 },
     { month: "Mar", earnings: 3600 },

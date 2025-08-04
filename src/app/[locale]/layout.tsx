@@ -7,6 +7,9 @@ import "react-photo-view/dist/react-photo-view.css";
 
 import Providers from "../../components/providers/provider";
 import getDirection from "@/utils/getDirection";
+import AuthGuard from "./(site)/AuthGuard";
+import { baseUrl } from "@/config/constants";
+import ResponseError from "@/components/ResponseError";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,16 +34,48 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
-
   const dir = getDirection(locale);
+
+  let isServerConnected = false;
+  let error: string | null = null;
+
+  if (!baseUrl) {
+    error = "❌ No Base URL provided.";
+  } else {
+    try {
+      const res = await fetch(baseUrl, {
+        method: "GET",
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          error = "❌ Invalid server URL";
+        } else {
+          error = `❌ Server responded with status ${res.status}`;
+        }
+      } else {
+        isServerConnected = true;
+      }
+    } catch (e) {
+      error = "❌ Could not connect to server";
+    }
+  }
+
   return (
     <html dir={dir} lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-secondary`}
       >
-        <Providers>
-          <main>{children}</main>
-        </Providers>
+        {error ? (
+          <ResponseError className="h-screen" error={error} />
+        ) : (
+          <AuthGuard>
+            <Providers>
+              <main>{children}</main>
+            </Providers>
+          </AuthGuard>
+        )}
       </body>
     </html>
   );

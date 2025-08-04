@@ -39,11 +39,11 @@ const SignupForm = () => {
       phone: "",
       dob: "",
       nationality: "",
-      user_type: "user",
+      user_type: "admin",
     },
   });
 
-  const { mutate: register } = useRegister();
+  const { mutate: register, isPending } = useRegister();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   // Connect DOB with ShadCN Calendar

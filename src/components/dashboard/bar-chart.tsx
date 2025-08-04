@@ -1,31 +1,37 @@
 "use client";
 
 import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { EarningsChartRecord, FilterOption } from "@/services/stats";
+import getTrendInfo from "@/utils/trendInfo";
+import { getFormattedLabel } from "@/utils/getFormattedLabel";
+import { useMemo } from "react";
+import { BiLineChart } from "react-icons/bi";
+import {
   Bar,
   CartesianGrid,
   LabelList,
   BarChart as RechartsBarChart,
   XAxis,
 } from "recharts";
-import { BiLineChart } from "react-icons/bi";
-import { useMemo } from "react";
-import {
-  ChartContainer,
-  ChartConfig,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { H4, Label, Small } from "../typography";
 import ChartCard from "./chart-card";
-import { FilterOption, earningChartData } from "@/config/data";
-import { calculateTrend } from "@/utils/chart";
 
 type BarChartProps = {
   filter: FilterOption;
+  earnings: EarningsChartRecord;
 };
 
-const BarChart = ({ filter }: BarChartProps) => {
-  const chartData = useMemo(() => earningChartData[filter], [filter]);
+const BarChart = ({ filter, earnings }: BarChartProps) => {
+  const chartData = useMemo(() => earnings.record, [earnings]);
+  const formattedData = chartData.map((item) => ({
+    ...item,
+    value: getFormattedLabel(item.value, filter),
+  }));
 
   const chartConfig: ChartConfig = {
     earnings: {
@@ -33,7 +39,7 @@ const BarChart = ({ filter }: BarChartProps) => {
       color: "hsl(var(--primary))",
     },
   };
-  const trendInfo = calculateTrend(chartData, "earnings");
+  const trendInfo = getTrendInfo(earnings.change);
   return (
     <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
@@ -55,12 +61,12 @@ const BarChart = ({ filter }: BarChartProps) => {
           <ChartContainer config={chartConfig}>
             <RechartsBarChart
               accessibilityLayer
-              data={chartData}
+              data={formattedData}
               margin={{ top: 20 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="month"
+                dataKey="value"
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
@@ -70,7 +76,11 @@ const BarChart = ({ filter }: BarChartProps) => {
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="earnings" fill="var(--color-signature)" radius={8}>
+              <Bar
+                dataKey="totalEarning"
+                fill="var(--color-signature)"
+                radius={8}
+              >
                 <LabelList
                   position="top"
                   offset={12}
@@ -81,7 +91,7 @@ const BarChart = ({ filter }: BarChartProps) => {
             </RechartsBarChart>
           </ChartContainer>
           <div>
-            <Label>{trendInfo.label}</Label>
+            <Label>{trendInfo.message}</Label>
             <Small>Period: {filter}</Small>
           </div>
         </div>

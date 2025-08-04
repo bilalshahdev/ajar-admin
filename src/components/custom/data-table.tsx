@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import Pagination from "../Pagination";
 
 type DataTableProps<T> = {
   data: T[];
@@ -18,6 +19,12 @@ type DataTableProps<T> = {
   headClassName?: string;
   headerClassName?: string;
   rowClassName?: string;
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+    setPage: (page: number) => void;
+  };
 };
 
 export function DataTable<T>({
@@ -29,25 +36,49 @@ export function DataTable<T>({
   headClassName,
   headerClassName,
   rowClassName,
+  pagination,
 }: DataTableProps<T>) {
   return (
-    <Table className={cn("", tableClassName)}>
-      <TableHeader className={cn("", headerClassName)}>
-        <TableRow className={cn("", rowClassName)}>
-          {cols.map((col, i) => (
-            <TableHead className={cn("capitalize", headClassName)} key={i}>
-              {col}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody className={cn("", bodyClassName)}>
-        {data.map((r, i) => (
-          <TableRow className={cn("", rowClassName)} key={i}>
-            {row(r, i)}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">
+      <Table className={cn("h-full", tableClassName)}>
+        {data.length === 0 ? (
+          <div className="h-80 flex items-center justify-center text-muted-foreground text-sm">
+            No Data
+          </div>
+        ) : (
+          <>
+            <TableHeader className={cn("", headerClassName)}>
+              <TableRow className={cn("", rowClassName)}>
+                {cols.map((col, i) => (
+                  <TableHead
+                    className={cn("capitalize", headClassName)}
+                    key={i}
+                  >
+                    {col}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody className={cn("", bodyClassName)}>
+              {data.map((r, i) => (
+                <TableRow className={cn("", rowClassName)} key={i}>
+                  {row(r, i)}
+                </TableRow>
+              ))}
+            </TableBody>
+          </>
+        )}
+      </Table>
+      {pagination && (
+        <Pagination
+          pagination={{
+            total: pagination?.total || 0,
+            page: pagination?.page || 1,
+            limit: pagination?.limit || 10,
+          }}
+          changePage={(newPage) => pagination?.setPage(newPage)}
+        />
+      )}
+    </div>
   );
 }

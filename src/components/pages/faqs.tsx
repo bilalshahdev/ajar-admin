@@ -12,19 +12,36 @@ import Tooltip from "../tooltip";
 import { useMemo, useState } from "react";
 import { SearchInput } from "../custom/search-input";
 import { filterData } from "@/utils/filterData";
+import { useGetFaqs, useDeleteFaq } from "@/hooks/useFaqs";
+import TableSkeleton from "../skeletons/TableSkeleton";
+import ResponseError from "../ResponseError";
 
 const Faqs = () => {
-  const { faqs } = useSelector((state: RootState) => state.faqs);
+  const { data, isLoading, error } = useGetFaqs({ page: 1, limit: 10 });
   const [search, setSearch] = useState("");
+
+  // ✅ Moved faqs inside useMemo to avoid eslint warning
   const filteredFaqs = useMemo(() => {
+    const faqs = data?.data?.data || [];
     return filterData({
       data: faqs,
       search,
       searchKeys: ["question", "answer"],
     });
-  }, [faqs, search]);
+  }, [data, search]);
+
+  const { mutate: deleteFaq, isPending: deleteLoading } = useDeleteFaq();
 
   const cols = ["Question", "Answer", "Actions"];
+
+  if (isLoading) {
+    return <TableSkeleton cols={cols.length} rows={12} />;
+  }
+
+  if (error) {
+    return <ResponseError error={error.message} />;
+  }
+
   const row = (faq: Faq) => {
     return (
       <>
@@ -48,13 +65,20 @@ const Faqs = () => {
               content: <FaqForm id={faq._id} />,
             }}
             actions={["edit", "delete"]}
-            onDelete={(id) => console.log("deleted:", id)}
-            deleteLoading={false}
+            onDelete={(id, closeDialog) =>
+              deleteFaq(id, {
+                onSuccess: () => {
+                  closeDialog();
+                },
+              })
+            }
+            deleteLoading={deleteLoading}
           />
         </TableCell>
       </>
     );
   };
+
   return (
     <div>
       <SearchInput

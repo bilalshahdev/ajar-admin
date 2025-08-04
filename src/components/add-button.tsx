@@ -1,10 +1,16 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // adjust path as needed
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"; // adjust path as needed
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { cloneElement, ReactElement, useState } from "react";
 import { Button } from "./ui/button";
 
 interface Props {
@@ -36,7 +42,13 @@ const AddButton = ({ addBtnTitle, isDialog = false, dialogContent }: Props) => {
               Add a new {addBtnTitle} to the system.
             </DialogDescription> */}
           </DialogHeader>
-          {dialogContent}
+          {dialogContent &&
+            cloneElement(
+              dialogContent as ReactElement<{ closeDialog: () => void }>,
+              {
+                closeDialog: () => setOpen(false),
+              }
+            )}
         </DialogContent>
       </Dialog>
     );

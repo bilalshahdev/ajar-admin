@@ -171,3 +171,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
+@keyframes syncedPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.skeleton-sync {
+  animation: syncedPulse 1.2s ease-in-out infinite;
+}

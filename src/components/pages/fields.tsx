@@ -1,8 +1,8 @@
 "use client";
 import { TableCell } from "@/components/ui/table";
 import { useAppSelector } from "@/lib/store/hooks";
-import TableActions from "./actions";
-import { DataTable } from "./custom/data-table";
+import TableActions from "../actions";
+import { DataTable } from "../custom/data-table";
 export default function Fields() {
   const fields = useAppSelector((s: any) => s.fields) || [];
 

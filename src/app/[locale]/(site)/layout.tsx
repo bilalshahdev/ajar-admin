@@ -2,15 +2,17 @@ import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
-const SiteLayout = async ({ children }: { children: React.ReactNode }) => {
-  // const cookieStore = await cookies();
-  // const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+const SiteLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <Sidebar />
-      <div className="w-full">
-        <Navbar />
-        <div className="m-4 p-4 rounded-lg bg-background">{children}</div>
+      <div className="flex w-full min-h-screen">
+        <Sidebar />
+        <div className="flex flex-col flex-1">
+          <Navbar />
+          <main className="m-4 p-4 rounded-lg bg-background flex-1">
+            {children}
+          </main>
+        </div>
       </div>
     </SidebarProvider>
   );

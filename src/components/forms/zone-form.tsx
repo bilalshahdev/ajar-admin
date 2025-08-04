@@ -1,24 +1,40 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
+import { Button } from "@/components/ui/button";
+import { useAddZone, useGetZone, useUpdateZone } from "@/hooks/useZones";
 import { ZoneFormValues, ZoneSchema } from "@/validations/zone";
-import TextInput from "./fields/text-input";
-import { useAppSelector } from "@/lib/store/hooks";
-import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { throttle } from "lodash";
+import dynamic from "next/dynamic";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { PolygonSearchMapRef } from "../polygon-search-map";
+import TextInput from "./fields/text-input";
+
 const PolygonSearchMap = dynamic(() => import("../polygon-search-map"), {
   ssr: false,
 });
-const ZoneForm = ({ id }: { id?: string }) => {
-  const zones = useAppSelector((state: any) => state.zones) || [];
-  const zone = zones?.find((zone: any) => zone._id === id);
-  const [latLng, setLatLng] = useState<{ lat: number; lng: number }[][]>(
-    zone?.latLng || []
+
+const ZoneForm = ({
+  id,
+  closeDialog,
+}: {
+  id?: string;
+  closeDialog?: () => void;
+}) => {
+  const isEditMode = Boolean(id);
+
+  // ✅ Always call hooks at top level
+  const { data, isLoading } = useGetZone(id as string, isEditMode);
+  const zone = data?.data;
+
+  const [polygons, setPolygons] = useState<{ lat: number; lng: number }[][]>(
+    zone?.polygons || []
   );
+
+  const mapRef = useRef<PolygonSearchMapRef>(null);
 
   const {
     control,
@@ -29,42 +45,66 @@ const ZoneForm = ({ id }: { id?: string }) => {
   } = useForm<ZoneFormValues>({
     resolver: zodResolver(ZoneSchema),
     defaultValues: {
-      name: zone?.name || "",
-      currency: zone?.currency || "",
-      // latLng: zone?.latLng || [],
+      name: "",
+      currency: "",
+      polygons: [],
     },
   });
 
-  const onSubmit = async (data: Omit<ZoneFormValues, "latLng">) => {
+  useEffect(() => {
+    if (zone) {
+      reset({
+        name: zone.name,
+        currency: zone.currency,
+        polygons: zone.polygons,
+      });
+    }
+  }, [zone, reset]);
+
+  useEffect(() => {
+    if (polygons?.length > 0) {
+      setValue("polygons", polygons);
+    }
+  }, [polygons, setValue]);
+
+  const addZoneMutation = useAddZone();
+  const updateZoneMutation = useUpdateZone();
+
+  const onSubmit = async (data: Omit<ZoneFormValues, "polygons">) => {
     const finalData: ZoneFormValues = {
       ...data,
-      latLng, // manually append polygon
+      polygons: polygons,
     };
 
-    console.log("Submitting Final Data:", {
-      ...finalData,
-      latLngSummary: `${latLng.length} shapes, ~${
-        latLng[0]?.length ?? 0
-      } points`,
-    });
+    try {
+      if (id) {
+        await updateZoneMutation.mutateAsync({ id, data: finalData });
+      } else {
+        await addZoneMutation.mutateAsync(finalData);
+      }
 
-    if (id) {
-      console.log("Update Zone Data:", finalData);
-    } else {
-      console.log("Create Zone Data:", finalData);
+      reset();
+      setPolygons([]);
+      mapRef.current?.clearMap();
+      closeDialog?.();
+    } catch (error) {
+      console.error("Zone mutation error:", error);
     }
-
-    reset(); // resets name and currency, but not polygon anymore
-    setLatLng([]); // manually clear polygon if needed
   };
 
   const throttledUpdateLatLng = useMemo(
     () =>
-      throttle((latLngs: { lat: number; lng: number }[][]) => {
-        setLatLng(latLngs);
+      throttle((polygons: { lat: number; lng: number }[][]) => {
+        setPolygons(polygons);
       }, 500),
     []
   );
+
+  // ✅ Do conditional rendering here — not before hook calls
+  if (isEditMode && !zone && !isLoading) {
+    toast.error("Zone not found");
+    return null;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -84,9 +124,9 @@ const ZoneForm = ({ id }: { id?: string }) => {
       </div>
 
       <PolygonSearchMap
-        onUserPolygonDrawn={(latLng) => {
-          throttledUpdateLatLng(latLng);
-        }}
+        ref={mapRef}
+        polygons={polygons}
+        onUserPolygonDrawn={(polygons) => throttledUpdateLatLng(polygons)}
       />
 
       <Button
@@ -95,7 +135,13 @@ const ZoneForm = ({ id }: { id?: string }) => {
         disabled={isSubmitting}
         variant={"button"}
       >
-        {isSubmitting ? <Loader /> : id ? "Update Zone" : "Create Zone"}
+        {isSubmitting ? (
+          <Loader className="border-foreground" />
+        ) : id ? (
+          "Update Zone"
+        ) : (
+          "Create Zone"
+        )}
       </Button>
     </form>
   );

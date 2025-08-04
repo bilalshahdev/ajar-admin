@@ -62,14 +62,6 @@ export const navMenu: MenuItem[] = [
   { href: "/rental-policies", label: "rental policies" },
 ];
 
-// export const navMenu: MenuItem[] = [
-//   { href: "/", label: "leaser" },
-//   { href: "/reports", label: "reports" },
-//   { href: "/blocked", label: "blocked" },
-//   { href: "/listing", label: "listing" },
-//   { href: "/settings", label: "settings" },
-// ];
-
 export const businessNavMenu: MenuItem[] = [
   { href: "/", label: "Business Information" },
   { href: "/payment-methods", label: "Payment Methods" },

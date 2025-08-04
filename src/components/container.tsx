@@ -25,8 +25,8 @@ const Container = ({
   ...rest
 }: Props) => {
   return (
-    <>
-      <div className="flex items-center justify-between pb-4">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between mb-4">
         {title && <PageTitle title={title} />}
         {subtitle && <PageSubtitle subtitle={subtitle} />}
         {addBtnTitle && (
@@ -38,12 +38,12 @@ const Container = ({
         )}
       </div>
       <div
-        className={cn(`w-full mx-auto ${m ? "mb-" : ""}`, className)}
+        className={cn(`w-full mx-auto flex-1 ${m ? "mb-" : ""}`, className)}
         {...rest}
       >
         {children}
       </div>
-    </>
+    </div>
   );
 };
 
