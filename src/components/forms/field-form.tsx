@@ -129,6 +129,8 @@ export default function FieldForm({ id }: { id?: string }) {
   // if (isFieldLoading && id) return <Loader />;
 
   const isMultiple = watch("isMultiple");
+  const type = watch("type");
+  const typesWithOptions = ["select", "radio", "multiselect"];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -151,6 +153,10 @@ export default function FieldForm({ id }: { id?: string }) {
           label="Input Type"
           options={inputTypes.map((t) => ({ label: t.name, value: t.value }))}
         />
+
+        {typesWithOptions.includes(type) && (
+          <FormArrayInput control={control} name="options" label="Options" />
+        )}
 
         <TextInput
           control={control}
@@ -189,9 +195,6 @@ export default function FieldForm({ id }: { id?: string }) {
       {/* i want to show options input if isMultiple is true */}
 
       <div className="grid grid-cols-2 gap-4">
-        {isMultiple && (
-          <FormArrayInput control={control} name="options" label="Options" />
-        )}
         <TextInput
           control={control}
           name="validation.pattern"

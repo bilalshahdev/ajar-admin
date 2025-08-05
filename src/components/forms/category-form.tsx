@@ -10,21 +10,26 @@ import {
 } from "@/hooks/useCategories";
 import { CategoryFormValues, CategorySchema } from "@/validations/category";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import FileInput from "./fields/file-input";
 import SelectInput from "./fields/select-input";
 import TextInput from "./fields/text-input";
-import { useRouter } from "next/navigation";
 
 const CategoryForm = ({ id }: { id?: string }) => {
   const router = useRouter();
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-    reset,
-  } = useForm<CategoryFormValues>({
+  const { data: fetchedCategory, isLoading: isCategoryLoading } =
+    useGetCategory(id || "", !!id);
+  const { control, handleSubmit, reset } = useForm<CategoryFormValues>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
       type: "category",
@@ -36,14 +41,19 @@ const CategoryForm = ({ id }: { id?: string }) => {
     },
   });
 
-  const { data: fetchedCategory, isLoading: isCategoryLoading } =
-    useGetCategory(id || "", "categories", !!id);
-
   useEffect(() => {
     if (fetchedCategory?.data) {
       const { type, category, name, description, thumbnail, icon } =
         fetchedCategory.data;
-      reset({ type, category, name, description, thumbnail, icon });
+
+      reset({
+        category: category?._id ?? "",
+        type,
+        name,
+        description,
+        thumbnail,
+        icon,
+      });
     }
   }, [fetchedCategory, reset]);
 
@@ -53,7 +63,6 @@ const CategoryForm = ({ id }: { id?: string }) => {
   const type = useWatch({ control, name: "type" });
 
   const isEditMode = Boolean(id);
-
   const updateMutation = useUpdateCategory();
   const addMutation = useAddCategory();
 
@@ -80,11 +89,8 @@ const CategoryForm = ({ id }: { id?: string }) => {
 
     if (formData.thumbnail instanceof File) {
       payload.append("thumbnail", formData.thumbnail);
-    } else if (
-      typeof formData.thumbnail === "string" &&
-      formData.thumbnail.trim() !== ""
-    ) {
-      payload.append("thumbnail", formData.thumbnail);
+    } else if (typeof formData.thumbnail === "string") {
+      payload.append("thumbnail", formData.thumbnail); // Only if API allows this
     }
 
     const mutationPayload = id ? { id, data: payload } : payload;
@@ -102,15 +108,18 @@ const CategoryForm = ({ id }: { id?: string }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SelectInput
-          control={control}
-          name="type"
-          label="Type"
-          options={[
-            { label: "Category", value: "category" },
-            { label: "SubCategory", value: "subCategory" },
-          ]}
-        />
+        <div className="space-y-2">
+          <Label>Type</Label>
+          <Select value={type} disabled={isEditMode}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="category">Category</SelectItem>
+              <SelectItem value="subCategory">SubCategory</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         {type === "subCategory" && !isCategoriesLoading && (
           <SelectInput
@@ -134,9 +143,11 @@ const CategoryForm = ({ id }: { id?: string }) => {
         />
         <TextInput
           control={control}
+          type="textarea"
           name="description"
           label="Description"
           placeholder="e.g. Description"
+          className="md:col-span-2"
         />
         <FileInput control={control} name="thumbnail" label="Thumbnail" />
         <TextInput

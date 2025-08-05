@@ -28,6 +28,28 @@ type MenuItem = {
   label: string;
 };
 
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+}
+
+interface UserStats {
+  totalUsers: number;
+  totalAdmins: number;
+  totalNormalUsers: number;
+  totalActiveUsers: number;
+  totalInactiveUsers: number;
+  totalBlockedUsers: number;
+  totalUnblockedUsers: number;
+}
+
 type DashboardStat = {
   title: string;
   value: number | string;

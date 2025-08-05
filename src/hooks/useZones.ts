@@ -65,24 +65,16 @@ export const useUpdateZone = () => {
 };
 
 // Delete zone
-export const useDeleteZone = ({
-  onSuccess,
-  onError,
-}: {
-  onSuccess?: () => void;
-  onError?: (err: any) => void;
-} = {}) => {
+export const useDeleteZone = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteZone(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["zones"], exact: false });
       toast.success("Zone deleted successfully");
-      onSuccess?.();
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Something went wrong");
-      onError?.(error);
     },
   });
 };

@@ -19,6 +19,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "example.com",
       },
+      {
+        protocol: "https",
+        hostname: "ajar-server.hostdonor.com",
+      },
+      {
+        protocol: "http",
+        hostname: "192.168.18.64",
+        port: "5000",
+      },
     ],
   },
 };

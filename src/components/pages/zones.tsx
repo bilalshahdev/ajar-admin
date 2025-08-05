@@ -16,8 +16,6 @@ const Zones = () => {
   const { data, isLoading, error } = useGetZones({ page, limit });
   const zones = data?.data?.zones || [];
 
-  console.log(data);
-
   const { mutate: deleteZone, isPending: deleteLoading } = useDeleteZone();
 
   const cols = ["Id", "Name", "Currency", "Actions"];

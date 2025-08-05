@@ -26,12 +26,13 @@ export const useGetCategories = ({
 
 export const useGetCategory = (
   categoryId: string,
-  type: "categories" | "subcategories",
+  // type: "categories" | "subcategories",
   enabled: boolean
 ) => {
   return useQuery({
     queryKey: ["category", categoryId],
-    queryFn: () => getCategory(categoryId, type),
+    // queryFn: () => getCategory(categoryId, type),
+    queryFn: () => getCategory(categoryId),
     enabled,
     placeholderData: (previousData) => previousData,
   });
@@ -64,9 +65,10 @@ export const useUpdateCategory = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) =>
       updateCategory(id, data),
-    onSuccess: () => {
+    onSuccess: ({ data }: { data: { _id: string } }) => {
       queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["categories-list"] });
+      queryClient.invalidateQueries({ queryKey: ["category", data._id] });
       toast.success("Category updated successfully");
     },
     onError: (error: any) => {
@@ -79,9 +81,10 @@ export const useDeleteCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteCategory(id),
-    onSuccess: () => {
+    onSuccess: ({ data }: { data: { _id: string } }) => {
       queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["categories-list"] });
+      queryClient.invalidateQueries({ queryKey: ["category", data._id] });
       toast.success("Category deleted successfully");
     },
     onError: (error: any) => {

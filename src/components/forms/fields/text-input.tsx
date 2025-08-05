@@ -35,8 +35,6 @@ const TextInput = ({
     fieldState: { error },
   } = useController({ name, control });
 
-  console.log("label", label);
-
   return (
     <div className={cn("space-y-2", className)}>
       {label && (

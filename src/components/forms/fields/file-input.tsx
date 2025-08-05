@@ -1,11 +1,11 @@
-// components/fields/file-input.tsx
 "use client";
 
-import { InputHTMLAttributes, useState } from "react";
+import { InputHTMLAttributes, useEffect, useState } from "react";
 import { Control, useController } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import MyImage from "@/components/custom/my-image";
+import { baseUrl } from "@/config/constants";
 
 interface FileInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -19,15 +19,13 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
     fieldState: { error },
   } = useController({ name, control });
 
-  const [preview, setPreview] = useState<string | null>(
-    typeof value === "string" ? value : null
-  );
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      onChange(file); // store File in RHF state
-      setPreview(URL.createObjectURL(file)); // local preview
+      onChange(file); // Store File object
+      setPreview(URL.createObjectURL(file)); // Show local preview
     }
   };
 
@@ -46,9 +44,9 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
         {...props}
       />
 
-      {preview && (
+      {(preview || value) && (
         <MyImage
-          src={preview}
+          src={preview || value}
           alt="preview"
           width={20}
           height={20}

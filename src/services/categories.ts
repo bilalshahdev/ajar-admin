@@ -30,7 +30,7 @@ export const getCategories = async ({
 }: {
   page: number;
   limit: number;
-  type: "categories" | "subcategories" | "";
+  type: "categories" | "subCategories" | "";
 }): Promise<GetCategoriesResponse> => {
   const response = await api.get(
     `/categories?page=${page}&limit=${limit}&type=${type}`
@@ -46,9 +46,13 @@ export const getCategoriesList =
 
 export const getCategory = async (
   categoryId: string,
-  type: "categories" | "subcategories" | ""
+  // type: "categories" | "subcategories" | ""
 ) => {
-  const response = await api.get(`/categories/${categoryId}?type=${type}`);
+  const url = `/categories/${categoryId}`;
+  // if (type) {
+  //   url += `?type=${type}`;
+  // }
+  const response = await api.get(url);
   return response.data;
 };
 

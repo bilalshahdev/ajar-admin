@@ -21,7 +21,7 @@ const Categories = () => {
   const { mutate: deleteCategory, isPending: deleteLoading } =
     useDeleteCategory();
 
-  const cols = ["Name", "Type", "Parent", "Actions"];
+  const cols = ["ID", "Name", "Type", "Parent", "Actions"];
   if (isLoading) {
     return <TableSkeleton cols={cols.length} rows={10} />;
   }
@@ -32,6 +32,7 @@ const Categories = () => {
 
   const row = (category: Category) => (
     <>
+      <TableCell>{category._id.slice(-4)}</TableCell>
       {category?.description?.trim() ? (
         <Tooltip content={category?.description || ""}>
           <TableCell>{category.name}</TableCell>
