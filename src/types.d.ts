@@ -57,14 +57,33 @@ type DashboardStat = {
   bgColor: string;
 };
 
-interface User {
+export interface UserOTP {
+  isVerified: boolean;
+  code: string;
+  expiry: string;
+}
+
+export interface StripeInfo {
+  connectedAccountId: string;
+  connectedAccountLink: string;
+  customerId: string;
+}
+
+export interface User {
   _id: string;
   name: string;
-  phone: string;
   email: string;
-  image?: string;
-  joinedDate?: Date;
-  status?: string;
+  phone: string;
+  role: string;
+  dob?: string;
+  nationality?: string;
+  profilePicture?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  status: string;
+  otp?: UserOTP;
+  stripe?: StripeInfo;
+  __v?: number;
 }
 
 type Login = {
@@ -144,7 +163,7 @@ export interface SubCategory {
   slug: string;
   createdAt: string;
   updatedAt: string;
-  __v: number;
+
   id: string;
 }
 
@@ -158,7 +177,6 @@ export interface Zone {
   languages: ZoneLanguage[];
   createdAt: string;
   updatedAt: string;
-  __v: number;
 }
 
 export interface Category {
@@ -226,23 +244,64 @@ interface RentalRequest {
 type TicketStatus = "active" | "pending" | "rejected";
 type Priority = "Low" | "Medium" | "High";
 
-interface Ticket {
-  _id: string;
-  sender: string;
-  email: string;
-  subject: string;
-  description?: string;
-  createdAt: string; // Date of complaint
-  status: TicketStatus;
-  group?: string;
-  assignedTo?: string;
-  priority?: Priority;
-  response?: string;
-  complainant?: {
-    name: string;
-    profilePic: string;
+export interface BookingLanguage {
+  locale: string;
+  translations: {
+    roomType: string;
+    bookingNote: string;
   };
+  _id: string;
 }
+
+type Booking = {
+  _id: string;
+  status: string;
+  renter: string;
+  marketplaceListingId: string;
+  noOfGuests: number;
+  roomType: string;
+  phone: string;
+  language: string;
+  languages: {
+    locale: string;
+    translations: {
+      roomType: string;
+      bookingNote: string;
+    };
+    _id: string;
+  }[];
+  dates: {
+    checkIn: string;
+    checkOut: string;
+  };
+  priceDetails: {
+    price: number;
+    adminFee: number;
+    totalPrice: number;
+  };
+  extensionCharges: {
+    adminFee: number;
+    additionalCharges: number;
+    totalPrice: number;
+  };
+  actualReturnedAt: string | null;
+  otp: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Ticket = {
+  _id: string;
+  booking: Booking;
+  user: User;
+  rentalText: string;
+  issueType: string;
+  additionalFees: number;
+  attachments: any[]; // If you have a defined attachment structure, replace 'any'
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 type RefundStatus = "pending" | "approved" | "rejected";
 
@@ -272,12 +331,21 @@ interface Contact {
 
 interface Query {
   _id: string;
-  sentBy: User;
-  sentTo: User;
+  user: User;
   title: string;
-  description: string;
   status: string;
-  createdAt?: Date;
+  createdAt?: string;
+}
+
+export interface Contact {
+  _id: string;
+  phone: string;
+  email: string;
+  address: string;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
 }
 
 export interface Message {
@@ -301,4 +369,46 @@ export interface Chat {
   };
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Field {
+  _id: string;
+  name: string;
+  label: string;
+  type: string;
+  placeholder: string;
+  isMultiple: boolean;
+  options: string[];
+  order: number;
+  tooltip: string;
+  visible: boolean;
+  defaultValue: string;
+  readonly: boolean;
+  min: number;
+  max: number;
+  language: string;
+  languages: string[];
+  validation: {
+    required: boolean;
+    pattern: string;
+    min: number;
+    max: number;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Ticket {
+  _id: string;
+  user: User | null;
+  title: string;
+  status: "pending" | "inProgress" | "resolved";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TicketList {
+  _id: string;
+  title: string;
+  status: string;
 }

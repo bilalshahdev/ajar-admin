@@ -7,6 +7,7 @@ import {
   getCategories,
   updateCategory,
   getCategoriesList,
+  getSubCategoriesList,
 } from "@/services/categories";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -27,7 +28,7 @@ export const useGetCategories = ({
 export const useGetCategory = (
   categoryId: string,
   // type: "categories" | "subcategories",
-  enabled: boolean
+  enabled?: boolean
 ) => {
   return useQuery({
     queryKey: ["category", categoryId],
@@ -45,6 +46,13 @@ export const useGetCategoriesList = () =>
     placeholderData: (previousData) => previousData,
   });
 
+export const useGetSubCategoriesList = () =>
+  useQuery({
+    queryKey: ["subcategories-list"],
+    queryFn: () => getSubCategoriesList(),
+    placeholderData: (previousData) => previousData,
+  });
+
 export const useAddCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -52,6 +60,7 @@ export const useAddCategory = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["categories-list"] });
+      queryClient.invalidateQueries({ queryKey: ["subcategories-list"] });
       toast.success("Category added successfully");
     },
     onError: (error: any) => {
@@ -68,6 +77,7 @@ export const useUpdateCategory = () => {
     onSuccess: ({ data }: { data: { _id: string } }) => {
       queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["categories-list"] });
+      queryClient.invalidateQueries({ queryKey: ["subcategories-list"] });
       queryClient.invalidateQueries({ queryKey: ["category", data._id] });
       toast.success("Category updated successfully");
     },
@@ -84,6 +94,7 @@ export const useDeleteCategory = () => {
     onSuccess: ({ data }: { data: { _id: string } }) => {
       queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["categories-list"] });
+      queryClient.invalidateQueries({ queryKey: ["subcategories-list"] });
       queryClient.invalidateQueries({ queryKey: ["category", data._id] });
       toast.success("Category deleted successfully");
     },

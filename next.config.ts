@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
         hostname: "192.168.18.64",
         port: "5000",
       },
+      {
+        protocol: "http",
+        hostname: "192.168.18.145",
+        port: "5000",
+      },
     ],
   },
 };

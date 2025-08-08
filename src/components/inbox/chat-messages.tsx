@@ -38,7 +38,7 @@ const ChatMessages = ({
         <>
           <div className="flex items-center gap-4 bg-muted p-4 rounded sticky top-0 z-10">
             <Avatar
-              image={chatMessages[0]?.receiver.image || ""}
+              image={chatMessages[0]?.receiver.profilePicture || ""}
               name={chatMessages[0]?.receiver.name || ""}
             />
             <Small className="font-medium">

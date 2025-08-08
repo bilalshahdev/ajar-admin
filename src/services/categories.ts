@@ -43,6 +43,14 @@ export const getCategoriesList =
     const response = await api.get("/categories/list");
     return response.data;
   };
+  
+export const getSubCategoriesList =
+  async (): Promise<GetCategoriesListResponse> => {
+    const response = await api.get("/categories/list/subcategories");
+    return response.data;
+  };
+
+
 
 export const getCategory = async (
   categoryId: string,

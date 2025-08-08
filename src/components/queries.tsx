@@ -1,41 +1,72 @@
 "use client";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
-import { DataTable } from "./custom/data-table";
-import { TableCell } from "./ui/table";
-import TableActions from "./actions";
-import Status from "./status-badge";
-import { useState } from "react";
-import { useMemo } from "react";
+
+import { useDeleteQuery, useGetQueries } from "@/hooks/useQueries";
 import { filterData } from "@/utils/filterData";
+import { useMemo, useState } from "react";
+import TableActions from "./actions";
+import { DataTable } from "./custom/data-table";
 import { SearchInput } from "./custom/search-input";
-import { Label } from "./typography";
+import ResponseError from "./ResponseError";
+import TableSkeleton from "./skeletons/TableSkeleton";
+import Status from "./status-badge";
+import Tooltip from "./tooltip";
+import { TableCell } from "./ui/table";
+import { Query } from "@/types";
+import HighlightCell from "./HighlightCell";
+
 const Queries = () => {
-  const queries = useSelector((state: RootState) => state.queries.queries);
   const [search, setSearch] = useState("");
-  const filteredQueries = useMemo(() => {
+  const { data, isLoading, error } = useGetQueries({ page: 1, limit: 10 });
+  const { mutate: deleteQuery, isPending: deleteLoading } = useDeleteQuery();
+
+  const queries = useMemo(() => {
+    const raw = data?.data?.queries || [];
+
+    const flattened = raw.map((q: Query) => ({
+      ...q,
+      name: q.user?.name || "",
+      email: q.user?.email || "",
+    }));
+
     return filterData({
-      data: queries,
+      data: flattened,
       search,
-      searchKeys: ["title"],
+      searchKeys: ["title", "status", "name", "email"],
     });
-  }, [queries, search]);
+  }, [data, search]);
+
   const cols = [
     "Id",
     "sent by",
     "email",
     "title",
-    "created at",
+    "date",
     "status",
     "actions",
   ];
-  const row = (query: any) => (
+
+  if (isLoading) {
+    return <TableSkeleton cols={cols.length} rows={10} />;
+  }
+
+  if (error) {
+    return <ResponseError error={error.message} />;
+  }
+
+  const row = (query: Query) => (
     <>
-      <TableCell>{query._id}</TableCell>
-      <TableCell>{query.sentBy?.name}</TableCell>
-      <TableCell>{query.sentBy?.email}</TableCell>
-      <TableCell>{query.title}</TableCell>
-      <TableCell>{new Date(query.createdAt).toLocaleDateString()}</TableCell>
+      <TableCell>{query._id.slice(-4)}</TableCell>
+      <HighlightCell text={query?.user?.name} query={search} />
+      <HighlightCell text={query?.user?.email} query={search} />
+      <Tooltip content={query.title}>
+        <HighlightCell text={query.title} query={search} />
+      </Tooltip>
+      <TableCell>
+        {query.createdAt
+          ? new Date(query.createdAt).toLocaleDateString()
+          : "N/A"}
+      </TableCell>
+
       <TableCell>{<Status value={query.status} />}</TableCell>
       <TableCell>
         <TableActions
@@ -43,25 +74,27 @@ const Queries = () => {
           baseRoute="/query-management"
           actions={["delete"]}
           module="Query"
-          onDelete={(id) => console.log("deleted:", id)}
-          deleteLoading={false}
+          onDelete={(id: string, closeDialog: () => void) =>
+            deleteQuery(id, {
+              onSuccess: () => {
+                closeDialog();
+              },
+            })
+          }
+          deleteLoading={deleteLoading}
         />
       </TableCell>
     </>
   );
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <Label>Queries</Label>
-        <div className="flex gap-2">
-          <SearchInput
-            placeholder="Search Query"
-            onChange={(e) => setSearch(e)}
-            debounceDelay={500}
-          />
-        </div>
-      </div>
-      <DataTable cols={cols} data={filteredQueries} row={row} />
+      <SearchInput
+        className="w-full ml-auto"
+        onChange={(e: string) => setSearch(e)}
+        placeholder="Search Ticket"
+      />
+      <DataTable cols={cols} data={queries} row={row} />
     </div>
   );
 };

@@ -1,19 +1,33 @@
 "use client";
 
-import { contactData } from "@/config/data";
+import {
+  useAddContact,
+  useContact,
+  useUpdateContact,
+} from "@/hooks/useContact";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import TextInput from "./fields/text-input";
-const ContactDetailForm = ({ id }: { id?: string }) => {
-  const contact = contactData.find((contact) => contact._id === id);
+import { toast } from "sonner";
+import Loader from "../loader";
+const ContactDetailForm = ({
+  id,
+  closeDialog,
+}: {
+  id?: string;
+  closeDialog?: () => void;
+}) => {
+  const isEditMode = Boolean(id);
+  const { data: contact } = useContact(id!, isEditMode);
 
   const initialData = {
-    phone: contact?.phone || "",
-    email: contact?.email || "",
-    address: contact?.address || "",
-    order: contact?.order || 1,
+    phone: contact?.data?.phone || "",
+    email: contact?.data?.email || "",
+    address: contact?.data?.address || "",
+    order: contact?.data?.order || 1,
   };
 
   const schema = z.object({
@@ -23,17 +37,47 @@ const ContactDetailForm = ({ id }: { id?: string }) => {
     order: z.number().min(1, "Order must be at least 1"),
   });
 
-  const methods = useForm<z.infer<typeof schema>>({
+  const { reset, handleSubmit, control } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: initialData,
   });
 
-  const { handleSubmit, control } = methods;
+  useEffect(() => {
+    if (contact) {
+      reset(initialData);
+    }
+  }, [contact]);
+
+  const { mutateAsync: addContactMutation, isPending: addLoading } =
+    useAddContact();
+  const { mutateAsync: updateContactMutation, isPending: updateLoading } =
+    useUpdateContact();
+
+  const isLoading = addLoading || updateLoading;
+
+  // ✅ Only return null later
+  if (isEditMode && !contact) {
+    toast.error("Contact not found");
+    return null;
+  }
+
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    try {
+      if (isEditMode) {
+        await updateContactMutation({ contactId: id!, data });
+      } else {
+        await addContactMutation(data);
+      }
+
+      reset();
+      closeDialog?.();
+    } catch (error) {
+      console.error("Contact mutation error:", error);
+    }
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit((data) => console.log(data))}
-      className="space-y-2"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
       <TextInput
         name="phone"
         label="Phone"
@@ -58,8 +102,8 @@ const ContactDetailForm = ({ id }: { id?: string }) => {
         placeholder="Enter order"
         control={control}
       />
-      <Button type="submit" variant="button">
-        Submit
+      <Button type="submit" variant="button" disabled={isLoading} className="w-full mt-4">
+        {isLoading ? <Loader /> : id ? "Update" : "Add"}
       </Button>
     </form>
   );

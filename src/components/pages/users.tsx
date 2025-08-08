@@ -63,7 +63,7 @@ const Users = () => {
         <TableActions
           id={user._id}
           baseRoute="/users-verification"
-          actions={["edit", "delete"]}
+          actions={["delete"]}
           module="User"
           onDelete={(id: string, closeDialog: () => void) =>
             deleteUser(id, {

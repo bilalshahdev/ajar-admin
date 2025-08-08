@@ -1,111 +1,141 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import { Ticket } from "@/types";
 import MyImage from "@/components/custom/my-image";
+import ResponseError from "@/components/ResponseError";
 import Status from "@/components/status-badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useGetTicket } from "@/hooks/useTickets";
+import { format } from "date-fns";
+import TicketDetailSkeleton from "../skeletons/TicketSkeleton";
 
 const TicketDetail = ({ id }: { id: string }) => {
-  const ticket: Ticket | undefined = useSelector((state: any) =>
-    state.tickets.find((t: Ticket) => t._id === id)
-  );
+  const { data, isLoading, error } = useGetTicket(id, true);
+  const ticket = data?.data;
 
-  if (!ticket) {
-    return (
-      <div className="p-6 text-center text-gray-600">Ticket not found.</div>
-    );
+  if (isLoading) {
+    return <TicketDetailSkeleton />;
+  }
+
+  if (error) {
+    return <ResponseError error={error.message} />;
   }
 
   const {
-    _id,
-    sender,
-    email,
-    subject,
-    description,
-    createdAt,
+    booking,
+    user,
+    rentalText,
+    issueType,
+    additionalFees,
+    attachments,
     status,
-    group,
-    assignedTo,
-    priority,
-    response,
-    complainant,
-  } = ticket;
+    createdAt,
+    updatedAt,
+  } = ticket || {};
+
+  const localeRoomType =
+    booking?.languages.find((lang) => lang.locale === "en")?.translations
+      .roomType || booking?.roomType;
 
   return (
-    <div className="rounded-xl space-y-4">
-      <h1 className="text-xl font-semibold">Request Id #{_id}</h1>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          {status && (
+            <CardTitle className="text-xl font-semibold flex justify-between items-center">
+              Ticket ID: {id}
+              <Status value={status!} />
+            </CardTitle>
+          )}
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {booking && (
+            <div>
+              <h3 className="text-lg font-medium">Booking Details</h3>
+              <Separator className="my-2" />
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium">Check-In:</span>{" "}
+                  {format(new Date(booking.dates.checkIn), "PP")}
+                </div>
+                <div>
+                  <span className="font-medium">Check-Out:</span>{" "}
+                  {format(new Date(booking.dates.checkOut), "PP")}
+                </div>
+                <div>
+                  <span className="font-medium">Room Type:</span>{" "}
+                  {localeRoomType}
+                </div>
+                <div>
+                  <span className="font-medium">Guests:</span>{" "}
+                  {booking.noOfGuests}
+                </div>
+                <div>
+                  <span className="font-medium">Total Price:</span> $
+                  {booking.priceDetails.totalPrice}
+                </div>
+                <div>
+                  <span className="font-medium">Extension Charges:</span> $
+                  {booking.extensionCharges.totalPrice}
+                </div>
+              </div>
+            </div>
+          )}
 
-      <div className="space-y-2 text-sm text-gray-700">
-        <div>
-          <span className="font-medium">Request Status: </span>
-          <Status value={status} />
-        </div>
-        {group && (
-          <div>
-            <span className="font-medium">Group: </span>
-            {group}
-          </div>
-        )}
-        {assignedTo && (
-          <div>
-            <span className="font-medium">Assign to: </span>
-            {assignedTo}
-          </div>
-        )}
-        {priority && (
-          <div className="flex items-center gap-2">
-            <span className="font-medium">Set Priority:</span>
-            <span
-              className={`text-xs font-semibold rounded-full px-2 py-0.5 ${
-                priority === "High"
-                  ? "bg-red-500 text-white"
-                  : priority === "Medium"
-                  ? "bg-yellow-500 text-white"
-                  : "bg-green-500 text-white"
-              }`}
-            >
-              {priority}
-            </span>
-          </div>
-        )}
-        {response && (
-          <div>
-            <span className="font-medium">Response (if any): </span>
-            {response}
-          </div>
-        )}
-        <div>
-          <span className="font-medium">Subject: </span>
-          {subject}
-        </div>
-        {description && (
-          <div>
-            <span className="font-medium">Description: </span>
-            <p className="text-sm text-gray-600">{description}</p>
-          </div>
-        )}
-      </div>
+          {user && (
+            <div>
+              <h3 className="text-lg font-medium">User Info</h3>
+              <Separator className="my-2" />
+              <div className="flex items-center gap-4">
+                <MyImage
+                  src={user?.profilePicture || ""}
+                  width={50}
+                  height={50}
+                  alt="Profile"
+                  className="rounded-full w-14 h-14 object-cover"
+                />
+                <div className="text-sm">
+                  <div className="font-medium">{user.name}</div>
+                  <div className="text-muted-foreground">{user.email}</div>
+                  <div className="text-muted-foreground">{user.phone}</div>
+                </div>
+              </div>
+            </div>
+          )}
 
-      <div className="pt-4">
-        <h3 className="text-sm text-gray-500 mb-1">Complained By</h3>
-        <div className="flex items-center gap-4">
-          <MyImage
-            src={complainant?.profilePic ?? "/images/dummy/renter.avif"}
-            alt={complainant?.name ?? "Unknown"}
-            width={60}
-            height={60}
-            className="w-14 h-14 rounded-full object-cover"
-          />
           <div>
-            <p className="text-base font-medium">
-              {complainant?.name ?? "Unknown"}
-            </p>
-            <p className="text-sm text-gray-500">
-              Date of Complaint: {new Date(createdAt).toLocaleDateString()}
-            </p>
+            <h3 className="text-lg font-medium">Issue</h3>
+            <Separator className="my-2" />
+            <div className="text-sm">
+              <div>
+                <span className="font-medium">Type:</span> {issueType}
+              </div>
+              <div>
+                <span className="font-medium">Details:</span> {rentalText}
+              </div>
+              <div>
+                <span className="font-medium">Additional Fees:</span> $
+                {additionalFees}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+
+          <div>
+            <h3 className="text-lg font-medium">Meta</h3>
+            <Separator className="my-2" />
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="font-medium">Created:</span>{" "}
+                {format(new Date(createdAt!), "PPpp")}
+              </div>
+              <div>
+                <span className="font-medium">Updated:</span>{" "}
+                {format(new Date(updatedAt!), "PPpp")}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

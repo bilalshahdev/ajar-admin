@@ -39,6 +39,17 @@ export const addZone = async (zoneData: any) => {
   return response.data;
 };
 
+// update subcategories in zone, zone has subCategories array, that will take subCategory ids
+export const updateZoneCategories = async (
+  zoneId: string,
+  subCategories: string[]
+) => {
+  const response = await api.patch(`/zones/${zoneId}/subCategories`, {
+    subCategories,
+  });
+  return response.data;
+};
+
 // Service to update a zone
 export const updateZone = async (zoneId: string, zoneData: any) => {
   const response = await api.patch(`/zones/${zoneId}`, zoneData);

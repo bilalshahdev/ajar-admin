@@ -3,10 +3,8 @@
 import { cn } from "@/lib/utils";
 import { Message } from "@/types";
 import { Avatar } from "../avatar";
-import { Ticket } from "lucide-react";
-import { FaCheck, FaCheckDouble } from "react-icons/fa";
-import MessageStatus from "./message-status";
 import { XS } from "../typography";
+import MessageStatus from "./message-status";
 interface ChatBubbleProps {
   message: Message;
   isSender: boolean; // true if current user is the sender
@@ -22,7 +20,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isSender }) => {
     >
       {/* Left-side avatar for receiver */}
       {!isSender && (
-        <Avatar image={message.sender.image} name={message.sender.name} />
+        <Avatar
+          image={message.sender.profilePicture || undefined}
+          name={message.sender?.name}
+        />
       )}
 
       {/* Chat message bubble */}
@@ -47,7 +48,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isSender }) => {
 
       {/* Right-side avatar for sender */}
       {isSender && (
-        <Avatar image={message.sender.image} name={message.sender.name} />
+        <Avatar
+          image={message.sender.profilePicture || undefined}
+          name={message.sender.name}
+        />
       )}
     </div>
   );

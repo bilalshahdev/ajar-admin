@@ -36,7 +36,6 @@ const SelectInput = ({
         control={control}
         name={name}
         render={({ field }) => {
-          console.log(field.value);
           return (
             <Select
               value={field.value}

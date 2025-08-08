@@ -38,7 +38,7 @@ const Chats = ({
               isCurrentChat && "bg-gradient-to-r from-blue to-aqua"
             )}
           >
-            <Avatar image={otherUser?.image} name={otherUser?.name || ""} />
+            <Avatar image={otherUser?.profilePicture || undefined} name={otherUser?.name || ""} />
             <div
               className={cn(
                 "flex flex-col overflow-hidden",

@@ -17,7 +17,7 @@ export const useGetFaqs = ({
     placeholderData: (previousData) => previousData,
   });
 
-export const useGetFaq = (faqId: string, enabled: boolean) => {
+export const useGetFaq = (faqId: string, enabled?: boolean) => {
   return useQuery({
     queryKey: ["faq", faqId],
     queryFn: () => getFaq(faqId),

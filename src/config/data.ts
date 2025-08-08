@@ -79,99 +79,99 @@ export const users: User[] = [
     name: "Mehek Nanwani",
     phone: "+1 93072059670",
     email: "macster@prettysky.link",
-    joinedDate: new Date("2024-01-02T00:00:00Z"),
-
+    createdAt: "2024-01-02T00:00:00Z",
     status: "active",
+    role: "user",
   },
   {
     _id: "2",
     name: "Rahil Shaik",
     phone: "+1 56272059670",
     email: "Rahil@dinlaan.com",
-    joinedDate: new Date("2024-01-03T00:00:00Z"),
-
+    createdAt: "2024-01-03T00:00:00Z",
     status: "blocked",
+    role: "user",
   },
   {
     _id: "3",
     name: "Mustat Ansari",
     phone: "+1 82522059670",
     email: "Mustatr@gmailbrt.com",
-    joinedDate: new Date("2024-07-05T00:00:00Z"),
-
+    createdAt: "2024-07-05T00:00:00Z",
     status: "active",
+    role: "user",
   },
   {
     _id: "4",
     name: "Rehana Naik",
     phone: "+1 56272059541",
     email: "Rehana@racfq.com",
-    joinedDate: new Date("2024-03-24T00:00:00Z"),
-
+    createdAt: "2024-03-24T00:00:00Z",
     status: "active",
+    role: "user",
   },
   {
     _id: "5",
     name: "Priya Patel",
     phone: "+1 8054059670",
     email: "macster@boxgu.com",
-    joinedDate: new Date("2024-04-15T00:00:00Z"),
-
+    createdAt: "2024-04-15T00:00:00Z",
     status: "blocked",
+    role: "user",
   },
   {
     _id: "6",
     name: "Jiya Goyal",
     phone: "+1 56513230156",
     email: "macster@khothiai.com",
-    joinedDate: new Date("2024-04-18T00:00:00Z"),
-
+    createdAt: "2024-04-18T00:00:00Z",
     status: "inactive",
+    role: "user",
   },
   {
     _id: "7",
     name: "Nitya Sariwal",
     phone: "+1 70247952231",
     email: "Nitya@hulas.co",
-    joinedDate: new Date("2024-04-02T00:00:00Z"),
-
+    createdAt: "2024-04-02T00:00:00Z",
     status: "inactive",
+    role: "user",
   },
   {
     _id: "8",
     name: "Prajay Naik",
     phone: "+1 8014874263",
     email: "Prajay@hulas.co",
-    joinedDate: new Date("2024-01-15T00:00:00Z"),
-
+    createdAt: "2024-01-15T00:00:00Z",
     status: "pending",
+    role: "user",
   },
   {
     _id: "9",
     name: "Mohan Pai",
     phone: "+1 56272059670",
     email: "Mohan@racfq.com",
-    joinedDate: new Date("2024-02-13T00:00:00Z"),
-
+    createdAt: "2024-02-13T00:00:00Z",
     status: "inactive",
+    role: "user",
   },
   {
     _id: "10",
     name: "Brijesh Korgaokar",
     phone: "+1 56272059670",
     email: "Brijesh@dinlaan.com",
-    joinedDate: new Date("2024-03-19T00:00:00Z"),
-
+    createdAt: "2024-03-19T00:00:00Z",
     status: "inactive",
+    role: "user",
   },
   {
     _id: "11",
     name: "Nityanand Prabhu",
     phone: "+1 56272059670",
     email: "Nityanand@gmail.com",
-    joinedDate: new Date("2024-04-30T00:00:00Z"),
-
+    createdAt: "2024-04-30T00:00:00Z",
     status: "inactive",
+    role: "user",
   },
 ];
 
@@ -370,117 +370,78 @@ export const contactData = [
 export const queryData: Query[] = [
   {
     _id: "q1",
-    sentBy: {
+    user: {
       _id: "u1",
       name: "Ali Raza",
       phone: "+923001234567",
       email: "ali.raza@example.com",
-      joinedDate: new Date("2024-01-10"),
+      createdAt: "2024-01-10",
       status: "active",
-    },
-    sentTo: {
-      _id: "u2",
-      name: "Sara Ahmed",
-      phone: "+923008765432",
-      email: "sara.ahmed@example.com",
-      joinedDate: new Date("2024-03-14"),
-      status: "active",
+      role: "user",
     },
     title: "Login Issue",
-    description: "Unable to login with correct credentials.",
     status: "pending",
-    createdAt: new Date("2025-07-18T10:15:00Z"),
+    createdAt: "2025-07-18T10:15:00Z",
   },
   {
     _id: "q2",
-    sentBy: {
+    user: {
       _id: "u3",
       name: "Bilal Khan",
       phone: "+923003334455",
       email: "bilal.khan@example.com",
-      joinedDate: new Date("2023-11-02"),
+      createdAt: "2023-11-02",
       status: "active",
-    },
-    sentTo: {
-      _id: "u4",
-      name: "Ayesha Siddiqi",
-      phone: "+923004446677",
-      email: "ayesha.siddiqi@example.com",
-      joinedDate: new Date("2024-04-20"),
-      status: "inactive",
+      role: "user",
     },
     title: "Payment not processed",
-    description: "Paid via Easypaisa but status is still pending.",
     status: "resolved",
-    createdAt: new Date("2025-07-17T16:45:00Z"),
+    createdAt: "2025-07-17T16:45:00Z",
   },
   {
     _id: "q3",
-    sentBy: {
+    user: {
       _id: "u5",
       name: "Zain Ali",
       phone: "+923005551234",
       email: "zain.ali@example.com",
-      joinedDate: new Date("2022-06-19"),
+      createdAt: "2022-06-19",
       status: "banned",
-    },
-    sentTo: {
-      _id: "u1",
-      name: "Ali Raza",
-      phone: "+923001234567",
-      email: "ali.raza@example.com",
-      joinedDate: new Date("2024-01-10"),
-      status: "active",
+      role: "user",
     },
     title: "App Crash Report",
-    description: "App crashes immediately after launching on Android 14.",
     status: "in-progress",
-    createdAt: new Date("2025-07-15T08:30:00Z"),
+    createdAt: "2025-07-15T08:30:00Z",
   },
   {
     _id: "q4",
-    sentBy: {
+    user: {
       _id: "u6",
       name: "Fatima Noor",
       phone: "+923009998877",
       email: "fatima.noor@example.com",
-      joinedDate: new Date("2024-02-05"),
+      createdAt: "2024-02-05",
       status: "active",
-    },
-    sentTo: {
-      _id: "u2",
-      name: "Sara Ahmed",
-      phone: "+923008765432",
-      email: "sara.ahmed@example.com",
-      joinedDate: new Date("2024-03-14"),
-      status: "active",
+      role: "user",
     },
     title: "Feature Request",
-    description: "Add biometric login for enhanced security.",
     status: "pending",
+    createdAt: "2024-03-14",
   },
   {
     _id: "q5",
-    sentBy: {
+    user: {
       _id: "u7",
       name: "Usman Javed",
       phone: "+923007771122",
       email: "usman.javed@example.com",
-      joinedDate: new Date("2023-09-01"),
+      createdAt: "2023-09-01",
       status: "inactive",
-    },
-    sentTo: {
-      _id: "u4",
-      name: "Ayesha Siddiqi",
-      phone: "+923004446677",
-      email: "ayesha.siddiqi@example.com",
-      joinedDate: new Date("2024-04-20"),
-      status: "inactive",
+      role: "user",
     },
     title: "Wrong Account Info",
-    description: "My profile shows wrong email address.",
     status: "resolved",
-    createdAt: new Date("2025-07-20T14:20:00Z"),
+    createdAt: "2025-07-20T14:20:00Z",
   },
 ];
 
@@ -489,7 +450,8 @@ const user1: User = {
   name: "Bilal Hassan",
   phone: "03001234567",
   email: "bilal@example.com",
-  image: "/images/bilal.jpg",
+  role: "user",
+  status: "active",
 };
 
 const user2: User = {
@@ -497,7 +459,8 @@ const user2: User = {
   name: "Ali Raza",
   phone: "03007654321",
   email: "ali@example.com",
-  image: "/images/ali.jpg",
+  role: "user",
+  status: "active",
 };
 
 const user3: User = {
@@ -505,7 +468,8 @@ const user3: User = {
   name: "Zara Khan",
   phone: "03009876543",
   email: "zara@example.com",
-  image: "/images/zara.jpg",
+  role: "user",
+  status: "active",
 };
 
 export const chats: Chat[] = [

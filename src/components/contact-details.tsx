@@ -1,20 +1,28 @@
 "use client";
 
-import { contactData } from "@/config/data";
 import TableActions from "./actions";
 import Container from "./container";
 import { DataTable } from "./custom/data-table";
 import { TableCell } from "./ui/table";
 import ContactDetailForm from "./forms/contact-detail-form";
+import { useContacts, useDeleteContact } from "@/hooks/useContact";
+import Tooltip from "./tooltip";
+import TableSkeleton from "./skeletons/TableSkeleton";
+import ResponseError from "./ResponseError";
 
 const ContactDetails = () => {
+  const { data: contacts, isLoading, error } = useContacts();
+  const { mutate: deleteContact, isPending: deleteLoading } =
+    useDeleteContact();
   const cols = ["phone", "email", "address", "order", "actions"];
 
   const row = ({ phone, email, address, order, _id }: any) => (
     <>
       <TableCell>{phone}</TableCell>
       <TableCell>{email}</TableCell>
-      <TableCell>{address}</TableCell>
+      <Tooltip content={address}>
+        <TableCell className="w-20 truncate">{address}</TableCell>
+      </Tooltip>
       <TableCell>{order}</TableCell>
       <TableCell>
         <TableActions
@@ -22,8 +30,14 @@ const ContactDetails = () => {
           baseRoute="/contact-details"
           module="Contact"
           actions={["edit", "delete"]}
-          onDelete={(id) => console.log("deleted:", id)}
-          deleteLoading={false}
+          onDelete={(id, closeDialog) =>
+            deleteContact(id, {
+              onSuccess: () => {
+                closeDialog();
+              },
+            })
+          }
+          deleteLoading={deleteLoading}
           editDialog={{
             title: "Edit Contact",
             description: "Edit contact details",
@@ -34,6 +48,14 @@ const ContactDetails = () => {
     </>
   );
 
+  if (isLoading) {
+    return <TableSkeleton cols={cols.length} rows={10} />;
+  }
+
+  if (error) {
+    return <ResponseError error={error.message} />;
+  }
+
   return (
     <Container
       subtitle="Contact Details"
@@ -41,7 +63,7 @@ const ContactDetails = () => {
       isDialog
       dialogContent={<ContactDetailForm />}
     >
-      <DataTable data={contactData} cols={cols} row={row} />
+      <DataTable data={contacts?.data || []} cols={cols} row={row} />
     </Container>
   );
 };

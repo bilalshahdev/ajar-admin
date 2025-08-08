@@ -3,28 +3,32 @@ import { cn } from "@/lib/utils";
 import Image, { ImageProps, StaticImageData } from "next/image";
 
 interface MyImageProps extends Omit<ImageProps, "src"> {
-  src: string | StaticImageData;
+  src: string | StaticImageData | File;
   alt: string;
   className?: string;
 }
 
 const MyImage = ({ src, alt, className, ...rest }: MyImageProps) => {
-  let resolvedSrc: string | StaticImageData = src;
+  let resolvedSrc: string | StaticImageData = src as any;
 
   if (typeof src === "string") {
     const isFileObjectUrl = src.startsWith("blob:");
     const isAbsoluteUrl = src.startsWith("http");
+    const isPublicPath = src.startsWith("/");
 
-    // Force base URL even for slash-prefixed paths
-    if (!isFileObjectUrl && !isAbsoluteUrl) {
-      const trimmed = src.startsWith("/") ? src.slice(1) : src;
-      resolvedSrc = `${baseUrl}/${trimmed}`;
+    if (isPublicPath) {
+      // It's in the public folder, don't modify
+      resolvedSrc = src;
+    } else if (!isFileObjectUrl && !isAbsoluteUrl) {
+      // Relative path like 'uploads/image.jpg'
+      resolvedSrc = `${baseUrl}/${src}`;
     } else {
+      // Already full URL
       resolvedSrc = src;
     }
+  } else if (src instanceof File) {
+    resolvedSrc = URL.createObjectURL(src);
   }
-
-  console.log(resolvedSrc);
 
   return (
     <Image

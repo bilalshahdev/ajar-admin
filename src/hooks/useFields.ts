@@ -6,6 +6,7 @@ import {
   addField,
   updateField,
   deleteField,
+  getFieldsList,
 } from "@/services/field";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -24,7 +25,20 @@ export const useGetFields = ({
   });
 };
 
-export const useGetField = (fieldId: string, enabled: boolean) => {
+export const useGetFieldsList = ({
+  enabled = true,
+}: {
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["fields-list"],
+    queryFn: () => getFieldsList(),
+    placeholderData: (previousData) => previousData,
+    enabled,
+  });
+};
+
+export const useGetField = (fieldId: string, enabled?: boolean) => {
   return useQuery({
     queryKey: ["field", fieldId],
     queryFn: () => getField(fieldId),

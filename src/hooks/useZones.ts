@@ -1,11 +1,12 @@
 // hooks/useZones.ts
 
 import {
-  addZone,
-  deleteZone,
-  getZone,
   getZones,
+  getZone,
+  addZone,
   updateZone,
+  updateZoneCategories,
+  deleteZone,
 } from "@/services/zones";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -24,7 +25,7 @@ export const useGetZones = ({
     placeholderData: (previousData) => previousData,
   });
 
-export const useGetZone = (zoneId: string, enabled: boolean) => {
+export const useGetZone = (zoneId: string, enabled?: boolean) => {
   return useQuery({
     queryKey: ["zone", zoneId],
     queryFn: () => getZone(zoneId),
@@ -54,9 +55,27 @@ export const useUpdateZone = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) =>
       updateZone(id, data),
-    onSuccess: () => {
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["zones"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["zone", id], exact: false });
       toast.success("Zone updated successfully");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    },
+  });
+};
+
+// Update zone categories
+export const useUpdateZoneCategories = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      updateZoneCategories(id, data),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["zones"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["zone", id], exact: false });
+      toast.success("Zone categories updated successfully");
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Something went wrong");
@@ -69,8 +88,9 @@ export const useDeleteZone = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteZone(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ["zones"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["zone", id], exact: false });
       toast.success("Zone deleted successfully");
     },
     onError: (error: any) => {

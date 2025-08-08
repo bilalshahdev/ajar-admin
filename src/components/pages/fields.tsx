@@ -50,7 +50,7 @@ const Fields = () => {
         cols={cols}
         row={row}
         pagination={{
-          total: data?.data?.total || 0,
+          total: data?.data?.fields?.length || 0,
           page: data?.data?.page || 1,
           limit: data?.data?.limit || 10,
           setPage,

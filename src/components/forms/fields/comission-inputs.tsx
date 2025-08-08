@@ -9,10 +9,14 @@ interface CommissionInputsProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-const CommissionInputs = ({ control, className, ...props }: CommissionInputsProps) => {
+const CommissionInputs = ({
+  control,
+  className,
+  ...props
+}: CommissionInputsProps) => {
   const commissionType = useWatch({
     control,
-    name: "settings.commissionType",
+    name: "setting.commissionType",
   });
 
   const mode: "fixed" | "percentage" =
@@ -23,7 +27,7 @@ const CommissionInputs = ({ control, className, ...props }: CommissionInputsProp
       <div className="md:w-1/2">
         <SelectInput
           control={control}
-          name="settings.commissionType"
+          name="setting.commissionType"
           label="Commission Type"
           options={[
             { label: "Percentage", value: "percentage" },
@@ -59,30 +63,34 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
 
       {mode === "fixed" ? (
         <TextInput
+          placeholder="Enter fixed value"
           control={control}
-          name={`settings.${baseName}.value`}
+          name={`setting.${baseName}.value`}
           type="number"
           label="Value"
         />
       ) : (
         <div className="grid md:grid-cols-2 gap-2">
           <TextInput
+            placeholder="Enter percentage value"
             control={control}
-            name={`settings.${baseName}.value`}
+            name={`setting.${baseName}.value`}
             type="number"
             label="Percentage Value"
-            note="This is the percentage (%) to apply"
+            note="% to be applied"
           />
           <div className="grid grid-cols-2 gap-2">
             <TextInput
+              placeholder="Enter min value"
               control={control}
-              name={`settings.${baseName}.min`}
+              name={`setting.${baseName}.min`}
               type="number"
               label="Min"
             />
             <TextInput
+              placeholder="Enter max value"
               control={control}
-              name={`settings.${baseName}.max`}
+              name={`setting.${baseName}.max`}
               type="number"
               label="Max"
             />

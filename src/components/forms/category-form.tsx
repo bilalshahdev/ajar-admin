@@ -13,14 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import FileInput from "./fields/file-input";
 import SelectInput from "./fields/select-input";
 import TextInput from "./fields/text-input";
@@ -32,12 +24,12 @@ const CategoryForm = ({ id }: { id?: string }) => {
   const { control, handleSubmit, reset } = useForm<CategoryFormValues>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
-      type: "category",
-      category: "",
-      name: "",
-      description: "",
-      thumbnail: "",
-      icon: "",
+      type: fetchedCategory?.data?.type || "category",
+      category: fetchedCategory?.data?.category?._id || "",
+      name: fetchedCategory?.data?.name || "",
+      description: fetchedCategory?.data?.description || "",
+      thumbnail: fetchedCategory?.data?.thumbnail || "",
+      icon: fetchedCategory?.data?.icon || "",
     },
   });
 
@@ -90,7 +82,7 @@ const CategoryForm = ({ id }: { id?: string }) => {
     if (formData.thumbnail instanceof File) {
       payload.append("thumbnail", formData.thumbnail);
     } else if (typeof formData.thumbnail === "string") {
-      payload.append("thumbnail", formData.thumbnail); // Only if API allows this
+      payload.append("thumbnail", formData.thumbnail);
     }
 
     const mutationPayload = id ? { id, data: payload } : payload;
@@ -108,18 +100,16 @@ const CategoryForm = ({ id }: { id?: string }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label>Type</Label>
-          <Select value={type} disabled={isEditMode}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="category">Category</SelectItem>
-              <SelectItem value="subCategory">SubCategory</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <SelectInput
+          control={control}
+          name="type"
+          label="Type"
+          options={[
+            { label: "Category", value: "category" },
+            { label: "SubCategory", value: "subCategory" },
+          ]}
+          disabled={isEditMode}
+        />
 
         {type === "subCategory" && !isCategoriesLoading && (
           <SelectInput

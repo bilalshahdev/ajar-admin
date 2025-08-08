@@ -1,12 +1,30 @@
 // /services/field.ts
-import { api } from "@/lib/axios";
 
-export const getFields = async () => {
+export interface GetFieldsListResponse {
+  success: boolean;
+  message: string;
+  data: {
+    fields: Field[];
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
+
+import { api } from "@/lib/axios";
+import { Field } from "@/types";
+
+export const getFields = async (): Promise<GetFieldsListResponse> => {
   const response = await api.get("/fields");
   return response.data;
 };
 
-export const getField = async (fieldId: string) => {
+export const getFieldsList = async (): Promise<GetFieldsListResponse> => {
+  const response = await api.get("/fields/list");
+  return response.data;
+};
+
+export const getField = async (fieldId: string): Promise<Field> => {
   const response = await api.get(`/fields/${fieldId}`);
   return response.data;
 };

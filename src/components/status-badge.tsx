@@ -14,7 +14,7 @@ interface StatusProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const getStatusColor = (value: Status) => {
-  switch (value.toLowerCase()) {
+  switch (value?.toLowerCase()) {
     case "pending":
       return "bg-yellow-500 text-white";
     case "approved":

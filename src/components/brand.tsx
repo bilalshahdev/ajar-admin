@@ -11,13 +11,6 @@ const Brand = () => {
         alt="logo"
         // className="invert brightness-0"
       />
-      {/* <MyImage
-        src="/images/brand-icon.png"
-        width={100}
-        height={100}
-        alt="logo"
-        className="invert brightness-0 block md:hidden"
-      /> */}
     </Link>
   );
 };
