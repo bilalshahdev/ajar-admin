@@ -1,4 +1,4 @@
-import SmtpConfig from "@/components/pages/smtp-config";
+import SmtpConfig from "@/components/pages/SmtpConfig";
 
 const MailConfigPage = () => {
   return (

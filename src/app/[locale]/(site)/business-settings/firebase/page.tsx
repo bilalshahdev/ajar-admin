@@ -1,4 +1,4 @@
-import FirebaseConfig from "@/components/pages/firebase-config";
+import FirebaseConfig from "@/components/pages/FirebaseConfig";
 
 const FirebasePage = () => {
   return <FirebaseConfig />;

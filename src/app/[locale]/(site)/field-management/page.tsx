@@ -1,6 +1,6 @@
 "use client";
-import Container from "@/components/container";
-import Fields from "@/components/pages/fields";
+import Container from "@/components/Container";
+import Fields from "@/components/pages/Fields";
 
 export default function FieldManagementPage() {
   return (

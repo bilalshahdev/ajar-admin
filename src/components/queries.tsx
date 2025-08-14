@@ -3,13 +3,13 @@
 import { useDeleteQuery, useGetQueries } from "@/hooks/useQueries";
 import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
-import TableActions from "./actions";
-import { DataTable } from "./custom/data-table";
-import { SearchInput } from "./custom/search-input";
+import TableActions from "./Actions";
+import { DataTable } from "./custom/DataTable";
+import { SearchInput } from "./custom/SearchInput";
 import ResponseError from "./ResponseError";
 import TableSkeleton from "./skeletons/TableSkeleton";
-import Status from "./status-badge";
-import Tooltip from "./tooltip";
+import Status from "./StatusBadge";
+import Tooltip from "./Tooltip";
 import { TableCell } from "./ui/table";
 import { Query } from "@/types";
 import HighlightCell from "./HighlightCell";

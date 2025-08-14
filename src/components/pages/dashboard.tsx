@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import DashboardStats from "@/components/dashboard/dashboard-stats";
-import LineChart from "@/components/dashboard/line-chart";
-import BarChart from "@/components/dashboard/bar-chart";
+import LineChart from "@/components/dashboard/LineChart";
+import BarChart from "@/components/dashboard/BarChart";
 import {
   Select,
   SelectContent,
@@ -17,6 +16,7 @@ import LineChartSkeleton from "@/components/skeletons/LineChartSkeleton";
 import BarChartSkeleton from "@/components/skeletons/BarChartSkeleton";
 import { chartFilters, FilterOption } from "@/services/stats";
 import ResponseError from "@/components/ResponseError";
+import DashboardStats from "../dashboard/DashboardStats";
 
 export default function Dashboard() {
   const [selectedFilter, setSelectedFilter] = useState(chartFilters[0]);

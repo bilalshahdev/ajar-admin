@@ -1,4 +1,4 @@
-import MapApiForm from "@/components/forms/map-api-form";
+import MapApiForm from "@/components/forms/MapApiForm";
 
 const MapApisPage = () => {
   return <MapApiForm />;

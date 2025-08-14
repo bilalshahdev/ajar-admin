@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import RefundManagement from "@/components/pages/refund-management";
+import Container from "@/components/Container";
+import RefundManagement from "@/components/pages/RefundManagement";
 
 const RefundManagementPage = () => {
   return (

@@ -1,7 +1,7 @@
 "use client";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import Container from "./container";
+import Container from "./Container";
 import { Button } from "./ui/button";
 
 export const PageTitle = ({ title }: { title: string }) => {

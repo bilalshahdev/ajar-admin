@@ -57,19 +57,19 @@ type DashboardStat = {
   bgColor: string;
 };
 
-export interface UserOTP {
+interface UserOTP {
   isVerified: boolean;
   code: string;
   expiry: string;
 }
 
-export interface StripeInfo {
+interface StripeInfo {
   connectedAccountId: string;
   connectedAccountLink: string;
   customerId: string;
 }
 
-export interface User {
+interface User {
   _id: string;
   name: string;
   email: string;
@@ -136,13 +136,13 @@ interface LoginSuccessData {
   };
 }
 
-export interface Polygon {
+interface Polygon {
   lat: number;
   lng: number;
   _id: string;
 }
 
-export interface ZoneLanguage {
+interface ZoneLanguage {
   locale: string;
   translations: {
     name: string;
@@ -150,7 +150,7 @@ export interface ZoneLanguage {
   _id: string;
 }
 
-export interface SubCategory {
+interface SubCategory {
   _id: string;
   name: string;
   thumbnail: string;
@@ -167,7 +167,7 @@ export interface SubCategory {
   id: string;
 }
 
-export interface Zone {
+interface Zone {
   _id: string;
   name: string;
   currency: string;
@@ -179,7 +179,7 @@ export interface Zone {
   updatedAt: string;
 }
 
-export interface Category {
+interface Category {
   _id: string;
   name: string;
   description?: string;
@@ -194,15 +194,15 @@ export interface Category {
 
 // types/ZoneSettings.ts
 
-export type CommissionType = "fixed" | "percentage";
+type CommissionType = "fixed" | "percentage";
 
-export interface Commission {
+interface Commission {
   type: CommissionType;
   leaser: number | { min: number; max: number };
   renter: number | { min: number; max: number };
 }
 
-export interface SubcategorySettings {
+interface SubcategorySettings {
   subcategory: string;
   fields: string[];
   commission: Commission;
@@ -210,18 +210,29 @@ export interface SubcategorySettings {
   expiry: string; // ISO string for date
 }
 
-export interface ZoneSettingsFormData {
+interface ZoneSettingsFormData {
   zone: string;
   subcategories: SubcategorySettings[];
 }
 
-export interface RentalUser {
+type SettingsPageName =
+  | "businessInfo"
+  | "paymentMethods"
+  | "smsModule"
+  | "mailConfig"
+  | "mapAPI"
+  | "socialLogins"
+  | "recaptcha"
+  | "firebase"
+  | "pushNotifications";
+
+interface RentalUser {
   _id: string;
   name: string;
   profilePic: string;
 }
 
-export interface Subcategory {
+interface Subcategory {
   name: string;
   category: {
     name: string;
@@ -244,7 +255,7 @@ interface RentalRequest {
 type TicketStatus = "active" | "pending" | "rejected";
 type Priority = "Low" | "Medium" | "High";
 
-export interface BookingLanguage {
+interface BookingLanguage {
   locale: string;
   translations: {
     roomType: string;
@@ -337,7 +348,7 @@ interface Query {
   createdAt?: string;
 }
 
-export interface Contact {
+interface Contact {
   _id: string;
   phone: string;
   email: string;
@@ -348,7 +359,7 @@ export interface Contact {
   __v?: number;
 }
 
-export interface Message {
+interface Message {
   _id: string;
   chatId: string;
   sender: User;
@@ -360,7 +371,7 @@ export interface Message {
   updatedAt?: Date;
 }
 
-export interface Chat {
+interface Chat {
   _id: string;
   participants: User[]; // usually 2 in 1-on-1 chat
   latestMessage?: Message;
@@ -371,7 +382,7 @@ export interface Chat {
   updatedAt: Date;
 }
 
-export interface Field {
+interface Field {
   _id: string;
   name: string;
   label: string;
@@ -398,7 +409,7 @@ export interface Field {
   updatedAt: string;
 }
 
-export interface Ticket {
+interface Ticket {
   _id: string;
   user: User | null;
   title: string;
@@ -407,8 +418,33 @@ export interface Ticket {
   updatedAt: string;
 }
 
-export interface TicketList {
+interface TicketList {
   _id: string;
   title: string;
   status: string;
+}
+
+type Ratings = {
+  count: number;
+  average: number;
+};
+
+interface RentalListing {
+  _id: string;
+  name: string;
+  fullName: string;
+  description: string;
+  address: string;
+  price: number;
+  isActive: boolean;
+  language: string;
+  zone: string;
+  images: string[];
+  facilities: string[];
+  nearLocation: string[];
+  createdAt: string;
+  updatedAt: string;
+  ratings: Ratings;
+  leaser: User;
+  subCategory: SubCategory;
 }

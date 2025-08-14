@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import StaffManagement from "@/components/pages/staff-management";
+import Container from "@/components/Container";
+import StaffManagement from "@/components/pages/StaffManagement";
 const StaffManagementPage = () => {
   return (
     <Container title="Staff Management" addBtnTitle="Staff">

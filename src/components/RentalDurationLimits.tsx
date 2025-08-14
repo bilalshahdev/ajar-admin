@@ -4,9 +4,9 @@ import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
-import Switch from "./forms/fields/switch";
-import TextInput from "./forms/fields/text-input";
-import SelectInput from "./forms/fields/select-input";
+import Switch from "./forms/fields/Switch";
+import TextInput from "./forms/fields/TextInput";
+import SelectInput from "./forms/fields/SelectInput";
 
 const durations = [
   { label: "Hours", value: "hours" },

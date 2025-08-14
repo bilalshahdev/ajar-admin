@@ -17,12 +17,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { NavMenuItem } from "@/types";
-import Brand from "./brand";
-import GradientIcon from "./gradient-icon";
+import Brand from "./Brand";
+import GradientIcon from "./GradientIcon";
 import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import getDirection from "@/utils/getDirection";
-import ConfirmDialog from "./confirm-dialog";
+import ConfirmDialog from "./ConfirmDialog";
 import { useRouter } from "next/navigation";
 
 export default function Sidebar({ className }: { className?: string }) {

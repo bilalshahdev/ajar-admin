@@ -1,4 +1,4 @@
-import BusinessSettingsForm from "@/components/forms/business-settings-form";
+import BusinessSettingsForm from "@/components/forms/BusinessSettingsForm";
 
 const BusinessSettingsPage = () => {
   return <BusinessSettingsForm />;

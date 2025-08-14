@@ -1,4 +1,4 @@
-import SocialConfigForm from "@/components/forms/social-config-form";
+import SocialConfigForm from "@/components/forms/SocialConfigForm";
 
 const SocialLoginsPage = () => {
   return <SocialConfigForm />;

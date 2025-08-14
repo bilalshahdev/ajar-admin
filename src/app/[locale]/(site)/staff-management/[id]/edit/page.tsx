@@ -1,6 +1,6 @@
 
-import Container from "@/components/container"
-import StaffForm from "@/components/forms/staff-form";
+import Container from "@/components/Container"
+import StaffForm from "@/components/forms/StaffForm";
 const EditStaffPage = async ({
   params,
 }: {

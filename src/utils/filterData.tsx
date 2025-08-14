@@ -1,10 +1,15 @@
 type FilterDataOptions<T> = {
   data: T[];
   search?: string;
-  searchKeys?: (keyof T)[];
-  filters?: Partial<Record<keyof T, any>>;
-  custom?: (item: T) => boolean; // optional extra logic
+  searchKeys?: string[]; // now supports "nested.property.path"
+  filters?: Record<string, any>; // also supports nested keys
+  custom?: (item: T) => boolean;
 };
+
+// Helper to get nested values from object using "a.b.c" paths
+function getNestedValue(obj: any, path: string) {
+  return path.split(".").reduce((acc, part) => acc?.[part], obj);
+}
 
 export function filterData<T>({
   data,
@@ -19,26 +24,25 @@ export function filterData<T>({
     // 🔍 Search match
     const matchesSearch =
       search === "" ||
-      searchKeys.some((key) => {
-        const value = item[key];
+      searchKeys.some((path) => {
+        const value = getNestedValue(item, path);
         return (
           typeof value === "string" && value.toLowerCase().includes(searchLower)
         );
       });
 
-    // ✅ Filters match (string, number, boolean)
-    const matchesFilters = Object.entries(filters).every(([key, expected]) => {
+    // ✅ Filters match
+    const matchesFilters = Object.entries(filters).every(([path, expected]) => {
       if (expected === undefined || expected === "all") return true;
 
-      const actual = item[key as keyof T];
+      const actual = getNestedValue(item, path);
 
-      // Support value OR function (e.g., (val) => val > 5)
       return typeof expected === "function"
         ? expected(actual)
         : actual === expected;
     });
 
-    // 🧠 Optional custom logic (date ranges, compound conditions)
+    // 🧠 Optional custom logic
     const matchesCustom = custom ? custom(item) : true;
 
     return matchesSearch && matchesFilters && matchesCustom;

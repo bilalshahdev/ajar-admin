@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import FieldForm from "@/components/forms/field-form";
+import Container from "@/components/Container";
+import FieldForm from "@/components/forms/FieldForm";
 export default async function EditFieldPage({
   params,
 }: {

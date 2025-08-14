@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import ChartCard from "../dashboard/chart-card";
+import ChartCard from "../dashboard/ChartCard";
 
 const BarChartSkeleton = () => {
   return (

@@ -1,4 +1,4 @@
-import PaymentSettingsForm from "@/components/forms/payment-settings";
+import PaymentSettingsForm from "@/components/forms/PaymentSettings";
 
 const PaymentMethodsPage = () => {
   return <PaymentSettingsForm />;

@@ -1,5 +1,5 @@
-import Container from '@/components/container';
-import ZoneForm from '@/components/forms/zone-form';
+import Container from '@/components/Container';
+import ZoneForm from '@/components/forms/ZoneForm';
 import React from 'react'
 
 const EditZonePage = async ({ params }: { params: Promise<{ id: string }> }) => {

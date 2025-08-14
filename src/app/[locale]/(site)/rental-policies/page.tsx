@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import RentalPolicies from "@/components/pages/rental-policies";
+import Container from "@/components/Container";
+import RentalPolicies from "@/components/pages/RentalPolicies";
 
 const RentalPoliciesPage = () => {
   return (

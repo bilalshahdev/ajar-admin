@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import HelpSupportPage from "@/components/pages/help-support";
+import Container from "@/components/Container";
+import HelpSupportPage from "@/components/pages/HelpSupport";
 
 const HelpAndSupportPage = () => {
   return (

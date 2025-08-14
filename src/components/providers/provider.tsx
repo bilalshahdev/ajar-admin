@@ -1,5 +1,5 @@
-import { ThemeProvider } from "./theme-provider";
-import ReactQueryProvider from "./query-provider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import ReactQueryProvider from "@/components/providers/QueryProvider";
 import StoreProvider from "@/lib/store/StoreProvider";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";

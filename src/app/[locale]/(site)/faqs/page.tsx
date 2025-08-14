@@ -1,6 +1,6 @@
-import Container from "@/components/container";
-import Faqs from "@/components/pages/faqs";
-import FaqForm from "@/components/forms/faq-form";
+import Container from "@/components/Container";
+import Faqs from "@/components/pages/Faqs";
+import FaqForm from "@/components/forms/FaqForm";
 
 const FaqsPage = () => {
   return (

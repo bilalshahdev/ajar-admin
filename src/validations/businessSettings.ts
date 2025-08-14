@@ -1,43 +1,33 @@
 import { z } from "zod";
 
 export const BusinessSettingsSchema = z.object({
-  maintenanceMode: z.boolean(),
+  maintenanceMode: z.boolean().optional(),
 
   companyName: z.string().min(1),
-  companyEmail: z.string().email(),
+  email: z.string().email(),
   phone: z.string().min(1),
   country: z.string().min(1),
   address: z.string().optional(),
-
-  latitude: z.string().optional(),
-  longitude: z.string().optional(),
-
-  logo: z.any().optional(), // z.instanceof(File) not always needed
+  lat: z.string().optional(),
+  long: z.string().optional(),
+  logo: z.any().optional(),
   favicon: z.any().optional(),
-
-  timezone: z.string(),
-  // timeFormat: z.enum(["12hour", "24hour"]),
+  timeZone: z.string(),
   currencySymbol: z.string(),
   currencyPosition: z.enum(["left", "right"]),
-  digitAfterDecimal: z.number().int().min(0),
-  copyrightText: z.string().optional(),
-  // cookiesText: z.string().optional(),
-
-  defaultCommissionRate: z.number().min(0),
-  commissionRate: z.number().min(0),
-
+  decimalPoints: z.coerce.number().int().min(0),
+  copyRight: z.string().optional(),
+  defaultCommissionRate: z.coerce.number().min(0),
+  commissionRate: z.coerce.number().min(0),
   includeTax: z.boolean(),
   customerPreference: z.boolean(),
   orderInfoForAdmin: z.boolean(),
-  orderNotificationType: z.enum(["firebase", "manual"]),
-  freeServicesOrderOver: z.string().optional(),
-
+  orderNotification: z.enum(["firebase", "manual"]),
+  freeServiceOnOrderOver: z.string().optional(),
   guestCheckout: z.boolean(),
-  whoWillConfirmOrder: z.enum(["store", "deliveryman"]),
-
+  whoWillConfirmedOrder: z.enum(["store", "deliveryman"]),
   additionalChargeName: z.string().optional(),
-  additionalChargeAmount: z.string().optional(),
-
+  chargeAmount: z.string().optional(),
   partialPayment: z.boolean(),
-  paymentMethods: z.enum(["cod", "digital_payment", "both"]),
+  canPayTheRestUsing: z.enum(["cod", "digital_payment", "both"]),
 });

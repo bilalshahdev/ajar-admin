@@ -55,24 +55,16 @@ export const useUpdateFaq = () => {
   });
 };
 
-export const useDeleteFaq = ({
-  onSuccess,
-  onError,
-}: {
-  onSuccess?: () => void;
-  onError?: (err: any) => void;
-} = {}) => {
+export const useDeleteFaq = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteFaq(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["faqs"], exact: false });
       toast.success("Faq deleted successfully");
-      onSuccess?.();
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Something went wrong");
-      onError?.(error);
     },
   });
 };

@@ -1,13 +1,13 @@
 "use client";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { TableCell } from "@/components/ui/table";
 import { useDeleteUser, useGetUsers } from "@/hooks/useUsers";
 import { User } from "@/services/users";
 import { useState } from "react";
 import ResponseError from "../ResponseError";
-import TableActions from "../actions";
-import StatsCard from "../cards/stats-card";
-import { DataTable } from "../custom/data-table";
+import TableActions from "../Actions";
+import StatsCard from "../cards/StatsCard";
+import { DataTable } from "../custom/DataTable";
 
 const Users = () => {
   const [page, setPage] = useState(1);

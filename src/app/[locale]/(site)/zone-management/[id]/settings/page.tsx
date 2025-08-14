@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import ZoneSettings from "@/components/pages/zone-settings";
+import Container from "@/components/Container";
+import ZoneSettings from "@/components/pages/ZoneSettings";
 
 const SettingsPage = async ({
   params,

@@ -1,6 +1,6 @@
 import { cn } from "../lib/utils";
-import { PageTitle, PageSubtitle } from "./titles";
-import AddButton from "./add-button";
+import { PageTitle, PageSubtitle } from "./Titles";
+import AddButton from "./AddButton";
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   children: React.ReactNode;

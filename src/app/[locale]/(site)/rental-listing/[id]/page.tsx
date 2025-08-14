@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import RentalListingDetail from "@/components/pages/rental-details";
+import Container from "@/components/Container";
+import RentalListingDetail from "@/components/pages/RentalDetails";
 
 const RentalListingDetailPage = async ({
   params,

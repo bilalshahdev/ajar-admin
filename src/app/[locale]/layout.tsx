@@ -5,11 +5,11 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import "react-photo-view/dist/react-photo-view.css";
 
-import Providers from "../../components/providers/provider";
 import getDirection from "@/utils/getDirection";
 import AuthGuard from "./(site)/AuthGuard";
 import { baseUrl } from "@/config/constants";
 import ResponseError from "@/components/ResponseError";
+import Providers from "@/components/providers/Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

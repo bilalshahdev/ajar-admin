@@ -1,9 +1,9 @@
 "use client";
 
-import StatsCard from "../cards/stats-card";
-import RevenueBreakdownBar from "../revenue-breakdown-bar";
-import RevenueCategoryPie from "../revenue-category-pie";
-import RevenueLineChart from "../revenue-line-chart";
+import StatsCard from "../cards/StatsCard";
+import RevenueBreakdownBar from "../RevenueBreakdownBar";
+import RevenueCategoryPie from "../RevenueCategoryPie";
+import RevenueLineChart from "../RevenueLineChart";
 
 const Analytics = () => {
   const stats = [

@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider } from "react-hook-form";
-import TextInput from "./forms/fields/text-input";
+import TextInput from "./forms/fields/TextInput";
 import { Button } from "./ui/button";
-import Switch from "./forms/fields/switch";
+import Switch from "./forms/fields/Switch";
 
 const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
   const initialData = {

@@ -1,12 +1,12 @@
 "use client";
 
 import { navMenu } from "@/config/menu";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "./ThemeToggle";
 import { SidebarTrigger } from "./ui/sidebar";
-import User from "./user";
+import User from "./User";
 import Link from "next/link";
-import { Label } from "./typography";
-import LanguageSwitcher from "./language-switcher";
+import { Label } from "./Typography";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navbar = () => {
   return (

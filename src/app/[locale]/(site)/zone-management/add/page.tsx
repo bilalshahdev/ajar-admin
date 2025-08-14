@@ -1,5 +1,5 @@
-import ZoneForm from "@/components/forms/zone-form";
-import Container from "@/components/container";
+import ZoneForm from "@/components/forms/ZoneForm";
+import Container from "@/components/Container";
 
 const AddZonePage = () => {
   return (

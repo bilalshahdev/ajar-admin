@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import Analytics from "@/components/pages/analytics";
+import Container from "@/components/Container";
+import Analytics from "@/components/pages/Analytics";
 
 const AnalyticsPage = () => {
   return (

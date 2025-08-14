@@ -1,5 +1,5 @@
-import CategoryForm from "@/components/forms/category-form";
-import Container from "@/components/container";
+import CategoryForm from "@/components/forms/CategoryForm";
+import Container from "@/components/Container";
 
 const AddCategoryPage = () => {
   return (

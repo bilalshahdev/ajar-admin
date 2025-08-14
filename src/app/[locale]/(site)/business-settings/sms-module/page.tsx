@@ -1,4 +1,4 @@
-import SmsConfigForm from "@/components/forms/sms-config-form";
+import SmsConfigForm from "@/components/forms/SmsConfigForm";
 
 const SmsModulePage = () => {
   return <SmsConfigForm />;

@@ -4,8 +4,8 @@ import { RootState } from "@/lib/store";
 import { useAppSelector } from "@/lib/store/hooks";
 import { cn } from "@/lib/utils";
 import getCompactTimeAgo from "@/utils/getCompactTime";
-import { Avatar } from "../avatar";
-import { Small, XS } from "../typography";
+import { Avatar } from "../Avatar";
+import { Small, XS } from "../Typography";
 
 const Chats = ({
   chatId,

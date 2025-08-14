@@ -4,8 +4,8 @@ import { TableCell } from "@/components/ui/table";
 import { limit } from "@/config/constants";
 import { useDeleteField, useGetFields } from "@/hooks/useFields";
 import { useState } from "react";
-import TableActions from "../actions";
-import { DataTable } from "../custom/data-table";
+import TableActions from "../Actions";
+import { DataTable } from "../custom/DataTable";
 import ResponseError from "../ResponseError";
 import TableSkeleton from "../skeletons/TableSkeleton";
 

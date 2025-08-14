@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import Messages from "@/components/pages/messages";
+import Container from "@/components/Container";
+import Messages from "@/components/pages/Messages";
 
 const MessagesPage = () => {
   return (

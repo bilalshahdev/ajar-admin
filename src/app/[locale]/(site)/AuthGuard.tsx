@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 
 interface DecodedToken {
   id: string;

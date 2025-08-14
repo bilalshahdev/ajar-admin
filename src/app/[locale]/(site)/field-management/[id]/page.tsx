@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import FieldDetails from "@/components/pages/field-details";
+import Container from "@/components/Container";
+import FieldDetails from "@/components/pages/FieldDetails";
 const FieldDetailPage = () => {
   return (
     <Container title="Field Details">

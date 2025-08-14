@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import TicketsList from "@/components/pages/tickets-list";
+import Container from "@/components/Container";
+import TicketsList from "@/components/pages/TicketsList";
 
 const TicketsPage = () => {
   return (

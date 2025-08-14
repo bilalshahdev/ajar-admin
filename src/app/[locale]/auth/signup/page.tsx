@@ -1,5 +1,5 @@
-import AuthForm from "@/components/forms/auth-form";
-import SignupForm from "@/components/forms/signup-form";
+import AuthForm from "@/components/forms/AuthForm";
+import SignupForm from "@/components/forms/SignupForm";
 
 const SignupPage = () => {
   return (

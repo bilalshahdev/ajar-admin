@@ -9,8 +9,8 @@ import {
 import Link from "next/link";
 import { cloneElement, useState } from "react";
 import { FiEdit2, FiEye, FiSettings, FiTrash2 } from "react-icons/fi";
-import ConfirmDialog from "./confirm-dialog";
-import Tooltip from "./tooltip";
+import ConfirmDialog from "./ConfirmDialog";
+import Tooltip from "./Tooltip";
 
 type ActionType = "view" | "edit" | "delete" | "settings";
 

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import ChatInfo from "../inbox/chat-info";
-import ChatMessages from "../inbox/chat-messages";
-import Chats from "../inbox/chats";
+import ChatInfo from "../inbox/ChatInfo";
+import ChatMessages from "../inbox/ChatMessages";
+import Chats from "../inbox/Chats";
 
 const Inbox = () => {
   const [chatId, setChatId] = useState<string | null>(null);

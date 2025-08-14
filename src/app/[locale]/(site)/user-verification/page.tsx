@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import Users from "@/components/pages/users";
+import Container from "@/components/Container";
+import Users from "@/components/pages/Users";
 
 const UserVerificationPage = () => {
   return (

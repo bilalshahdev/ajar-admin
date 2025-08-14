@@ -4,13 +4,13 @@ import { useDeleteFaq, useGetFaqs } from "@/hooks/useFaqs";
 import { Faq } from "@/types";
 import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
-import TableActions from "../actions";
-import { DataTable } from "../custom/data-table";
-import { SearchInput } from "../custom/search-input";
-import FaqForm from "../forms/faq-form";
+import TableActions from "../Actions";
+import { DataTable } from "../custom/DataTable";
+import { SearchInput } from "../custom/SearchInput";
+import FaqForm from "../forms/FaqForm";
 import ResponseError from "../ResponseError";
 import TableSkeleton from "../skeletons/TableSkeleton";
-import Tooltip from "../tooltip";
+import Tooltip from "../Tooltip";
 import { TableCell } from "../ui/table";
 
 const Faqs = () => {

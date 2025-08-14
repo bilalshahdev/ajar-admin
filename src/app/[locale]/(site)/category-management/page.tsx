@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import Categories from "@/components/pages/categories";
+import Container from "@/components/Container";
+import Categories from "@/components/pages/Categories";
 
 const CategoryManagementPage = () => {
   return (

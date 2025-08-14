@@ -5,11 +5,11 @@ import { limit } from "@/config/constants";
 import { useDeleteCategory, useGetCategories } from "@/hooks/useCategories";
 import { Category } from "@/types";
 import { useState } from "react";
-import TableActions from "../actions";
-import { DataTable } from "../custom/data-table";
+import TableActions from "../Actions";
+import { DataTable } from "../custom/DataTable";
 import ResponseError from "../ResponseError";
 import TableSkeleton from "../skeletons/TableSkeleton";
-import Tooltip from "../tooltip";
+import Tooltip from "../Tooltip";
 
 const Categories = () => {
   const [page, setPage] = useState(1);

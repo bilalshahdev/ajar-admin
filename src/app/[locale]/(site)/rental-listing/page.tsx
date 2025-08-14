@@ -1,5 +1,5 @@
-import Container from "@/components/container";
-import RentalListings from "@/components/pages/rental-listings";
+import Container from "@/components/Container";
+import RentalListings from "@/components/pages/RentalListings";
 
 const RentalListingPage = () => {
   return (

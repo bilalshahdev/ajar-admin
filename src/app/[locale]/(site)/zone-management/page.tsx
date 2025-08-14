@@ -1,6 +1,6 @@
-import Container from "@/components/container";
-import ZoneForm from "@/components/forms/zone-form";
-import Zones from "@/components/pages/zones";
+import Container from "@/components/Container";
+import ZoneForm from "@/components/forms/ZoneForm";
+import Zones from "@/components/pages/Zones";
 
 const ZoneManagementPage = () => {
   return (

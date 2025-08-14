@@ -1,4 +1,4 @@
-import RecaptchaForm from "@/components/forms/recaptcha-form";
+import RecaptchaForm from "@/components/forms/RecaptchaForm";
 
 const RecaptchaPage = () => {
   return <RecaptchaForm />;
