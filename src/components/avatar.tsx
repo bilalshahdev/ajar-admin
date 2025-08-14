@@ -12,7 +12,7 @@ export const Avatar = ({
   name: string;
 }) => {
   return (
-    <AvatarComponent>
+    <AvatarComponent> 
       <AvatarImage src={image || ""} alt={name} />
       <AvatarFallback className="bg-muted-foreground text-background">{name.charAt(0)}</AvatarFallback>
     </AvatarComponent>
