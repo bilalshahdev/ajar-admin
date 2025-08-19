@@ -7,27 +7,40 @@ import { FormProvider } from "react-hook-form";
 import TextInput from "./forms/fields/TextInput";
 import { Button } from "./ui/button";
 import Switch from "./forms/fields/Switch";
+import {
+  useGetDamageLiabilityTerms,
+  useUpdateDamageLiabilityTerms,
+} from "@/hooks/useRentalPolicies";
+import Loader from "./Loader";
+import ResponseError from "./ResponseError";
+import { useEffect, useMemo } from "react";
+
+interface DamageLiabilityTermsFormValues {
+  responsibilityClause: string;
+  inspectionRequired: boolean;
+  insuranceRequired: boolean;
+}
 
 const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
-  const initialData = {
-    zoneId: zone,
-    responsibilityClause: "",
-    inspection: false,
-    insurance: false,
-  };
+  const { data, isLoading, error } = useGetDamageLiabilityTerms(zone);
+  const {
+    responsibilityClause = "",
+    inspectionRequired = false,
+    insuranceRequired = false,
+  } = data?.data?.damageLiabilityTerms || {};
 
-  interface DamageLiabilityTermsFormValues {
-    zoneId: string;
-    responsibilityClause: string;
-    inspection: boolean;
-    insurance: boolean;
-  }
+  const initialData = useMemo(() => {
+    return {
+      responsibilityClause,
+      inspectionRequired,
+      insuranceRequired,
+    };
+  }, [responsibilityClause, inspectionRequired, insuranceRequired]);
 
   const schema = z.object({
-    zoneId: z.string(),
     responsibilityClause: z.string(),
-    inspection: z.boolean(),
-    insurance: z.boolean(),
+    inspectionRequired: z.boolean(),
+    insuranceRequired: z.boolean(),
   });
 
   const methods = useForm<DamageLiabilityTermsFormValues>({
@@ -35,16 +48,24 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
     resolver: zodResolver(schema),
   });
 
+  const { handleSubmit, control, reset } = methods;
+
+  useEffect(() => {
+    reset(initialData);
+  }, [reset, initialData]);
+
   const {
-    handleSubmit,
-    control,
-    formState: { isSubmitting },
-  } = methods;
+    mutate: update,
+    isPending: updating,
+    error: updateError,
+  } = useUpdateDamageLiabilityTerms();
 
   const onSubmit = (data: any) => {
-    console.log("Security Deposit Submitted:", data);
-    // Send data to API
+    update({ zoneId: zone, data });
   };
+
+  if (isLoading) return <Loader />;
+  if (error) return <ResponseError error={error?.message} />;
 
   return (
     <FormProvider {...methods}>
@@ -57,18 +78,34 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
             placeholder="Enter Responsibility Clause"
             type="textarea"
           />
-          {/* deposit required, label, with yes or no checkbox */}
           <div className="flex gap-4">
-            <Switch name="inspection" label="Inspection" control={control} />
-            <Switch name="insurance" label="Insurance" control={control} />
+            <Switch
+              name="inspectionRequired"
+              label="Inspection"
+              control={control}
+            />
+            <Switch
+              name="insuranceRequired"
+              label="Insurance"
+              control={control}
+            />
           </div>
         </div>
 
         <div className="flex justify-end">
-          <Button variant="button" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save"}
+          <Button
+            variant="button"
+            type="submit"
+            disabled={isLoading || updating}
+          >
+            {updating ? "Saving..." : "Save"}
           </Button>
         </div>
+        {updateError && (
+          <p className="text-red-500">
+            {updateError?.message || "Failed to update damage liability terms"}
+          </p>
+        )}
       </form>
     </FormProvider>
   );

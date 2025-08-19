@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
 const ResponseError = ({
-  error,
+  error = "Something went wrong",
   className,
 }: {
-  error: string;
+  error?: string;
   className?: string;
 }) => {
   return (

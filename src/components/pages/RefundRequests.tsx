@@ -1,61 +1,38 @@
 "use client";
-import { RootState } from "@/lib/store";
-import { useSelector } from "react-redux";
-import StatsCard from "../cards/StatsCard";
 
 import { TableCell } from "@/components/ui/table";
+import { useGetRefundRequests } from "@/hooks/useRefundManagement";
 import { RefundRequest } from "@/types";
 import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
 import { DataTable } from "../custom/DataTable";
 import { SearchInput } from "../custom/SearchInput";
+import Loader from "../Loader";
+import ResponseError from "../ResponseError";
 import Status from "../StatusBadge";
 import { Label } from "../Typography";
 
 const RefundRequests = () => {
-  const refundRequests = useSelector(
-    (state: RootState) => state.refundRequests
-  );
+  const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useGetRefundRequests(page, 10);
 
-  const refundStats = [
-    {
-      title: "Total Refund Requests",
-      value: refundRequests.length,
-      bgColor: "",
-    },
-    {
-      title: "Approved Refund Requests",
-      value: refundRequests.filter((request) => request.status === "approved")
-        .length,
-      bgColor: "",
-    },
-    {
-      title: "Rejected Refund Requests",
-      value: refundRequests.filter((request) => request.status === "rejected")
-        .length,
-      bgColor: "",
-    },
-    {
-      title: "Pending Refund Requests",
-      value: refundRequests.filter((request) => request.status === "pending")
-        .length,
-      bgColor: "",
-    },
-  ];
+  const {
+    data: refundRequests = [],
+    total,
+    page: currentPage,
+    limit,
+  } = data || {};
 
   const [search, setSearch] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("all");
 
-  const filteredRefundRequests = useMemo(() => {
+  const filteredRefundRequests: any = useMemo(() => {
     return filterData({
-      data: refundRequests,
+      data: refundRequests || [],
       search,
       searchKeys: ["listing", "user"],
-      filters: {
-        status: selectedStatus !== "all" ? selectedStatus : undefined,
-      },
+      filters: {},
     });
-  }, [refundRequests, search, selectedStatus]);
+  }, [refundRequests, search]);
 
   const cols = [
     "ID",
@@ -82,15 +59,18 @@ const RefundRequests = () => {
       </TableCell>
     </>
   );
+  const pagination = {
+    total,
+    page: currentPage,
+    limit,
+    setPage,
+  };
 
+  if (isLoading) return <Loader />;
+  if (error) return <ResponseError error={error.message} />;
+  
   return (
     <div className="flex flex-col gap-4 md:gap-8">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {refundStats.map((data) => (
-          <StatsCard key={data.title} {...data} />
-        ))}
-      </div>
-
       <div>
         <div className="flex items-center justify-between mb-4">
           <Label>List of Refund Requests</Label>
@@ -102,7 +82,12 @@ const RefundRequests = () => {
             />
           </div>
         </div>
-        <DataTable data={filteredRefundRequests} cols={cols} row={row} />
+        <DataTable
+          data={filteredRefundRequests}
+          cols={cols}
+          row={row}
+          pagination={pagination}
+        />
       </div>
     </div>
   );

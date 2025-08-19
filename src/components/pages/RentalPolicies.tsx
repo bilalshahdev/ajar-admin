@@ -12,21 +12,28 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState } from "react";
+import { useGetZones } from "@/hooks/useZones";
+import { limit } from "@/config/constants";
 
 const RentalPolicies = () => {
-  const zones = useSelector((state: any) => state.zones);
+  const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useGetZones({ page, limit });
   const [selectedZone, setSelectedZone] = useState<string | undefined>(
     undefined
   );
+
+  const zones = data?.data?.zones;
   return (
     <div className="border rounded-md p-4 space-y-4">
       <div className="flex items-center justify-end gap-2">
         <Select value={selectedZone} onValueChange={setSelectedZone}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a zone" />
+          <SelectTrigger disabled={isLoading || !zones?.length}>
+            <SelectValue
+              placeholder={isLoading ? "Loading..." : "Select a zone"}
+            />
           </SelectTrigger>
           <SelectContent>
-            {zones.map((zone: any) => (
+            {zones?.map((zone: any) => (
               <SelectItem key={zone._id} value={zone._id}>
                 {zone.name}
               </SelectItem>

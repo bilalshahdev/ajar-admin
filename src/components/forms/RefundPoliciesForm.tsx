@@ -1,37 +1,93 @@
 "use client";
 
-import { RootState } from "@/lib/store";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { limit } from "@/config/constants";
+import {
+  useGetRefundPolicy,
+  useSaveRefundPolicy,
+} from "@/hooks/useRefundManagement";
+import { useGetZone, useGetZones } from "@/hooks/useZones";
+import { useEffect, useMemo, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { H4 } from "../Typography";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Separator } from "../ui/separator";
 import SelectInput from "./fields/SelectInput";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
-import { Button } from "../ui/button";
-import { H4 } from "../Typography";
-import { Separator } from "../ui/separator";
 
 const RefundPoliciesForm = () => {
-  const zones = useSelector((state: RootState) => state.zones);
-  const categories = useSelector((state: RootState) => state.categories);
+  const [page, setPage] = useState(1);
+  const [zone, setZone] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+
+  const { data, isLoading, error } = useGetZones({ page, limit });
+  const zones = data?.data?.zones;
+
+  const {
+    data: zoneDetails,
+    isLoading: zoneLoading,
+    error: zoneError,
+  } = useGetZone(zone, !!zone);
+  const subCategories = zoneDetails?.data?.subCategories || [];
+
+  const { data: refundPolicy, isLoading: refundPolicyLoading } =
+    useGetRefundPolicy(zone, subCategory);
+
+  const refundPolicyData = useMemo(
+    () => refundPolicy?.data || {},
+    [refundPolicy]
+  );
 
   const methods = useForm({
     defaultValues: {
-      zone: "",
-      subCategory: "",
-      allowRefund: false,
-      refundWindow: "",
+      // zone: zone,
+      // subCategory: subCategory,
+      allowFund: refundPolicyData?.allowFund || false,
+      refundWindow: refundPolicyData?.refundWindow || "",
       cancellationCutoffTime: {
-        days: 0,
-        hours: 0,
+        days: refundPolicyData?.cancellationCutoffTime?.days || 0,
+        hours: refundPolicyData?.cancellationCutoffTime?.hours || 0,
       },
       flatFee: {
-        amount: 0,
-        days: 0,
-        hours: 0,
+        amount: refundPolicyData?.flatFee?.amount || 0,
+        days: refundPolicyData?.flatFee?.days || 0,
+        hours: refundPolicyData?.flatFee?.hours || 0,
       },
-      noteText: "",
+      noteText: refundPolicyData?.noteText || "",
     },
   });
+
+  useEffect(() => {
+    if (refundPolicyData) {
+      const currentValues = methods.getValues();
+      const newValues = {
+        allowFund: refundPolicyData?.allowFund || false,
+        refundWindow: refundPolicyData?.refundWindow || "",
+        cancellationCutoffTime: {
+          days: refundPolicyData?.cancellationCutoffTime?.days || 0,
+          hours: refundPolicyData?.cancellationCutoffTime?.hours || 0,
+        },
+        flatFee: {
+          amount: refundPolicyData?.flatFee?.amount || 0,
+          days: refundPolicyData?.flatFee?.days || 0,
+          hours: refundPolicyData?.flatFee?.hours || 0,
+        },
+        noteText: refundPolicyData?.noteText || "",
+      };
+
+      if (JSON.stringify(currentValues) !== JSON.stringify(newValues)) {
+        methods.reset(newValues);
+      }
+    }
+  }, [refundPolicyData, methods]);
 
   const {
     handleSubmit,
@@ -39,41 +95,81 @@ const RefundPoliciesForm = () => {
     formState: { isSubmitting },
   } = methods;
 
+  const {
+    mutateAsync: saveRefundPolicy,
+    isPending,
+    error: saveRefundPolicyError,
+  } = useSaveRefundPolicy();
+
   const onSubmit = (data: any) => {
-    console.log("Refund Policy Submitted:", data);
     // Send data to API
+    saveRefundPolicy({
+      zone,
+      subCategory,
+      data,
+    });
   };
 
-  const zone = useWatch({
-    control,
-    name: "zone",
-  });
+  const disabled = isLoading || zoneLoading || refundPolicyLoading || isPending;
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Zone & Category */}
-          <SelectInput
-            name="zone"
-            label="Zone"
-            control={control}
-            options={zones}
-            labelKey="name"
-            valueKey="_id"
-          />
-          <SelectInput
-            disabled={!zone}
-            name="subCategory"
-            label="Sub Category"
-            control={control}
-            options={categories}
-            labelKey="name"
-            valueKey="_id"
-          />
+          <div className="space-y-2">
+            <Label>Zone</Label>
+            <Select value={zone} onValueChange={setZone} disabled={isLoading}>
+              <SelectTrigger className="w-full" disabled={isLoading}>
+                <SelectValue
+                  placeholder={isLoading ? "Loading..." : "Select a zone"}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {zones?.map((zone: any) => (
+                  <SelectItem key={zone._id} value={zone._id}>
+                    {zone.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Sub Category</Label>
+            <div>
+              <Select
+                value={subCategory}
+                onValueChange={setSubCategory}
+                disabled={isLoading || zoneLoading}
+              >
+                <SelectTrigger
+                  className="w-full"
+                  disabled={isLoading || zoneLoading}
+                >
+                  <SelectValue
+                    placeholder={
+                      isLoading || zoneLoading
+                        ? "Loading..."
+                        : "Select a category"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {subCategories?.map((subCategory: any) => (
+                    <SelectItem key={subCategory._id} value={subCategory._id}>
+                      {subCategory.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {zoneError && (
+                <p className="text-red-500">{zoneError?.message}</p>
+              )}
+            </div>
+          </div>
 
           {/* Allow Refund */}
-          <Switch name="allowRefund" label="Allow Refund" control={control} />
+          <Switch name="allowFund" label="Allow Refund" control={control} />
 
           {/* Cancellation Cutoff Time */}
           <div className="grid grid-cols-2 gap-4">
@@ -129,6 +225,20 @@ const RefundPoliciesForm = () => {
             </div>
             <Separator className="mt-4" />
           </div>
+
+          {/* refund window: full , partial, custom */}
+          <SelectInput
+            name="refundWindow"
+            label="Refund Window"
+            control={control}
+            options={[
+              { value: "full", label: "Full" },
+              { value: "partial", label: "Partial" },
+              { value: "custom", label: "Custom" },
+            ]}
+            disabled={!zone || zoneLoading}
+            loading={zoneLoading}
+          />
           {/* Notes */}
           <TextInput
             name="noteText"
@@ -143,8 +253,8 @@ const RefundPoliciesForm = () => {
           {/* <Button type="button" variant="outline">
             Reset
           </Button> */}
-          <Button type="submit" variant="button" disabled={isSubmitting}>
-            Save Information
+          <Button type="submit" variant="button" disabled={disabled}>
+            {isPending ? "Saving..." : "Save Information"}
           </Button>
         </div>
       </form>

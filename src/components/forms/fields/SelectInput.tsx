@@ -17,6 +17,7 @@ interface SelectInputProps extends React.HTMLAttributes<HTMLSelectElement> {
   labelKey?: string;
   valueKey?: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 const SelectInput = ({
@@ -28,6 +29,7 @@ const SelectInput = ({
   valueKey = "value",
   disabled,
   className,
+  loading,
 }: SelectInputProps) => {
   // get the validation error too
   const {
@@ -46,8 +48,10 @@ const SelectInput = ({
               onValueChange={field.onChange}
               disabled={disabled}
             >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={`Select ${label}`} />
+              <SelectTrigger disabled={loading} className="w-full">
+                <SelectValue
+                  placeholder={loading ? "Loading..." : `Select ${label}`}
+                />
               </SelectTrigger>
               <SelectContent>
                 {options.map((opt: any) => (

@@ -1,12 +1,19 @@
 "use client";
 
-import { useForm, FormProvider } from "react-hook-form";
-import { z } from "zod";
+import {
+  useGetRentalDurationLimits,
+  useUpdateRentalDurationLimits,
+} from "@/hooks/useRentalPolicies";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "./ui/button";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
+import SelectInput from "./forms/fields/SelectInput";
 import Switch from "./forms/fields/Switch";
 import TextInput from "./forms/fields/TextInput";
-import SelectInput from "./forms/fields/SelectInput";
+import Loader from "./Loader";
+import ResponseError from "./ResponseError";
+import { Button } from "./ui/button";
 
 const durations = [
   { label: "Hours", value: "hours" },
@@ -16,47 +23,62 @@ const durations = [
   { label: "Years", value: "years" },
 ];
 
-const yesNoOptions = [
-  { label: "Yes", value: "yes" },
-  { label: "No", value: "no" },
-];
+const durationSchema = z.object({
+  value: z.number(),
+  unit: z.string(),
+});
 
 const schema = z.object({
-  zoneId: z.string(),
-  minDuration: z.number(),
-  minDurationUnit: z.string(),
-  maxDuration: z.number(),
-  maxDurationUnit: z.string(),
-  extensionAllowed: z.string(),
-  extensionToggle: z.boolean(),
+  minimumDuration: durationSchema,
+  maximumDuration: durationSchema,
+  extensionAllowed: z.boolean(),
 });
 
 type RentalDurationFormValues = z.infer<typeof schema>;
 
 const RentalDurationLimits = ({ zone }: { zone: string }) => {
-  const methods = useForm<RentalDurationFormValues>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      zoneId: zone,
-      minDuration: 1,
-      minDurationUnit: "days",
-      maxDuration: 1,
-      maxDurationUnit: "days",
-      extensionAllowed: "yes",
-      extensionToggle: true,
-    },
-  });
+  const { data, isLoading, error } = useGetRentalDurationLimits(zone);
 
   const {
-    handleSubmit,
-    control,
-    formState: { isSubmitting },
-  } = methods;
+    minimumDuration = { value: 0, unit: "days" },
+    maximumDuration = { value: 0, unit: "days" },
+    extensionAllowed = false,
+  } = data?.data?.rentalDurationLimits || {};
+
+  const initialData = {
+    minimumDuration,
+    maximumDuration,
+    extensionAllowed,
+  };
+  const methods = useForm<RentalDurationFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: initialData,
+  });
+
+  const { handleSubmit, control, reset } = methods;
+
+  useEffect(() => {
+    if (data?.data?.rentalDurationLimits) {
+      reset({
+        minimumDuration,
+        maximumDuration,
+        extensionAllowed,
+      });
+    }
+  }, [reset, data, minimumDuration, maximumDuration, extensionAllowed]);
+
+  const {
+    mutate: update,
+    isPending: updating,
+    error: updateError,
+  } = useUpdateRentalDurationLimits();
 
   const onSubmit = (data: RentalDurationFormValues) => {
-    console.log("Rental Duration Data", data);
-    // Send to API
+    update({ zoneId: zone, data });
   };
+
+  if (isLoading) return <Loader />;
+  if (error) return <ResponseError error={error?.message} />;
 
   return (
     <FormProvider {...methods}>
@@ -65,9 +87,14 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
           <div className="w-full">
             <label className="font-semibold mb-1 block">Minimum Duration</label>
             <div className="flex items-center gap-2">
-              <TextInput name="minDuration" control={control} type="number" min={1} />
+              <TextInput
+                name="minimumDuration.value"
+                control={control}
+                type="number"
+                min={1}
+              />
               <SelectInput
-                name="minDurationUnit"
+                name="minimumDuration.unit"
                 control={control}
                 options={durations}
                 labelKey="label"
@@ -79,13 +106,16 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
             </p>
           </div>
 
-          {/* Maximum Duration */}
           <div>
             <label className="font-semibold mb-1 block">Maximum Duration</label>
             <div className="flex items-center gap-2">
-              <TextInput name="maxDuration" control={control} type="number" />
+              <TextInput
+                name="maximumDuration.value"
+                control={control}
+                type="number"
+              />
               <SelectInput
-                name="maxDurationUnit"
+                name="maximumDuration.unit"
                 control={control}
                 options={durations}
                 labelKey="label"
@@ -98,17 +128,26 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
           </div>
 
           <Switch
-            name="extensionToggle"
+            name="extensionAllowed"
             label="Extension Allowed"
             control={control}
           />
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit" variant="button" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save"}
+          <Button
+            type="submit"
+            variant="button"
+            disabled={isLoading || updating}
+          >
+            {updating ? "Saving..." : "Save"}
           </Button>
         </div>
+        {updateError && (
+          <p className="text-red-500">
+            {updateError?.message || "Failed to update rental duration limits"}
+          </p>
+        )}
       </form>
     </FormProvider>
   );

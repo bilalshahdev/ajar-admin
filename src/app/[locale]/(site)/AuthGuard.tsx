@@ -43,7 +43,14 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         }
         setIsVerified(true);
       } catch (error) {
-        console.error("Auth error:", error);
+        console.log("Auth error:", error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        localStorage.removeItem("userid");
+
+        setIsVerified(false);
+
+
         router.replace("/auth/login");
       }
     };
