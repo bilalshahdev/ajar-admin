@@ -100,16 +100,17 @@ const CategoryForm = ({ id }: { id?: string }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SelectInput
-          control={control}
-          name="type"
-          label="Type"
-          options={[
-            { label: "Category", value: "category" },
-            { label: "SubCategory", value: "subCategory" },
-          ]}
-          disabled={isEditMode}
-        />
+        {!isEditMode && (
+          <SelectInput
+            control={control}
+            name="type"
+            label="Type"
+            options={[
+              { label: "Category", value: "category" },
+              { label: "SubCategory", value: "subCategory" },
+            ]}
+          />
+        )}
 
         {type === "subCategory" && !isCategoriesLoading && (
           <SelectInput

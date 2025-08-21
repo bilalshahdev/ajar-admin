@@ -1,27 +1,26 @@
 "use client";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import BxTabs from "../BxTabs";
 import ContactDetails from "../ContactDetails";
 import Queries from "../Queries";
 
 const HelpSupportPage = () => {
   return (
     <div className="border rounded-md p-4">
-      <Tabs defaultValue="queries">
-        <TabsList className="mb-4">
-          <TabsTrigger value="queries" className="cursor-pointer">
-            Queries
-          </TabsTrigger>
-          <TabsTrigger value="contact-details" className="cursor-pointer">
-            Contact details
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="queries">
-          <Queries />
-        </TabsContent>
-        <TabsContent value="contact-details">
-          <ContactDetails />
-        </TabsContent>
-      </Tabs>
+      <BxTabs
+        defaultValue="queries"
+        tabs={[
+          {
+            label: "Queries",
+            value: "queries",
+            content: <Queries />,
+          },
+          {
+            label: "Contact details",
+            value: "contact-details",
+            content: <ContactDetails />,
+          },
+        ]}
+      />
     </div>
   );
 };

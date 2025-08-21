@@ -1,54 +1,51 @@
 "use client";
-import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-import { TableCell } from "../ui/table";
-import { DataTable } from "../custom/DataTable";
-import Status from "../StatusBadge";
-import { useMemo, useState } from "react";
 import { filterData } from "@/utils/filterData";
-import { SearchInput } from "../custom/SearchInput";
-import { Label } from "../Typography";
-import { FilterButton } from "../custom/FilterButton";
-import Link from "next/link";
-import ConfirmDialog from "../ConfirmDialog";
-import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
-import Tooltip from "../Tooltip";
+import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import TableActions from "../Actions";
+import { DataTable } from "../custom/DataTable";
+import { FilterButton } from "../custom/FilterButton";
+import { SearchInput } from "../custom/SearchInput";
+import Status from "../StatusBadge";
+import { TableCell } from "../ui/table";
+import AddButton from "../AddButton";
 
-const StaffManagement = () => {
-  const staff = useSelector((state: RootState) => state.staff);
-
+const Employees = () => {
+  const employees = useSelector((state: RootState) => state.staff);
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
-  const filteredStaff = useMemo(() => {
+  const filteredEmployees = useMemo(() => {
     return filterData({
-      data: staff,
+      data: employees,
       search,
       searchKeys: ["name", "email", "role", "status"],
       filters: {
         status: selectedStatus !== "all" ? selectedStatus : undefined,
       },
     });
-  }, [staff, search, selectedStatus]);
+  }, [employees, search, selectedStatus]);
 
   const cols = ["Name", "Email", "Role", "Status", "Created At", "Actions"];
-  const row = (staff: any) => {
+  const row = (employee: any) => {
     return (
       <>
-        <TableCell>{staff.name}</TableCell>
-        <TableCell>{staff.email}</TableCell>
-        <TableCell>{staff.role}</TableCell>
+        <TableCell>{employee.name}</TableCell>
+        <TableCell>{employee.email}</TableCell>
+        <TableCell>{employee.role}</TableCell>
         <TableCell>
-          <Status value={staff.status} />
+          <Status value={employee.status} />
         </TableCell>
-        <TableCell>{new Date(staff.createdAt).toLocaleDateString()}</TableCell>
+        <TableCell>
+          {new Date(employee.createdAt).toLocaleDateString()}
+        </TableCell>
         <TableCell className="flex gap-4">
           <TableActions
-            id={staff._id}
-            baseRoute="/staff-management"
+            id={employee._id}
+            baseRoute="/employee-management"
             actions={["view", "edit", "delete"]}
-            module="Staff"
+            module="Employee"
             onDelete={(id) => console.log("deleted:", id)}
             deleteLoading={false}
           />
@@ -66,10 +63,10 @@ const StaffManagement = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-end mb-4">
-        <div className="flex gap-2">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex gap-4">
           <SearchInput
-            placeholder="Search staff"
+            placeholder="Search employee"
             onChange={(e) => setSearch(e)}
             debounceDelay={500}
           />
@@ -81,10 +78,11 @@ const StaffManagement = () => {
             options={statusOptions}
           />
         </div>
+        <AddButton addBtnTitle="Employee" />
       </div>
-      <DataTable cols={cols} data={filteredStaff} row={row} />
+      <DataTable cols={cols} data={filteredEmployees} row={row} />
     </div>
   );
 };
 
-export default StaffManagement;
+export default Employees;

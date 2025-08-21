@@ -6,7 +6,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { EarningsChartRecord, FilterOption } from "@/services/stats";
 import getTrendInfo from "@/utils/trendInfo";
 import { getFormattedLabel } from "@/utils/getFormattedLabel";
 import { useMemo } from "react";
@@ -20,6 +19,7 @@ import {
 } from "recharts";
 import { H4, Label, Small } from "../Typography";
 import ChartCard from "./ChartCard";
+import { FilterOption, EarningsChartRecord } from "@/types";
 
 type BarChartProps = {
   filter: FilterOption;

@@ -3,27 +3,27 @@
 
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardContent,
-  CardFooter,
-  CardDescription,
 } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { useParams, usePathname } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
 import { Field } from "@/lib/store/slices/fieldSlice"; // adjust path if different
+import { usePathname } from "next/navigation";
 import {
-  FiHash,
-  FiType,
-  FiFlag,
-  FiEye,
-  FiLock,
-  FiList,
-  FiCheckSquare,
   FiAlertCircle,
-  FiInfo,
+  FiCheckSquare,
   FiClipboard,
+  FiEye,
+  FiFlag,
+  FiHash,
+  FiInfo,
+  FiList,
+  FiLock,
+  FiType,
 } from "react-icons/fi";
 
 export default function FieldDetail() {

@@ -34,52 +34,6 @@ const inputTypes = [
   { name: "Color", value: "color" },
   { name: "Location", value: "location" },
 ];
-// import { z } from "zod";
-
-// export const FieldSchema = z.object({
-//   name: z
-//     .string({ required_error: "Field name is required" })
-//     .min(1, "Field name must be at least 1 character"),
-
-//   label: z
-//     .string({ required_error: "Label is required" })
-//     .min(1, "Label must be at least 1 character"),
-
-//   type: z
-//     .string({ required_error: "Field type is required" })
-//     .min(1, "Field type must be specified"),
-
-//   placeholder: z.string().optional(),
-
-//   order: z.coerce.number().int().nonnegative(),
-
-//   isMultiple: z.boolean().optional(),
-
-//   tooltip: z.string().optional(),
-
-//   defaultValue: z.union([z.string(), z.number(), z.boolean()]).optional(),
-
-//   visible: z.boolean().default(true).optional(),
-
-//   readonly: z.boolean().optional(),
-
-//   validation: z
-//     .object({
-//       required: z.boolean({
-//         required_error: "Validation 'required' flag is required",
-//       }),
-//       pattern: z.string().optional(),
-//       min: z.number().optional(),
-//       max: z.number().optional(),
-//     })
-//     .optional(),
-
-//   dependencies: z.record(z.any()).optional(),
-
-//   options: z.array(z.string()).optional(),
-// });
-
-// export type FieldFormValues = z.infer<typeof FieldSchema>;
 
 export default function FieldForm({ id }: { id?: string }) {
   const router = useRouter();
@@ -113,46 +67,47 @@ export default function FieldForm({ id }: { id?: string }) {
 
   useEffect(() => {
     if (field) {
-      const {
-        name,
-        label,
-        type,
-        placeholder,
-        order,
-        isMultiple,
-        visible,
-        tooltip,
-        defaultValue,
-        readonly,
-        options,
-        validation,
-      } = field;
-      reset({
-        name,
-        label,
-        type,
-        placeholder,
-        order: order ?? 0, // default to 0
-        isMultiple,
-        visible,
-        tooltip,
-        defaultValue,
-        readonly,
-        options: options || [],
-        validation: {
-          required: validation?.required ?? false,
-          pattern: validation?.pattern ?? "",
-          min: validation?.min ?? 0,
-          max: validation?.max ?? 0,
-        },
-      });
+      reset(field?.data);
     }
   }, [field, reset]);
 
-  // const { data: allCategories, isLoading: isCategoriesLoading } =
-  //   useGet();
-
-  // const type = useWatch({ control, name: "type" });
+  // useEffect(() => {
+  //   if (field) {
+  //     const {
+  //       name,
+  //       label,
+  //       type,
+  //       placeholder,
+  //       order,
+  //       isMultiple,
+  //       visible,
+  //       tooltip,
+  //       defaultValue,
+  //       readonly,
+  //       options,
+  //       validation,
+  //     } = field;
+  //     reset({
+  //       name,
+  //       label,
+  //       type,
+  //       placeholder,
+  //       order: order ?? 0, // default to 0
+  //       isMultiple,
+  //       visible,
+  //       tooltip,
+  //       defaultValue,
+  //       readonly,
+  //       options: options || [],
+  //       validation: {
+  //         required: validation?.required ?? false,
+  //         pattern: validation?.pattern ?? "",
+  //         min: validation?.min ?? 0,
+  //         max: validation?.max ?? 0,
+  //       },
+  //     });
+  //   }
+  // }, [field, reset]);
 
   const isEditMode = Boolean(id);
 
@@ -172,21 +127,14 @@ export default function FieldForm({ id }: { id?: string }) {
     });
   };
 
-  // if (isFieldLoading && id) return <Loader />;
+  if (isFieldLoading && id) return <Loader />;
 
-  const isMultiple = watch("isMultiple");
   const type = watch("type");
   const typesWithOptions = ["select", "radio", "multiselect"];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid sm:grid-cols-2 gap-4">
-        <TextInput
-          control={control}
-          name="name"
-          label="Field Name"
-          placeholder="Enter field name"
-        />
         <TextInput
           control={control}
           name="label"
@@ -199,17 +147,15 @@ export default function FieldForm({ id }: { id?: string }) {
           label="Input Type"
           options={inputTypes.map((t) => ({ label: t.name, value: t.value }))}
         />
-
         {typesWithOptions.includes(type) && (
           <FormArrayInput control={control} name="options" label="Options" />
         )}
-
         <TextInput
           control={control}
-          name="order"
-          type="number"
-          label="Order"
-          placeholder="Enter order"
+          name="name"
+          note="Must be like firstName, lastName, email, password etc."
+          label="Field Name"
+          placeholder="Enter field name"
         />
         <TextInput
           control={control}
@@ -219,8 +165,17 @@ export default function FieldForm({ id }: { id?: string }) {
         />
         <TextInput
           control={control}
+          name="order"
+          note="Order of the field in the form"
+          type="number"
+          label="Order"
+          placeholder="Enter order"
+        />
+        <TextInput
+          control={control}
           name="tooltip"
           label="Tooltip"
+          note="Text to be displayed when user hovers over the field"
           placeholder="Enter tooltip"
         />
         <TextInput
@@ -237,8 +192,6 @@ export default function FieldForm({ id }: { id?: string }) {
         <Switch control={control} name="validation.required" label="Required" />
         <Switch control={control} name="isMultiple" label="Is Multiple" />
       </div>
-
-      {/* i want to show options input if isMultiple is true */}
 
       <div className="grid grid-cols-2 gap-4">
         <TextInput

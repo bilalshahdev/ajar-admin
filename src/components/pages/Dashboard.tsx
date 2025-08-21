@@ -3,20 +3,15 @@
 import { useState } from "react";
 import LineChart from "@/components/dashboard/LineChart";
 import BarChart from "@/components/dashboard/BarChart";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useStats } from "@/hooks/useStats";
 import StatsSkeleton from "@/components/skeletons/StatsSkeleton";
 import LineChartSkeleton from "@/components/skeletons/LineChartSkeleton";
 import BarChartSkeleton from "@/components/skeletons/BarChartSkeleton";
-import { chartFilters, FilterOption } from "@/services/stats";
+import { chartFilters } from "@/services/stats";
 import ResponseError from "@/components/ResponseError";
 import DashboardStats from "../dashboard/DashboardStats";
+import { FilterOption } from "@/types";
+import BxSelect from "../BxSelect";
 
 export default function Dashboard() {
   const [selectedFilter, setSelectedFilter] = useState(chartFilters[0]);
@@ -32,21 +27,12 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-4 md:gap-8">
       <div className="flex justify-end">
-        <Select
+        <BxSelect
+          options={chartFilters}
           value={selectedFilter}
-          onValueChange={(value) => setSelectedFilter(value as FilterOption)}
-        >
-          <SelectTrigger className="w-[180px] capitalize">
-            <SelectValue placeholder="Select filter" />
-          </SelectTrigger>
-          <SelectContent className="capitalize">
-            {chartFilters.map((filter) => (
-              <SelectItem key={filter} value={filter}>
-                {filter}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          onChange={(val) => setSelectedFilter(val as FilterOption)}
+          placeholder="Select filter"
+        />
       </div>
       {stats && !isLoading ? (
         <DashboardStats stats={stats} />

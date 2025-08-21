@@ -12,7 +12,9 @@ export interface GetFieldsListResponse {
 }
 
 import { api } from "@/lib/axios";
-import { Field } from "@/types";
+import { ApiResponse, Field } from "@/types";
+
+type FieldResponse = ApiResponse<Field>
 
 export const getFields = async (): Promise<GetFieldsListResponse> => {
   const response = await api.get("/fields");
@@ -24,7 +26,7 @@ export const getFieldsList = async (): Promise<GetFieldsListResponse> => {
   return response.data;
 };
 
-export const getField = async (fieldId: string): Promise<Field> => {
+export const getField = async (fieldId: string): Promise<FieldResponse> => {
   const response = await api.get(`/fields/${fieldId}`);
   return response.data;
 };

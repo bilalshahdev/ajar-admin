@@ -4,8 +4,16 @@ import { api } from "@/lib/axios";
 
 export interface ZoneFormSetting {
   commissionType: "fixed" | "percentage";
-  leaserCommission: number;
-  renterCommission: number;
+  leaserCommission: {
+    value: number;
+    min: number;
+    max: number;
+  };
+  renterCommission: {
+    value: number;
+    min: number;
+    max: number;
+  };
   tax: number;
   expiry: string; // ISO format
 }

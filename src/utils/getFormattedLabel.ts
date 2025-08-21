@@ -8,20 +8,23 @@ export function getFormattedLabel(
 
   if (filter === "week") {
     const dayOffset = Number(raw);
-    // Assuming 0-based index: 0 = 7 days ago, 6 = today
-    return `W${dayOffset + 1}`; // e.g., W1 to W7
+    // Example: if raw=0 => today, raw=1 => yesterday, ... raw=6 => 6 days ago
+    const date = subDays(now, 6 - dayOffset);
+    return format(date, "EEE"); // Sun, Mon, Tue, etc.
   }
 
   if (filter === "month") {
     const weekOffset = Number(raw);
-    const weekDate = subWeeks(now, 4 - weekOffset);
-    return `W${weekOffset + 1}`; // optional: still W1–W4
+    // raw=0 => current week, raw=1 => last week, etc.
+    const date = subWeeks(now, 3 - weekOffset);
+    return `W${weekOffset + 1}`; // or format(date, "wo 'week'") for fancy
   }
 
   if (filter === "year") {
     const monthOffset = Number(raw);
-    const date = subMonths(now, 12 - monthOffset);
-    return format(date, "MMMM"); // e.g., January
+    // raw=0 => current month, raw=1 => last month, etc.
+    const date = subMonths(now, 11 - monthOffset);
+    return format(date, "MMM"); // Jan, Feb, etc.
   }
 
   return raw.toString();

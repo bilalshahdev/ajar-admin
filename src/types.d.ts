@@ -448,3 +448,87 @@ interface RentalListing {
   leaser: User;
   subCategory: SubCategory;
 }
+
+interface Stats {
+  totalUsers: number;
+  totalAdmins: number;
+  totalNormalUsers: number;
+  totalLeasers: number;
+  totalMarketplaceListings: number;
+  totalCategories: number;
+  totalZones: number;
+  bookingCount: number;
+  totalEarning: number;
+}
+
+type Trend = "up" | "down";
+
+interface Change {
+  value: number | string;
+  trend: Trend;
+}
+
+interface UsersRecord {
+  value: string;
+  totalUsers: string;
+}
+
+interface EarningsRecord {
+  value: string;
+  totalEarning: string;
+}
+
+interface UsersChartRecord {
+  change: Change;
+  record: UsersRecord[];
+}
+
+interface EarningsChartRecord {
+  change: Change;
+  record: EarningsRecord[];
+}
+
+interface DashboardChart {
+  users: UsersChartRecord;
+  earnings: EarningsChartRecord;
+}
+
+type FilterOption = "week" | "month" | "year";
+
+type IndicatorLabel =
+  | "Total Revenue"
+  | "Platform Commission"
+  | "Owners Payouts"
+  | "Refund Issued";
+
+interface PerformanceIndicator {
+  label: IndicatorLabel;
+  value: number | string;
+  change: Change;
+}
+
+// Chart Data
+interface ChartRecord {
+  value: string;
+  amount: number;
+}
+
+interface Chart {
+  record: ChartRecord[];
+}
+
+interface AnalyticsCharts {
+  totalRevenue: Chart;
+  platformCommission: Chart;
+  ownersPayouts: Chart;
+  refundIssued: Chart;
+}
+
+// Final Response
+interface AnalyticsData {
+  filter: FilterOption;
+  performanceIndicators: PerformanceIndicator[];
+  charts: AnalyticsCharts;
+}
+
+type AnalyticsResponse = ApiResponse<AnalyticsData>;

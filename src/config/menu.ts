@@ -39,8 +39,8 @@ export const sidebarMenu: NavMenuItem[] = [
   { title: "Tickets", path: "/tickets", icon: FaTicketAlt },
   { title: "Refund Management", path: "/refund-management", icon: FaUndo },
   {
-    title: "Staff Management",
-    path: "/staff-management",
+    title: "Employee Management",
+    path: "/employee-management",
     icon: FaUserFriends,
   },
   {

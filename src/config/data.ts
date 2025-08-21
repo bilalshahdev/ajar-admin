@@ -1,6 +1,6 @@
 // data.ts
 
-import { FilterOption } from "@/services/stats";
+import { FilterOption } from "@/types";
 import { Chat, Faq, Message, Query, User } from "@/types";
 
 export const userChartData: Record<
@@ -608,25 +608,12 @@ export const messages: Message[] = [
   },
 ];
 
-// access: staff?.access || [
-//   {
-//     module: "zones",
-//     permissions: ["read", "write", "update", "delete"],
-//   },
-//   {
-//     module: "categories",
-//     permissions: ["read", "write", "update", "delete"],
-//   },
-//   {
-//     module: "forms",
-//     permissions: ["read", "write"],
-//   },
-//   {
-//     module: "refunds",
-//     permissions: ["read", "update", "delete"],
-//   },
-//   {
-//     module: "reports",
-//     permissions: ["read"],
-//   },
-// ],
+const makeRecord = () =>
+  Array.from({ length: 7 }, (_, i) => ({ value: String(i + 1), amount: 0 }));
+
+export const initialAnalyticsChartValues = {
+  totalRevenue: { record: makeRecord() },
+  platformCommission: { record: makeRecord() },
+  ownersPayouts: { record: makeRecord() },
+  refundIssued: { record: makeRecord() },
+};

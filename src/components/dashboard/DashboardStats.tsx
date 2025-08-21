@@ -1,11 +1,10 @@
-import { DashboardStat } from "@/types";
+import { DashboardStat, Stats } from "@/types";
 import { BiCategoryAlt } from "react-icons/bi";
 import { FaHandshake, FaMapMarkedAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { MdOutlineRequestPage } from "react-icons/md";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import StatsCard from "../cards/StatsCard";
-import { Stats } from "@/services/stats";
 
 const DashboardStats = ({ stats }: { stats: Stats }) => {
   const {
@@ -55,13 +54,13 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
       bgColor: "bg-blue-500",
     },
   ];
-  console.log(dashboardStats)
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {dashboardStats?.map(({ title, value, icon: Icon, bgColor }) => (
         <StatsCard
           key={title}
-          title={title}
+          label={title}
           value={value?.toString()}
           icon={<Icon />}
           bgColor={bgColor}

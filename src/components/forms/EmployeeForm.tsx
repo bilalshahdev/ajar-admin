@@ -6,7 +6,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
-import { StaffFormValues, StaffSchema } from "@/validations/staff";
+import { EmployeeFormValues, EmployeeSchema } from "@/validations/employee";
 
 import FileInput from "./fields/FileInput";
 import PasswordInput from "./fields/PasswordInput";
@@ -36,8 +36,8 @@ const moduleOptions = [
 
 const permissionOptions = ["read", "write", "update", "delete"];
 
-export default function StaffForm({ id }: { id?: string }) {
-  const staff = useAppSelector((s: any) =>
+export default function EmployeeForm({ id }: { id?: string }) {
+  const employee = useAppSelector((s: any) =>
     s.staff?.find((member: any) => member._id === id)
   );
 
@@ -47,16 +47,16 @@ export default function StaffForm({ id }: { id?: string }) {
     handleSubmit,
     watch,
     formState: { isSubmitting },
-  } = useForm<StaffFormValues>({
-    resolver: zodResolver(StaffSchema),
+  } = useForm<EmployeeFormValues>({
+    resolver: zodResolver(EmployeeSchema),
     defaultValues: {
-      name: staff?.name || "",
-      email: staff?.email || "",
+      name: employee?.name || "",
+      email: employee?.email || "",
       password: "",
-      role: staff?.role || "zone-manager",
-      status: staff?.status || "active",
-      image: staff?.image || "",
-      access: staff?.access || [],
+      role: employee?.role || "zone-manager",
+      status: employee?.status || "active",
+      image: employee?.image || "",
+      access: employee?.access || [],
     },
   });
 
@@ -64,8 +64,6 @@ export default function StaffForm({ id }: { id?: string }) {
     control,
     name: "access",
   });
-
-  console.log(fields);
 
   const handleAddAccess = () => {
     append({ module: "", permissions: [] });
@@ -75,12 +73,12 @@ export default function StaffForm({ id }: { id?: string }) {
     remove(index);
   };
 
-  const onSubmit = (data: StaffFormValues) => {
+  const onSubmit = (data: EmployeeFormValues) => {
     const formData = {
       ...data,
       image: typeof data.image === "string" ? data.image : data.image?.name,
     };
-    console.log(id ? "Update Staff:" : "Create Staff:", formData);
+    console.log(id ? "Update Employee:" : "Create Employee:", formData);
   };
 
   return (
@@ -126,7 +124,7 @@ export default function StaffForm({ id }: { id?: string }) {
         variant="button"
         disabled={isSubmitting}
       >
-        {isSubmitting ? <Loader /> : id ? "Update Staff" : "Create Staff"}
+        {isSubmitting ? <Loader /> : id ? "Update Employee" : "Create Employee"}
       </Button>
     </form>
   );

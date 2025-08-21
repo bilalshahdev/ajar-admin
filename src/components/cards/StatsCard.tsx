@@ -1,24 +1,27 @@
 "use client";
+
+import { Change, IndicatorLabel } from "@/types";
+
 const StatsCard = ({
-  title,
+  label,
   value,
   icon,
   change,
   bgColor,
 }: {
-  title: string;
+  label: string | IndicatorLabel;
   value: string | number;
   icon?: React.ReactNode;
-  change?: number;
+  change?: Change;
   bgColor?: string;
 }) => {
   return (
     <div
-      key={title}
+      key={label}
       className={`p-4 bg-card rounded-lg shadow dark:shadow-muted flex items-center justify-between`}
     >
       <div>
-        <p className="text-sm text-muted-foreground">{title}</p>
+        <p className="text-sm text-muted-foreground">{label}</p>
         <h3 className="text-lg font-semibold">{value}</h3>
       </div>
       {icon && (
@@ -26,10 +29,10 @@ const StatsCard = ({
       )}
       {change && (
         <p className="text-sm font-semibold">
-          {change > 0 ? (
-            <span className="text-green-500">+{change}%</span>
+          {change.trend === "up" ? (
+            <span className="text-green-500">+{change.value}%</span>
           ) : (
-            <span className="text-red-500">-{change}%</span>
+            <span className="text-red-500">-{change.value}%</span>
           )}
         </p>
       )}

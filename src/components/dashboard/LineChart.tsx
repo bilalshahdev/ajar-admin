@@ -6,7 +6,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { FilterOption, UsersChartRecord } from "@/services/stats";
 import getTrendInfo from "@/utils/trendInfo";
 import { getFormattedLabel } from "@/utils/getFormattedLabel";
 import { useMemo } from "react";
@@ -14,7 +13,7 @@ import { BiLineChart } from "react-icons/bi";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import ChartCard from "./ChartCard";
 import { H4, Label, Small } from "../Typography";
-
+import { FilterOption, UsersChartRecord } from "@/types";
 
 type LineChartProps = {
   filter: FilterOption;

@@ -31,22 +31,34 @@ const Users = () => {
     {
       title: "Total Users",
       value: totalUsers?.toString() || "0",
-      change: 0,
+      change: {
+        value: 0,
+        trend: "up",
+      },
     },
     {
       title: "Active Users",
       value: totalActiveUsers?.toString() || "0",
-      change: 0,
+      change: {
+        value: 0,
+        trend: "up",
+      },
     },
     {
       title: "Inactive Users",
       value: totalInactiveUsers?.toString() || "0",
-      change: 0,
+      change: {
+        value: 0,
+        trend: "up",
+      },
     },
     {
       title: "Blocked Users",
       value: totalBlockedUsers?.toString() || "0",
-      change: 0,
+      change: {
+        value: 0,
+        trend: "up",
+      },
     },
   ];
 
@@ -81,8 +93,13 @@ const Users = () => {
   return (
     <div className="flex flex-col gap-4 md:gap-8 h-full">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {UserStats.map((data) => (
-          <StatsCard key={data.title} {...data} />
+        {UserStats.map((data: any) => (
+          <StatsCard
+            key={data.title}
+            label={data.title}
+            value={data.value}
+            change={data.change}
+          />
         ))}
       </div>
       <DataTable

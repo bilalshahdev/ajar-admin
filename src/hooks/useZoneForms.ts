@@ -26,13 +26,12 @@ export const useGetZoneFormById = (id: string, enabled = true) =>
 
 export const useGetZoneFormByZoneAndSubCategory = (
   zoneId: string,
-  subCategoryId: string,
-  enabled = true
+  subCategoryId: string
 ) =>
   useQuery({
     queryKey: ["zone-form", zoneId, subCategoryId],
     queryFn: () => getZoneFormByZoneAndSubCategory(zoneId, subCategoryId),
-    enabled,
+    enabled: !!zoneId && !!subCategoryId,
     placeholderData: (previousData) => previousData,
   });
 
@@ -55,7 +54,7 @@ export const useUpdateZoneForm = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) =>
       updateZoneForm(id, data),
-    onSuccess: ({ data }: { data: { _id: string } }) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["zone-forms"] });
       queryClient.invalidateQueries({ queryKey: ["zone-form", data._id] });
       toast.success("Form updated successfully");

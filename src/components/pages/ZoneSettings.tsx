@@ -61,7 +61,7 @@ interface ZoneFormValues {
 const ZoneSettings = () => {
   const zoneId = useParams().id;
   const [subCategory, setSubCategory] = useState<string>("");
-  console.log(subCategory);
+
   return (
     <div className="space-y-4">
       <SubCategorySelector
@@ -112,20 +112,18 @@ const SubcategorySettingsForm = ({
     defaultValues,
   });
 
-  useEffect(() => {
-    reset({
-      ...defaultValues,
-      subCategory: selectedSubCategory,
-    });
-  }, [selectedSubCategory, reset, defaultValues]);
+  // useEffect(() => {
+  //   reset({
+  //     ...defaultValues,
+  //     subCategory: selectedSubCategory,
+  //     zone: zoneId,
+  //   });
+  // }, [selectedSubCategory, reset, defaultValues]);
 
-  // const subCategory = useWatch({ control, name: "subCategory" });
   const selectedFields: string[] = useWatch({ control, name: "fields" }) || [];
-  const shouldFetch = selectedSubCategory !== "" && zoneId !== "";
   const { data: zoneForm, isLoading } = useGetZoneFormByZoneAndSubCategory(
     zoneId,
-    selectedSubCategory,
-    !!shouldFetch
+    selectedSubCategory
   );
 
   useEffect(() => {
@@ -133,10 +131,33 @@ const SubcategorySettingsForm = ({
   }, [selectedSubCategory, reset, defaultValues]);
 
   useEffect(() => {
-    if (zoneForm?.data) {
-      reset(zoneForm?.data as any);
-    }
-  }, [zoneForm, reset]);
+    if (!zoneForm?.data) return;
+
+    const { name, description, fields = [], setting } = zoneForm.data;
+
+    const {
+      commissionType,
+      leaserCommission = {},
+      renterCommission = {},
+      tax,
+      expiry,
+    } = setting;
+
+    reset({
+      zone: zoneId,
+      subCategory: selectedSubCategory,
+      name,
+      description,
+      fields: fields.map((f: any) => f._id),
+      setting: {
+        commissionType,
+        leaserCommission,
+        renterCommission,
+        tax,
+        expiry,
+      },
+    });
+  }, [zoneForm, reset, zoneId, selectedSubCategory]);
 
   const {
     mutateAsync: updateZoneForm,
@@ -209,7 +230,7 @@ const SubcategorySettingsForm = ({
           name="description"
           label="Description"
         />
-        <div className="space-y-2">
+        <div className="space-y-2 col-span-2">
           {/*  name and description */}
 
           <Label>Select Custom Fields</Label>
@@ -225,7 +246,10 @@ const SubcategorySettingsForm = ({
                 )}
               >
                 {selectedFieldDetails?.length > 0
-                  ? selectedFieldDetails?.map((f: any) => f.label).join(", ")
+                  ? selectedFieldDetails?.length +
+                    ` field${
+                      selectedFieldDetails?.length > 1 ? "s" : ""
+                    } selected`
                   : "Select fields..."}
                 <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -273,12 +297,12 @@ const SubcategorySettingsForm = ({
               {selectedFieldDetails?.map((field: Field) => (
                 <Badge
                   key={field._id}
-                  variant="outline"
+                  variant="secondary"
                   className="flex items-center gap-1"
                 >
                   {field.label}
                   <X
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-3 h-3 cursor-pointer text-red-500"
                     onClick={() => handleRemoveField(field._id)}
                   />
                 </Badge>
@@ -289,11 +313,7 @@ const SubcategorySettingsForm = ({
         {/* Commission Inputs */}
         <CommissionInputs control={control} className="col-span-2" />
         {/* Expiry */}
-        <DateInput
-          control={control}
-          name="setting.expiry"
-          label="Expiry"
-        />
+        <DateInput control={control} name="setting.expiry" label="Expiry" />
         {/* Tax Input */}
         <div className="col-span-2 md:col-span-1">
           <TextInput

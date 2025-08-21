@@ -1,8 +1,11 @@
 "use client";
+import { AnalyticsCharts, FilterOption } from "@/types";
+import { getFormattedLabel } from "@/utils/getFormattedLabel";
 import {
   CartesianGrid,
-  Line,
-  LineChart,
+  Legend,
+  Area,
+  AreaChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -10,69 +13,114 @@ import {
 } from "recharts";
 import { Label, Small, XS } from "./Typography";
 
-const data = [
-  { year: "2015", value: 5 },
-  { year: "2016", value: 15 },
-  { year: "2017", value: 25 },
-  { year: "2018", value: 12 },
-  { year: "2019", value: 23 },
-  { year: "2020", value: 28 },
-];
+export default function RevenueLineChart({
+  charts,
+  filter,
+}: {
+  filter: FilterOption;
+  charts: AnalyticsCharts;
+}) {
+  const data = charts.totalRevenue.record.map((d, i) => ({
+    label: getFormattedLabel(d.value, filter),
+    "Total Revenue": charts.totalRevenue.record[i].amount,
+    "Platform Commission": charts.platformCommission.record[i].amount,
+    "Owners Payouts": charts.ownersPayouts.record[i].amount,
+    "Refund Issued": charts.refundIssued.record[i].amount,
+  }));
 
-export default function RevenueLineChart() {
+  // Custom tooltip component
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-background rounded-lg shadow-lg p-3 text-xs md:text-sm w-full">
+          <p className="font-semibold mb-1">{label}</p>
+          {payload.map((item: any) => (
+            <p key={item.dataKey} className="flex justify-between gap-4">
+              <span>{item.dataKey}</span>
+              <span className="font-medium">{item.value}</span>
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className="col-span-2 md:col-span-4 ">
+    <div className="col-span-2 md:col-span-4">
       <ResponsiveContainer
         width="100%"
-        height={200}
+        height={300}
         className="bg-gradient-to-r from-blue to-aqua rounded-lg py-2"
       >
-        <LineChart
+        <AreaChart
           data={data}
-          margin={{ top: 20, right: 0, left: -30, bottom: 0 }} 
+          margin={{ top: 20, right: 10, left: -10, bottom: 0 }}
         >
           <CartesianGrid
             strokeDasharray="3 3"
             vertical={false}
             stroke="white"
-            strokeOpacity={0.5}
+            strokeOpacity={0.3}
           />
-          {/* i dont wanna show the lines of x and y axis,,only data values */}
           <XAxis
-            dataKey="year"
+            dataKey="label"
             axisLine={false}
             tickLine={false}
             stroke="white"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 12, fill: "white", textAnchor: "middle" }}
             tickMargin={10}
           />
           <YAxis
             axisLine={false}
             tickLine={false}
             stroke="white"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 12, fill: "white" }}
             tickMargin={10}
           />
           <Tooltip
-            contentStyle={{
-              backgroundColor: "#fff",
-              border: "none",
-              color: "#000",
-            }}
-            labelStyle={{ color: "#000" }}
+            content={<CustomTooltip />}
             cursor={{ stroke: "rgba(255,255,255,0.3)", strokeWidth: 2 }}
           />
-          <Line
-            type="linear"
-            dataKey="value"
-            stroke="#fff"
+          <Legend />
+
+          <Area
+            type="monotone"
+            dataKey="Total Revenue"
+            stroke="#ffffff"
+            fill="rgba(255,255,255,0.6)"
             strokeWidth={2}
-            dot
+            dot={false}
           />
-        </LineChart>
+          <Area
+            type="monotone"
+            dataKey="Platform Commission"
+            stroke="#ffb347"
+            fill="rgba(255,179,71,0.6)"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Area
+            type="monotone"
+            dataKey="Owners Payouts"
+            stroke="#90ee90"
+            fill="rgba(144,238,144,0.6)"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Area
+            type="monotone"
+            dataKey="Refund Issued"
+            stroke="#ff6961"
+            fill="rgba(255,105,97,0.6)"
+            strokeWidth={2}
+            dot={false}
+          />
+        </AreaChart>
       </ResponsiveContainer>
+
       <div className="mt-2 text-sm text-muted-foreground space-y-2">
-        <Label>Revenue by Category</Label>
+        <Label>Revenue Overview</Label>
         <Small>
           <span className="text-green-600">(+15%) </span>increase in App Usage
         </Small>

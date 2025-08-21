@@ -1,4 +1,4 @@
-import { Change } from "@/services/stats";
+import { Change } from "@/types";
 
 const getTrendInfo = (change: Change) => {
   const value = change.value;

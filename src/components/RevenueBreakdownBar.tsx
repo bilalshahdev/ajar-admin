@@ -1,27 +1,30 @@
 "use client";
 
+import { Card, CardContent } from "@/components/ui/card";
+import { PerformanceIndicator } from "@/types";
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  LabelList,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
-import { Card, CardContent } from "@/components/ui/card";
+export default function RevenueBreakdownBar({
+  performanceIndicators,
+}: {
+  performanceIndicators: PerformanceIndicator[];
+}) {
+  // show trend (change with value) with name
+  // Transform data for recharts
+  const data = performanceIndicators.map((item: PerformanceIndicator) => ({
+    name: item.label, // only text
+    value: item.value,
+    trend: item.change.trend, // "up" | "down"
+  }));
 
-const data = [
-  { name: "Commission", value: 30 },
-  { name: "Owner payout", value: 80 },
-  { name: "Refund", value: 80 }, // 🔥 This is the one to highlight
-];
-
-const highlightIndex = data.findIndex((item) => item.name === "Refund");
-
-export default function RevenueBreakdownBar() {
   return (
     <Card>
       <CardContent className="p-4">
@@ -29,11 +32,10 @@ export default function RevenueBreakdownBar() {
         <div className="flex justify-between mb-4">
           <div>
             <h4 className="text-md font-semibold">Revenue Breakdown</h4>
-            <p className="text-xs text-muted-foreground">Overall Insight</p>
+            <p className="text-xs text-muted-foreground">
+              Performance Indicators
+            </p>
           </div>
-          <span className="text-sm text-muted-foreground">
-            Sort by: <span className="text-aqua font-medium">Monthly</span>
-          </span>
         </div>
 
         {/* Chart Section */}
@@ -41,40 +43,57 @@ export default function RevenueBreakdownBar() {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              margin={{ top: 10, right: 20, bottom: 10, left: 10 }}
-              barSize={32}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
             >
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
                 dataKey="name"
-                tick={{ fontSize: 12, fill: "#6b7280" }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis hide />
-              <Tooltip />
+                tick={(props: any) => {
+                  const { x, y, payload } = props;
+                  const item = data.find((d) => d.name === payload.value);
 
-              <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="#34d399">
-                <LabelList
-                  content={({ x, y, width, height, index }) => {
-                    if (index !== highlightIndex) return null;
+                  if (!item) return <g />; // 👈 return empty <g>, not null
+
+                  const trendColor = item.trend === "up" ? "green" : "red";
+                  const trendSymbol = item.trend === "up" ? "▲" : "▼";
+
+                  return (
+                    <g transform={`translate(${x},${y + 20})`}>
+                      <text textAnchor="middle" fill="#666" fontSize={12}>
+                        {item.name}{" "}
+                        <tspan fontSize={10} fill={trendColor}>
+                          ({item.value}% {trendSymbol})
+                        </tspan>
+                      </text>
+                    </g>
+                  );
+                }}
+              />
+
+              <YAxis tickLine={true} axisLine={false} />
+              <Tooltip
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    const item = payload[0].payload; // full data row
+
+                    const trendColor = item.trend === "up" ? "green" : "red";
+                    const trendSymbol = item.trend === "up" ? "▲" : "▼";
 
                     return (
-                      <foreignObject
-                        x={(x as number) - 24}
-                        y={(y as number) - 50}
-                        width={90}
-                        height={40}
-                      >
-                        <div className="bg-aqua text-white text-xs rounded-md px-2 py-1 shadow text-center">
-                          +6.08% 🚀
-                          <div className="font-semibold text-base">$2.80M</div>
-                        </div>
-                      </foreignObject>
+                      <div className="bg-white p-2 rounded shadow text-xs">
+                        <p className="font-semibold">{item.name}</p>
+                        <p>Value: {item.value}</p>
+                        <p style={{ color: trendColor }}>
+                          Change: {item.value}% {trendSymbol}
+                        </p>
+                      </div>
                     );
-                  }}
-                />
-              </Bar>
+                  }
+                  return null;
+                }}
+              />
+
+              <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="#34d399" />
             </BarChart>
           </ResponsiveContainer>
         </div>
