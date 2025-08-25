@@ -1,70 +1,23 @@
-// // /services/field.ts
-
-// export interface GetFieldsListResponse {
-//   success: boolean;
-//   message: string;
-//   data: {
-//     fields: Field[];
-//     total: number;
-//     page: number;
-//     limit: number;
-//   };
-// }
-
-// import { api } from "@/lib/axios";
-// import { Field } from "@/types";
-
-// export const getFields = async (): Promise<GetFieldsListResponse> => {
-//   const response = await api.get("/fields");
-//   return response.data;
-// };
-
-// export const getFieldsList = async (): Promise<GetFieldsListResponse> => {
-//   const response = await api.get("/fields/list");
-//   return response.data;
-// };
-
-// export const getField = async (fieldId: string): Promise<Field> => {
-//   const response = await api.get(`/fields/${fieldId}`);
-//   return response.data;
-// };
-
-// export const addField = async (fieldData: any) => {
-//   const response = await api.post("/fields", fieldData);
-//   return response.data;
-// };
-
-// export const updateField = async (fieldId: string, fieldData: any) => {
-//   const response = await api.patch(`/fields/${fieldId}`, fieldData);
-//   return response.data;
-// };
-
-// export const deleteField = async (fieldId: string) => {
-//   const response = await api.delete(`/fields/${fieldId}`);
-//   return response.data;
-// };
-
 // services/employeeManagement.ts
 
 import { api } from "@/lib/axios";
+import { ApiResponse, Employee, EmployeeRole } from "@/types";
 
-export interface GetEmployeesListResponse {
-  success: boolean;
-  message: string;
-  data: {
-    employees: any[];
-    total: number;
-    page: number;
-    limit: number;
-  };
-}
+type EmployeeResponse = ApiResponse<{
+  page: number;
+  limit: number;
+  total: number;
+  employees: Employee[];
+}>;
 
-export const getEmployees = async (): Promise<GetEmployeesListResponse> => {
+type GetEmployeeResponse = ApiResponse<Employee>;
+
+export const getEmployees = async (): Promise<EmployeeResponse> => {
   const response = await api.get("/employee-management");
   return response.data;
 };
 //by id
-export const getEmployee = async (id: string) => {
+export const getEmployee = async (id: string): Promise<GetEmployeeResponse> => {
   const response = await api.get(`/employee-management/${id}`);
   return response.data;
 };
@@ -84,18 +37,24 @@ export const deleteEmployee = async (id: string) => {
   return response.data;
 };
 
+type EmployeeRolesResponse = ApiResponse<{
+  page: number;
+  limit: number;
+  total: number;
+  employeeRoles: EmployeeRole[];
+}>;
 
-
-
-
+type EmployeeRoleResponse = ApiResponse<EmployeeRole>;
 
 // employee roles/permissions
-export const getEmployeeRoles = async () => {
+export const getEmployeeRoles = async (): Promise<EmployeeRolesResponse> => {
   const response = await api.get("/employee-roles");
   return response.data;
 };
 //by id
-export const getEmployeeRole = async (id: string) => {
+export const getEmployeeRole = async (
+  id: string
+): Promise<EmployeeRoleResponse> => {
   const response = await api.get(`/employee-roles/${id}`);
   return response.data;
 };

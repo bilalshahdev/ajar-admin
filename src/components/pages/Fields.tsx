@@ -13,7 +13,6 @@ const Fields = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetFields({ page, limit });
   const { mutate: deleteField, isPending: deleteLoading } = useDeleteField();
-
   const cols = ["Name", "Type", "Label", "Actions"];
 
   if (isLoading) {
@@ -36,7 +35,13 @@ const Fields = () => {
           baseRoute="/field-management"
           module="Field"
           actions={["view", "edit", "delete"]}
-          onDelete={(id) => deleteField(id)}
+          onDelete={(id, closeDialog) =>
+            deleteField(id, {
+              onSuccess: () => {
+                closeDialog();
+              },
+            })
+          }
           deleteLoading={deleteLoading}
         />
       </TableCell>
@@ -50,7 +55,7 @@ const Fields = () => {
         cols={cols}
         row={row}
         pagination={{
-          total: data?.data?.fields?.length || 0,
+          total: data?.data?.total || 0,
           page: data?.data?.page || 1,
           limit: data?.data?.limit || 10,
           setPage,

@@ -532,3 +532,41 @@ interface AnalyticsData {
 }
 
 type AnalyticsResponse = ApiResponse<AnalyticsData>;
+
+export interface Employee {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  status: "active" | "blocked";
+  allowAccess: EmployeeRole;
+  allowAccess: {
+    _id: string;
+    name: string;
+    permissions: {
+      access: string;
+      operations: string[];
+      _id: string;
+    }[];
+  };
+  images: string[];
+  profileImage: string;
+  address: string;
+  language: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Permission {
+  access: string;
+  operations: string[];
+}
+
+interface EmployeeRole {
+  _id?: string;
+  name: string;
+  permissions: Permission[];
+  createdAt?: string;
+  updatedAt?: string;
+}

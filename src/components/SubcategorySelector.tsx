@@ -117,33 +117,35 @@ const SubCategorySelector = ({
   return (
     <div>
       <Label className="mb-2 block">Subcategories</Label>
-      <div className="relative w-full h-12 rounded-md px-3 py-1.5 flex flex-wrap items-center gap-1 border-2 border-t-aqua border-b-blue border-l-blue border-r-aqua hover:ring ring-aqua">
-        {isLoading ? (
-          <Loader />
-        ) : error ? (
-          <p className="text-red-500">Error loading subcategoriesList</p>
-        ) : subCategories?.length > 0 ? (
-          subCategories?.map((cat) => (
-            <Badge
-              key={cat._id}
-              variant="secondary"
-              className={cn(
-                "flex items-center px-3 py-[6px] text-sm cursor-pointer",
-                value === cat._id
-                  ? "bg-blue/30 hover:bg-blue/30"
-                  : "hover:bg-blue/20"
-              )}
-              onClick={(e) => {
-                e.stopPropagation();
-                onChange(cat._id);
-              }}
-            >
-              {cat.name}
-            </Badge>
-          ))
-        ) : (
-          <p className="text-muted-foreground">No Subcategory Selected</p>
-        )}
+      <div className="relative w-full h-12 rounded-md px-3 py-1.5 flex items-center justify-between gap-2 border-2 border-t-aqua border-b-blue border-l-blue border-r-aqua hover:ring ring-aqua">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+          {isLoading ? (
+            <Loader />
+          ) : error ? (
+            <p className="text-red-500">Error loading subcategoriesList</p>
+          ) : subCategories?.length > 0 ? (
+            subCategories?.map((cat) => (
+              <Badge
+                key={cat._id}
+                variant="secondary"
+                className={cn(
+                  "flex items-center px-3 py-[6px] text-sm cursor-pointer whitespace-nowrap",
+                  value === cat._id
+                    ? "bg-blue/30 hover:bg-blue/30"
+                    : "hover:bg-blue/20"
+                )}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange(cat._id);
+                }}
+              >
+                {cat.name}
+              </Badge>
+            ))
+          ) : (
+            <p className="text-muted-foreground">No Subcategory Selected</p>
+          )}
+        </div>
 
         <Dialog
           open={dialogOpen}

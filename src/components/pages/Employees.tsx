@@ -10,9 +10,23 @@ import { SearchInput } from "../custom/SearchInput";
 import Status from "../StatusBadge";
 import { TableCell } from "../ui/table";
 import AddButton from "../AddButton";
+import HighlightCell from "../HighlightCell";
+import { useGetEmployees, useDeleteEmployee } from "@/hooks/useEmployees";
+import { Employee } from "@/types";
+import TableSkeleton from "../skeletons/TableSkeleton";
+import ResponseError from "../ResponseError";
 
 const Employees = () => {
-  const employees = useSelector((state: RootState) => state.staff);
+  const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useGetEmployees();
+  const { employees = [], limit, total } = data?.data || {};
+
+  const {
+    mutateAsync: deleteEmployee,
+    isPending: deleteLoading,
+    error: deleteError,
+  } = useDeleteEmployee();
+
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
@@ -20,34 +34,37 @@ const Employees = () => {
     return filterData({
       data: employees,
       search,
-      searchKeys: ["name", "email", "role", "status"],
+      searchKeys: ["name", "email", "phone"],
       filters: {
         status: selectedStatus !== "all" ? selectedStatus : undefined,
       },
     });
   }, [employees, search, selectedStatus]);
 
-  const cols = ["Name", "Email", "Role", "Status", "Created At", "Actions"];
-  const row = (employee: any) => {
+  const cols = ["Name", "Email", "Phone", "Status", "Actions"];
+  const row = (employee: Employee) => {
     return (
       <>
-        <TableCell>{employee.name}</TableCell>
-        <TableCell>{employee.email}</TableCell>
-        <TableCell>{employee.role}</TableCell>
+        <HighlightCell text={employee.name} query={search} />
+        <HighlightCell text={employee.email} query={search} />
+        <TableCell>{employee.phone}</TableCell>
         <TableCell>
           <Status value={employee.status} />
-        </TableCell>
-        <TableCell>
-          {new Date(employee.createdAt).toLocaleDateString()}
         </TableCell>
         <TableCell className="flex gap-4">
           <TableActions
             id={employee._id}
             baseRoute="/employee-management"
-            actions={["view", "edit", "delete"]}
+            actions={["edit", "delete"]}
             module="Employee"
-            onDelete={(id) => console.log("deleted:", id)}
-            deleteLoading={false}
+            onDelete={(id, closeDialog) =>
+              deleteEmployee(id, {
+                onSuccess: () => {
+                  closeDialog();
+                },
+              })
+            }
+            deleteLoading={deleteLoading}
           />
         </TableCell>
       </>
@@ -60,6 +77,21 @@ const Employees = () => {
     { label: "Inactive", value: "inactive" },
     { label: "Blocked", value: "blocked" },
   ];
+
+  if (isLoading) {
+    return <TableSkeleton cols={cols.length} rows={10} />;
+  }
+
+  if (error) {
+    return <ResponseError error={error.message} />;
+  }
+
+  const pagination = {
+    page,
+    limit,
+    total,
+    setPage,
+  };
 
   return (
     <div>
@@ -80,7 +112,12 @@ const Employees = () => {
         </div>
         <AddButton addBtnTitle="Employee" />
       </div>
-      <DataTable cols={cols} data={filteredEmployees} row={row} />
+      <DataTable
+        cols={cols}
+        data={filteredEmployees}
+        row={row}
+        pagination={pagination}
+      />
     </div>
   );
 };

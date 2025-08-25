@@ -1,17 +1,35 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/lib/store/hooks";
 import { EmployeeFormValues, EmployeeSchema } from "@/validations/employee";
 
 import FileInput from "./fields/FileInput";
 import PasswordInput from "./fields/PasswordInput";
 import SelectInput from "./fields/SelectInput";
 import TextInput from "./fields/TextInput";
+
+import {
+  useAddEmployee,
+  useGetEmployee,
+  useGetEmployeeRoles,
+  useUpdateEmployee,
+} from "@/hooks/useEmployees";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { EmployeeRole } from "@/types";
+import { Label } from "../ui/label";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const roles = [
   { label: "Zone Manager", value: "zone-manager" },
@@ -37,50 +55,76 @@ const moduleOptions = [
 const permissionOptions = ["read", "write", "update", "delete"];
 
 export default function EmployeeForm({ id }: { id?: string }) {
-  const employee = useAppSelector((s: any) =>
-    s.staff?.find((member: any) => member._id === id)
-  );
+  const router = useRouter();
+
+  const { data: rolesData, isLoading: rolesLoading } = useGetEmployeeRoles();
+  const { data, isLoading: employeeLoading } = useGetEmployee(id || "");
+
+  const employee = data?.data;
+  const employeeRoles: EmployeeRole[] = rolesData?.data?.employeeRoles || [];
+
+  const [employeeRoleData, setEmployeeRoleData] = useState<EmployeeRole>();
 
   const {
     control,
-    register,
     handleSubmit,
-    watch,
-    formState: { isSubmitting },
+    reset,
+    formState: { errors },
   } = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeSchema),
     defaultValues: {
       name: employee?.name || "",
       email: employee?.email || "",
-      password: "",
-      role: employee?.role || "zone-manager",
+      phone: employee?.phone || "",
+      password: employee?.password || "",
+      confirmPassword: employee?.password || "",
+      address: employee?.address || "",
+      allowAccess: employee?.allowAccess?._id || "",
       status: employee?.status || "active",
-      image: employee?.image || "",
-      access: employee?.access || [],
+      profileImage: employee?.profileImage || "",
     },
   });
+  useEffect(() => {
+    if (employee) {
+      reset({
+        ...employee,
+        name: employee?.name || "",
+        email: employee?.email || "",
+        phone: employee?.phone || "",
+        password: employee?.password || "",
+        confirmPassword: employee?.password || "",
+        address: employee?.address || "",
+        allowAccess: employee?.allowAccess?._id || "",
+        status: employee?.status || "active",
+        profileImage: employee?.profileImage || "",
+      });
+      setEmployeeRoleData(employee?.allowAccess || []);
+    }
+  }, [employee, reset]);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "access",
-  });
+  const isEditMode = Boolean(id);
 
-  const handleAddAccess = () => {
-    append({ module: "", permissions: [] });
+  const updateMutation = useUpdateEmployee();
+  const addMutation = useAddEmployee();
+
+  const {
+    mutate: fieldMutation,
+    isPending,
+    error,
+  } = isEditMode ? updateMutation : addMutation;
+  const onSubmit = async (formData: EmployeeFormValues) => {
+    const mutationPayload = id ? { id, data: formData } : formData;
+    console.log(mutationPayload);
+    fieldMutation(mutationPayload as any, {
+      onSuccess: () => {
+        reset();
+        router.push("/employee-management");
+      },
+    });
   };
 
-  const handleRemoveAccess = (index: number) => {
-    remove(index);
-  };
-
-  const onSubmit = (data: EmployeeFormValues) => {
-    const formData = {
-      ...data,
-      image: typeof data.image === "string" ? data.image : data.image?.name,
-    };
-    console.log(id ? "Update Employee:" : "Create Employee:", formData);
-  };
-
+  if (employeeLoading && id) return <Loader />;
+  console.log(employeeRoleData);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid sm:grid-cols-2 gap-4">
@@ -97,17 +141,51 @@ export default function EmployeeForm({ id }: { id?: string }) {
           type="email"
           placeholder="Enter email"
         />
+        <TextInput
+          control={control}
+          name="phone"
+          label="Phone Number"
+          placeholder="Enter phone number"
+        />
         <PasswordInput
           control={control}
           name="password"
           label="Password"
           placeholder="Enter password"
+          cPassword="confirmPassword"
         />
-        <SelectInput
+        <>
+          <div className="space-y-2">
+            <Label>Allowed Permission</Label>
+            <Select
+              value={employeeRoleData?._id}
+              onValueChange={(value) => {
+                const selectedRole = employeeRoles.find(
+                  (role) => role._id === value
+                );
+                setEmployeeRoleData(selectedRole);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={employeeRoleData?.name || "Select a role"}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {employeeRoles.map((role) => (
+                  <SelectItem key={role._id} value={role._id!}>
+                    {role.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </>
+        <TextInput
           control={control}
-          name="role"
-          label="Role"
-          options={roles}
+          name="address"
+          label="Address"
+          placeholder="Enter address"
         />
         <SelectInput
           control={control}
@@ -122,10 +200,15 @@ export default function EmployeeForm({ id }: { id?: string }) {
         type="submit"
         className="w-full"
         variant="button"
-        disabled={isSubmitting}
+        disabled={isPending}
       >
-        {isSubmitting ? <Loader /> : id ? "Update Employee" : "Create Employee"}
+        {isPending ? <Loader /> : id ? "Update Employee" : "Create Employee"}
       </Button>
+      {error && (
+        <p className="text-red-500">
+          {error?.message || "Something went wrong"}
+        </p>
+      )}
     </form>
   );
 }

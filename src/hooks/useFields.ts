@@ -20,7 +20,7 @@ export const useGetFields = ({
 }) => {
   return useQuery({
     queryKey: ["fields", page, limit],
-    queryFn: () => getFields(),
+    queryFn: () => getFields({ page, limit }),
     placeholderData: (previousData) => previousData,
   });
 };

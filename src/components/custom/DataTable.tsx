@@ -20,9 +20,9 @@ type DataTableProps<T> = {
   headerClassName?: string;
   rowClassName?: string;
   pagination?: {
-    total: number;
-    page: number;
-    limit: number;
+    total: number | undefined;
+    page: number | undefined;
+    limit: number | undefined;
     setPage: (page: number) => void;
   };
 };
@@ -36,7 +36,12 @@ export function DataTable<T>({
   headClassName,
   headerClassName,
   rowClassName,
-  pagination,
+  pagination = {
+    total: 0,
+    page: 1,
+    limit: 10,
+    setPage: () => {},
+  },
 }: DataTableProps<T>) {
   return (
     <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">

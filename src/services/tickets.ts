@@ -1,24 +1,14 @@
 import { api } from "@/lib/axios";
-import { Ticket } from "../types";
+import { ApiResponse, Ticket } from "../types";
 
-//   const { data, isLoading, error } = useGetTicket(id, true);
-//   const ticket = data?.data;
-export interface GetTicketsResponse {
-  success: boolean;
-  message: string;
-  data: {
-    page: number;
-    limit: number;
-    total: number;
-    tickets: Ticket[];
-  };
-}
+type GetTicketsResponse = ApiResponse<{
+  page: number;
+  limit: number;
+  total: number;
+  tickets: Ticket[];
+}>;
 
-export interface GetTicketResponse {
-  success: boolean;
-  message: string;
-  data: Ticket;
-}
+type GetTicketResponse = ApiResponse<Ticket>;
 // ✅ Fetch paginated tickets
 export const getTickets = async ({
   page = 1,

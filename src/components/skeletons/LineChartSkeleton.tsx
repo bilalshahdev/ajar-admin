@@ -4,10 +4,10 @@ import ChartCard from "../dashboard/ChartCard";
 const LineChartSkeleton = () => {
   return (
     <ChartCard className="space-y-4 h-full">
-      <div className="flex items-center justify-between capitalize">
+      <div className="flex items-center justify-between">
         <div className="flex flex-col space-y-1">
-          <Skeleton className="h-3 w-20" /> {/* Small title */}
-          <Skeleton className="h-5 w-32" /> {/* H4 */}
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-5 w-32" />
         </div>
       </div>
 

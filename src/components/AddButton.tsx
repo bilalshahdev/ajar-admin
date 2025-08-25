@@ -17,9 +17,15 @@ interface Props {
   addBtnTitle: string;
   isDialog?: boolean;
   dialogContent?: React.ReactNode;
+  modal?: boolean;
 }
 
-const AddButton = ({ addBtnTitle, isDialog = false, dialogContent }: Props) => {
+const AddButton = ({
+  addBtnTitle,
+  isDialog = false,
+  dialogContent,
+  modal = true,
+}: Props) => {
   const pathname = usePathname();
   const href = `${pathname}/add`;
   const [open, setOpen] = useState(false);
@@ -33,7 +39,7 @@ const AddButton = ({ addBtnTitle, isDialog = false, dialogContent }: Props) => {
 
   if (isDialog && dialogContent) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog modal={modal} open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{ButtonContent}</DialogTrigger>
         <DialogContent className=" max-h-[500px] overflow-y-auto">
           <DialogHeader>

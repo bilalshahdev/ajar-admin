@@ -14,10 +14,16 @@ export interface GetFieldsListResponse {
 import { api } from "@/lib/axios";
 import { ApiResponse, Field } from "@/types";
 
-type FieldResponse = ApiResponse<Field>
+type FieldResponse = ApiResponse<Field>;
 
-export const getFields = async (): Promise<GetFieldsListResponse> => {
-  const response = await api.get("/fields");
+export const getFields = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}): Promise<GetFieldsListResponse> => {
+  const response = await api.get("/fields", { params: { page, limit } });
   return response.data;
 };
 

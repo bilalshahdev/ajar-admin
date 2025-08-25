@@ -38,37 +38,39 @@ const PasswordInput = ({
   const handleToggle = () => setShowPassword((prev) => !prev);
 
   return (
-    <div className="space-y-2">
+    <>
       {/* Password Field */}
-      {label && (
-        <Label className="capitalize">
-          {label}{" "}
-          <span className="text-muted-foreground text-xs normal-case">
-            {note && `(${note})`}
-          </span>
-        </Label>
-      )}
+      <div className="space-y-2">
+        {label && (
+          <Label className="capitalize">
+            {label}{" "}
+            <span className="text-muted-foreground text-xs normal-case">
+              {note && `(${note})`}
+            </span>
+          </Label>
+        )}
 
-      <div className="relative">
-        <Input
-          {...field}
-          {...props}
-          type={showPassword ? "text" : "password"}
-          className={`bg-secondary/50 pr-10 ${
-            error ? "border-red-500 focus:ring-red-500" : ""
-          }`}
-        />
-        <Button
-          size="icon"
-          type="button"
-          className="absolute inset-y-0 right-0 flex items-center justify-center rounded-md"
-          onClick={handleToggle}
-        >
-          {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-        </Button>
+        <div className="relative">
+          <Input
+            {...field}
+            {...props}
+            type={showPassword ? "text" : "password"}
+            className={`bg-secondary/50 pr-10 ${
+              error ? "border-red-500 focus:ring-red-500" : ""
+            }`}
+          />
+          <Button
+            size="icon"
+            type="button"
+            className="absolute inset-y-0 right-0 flex items-center justify-center rounded-md"
+            onClick={handleToggle}
+          >
+            {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+          </Button>
+        </div>
+
+        {error && <p className="text-red-500 text-sm">{error.message}</p>}
       </div>
-
-      {error && <p className="text-red-500 text-sm">{error.message}</p>}
 
       {/* Conditionally render confirm password field */}
       {cPassword && confirmField && (
@@ -102,7 +104,7 @@ const PasswordInput = ({
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
