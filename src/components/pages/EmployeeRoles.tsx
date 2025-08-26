@@ -86,7 +86,7 @@ const EmployeeRoles = () => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-4">
           <SearchInput
-            placeholder="Search employee"
+            placeholder="Search employee role"
             onChange={(e) => setSearch(e)}
             debounceDelay={500}
           />

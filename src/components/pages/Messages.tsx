@@ -9,7 +9,7 @@ const Inbox = () => {
   const [chatId, setChatId] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-1 h-[70vh]">
+    <div className="flex flex-1 h-[65vh]">
       <Chats
         chatId={chatId}
         setChatId={setChatId}
