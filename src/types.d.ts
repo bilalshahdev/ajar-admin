@@ -364,7 +364,7 @@ interface Message {
   chatId: string;
   sender: User;
   receiver: User;
-  body: string;
+  text: string;
   deliveredAt?: Date;
   readAt?: Date;
   createdAt: Date;
@@ -374,7 +374,7 @@ interface Message {
 interface Chat {
   _id: string;
   participants: User[]; // usually 2 in 1-on-1 chat
-  latestMessage?: Message;
+  lastMessage?: Message;
   unreadCount?: {
     [userId: string]: number;
   };
@@ -569,4 +569,27 @@ interface EmployeeRole {
   permissions: Permission[];
   createdAt?: string;
   updatedAt?: string;
+}
+
+interface Message {
+  _id: string;
+  conversationId: string;
+  sender: User;
+  receiver: User;
+  text: string;
+  attachments: string[];
+  seen: boolean;
+  deletedBy: string[];
+  status: "sent" | "delivered" | "read";
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Chat {
+  _id: string;
+  participants: User[];
+  createdAt: string;
+  updatedAt: string;
+  lastMessage: Message;
+  unreadCount: number;
 }

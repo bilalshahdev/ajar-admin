@@ -1,18 +1,9 @@
 // faqs.ts
 
 import { api } from "@/lib/axios";
-import { Faq } from "@/types";
+import { ApiResponse, Faq, Pagination } from "@/types";
 
-export interface GetFaqsResponse {
-  success: boolean;
-  message: string;
-  data: {
-    page: number;
-    limit: number;
-    total: number;
-    data: Faq[];
-  };
-}
+type GetFaqsResponse = ApiResponse<Pagination & { data: Faq[] }>;
 
 export const getFaqs = async ({
   page = 1,

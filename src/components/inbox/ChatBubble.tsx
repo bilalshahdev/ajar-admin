@@ -9,6 +9,7 @@ interface ChatBubbleProps {
   message: Message;
   isSender: boolean; // true if current user is the sender
 }
+import { format } from "date-fns";
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isSender }) => {
   return (
@@ -30,17 +31,20 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isSender }) => {
       <div className="space-y-2">
         <div
           className={cn(
-            "max-w-sm px-4 py-2 rounded-lg text-sm shadow-sm",
+            "min-w-48 max-w-sm px-4 py-2 rounded-lg text-sm shadow-sm",
             isSender
               ? "bg-blue text-white ml-auto rounded-br-none"
               : "bg-card text-secondary-foreground mr-auto rounded-bl-none"
           )}
         >
-          <p> {message.body}</p>
+          <p> {message.text}</p>
           <XS
-            className={cn(isSender ? "text-gray-200" : "text-muted-foreground")}
+            className={cn(
+              "text-[10px] text-end",
+              isSender ? "text-gray-200" : "text-muted-foreground"
+            )}
           >
-            {message.createdAt.toLocaleString()}
+            {format(new Date(message.createdAt), "hh:mm a")}
           </XS>
         </div>
         <MessageStatus message={message} className="size-2" />

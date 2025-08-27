@@ -1,18 +1,8 @@
 // /services/field.ts
 
-export interface GetFieldsListResponse {
-  success: boolean;
-  message: string;
-  data: {
-    fields: Field[];
-    total: number;
-    page: number;
-    limit: number;
-  };
-}
-
 import { api } from "@/lib/axios";
-import { ApiResponse, Field } from "@/types";
+import { ApiResponse, Field, Pagination } from "@/types";
+type GetFieldsListResponse = ApiResponse<Pagination & { fields: Field[] }>;
 
 type FieldResponse = ApiResponse<Field>;
 

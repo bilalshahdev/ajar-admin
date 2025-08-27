@@ -1,25 +1,14 @@
 import { api } from "@/lib/axios";
-import { Contact } from "@/types";
+import { ApiResponse, Contact } from "@/types";
 
-export interface GetContactsResponse {
-  success: boolean;
-  message: string;
-  data: Contact[];
-}
+type GetContactsResponse = ApiResponse<Contact[]>;
+type GetContactResponse = ApiResponse<Contact>;
 
-export interface GetContactResponse {
-  success: boolean;
-  message: string;
-  data: Contact;
-}
-
-// ✅ Fetch all contacts
 export const getContacts = async (): Promise<GetContactsResponse> => {
   const response = await api.get("/contact-us");
   return response.data;
 };
 
-// ✅ Get single contact by ID
 export const getContact = async (
   contactId: string
 ): Promise<GetContactResponse> => {

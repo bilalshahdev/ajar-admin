@@ -1,27 +1,17 @@
 import { api } from "@/lib/axios";
-import { Category } from "@/types";
+import { ApiResponse, Category, Pagination } from "@/types";
 
 export interface CategoryList {
   name: string;
   _id: string;
 }
 
-export interface GetCategoriesResponse {
-  success: boolean;
-  message: string;
-  data: {
-    page: number;
-    limit: number;
-    total: number;
+type GetCategoriesResponse = ApiResponse<
+  Pagination & {
     categories: Category[];
-  };
-}
-
-export interface GetCategoriesListResponse {
-  success: boolean;
-  message: string;
-  data: CategoryList[];
-}
+  }
+>;
+type GetCategoriesListResponse = ApiResponse<CategoryList[]>;
 
 export const getCategories = async ({
   page = 1,
@@ -43,17 +33,15 @@ export const getCategoriesList =
     const response = await api.get("/categories/list");
     return response.data;
   };
-  
+
 export const getSubCategoriesList =
   async (): Promise<GetCategoriesListResponse> => {
     const response = await api.get("/categories/list/subcategories");
     return response.data;
   };
 
-
-
 export const getCategory = async (
-  categoryId: string,
+  categoryId: string
   // type: "categories" | "subcategories" | ""
 ) => {
   const url = `/categories/${categoryId}`;

@@ -1,14 +1,9 @@
 // services/employeeManagement.ts
 
 import { api } from "@/lib/axios";
-import { ApiResponse, Employee, EmployeeRole } from "@/types";
+import { ApiResponse, Employee, EmployeeRole, Pagination } from "@/types";
 
-type EmployeeResponse = ApiResponse<{
-  page: number;
-  limit: number;
-  total: number;
-  employees: Employee[];
-}>;
+type EmployeeResponse = ApiResponse<Pagination & { employees: Employee[] }>;
 
 type GetEmployeeResponse = ApiResponse<Employee>;
 
@@ -37,12 +32,9 @@ export const deleteEmployee = async (id: string) => {
   return response.data;
 };
 
-type EmployeeRolesResponse = ApiResponse<{
-  page: number;
-  limit: number;
-  total: number;
-  employeeRoles: EmployeeRole[];
-}>;
+type EmployeeRolesResponse = ApiResponse<
+  Pagination & { employeeRoles: EmployeeRole[] }
+>;
 
 type EmployeeRoleResponse = ApiResponse<EmployeeRole>;
 

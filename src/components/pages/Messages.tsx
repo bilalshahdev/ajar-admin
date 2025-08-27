@@ -1,12 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import ChatInfo from "../inbox/ChatInfo";
 import ChatMessages from "../inbox/ChatMessages";
 import Chats from "../inbox/Chats";
 
 const Inbox = () => {
-  const [chatId, setChatId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const chatId = searchParams.get("id");
+
+  const setChatId = (id: string | null) => {
+    if (id) {
+      router.push(`/messages?id=${id}`); // ✅ updates URL
+    } else {
+      router.push(`/messages`); // clears selection
+    }
+  };
 
   return (
     <div className="flex flex-1 h-[65vh]">
@@ -15,10 +25,7 @@ const Inbox = () => {
         setChatId={setChatId}
         className="w-1/3 border rounded p-2 shadow-sm"
       />
-      <ChatMessages
-        chatId={chatId}
-        className="w-full border rounded shadow-sm"
-      />
+      <ChatMessages className="w-2/3 border rounded shadow-sm" />
       {/* <ChatInfo className="w-1/4 border rounded p-2 shadow-sm" /> */}
     </div>
   );
