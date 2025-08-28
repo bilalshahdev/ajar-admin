@@ -6,7 +6,6 @@ import { Chat, User } from "@/types";
 import getCompactTimeAgo from "@/utils/getCompactTime";
 import { Avatar } from "../Avatar";
 import { Small, XS } from "../Typography";
-import { error } from "console";
 
 const Chats = ({
   chatId,

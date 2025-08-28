@@ -573,7 +573,7 @@ interface EmployeeRole {
 
 interface Message {
   _id: string;
-  conversationId: string;
+  chatId: string;
   sender: User;
   receiver: User;
   text: string;
@@ -592,4 +592,10 @@ interface Chat {
   updatedAt: string;
   lastMessage: Message;
   unreadCount: number;
+}
+
+interface SendMessageData {
+  chatId: string;
+  receiverId: string;
+  text: string;
 }

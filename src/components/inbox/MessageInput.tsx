@@ -8,9 +8,13 @@ import { cn } from "@/lib/utils";
 const MessageInput = ({
   onSend,
   className,
+  disabled,
+  error,
 }: {
   onSend: (text: string) => void;
   className?: string;
+  disabled?: boolean;
+  error?: string;
 }) => {
   const [message, setMessage] = useState("");
 
@@ -50,7 +54,12 @@ const MessageInput = ({
       />
 
       {/* Send button */}
-      <Button size="icon" variant="button" onClick={handleSend} disabled={!message.trim()}>
+      <Button
+        size="icon"
+        variant="button"
+        onClick={handleSend}
+        disabled={!message.trim() || disabled}
+      >
         <SendHorizonal className="h-5 w-5" />
       </Button>
     </div>

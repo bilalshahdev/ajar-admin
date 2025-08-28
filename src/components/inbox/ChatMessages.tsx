@@ -1,10 +1,10 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useChat } from "@/hooks/useChat";
+import { useChat, useSendMessage } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 import { Message } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { Avatar } from "../Avatar";
 import { Small, XS } from "../Typography";
@@ -15,16 +15,30 @@ const ChatMessages = ({ className }: { className?: string }) => {
   const { userId } = useAuth();
 
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const chatId = searchParams.get("id"); // ✅ get chatId from URL
-
+  const chatId = searchParams.get("id");
   const { data, isLoading, error } = useChat(chatId || "");
 
-  const messages = data?.data?.messages || [];
+  // Ensure messages are ordered oldest → newest
+  const messages = [...(data?.data?.messages || [])].reverse();
+  // const messages = data?.data?.messages || [];
 
   console.log({ messages });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const {
+    mutate: sendMessage,
+    isPending: sendLoading,
+    error: sendError,
+  } = useSendMessage();
+
+  const handleSend = (text: string) => {
+    sendMessage({
+      chatId: chatId || "",
+      receiverId: messages[0]?.receiver?._id,
+      text,
+    });
+  };
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -35,7 +49,7 @@ const ChatMessages = ({ className }: { className?: string }) => {
 
   if (!chatId) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex items-center justify-center h-full w-full">
         <p className="text-muted-foreground">Select a chat to start</p>
       </div>
     );
@@ -64,15 +78,15 @@ const ChatMessages = ({ className }: { className?: string }) => {
           {/* Chat Header */}
           <div className="flex items-center gap-4 bg-muted p-4 rounded sticky top-0 z-10">
             <Avatar
-              image={messages[0]?.receiver.profilePicture || ""}
-              name={messages[0]?.receiver.name || ""}
+              image={messages[0]?.receiver?.profilePicture || ""}
+              name={messages[0]?.receiver?.name || ""}
             />
             <div className="flex flex-col">
               <Small className="font-medium">
-                {messages[0]?.receiver.name}
+                {messages[0]?.receiver?.name}
               </Small>
               <XS className="text-muted-foreground">
-                {messages[0]?.receiver.email}
+                {messages[0]?.receiver?.email}
               </XS>
             </div>
           </div>
@@ -83,7 +97,7 @@ const ChatMessages = ({ className }: { className?: string }) => {
               <ChatBubble
                 key={msg._id}
                 message={msg}
-                isSender={msg.sender._id === userId}
+                isSender={msg.sender?._id === userId}
               />
             ))}
             {/* keep latest in view */}
@@ -93,7 +107,9 @@ const ChatMessages = ({ className }: { className?: string }) => {
           {/* Chat Input */}
           <MessageInput
             className="w-full flex-1"
-            onSend={(text) => console.log("Send:", text)}
+            onSend={(text) => handleSend(text)}
+            disabled={sendLoading}
+            error={sendError?.message}
           />
         </>
       ) : (

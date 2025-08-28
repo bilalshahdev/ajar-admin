@@ -1,8 +1,9 @@
 // services/messages.ts
 
 import { api } from "@/lib/axios";
-import { ApiResponse, Pagination } from "@/types";
-import { Chat } from "@/types";
+import { ApiResponse, Chat, Pagination, SendMessageData } from "@/types";
+
+
 
 type GetChatsResponse = ApiResponse<
   Pagination & {
@@ -22,13 +23,16 @@ export const getAllChats = async ({
 };
 
 export const getChat = async (chatId: string, page = 1, limit = 10) => {
+  console.log(`/chats/${chatId}/messages?page=${page}&limit=${limit}`)
   const response = await api.get(
     `/chats/${chatId}/messages?page=${page}&limit=${limit}`
   );
   return response.data;
 };
 
-export const sendMessage = async (receiverId: string, message: string) => {
-  const response = await api.post(`/chats/${receiverId}/messages`, { message });
+export const sendMessage = async (
+  data: SendMessageData
+) => {
+  const response = await api.post('/chats/send-message', data);
   return response.data;
 };
