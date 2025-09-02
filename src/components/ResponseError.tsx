@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { XS } from "./Typography";
 
 const ResponseError = ({
   error = "Something went wrong",
@@ -8,14 +9,9 @@ const ResponseError = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={cn(
-        "flex h-full items-center justify-center",
-        className
-      )}
-    >
+    <XS className={cn("flex h-full items-center justify-center text-red-500", className)}>
       {error}
-    </div>
+    </XS>
   );
 };
 

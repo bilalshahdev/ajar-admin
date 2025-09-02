@@ -28,18 +28,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     if (!socket) return;
 
     const onConnect = () => {
-      console.log("✅ Socket connected:", socket.id);
       setIsConnected(true);
     };
 
     const onDisconnect = (reason: string) => {
-      console.log("❌ Socket disconnected. Reason:", reason);
       setIsConnected(false);
     };
 
-    const onConnectError = (err: Error) => {
-      console.log("⚠️ Socket connection error:", err.message);
-    };
+    const onConnectError = (err: Error) => {};
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);

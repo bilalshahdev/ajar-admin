@@ -11,6 +11,7 @@ import refundRequestsReducer from "./slices/refundSlice";
 import staffReducer from "./slices/staffSlice";
 import faqReducer from "./slices/faqSlice";
 import queryReducer from "./slices/querySlice";
+import chatsReducer from "./slices/chatsSlice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     staff: staffReducer,
     faqs: faqReducer,
     queries: queryReducer,
+    chats: chatsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -34,7 +34,7 @@ const Fields = () => {
           id={field._id}
           baseRoute="/field-management"
           module="Field"
-          actions={["view", "edit", "delete"]}
+          actions={["edit", "delete"]}
           onDelete={(id, closeDialog) =>
             deleteField(id, {
               onSuccess: () => {

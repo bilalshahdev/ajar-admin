@@ -1,7 +1,6 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import ChatInfo from "../inbox/ChatInfo";
+import { useRouter, useSearchParams } from "next/navigation";
 import ChatMessages from "../inbox/ChatMessages";
 import Chats from "../inbox/Chats";
 
@@ -12,9 +11,9 @@ const Inbox = () => {
 
   const setChatId = (id: string | null) => {
     if (id) {
-      router.push(`/messages?id=${id}`); // ✅ updates URL
+      router.push(`/messages?id=${id}`);
     } else {
-      router.push(`/messages`); // clears selection
+      router.push(`/messages`);
     }
   };
 

@@ -596,6 +596,6 @@ interface Chat {
 
 interface SendMessageData {
   chatId: string;
-  receiverId: string;
+  receiver: string;
   text: string;
 }

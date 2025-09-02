@@ -6,6 +6,12 @@ import { Chat, User } from "@/types";
 import getCompactTimeAgo from "@/utils/getCompactTime";
 import { Avatar } from "../Avatar";
 import { Small, XS } from "../Typography";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
+import { setLoading, setError, setChats } from "@/lib/store/slices/chatsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { limit } from "@/config/constants";
 
 const Chats = ({
   chatId,
@@ -16,28 +22,43 @@ const Chats = ({
   setChatId: (id: string | null) => void;
   className?: string;
 }) => {
-  const currentUserId = "2";
+  const { userId } = useAuth();
+  const dispatch = useDispatch();
+  const {
+    chats: allChats,
+    loading,
+    error,
+  } = useSelector((state: RootState) => state.chats);
+  const [page, setPage] = useState(1);
   const {
     data: chatsData,
     isLoading,
-    error,
-  } = useChats({ page: 1, limit: 10 });
+    error: fetchError,
+  } = useChats({ page, limit });
 
-  // const chats = allChats || [];
-  const chats = chatsData?.data?.chats || [];
+  useEffect(() => {
+    if (isLoading) dispatch(setLoading(true));
+    if (fetchError) dispatch(setError(fetchError.message));
+    if (chatsData?.data?.chats) {
+      dispatch(setChats(chatsData.data.chats));
+    }
+  }, [isLoading, fetchError, chatsData, dispatch]);
+
+  const chats = allChats || [];
+
   return (
     <div className={cn("space-y-2 overflow-y-auto", className)}>
       <div className="text-lg font-semibold">Chats</div>
-      {isLoading ? (
+      {loading ? (
         <Small className="text-muted-foreground">Loading...</Small>
       ) : error ? (
-        <Small className="text-red-500">
-          {error.message || "Something went wrong"}{" "}
-        </Small>
+        <Small className="text-red-500">{error}</Small>
+      ) : chats.length === 0 ? (
+        <Small className="text-muted-foreground">No chats</Small>
       ) : (
         chats.map((chat: Chat) => {
           const otherUser = chat.participants.find(
-            (p: User) => p._id !== currentUserId
+            (p: User) => p._id !== userId
           );
           const lastMessage = chat.lastMessage;
           const isCurrentChat = chatId === chat._id;
