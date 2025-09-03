@@ -109,6 +109,7 @@ const CategoryForm = ({ id }: { id?: string }) => {
               { label: "Category", value: "category" },
               { label: "SubCategory", value: "subCategory" },
             ]}
+            disabled={isEditMode}
           />
         )}
 

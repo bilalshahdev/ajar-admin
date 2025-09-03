@@ -69,6 +69,8 @@ interface StripeInfo {
   customerId: string;
 }
 
+type UserStatus = "active" | "inactive" | "blocked" | "unblocked";
+
 interface User {
   _id: string;
   name: string;
@@ -80,7 +82,7 @@ interface User {
   profilePicture?: string;
   createdAt?: string;
   updatedAt?: string;
-  status: string;
+  status: UserStatus;
   otp?: UserOTP;
   stripe?: StripeInfo;
   __v?: number;

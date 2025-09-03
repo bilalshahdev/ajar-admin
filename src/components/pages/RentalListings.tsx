@@ -58,8 +58,8 @@ const RentalListings = () => {
     <>
       <TableCell>{rentalRequest._id.slice(-4)}</TableCell>
       <HighlightCell text={rentalRequest.name} query={search} />
-      <HighlightCell text={rentalRequest.subCategory.name} query={search} />
-      <HighlightCell text={rentalRequest.leaser.name} query={search} />
+      <HighlightCell text={rentalRequest?.subCategory?.name} query={search} />
+      <HighlightCell text={rentalRequest?.leaser?.name} query={search} />
       <TableCell>{rentalRequest.createdAt}</TableCell>
       <TableCell>
         <TableActions

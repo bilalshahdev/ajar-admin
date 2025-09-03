@@ -6,7 +6,9 @@ import {
   getUsers,
   searchUsers,
   updateUser,
+  updateUserStatus,
 } from "@/services/users";
+import { UserStatus } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -71,6 +73,30 @@ export const useUpdateUser = () => {
 
       queryClient.invalidateQueries({ queryKey: ["user", id] });
       toast.success("User updated successfully");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    },
+  });
+};
+
+export const useUpdateUserStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: UserStatus }) =>
+      updateUserStatus(id, status),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({
+        queryKey: ["users", "paginated"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["users", "search"],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["user", id] });
+      toast.success("User status updated successfully");
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Something went wrong");

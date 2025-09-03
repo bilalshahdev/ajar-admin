@@ -1,28 +1,24 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
+import { useForm, Controller, useWatch } from "react-hook-form"; // Import Controller
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { EmployeeFormValues, EmployeeSchema } from "@/validations/employee";
-
 import FileInput from "./fields/FileInput";
 import PasswordInput from "./fields/PasswordInput";
 import SelectInput from "./fields/SelectInput";
 import TextInput from "./fields/TextInput";
-
 import {
   useAddEmployee,
   useGetEmployee,
   useGetEmployeeRoles,
   useUpdateEmployee,
 } from "@/hooks/useEmployees";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { EmployeeRole } from "@/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo } from "react";
 import { Label } from "../ui/label";
-
 import {
   Select,
   SelectContent,
@@ -31,28 +27,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const roles = [
-  { label: "Zone Manager", value: "zone-manager" },
-  { label: "Category Manager", value: "category-manager" },
-  { label: "Form Manager", value: "form-manager" },
-];
-
 const statusOptions = [
   { label: "Active", value: "active" },
   { label: "Blocked", value: "blocked" },
 ];
-
-const moduleOptions = [
-  "zones",
-  "categories",
-  "forms",
-  "refunds",
-  "reports",
-  "settings",
-  "users",
-];
-
-const permissionOptions = ["read", "write", "update", "delete"];
 
 export default function EmployeeForm({ id }: { id?: string }) {
   const router = useRouter();
@@ -61,9 +39,10 @@ export default function EmployeeForm({ id }: { id?: string }) {
   const { data, isLoading: employeeLoading } = useGetEmployee(id || "");
 
   const employee = data?.data;
-  const employeeRoles: EmployeeRole[] = rolesData?.data?.employeeRoles || [];
-
-  const [employeeRoleData, setEmployeeRoleData] = useState<EmployeeRole>();
+  const employeeRoles: EmployeeRole[] = useMemo(
+    () => rolesData?.data?.employeeRoles || [],
+    [rolesData]
+  );
 
   const {
     control,
@@ -73,36 +52,37 @@ export default function EmployeeForm({ id }: { id?: string }) {
   } = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeSchema),
     defaultValues: {
-      name: employee?.name || "",
-      email: employee?.email || "",
-      phone: employee?.phone || "",
-      password: employee?.password || "",
-      confirmPassword: employee?.password || "",
-      address: employee?.address || "",
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+      address: "",
       allowAccess: employee?.allowAccess?._id || "",
-      status: employee?.status || "active",
-      profileImage: employee?.profileImage || "",
+      status: "active",
+      profileImage: "",
     },
   });
+
   useEffect(() => {
-    if (employee) {
+    if (employee && employeeRoles.length > 0) {
       reset({
-        ...employee,
-        name: employee?.name || "",
-        email: employee?.email || "",
-        phone: employee?.phone || "",
-        password: employee?.password || "",
-        confirmPassword: employee?.password || "",
-        address: employee?.address || "",
-        allowAccess: employee?.allowAccess?._id || "",
-        status: employee?.status || "active",
-        profileImage: employee?.profileImage || "",
+        name: employee.name || "",
+        email: employee.email || "",
+        phone: employee.phone || "",
+        password: employee.password || "",
+        confirmPassword: employee.password || "",
+        address: employee.address || "",
+        allowAccess: employee.allowAccess?._id?.toString() || "",
+        status: employee.status || "active",
+        profileImage: employee.profileImage || "",
       });
-      setEmployeeRoleData(employee?.allowAccess || []);
     }
-  }, [employee, reset]);
+  }, [employee, employeeRoles, reset]);
 
   const isEditMode = Boolean(id);
+
+  const values = useWatch({ control });
 
   const updateMutation = useUpdateEmployee();
   const addMutation = useAddEmployee();
@@ -112,9 +92,9 @@ export default function EmployeeForm({ id }: { id?: string }) {
     isPending,
     error,
   } = isEditMode ? updateMutation : addMutation;
+
   const onSubmit = async (formData: EmployeeFormValues) => {
     const mutationPayload = id ? { id, data: formData } : formData;
-    console.log(mutationPayload);
     fieldMutation(mutationPayload as any, {
       onSuccess: () => {
         reset();
@@ -123,8 +103,18 @@ export default function EmployeeForm({ id }: { id?: string }) {
     });
   };
 
-  if (employeeLoading && id) return <Loader />;
-  console.log(employeeRoleData);
+  if (employeeLoading || rolesLoading) return <Loader />;
+
+  console.log(
+    employeeRoles?.map((role) => role._id),
+    "employeeRoles Ids",
+    `values.allowAccess`,
+    employee?.allowAccess?._id
+  );
+
+  console.log({ employee });
+  console.log({ values });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid sm:grid-cols-2 gap-4">
@@ -154,33 +144,16 @@ export default function EmployeeForm({ id }: { id?: string }) {
           placeholder="Enter password"
           cPassword="confirmPassword"
         />
-        <>
-          <div className="space-y-2">
-            <Label>Allowed Permission</Label>
-            <Select
-              value={employeeRoleData?._id}
-              onValueChange={(value) => {
-                const selectedRole = employeeRoles.find(
-                  (role) => role._id === value
-                );
-                setEmployeeRoleData(selectedRole);
-              }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue
-                  placeholder={employeeRoleData?.name || "Select a role"}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {employeeRoles.map((role) => (
-                  <SelectItem key={role._id} value={role._id!}>
-                    {role.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </>
+        {employee && employeeRoles.length > 0 && (
+          <SelectInput
+            control={control}
+            name="allowAccess"
+            label="Allowed Permission"
+            options={employeeRoles}
+            labelKey="name"
+            valueKey="_id"
+          />
+        )}
         <TextInput
           control={control}
           name="address"

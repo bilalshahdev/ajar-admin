@@ -1,24 +1,46 @@
 "use client";
 import Loader from "@/components/Loader";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { TableCell } from "@/components/ui/table";
-import { useDeleteUser, useGetUsers } from "@/hooks/useUsers";
+import { statusColors } from "@/config/data";
+import {
+  useDeleteUser,
+  useGetUsers,
+  useUpdateUserStatus,
+} from "@/hooks/useUsers";
+import { cn } from "@/lib/utils";
 import { User } from "@/services/users";
+import { UserStatus } from "@/types";
 import { useState } from "react";
-import ResponseError from "../ResponseError";
 import TableActions from "../Actions";
 import StatsCard from "../cards/StatsCard";
 import { DataTable } from "../custom/DataTable";
+import ResponseError from "../ResponseError";
+
+const userStatus = ["active", "inactive", "blocked", "unblocked"];
 
 const Users = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetUsers({ page, limit: 10 });
   const { mutate: deleteUser, isPending: deleteLoading } = useDeleteUser();
+  const { mutate: updateUserStatus, isPending: updateLoading } =
+    useUpdateUserStatus();
 
   if (isLoading) return <Loader />;
   if (error) return <ResponseError error={error.message} />;
 
   const { users, stats, pagination } = data?.data || {};
   const { total, page: currentPage, limit } = pagination || {};
+
+  const handleUpdateUserStatus = (id: string, status: UserStatus) => {
+    updateUserStatus({ id, status });
+  };
 
   const {
     totalActiveUsers,
@@ -70,7 +92,34 @@ const Users = () => {
       <TableCell>{user.name || "—"}</TableCell>
       <TableCell>{user.phone || "—"}</TableCell>
       <TableCell>{user.email || "—"}</TableCell>
-      <TableCell className="capitalize">{user.status || "—"}</TableCell>
+      <TableCell>
+        <Select
+          defaultValue={user.status}
+          onValueChange={(value) =>
+            handleUpdateUserStatus(user._id, value as UserStatus)
+          }
+          disabled={updateLoading}
+        >
+          <SelectTrigger className="capitalize w-[160px]">
+            <div className="flex items-center gap-2">
+              <span
+                className={cn(
+                  "h-2 w-2 rounded-full",
+                  statusColors[user.status as UserStatus] || "bg-gray-300"
+                )}
+              />
+              <SelectValue placeholder="Select status" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            {userStatus.map((status) => (
+              <SelectItem key={status} value={status} className="capitalize">
+                {status}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </TableCell>
       <TableCell className="flex gap-4">
         <TableActions
           id={user._id}

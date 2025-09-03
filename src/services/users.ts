@@ -1,7 +1,7 @@
 // /services/users.ts
 
 import { api } from "@/lib/axios";
-import { ApiResponse, Pagination, UserStats } from "@/types";
+import { ApiResponse, Pagination, UserStats, UserStatus } from "@/types";
 
 export interface User {
   _id: string;
@@ -60,6 +60,14 @@ export const updateUser = async (
   userData: Partial<User>
 ): Promise<{ success: boolean; message: string; data: User }> => {
   const response = await api.patch(`/users/${userId}`, userData);
+  return response.data;
+};
+
+export const updateUserStatus = async (
+  userId: string,
+  status: UserStatus
+): Promise<{ success: boolean; message: string; data: User }> => {
+  const response = await api.patch(`/users/${userId}/status`, { status });
   return response.data;
 };
 

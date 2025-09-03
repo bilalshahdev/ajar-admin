@@ -30,8 +30,6 @@ const FormArrayInput = ({
     fieldState: { error },
   } = useController({ name, control });
 
-  console.log(field);
-
   const [value, setValue] = useState<string>("");
   const [items, setItems] = useState<string[]>(field.value || []);
 

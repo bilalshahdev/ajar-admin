@@ -1,6 +1,13 @@
 // data.ts
 
-import { Faq, FilterOption, Query, User } from "@/types";
+import { Faq, FilterOption, Query, User, UserStatus } from "@/types";
+
+export const statusColors: Record<UserStatus, string> = {
+  active: "bg-green-500",
+  inactive: "bg-gray-400",
+  blocked: "bg-red-500",
+  unblocked: "bg-blue-500",
+};
 
 export const userChartData: Record<
   FilterOption,
@@ -142,7 +149,7 @@ export const users: User[] = [
     phone: "+1 8014874263",
     email: "Prajay@hulas.co",
     createdAt: "2024-01-15T00:00:00Z",
-    status: "pending",
+    status: "active",
     role: "user",
   },
   {
@@ -405,7 +412,7 @@ export const queryData: Query[] = [
       phone: "+923005551234",
       email: "zain.ali@example.com",
       createdAt: "2022-06-19",
-      status: "banned",
+      status: "blocked",
       role: "user",
     },
     title: "App Crash Report",

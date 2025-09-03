@@ -1,34 +1,31 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { FormEvent, useEffect, useState } from "react";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
-  CommandList,
+  CommandItem
 } from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "../ui/input";
-import { ChevronsUpDown, X } from "lucide-react";
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
-import { Badge } from "../ui/badge";
 import {
   useAddEmployeeRole,
   useGetEmployeeRole,
   useUpdateEmployeeRole,
 } from "@/hooks/useEmployees";
-import Loader from "../Loader";
 import { EmployeeRole, Permission } from "@/types";
+import { ChevronsUpDown, X } from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
+import Loader from "../Loader";
+import { Checkbox } from "../ui/checkbox";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 const accessOptions = [
   { value: "dashboard", label: "Dashboard" },

@@ -37,77 +37,62 @@ const inputTypes = [
 
 export default function FieldForm({ id }: { id?: string }) {
   const router = useRouter();
-  const { control, handleSubmit, watch, reset } = useForm<FieldFormValues>({
-    resolver: zodResolver(FieldSchema),
-    defaultValues: {
-      name: "",
-      label: "",
-      type: inputTypes[0].value,
-      placeholder: "",
-      order: 0,
-      isMultiple: false,
-      visible: true,
-      tooltip: "",
-      defaultValue: "",
-      readonly: false,
-      options: [],
-      validation: {
-        required: false,
-        pattern: "",
-        min: 0,
-        max: 0,
-      },
-    },
-  });
-
   const { data: field, isLoading: isFieldLoading } = useGetField(
     id || "",
     !!id
   );
+  const { control, handleSubmit, watch, reset, setValue } =
+    useForm<FieldFormValues>({
+      resolver: zodResolver(FieldSchema),
+      defaultValues: {
+        name: "",
+        label: "",
+        type: inputTypes[0].value,
+        placeholder: "",
+        order: 0,
+        isMultiple: false,
+        visible: true,
+        tooltip: "",
+        defaultValue: "",
+        readonly: false,
+        options: [],
+        validation: {
+          required: false,
+          pattern: "",
+          min: 0,
+          max: 0,
+        },
+      },
+    });
 
+  console.log(field?.data);
   useEffect(() => {
     if (field) {
-      reset(field?.data);
+      const f = field.data;
+      reset(
+        {
+          name: f.name,
+          label: f.label,
+          type: f.type || inputTypes[0].value, // fallback
+          placeholder: f.placeholder,
+          order: f.order ?? 0,
+          isMultiple: f.isMultiple,
+          visible: f.visible,
+          tooltip: f.tooltip,
+          defaultValue: f.defaultValue,
+          readonly: f.readonly,
+          options: f.options || [],
+          validation: {
+            required: f.validation?.required ?? false,
+            pattern: f.validation?.pattern ?? "",
+            min: f.validation?.min ?? 0,
+            max: f.validation?.max ?? 0,
+          },
+        },
+        {}
+      );
     }
   }, [field, reset]);
-
-  // useEffect(() => {
-  //   if (field) {
-  //     const {
-  //       name,
-  //       label,
-  //       type,
-  //       placeholder,
-  //       order,
-  //       isMultiple,
-  //       visible,
-  //       tooltip,
-  //       defaultValue,
-  //       readonly,
-  //       options,
-  //       validation,
-  //     } = field;
-  //     reset({
-  //       name,
-  //       label,
-  //       type,
-  //       placeholder,
-  //       order: order ?? 0, // default to 0
-  //       isMultiple,
-  //       visible,
-  //       tooltip,
-  //       defaultValue,
-  //       readonly,
-  //       options: options || [],
-  //       validation: {
-  //         required: validation?.required ?? false,
-  //         pattern: validation?.pattern ?? "",
-  //         min: validation?.min ?? 0,
-  //         max: validation?.max ?? 0,
-  //       },
-  //     });
-  //   }
-  // }, [field, reset]);
 
   const isEditMode = Boolean(id);
 
@@ -145,7 +130,9 @@ export default function FieldForm({ id }: { id?: string }) {
           control={control}
           name="type"
           label="Input Type"
-          options={inputTypes.map((t) => ({ label: t.name, value: t.value }))}
+          options={inputTypes}
+          labelKey="name"
+          valueKey="value"
         />
         {typesWithOptions.includes(type) && (
           <FormArrayInput control={control} name="options" label="Options" />
@@ -156,6 +143,7 @@ export default function FieldForm({ id }: { id?: string }) {
           note="Must be like firstName, lastName, email, password etc."
           label="Field Name"
           placeholder="Enter field name"
+          disabled={isEditMode}
         />
         <TextInput
           control={control}
@@ -170,6 +158,7 @@ export default function FieldForm({ id }: { id?: string }) {
           type="number"
           label="Order"
           placeholder="Enter order"
+          min={0}
         />
         <TextInput
           control={control}
@@ -206,6 +195,7 @@ export default function FieldForm({ id }: { id?: string }) {
           type="number"
           label="Min Value"
           placeholder="Enter min value"
+          min={0}
         />
         <TextInput
           control={control}
@@ -213,6 +203,7 @@ export default function FieldForm({ id }: { id?: string }) {
           type="number"
           label="Max Value"
           placeholder="Enter max value"
+          min={0}
         />
       </div>
 
