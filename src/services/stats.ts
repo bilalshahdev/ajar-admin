@@ -23,7 +23,7 @@ export const chartFilters: FilterOption[] = ["week", "month", "year"];
 export const getStats = async (
   filter: FilterOption
 ): Promise<StatsResponse> => {
-  const response = await api.get(`/users/stats?filter=${filter}`);
+  const response = await api.get(`/dashboard/stats?filter=${filter}`);
   return response.data;
 };
 

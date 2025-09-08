@@ -1,5 +1,6 @@
 "use client";
 
+import { getAuthInfo } from "@/utils/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // only runs on client
     const storedToken = localStorage.getItem("token");
-    const storedUserId = localStorage.getItem("userid");
+    const storedUserId = getAuthInfo().userId;
 
     if (storedToken) setToken(storedToken);
     if (storedUserId) setUserId(storedUserId);

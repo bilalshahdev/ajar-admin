@@ -52,7 +52,7 @@ const FormArrayInput = ({
     setItems(newItems);
     field.onChange(newItems);
   };
-  
+
   return (
     <Dialog>
       <div className="space-y-2">

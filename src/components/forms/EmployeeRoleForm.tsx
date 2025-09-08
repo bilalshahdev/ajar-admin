@@ -6,7 +6,7 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem
+  CommandItem,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -28,7 +28,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 const accessOptions = [
-  { value: "dashboard", label: "Dashboard" },
+  { value: "stats", label: "Stats" },
   { value: "zone", label: "Zone" },
   { value: "category", label: "Category" },
   { value: "field", label: "Field" },
@@ -82,7 +82,7 @@ const EmployeeRoleForm = ({
   });
 
   const isEdit = !!id;
-  const { data, isLoading, error: getError } = useGetEmployeeRole(id || "");
+  const { data, isLoading } = useGetEmployeeRole(id || "");
 
   useEffect(() => {
     if (isEdit && data) {
@@ -124,7 +124,8 @@ const EmployeeRoleForm = ({
             : p
         );
       } else {
-        updatedPermissions = [...prev.permissions, permission];
+        // Prepend new permission to show on top
+        updatedPermissions = [permission, ...prev.permissions];
       }
 
       return { ...prev, permissions: updatedPermissions };
@@ -135,9 +136,9 @@ const EmployeeRoleForm = ({
   };
 
   const removePermission = (access: string) => {
-    const newPermissions = [...allowAccess.permissions];
-    const index = newPermissions.findIndex((p: any) => p.access === access);
-    newPermissions.splice(index, 1);
+    const newPermissions = allowAccess.permissions.filter(
+      (p: any) => p.access !== access
+    );
     setAllowAccess({ ...allowAccess, permissions: newPermissions });
   };
 
@@ -146,7 +147,6 @@ const EmployeeRoleForm = ({
   const { mutateAsync: updateEmployeeRoleMutation, isPending: updateLoading } =
     useUpdateEmployeeRole();
 
-  // ✅ Only return null later
   if (isEdit && !allowAccess && !isLoading) {
     toast.error("Employee role not found");
     return null;
@@ -165,8 +165,14 @@ const EmployeeRoleForm = ({
     closeDialog?.();
   };
 
+  // Exclude already added permissions
+  const availableAccessOptions = accessOptions.filter(
+    (opt) => !allowAccess.permissions.some((p) => p.access === opt.value)
+  );
+
   return (
-    <form onSubmit={onSubmit} className="space-y-2">
+    <form onSubmit={onSubmit} className="space-y-4">
+      {/* Role Name */}
       <div className="space-y-2">
         <Label>Role name</Label>
         <Input
@@ -179,8 +185,9 @@ const EmployeeRoleForm = ({
         />
       </div>
 
-      <div className="space-y-2">
-        <Label>Access</Label>
+      {/* Permission Selection */}
+      <div className="space-y-2 border rounded-lg p-3">
+        <Label>Add Permission</Label>
         <div className="flex items-center justify-between gap-2">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -197,15 +204,12 @@ const EmployeeRoleForm = ({
                 <ChevronsUpDown className="opacity-50" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent
-              className="p-0 z-50 overflow-scroll h-48"
-              align="start"
-            >
+            <PopoverContent className="p-0 z-50" align="start">
               <Command>
                 <CommandInput placeholder="Search permission..." />
                 <CommandEmpty>No permission found.</CommandEmpty>
-                <CommandGroup>
-                  {accessOptions.map((access) => (
+                <CommandGroup className="h-48 overflow-scroll">
+                  {availableAccessOptions.map((access) => (
                     <CommandItem
                       key={access.value}
                       onSelect={() => {
@@ -222,20 +226,19 @@ const EmployeeRoleForm = ({
             </PopoverContent>
           </Popover>
 
-          {/* Add Button */}
           <Button
             type="button"
             variant="default"
             onClick={addPermission}
             disabled={disableAddPermission()}
           >
-            Add Permission
+            Add
           </Button>
         </div>
-
+        {/* i want the label of text also to be clickable and make checkbox check uncheck */}
         {/* Operations Checkboxes */}
         {permission.access && (
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 mt-2">
             {operationsOptions.map((operation) => (
               <div key={operation.value} className="flex items-center gap-2">
                 <Checkbox
@@ -251,51 +254,50 @@ const EmployeeRoleForm = ({
         )}
       </div>
 
-      <>
-        {allowAccess?.permissions?.length ? (
-          <div>
-            <Label className="font-medium text-base">Permissions</Label>
-            <div className="h-20 overflow-scroll rounded-lg border p-2 space-y-2">
-              {allowAccess.permissions.map(
-                ({ access, operations }: any, i: any) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between capitalize"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Label className="font-medium text-xs">{access}</Label>
-                      {operations?.map((op: any, j: any) => (
-                        <span
-                          key={j}
-                          className="text-xs rounded-lg p-1 bg-muted text-muted-foreground"
-                        >
-                          {op}
-                        </span>
-                      ))}
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={() => removePermission(access)}
-                      variant="destructive"
-                      size="icon"
-                      className="size-5"
+      {/* Added Permissions */}
+      {allowAccess?.permissions?.length ? (
+        <div>
+          <Label className="font-medium text-base">Permissions</Label>
+          <div className="max-h-32 overflow-scroll rounded-lg border p-2 space-y-2">
+            {allowAccess.permissions.map(({ access, operations }: any, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between capitalize"
+              >
+                <div className="flex items-center gap-2">
+                  <Label className="font-medium text-xs">{access}</Label>
+                  {operations?.map((op: any, j: any) => (
+                    <span
+                      key={j}
+                      className="text-xs rounded-lg p-1 bg-muted text-muted-foreground"
                     >
-                      <X className="size-3" />
-                    </Button>
-                  </div>
-                )
-              )}
-            </div>
+                      {op}
+                    </span>
+                  ))}
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => removePermission(access)}
+                  variant="destructive"
+                  size="icon"
+                  className="size-5"
+                >
+                  <X className="size-3" />
+                </Button>
+              </div>
+            ))}
           </div>
-        ) : null}
-      </>
+        </div>
+      ) : null}
+
+      {/* Save Role */}
       <Button
         disabled={addLoading || updateLoading}
         type="submit"
         className="w-full"
-        variant={"button"}
+        variant="button"
       >
-        {addLoading || updateLoading ? <Loader /> : "Save"}
+        {addLoading || updateLoading ? <Loader /> : "Save Role"}
       </Button>
     </form>
   );

@@ -20,10 +20,7 @@ import TextInput from "./fields/TextInput";
 const LoginForm = () => {
   const router = useRouter();
   const { mutate: login, isPending } = useLogin();
-  const {
-    control,
-    handleSubmit
-  } = useForm<Login>({
+  const { control, handleSubmit } = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -40,7 +37,15 @@ const LoginForm = () => {
             router.push("/");
             const { data } = responseData || {};
             localStorage.setItem("token", data.token);
-            localStorage.setItem("userid", data.user._id);
+            if (
+              data?.user?.role == "staff" &&
+              data?.user?.allowAccess?.permissions
+            ) {
+              localStorage.setItem(
+                "permissions",
+                JSON.stringify(data.user.allowAccess?.permissions)
+              );
+            }
             toast.success("Login successful");
           }
         },

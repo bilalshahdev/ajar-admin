@@ -1,15 +1,15 @@
+import "leaflet-draw/dist/leaflet.draw.css";
+import "leaflet/dist/leaflet.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import "leaflet/dist/leaflet.css";
-import "leaflet-draw/dist/leaflet.draw.css";
 import "react-photo-view/dist/react-photo-view.css";
+import "./globals.css";
 
-import getDirection from "@/utils/getDirection";
-import AuthGuard from "./(site)/AuthGuard";
-import { baseUrl } from "@/config/constants";
 import ResponseError from "@/components/ResponseError";
 import Providers from "@/components/providers/Provider";
+import { baseUrl } from "@/config/constants";
+import getDirection from "@/utils/getDirection";
+import AuthGuard from "./(site)/AuthGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,11 +70,11 @@ export default async function RootLayout({
         {error ? (
           <ResponseError className="h-screen" error={error} />
         ) : (
-          <AuthGuard>
-            <Providers>
+          <Providers>
+            <AuthGuard>
               <main>{children}</main>
-            </Providers>
-          </AuthGuard>
+            </AuthGuard>
+          </Providers>
         )}
       </body>
     </html>

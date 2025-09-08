@@ -17,12 +17,10 @@ export default function RevenueBreakdownBar({
 }: {
   performanceIndicators: PerformanceIndicator[];
 }) {
-  // show trend (change with value) with name
-  // Transform data for recharts
   const data = performanceIndicators.map((item: PerformanceIndicator) => ({
-    name: item.label, // only text
+    name: item.label,
     value: item.value,
-    trend: item.change.trend, // "up" | "down"
+    trend: item.change.trend,
   }));
 
   return (
@@ -52,7 +50,7 @@ export default function RevenueBreakdownBar({
                   const { x, y, payload } = props;
                   const item = data.find((d) => d.name === payload.value);
 
-                  if (!item) return <g />; // 👈 return empty <g>, not null
+                  if (!item) return <g />;
 
                   const trendColor = item.trend === "up" ? "green" : "red";
                   const trendSymbol = item.trend === "up" ? "▲" : "▼";
@@ -74,7 +72,7 @@ export default function RevenueBreakdownBar({
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
-                    const item = payload[0].payload; // full data row
+                    const item = payload[0].payload;
 
                     const trendColor = item.trend === "up" ? "green" : "red";
                     const trendSymbol = item.trend === "up" ? "▲" : "▼";

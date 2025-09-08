@@ -11,19 +11,18 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { sidebarMenu } from "@/config/menu";
-import { Power } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { NavMenuItem } from "@/types";
-import Brand from "./Brand";
-import GradientIcon from "./GradientIcon";
-import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
+import { NavMenuItem } from "@/types";
+import { getSidebarMenu } from "@/utils/auth";
 import getDirection from "@/utils/getDirection";
+import { Power } from "lucide-react";
+import { useLocale } from "next-intl";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Brand from "./Brand";
 import ConfirmDialog from "./ConfirmDialog";
-import { useRouter } from "next/navigation";
+import GradientIcon from "./GradientIcon";
 
 export default function Sidebar({ className }: { className?: string }) {
   const router = useRouter();
@@ -32,6 +31,7 @@ export default function Sidebar({ className }: { className?: string }) {
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
 
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const sidebarMenu = getSidebarMenu();
   const locale = useLocale();
   const isMenuActive = (path: string) => {
     const targetPath = `/${locale}${path === "/" ? "" : path}`;
@@ -62,9 +62,8 @@ export default function Sidebar({ className }: { className?: string }) {
 
   const handleConfirm = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("permissions");
     router.replace("/auth/login");
-    // Add logout logic here
   };
 
   return (

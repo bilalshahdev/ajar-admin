@@ -6,7 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"; // adjust path as needed
+} from "@/components/ui/dialog";
+import { allowedOperations } from "@/utils/auth";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,6 +30,10 @@ const AddButton = ({
   const pathname = usePathname();
   const href = `${pathname}/add`;
   const [open, setOpen] = useState(false);
+
+  const operations = allowedOperations(pathname);
+  const isAdd = operations?.includes("create");
+  if (!isAdd) return null;
 
   const ButtonContent = (
     <Button variant="button">

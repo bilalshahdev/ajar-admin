@@ -58,6 +58,7 @@ const EmployeeRoles = () => {
             editDialog={{
               title: "Edit Employee Role",
               content: <EmployeeRoleForm id={employeeRole._id} />,
+              modal: false,
             }}
             deleteLoading={deleteLoading}
           />

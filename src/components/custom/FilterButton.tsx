@@ -19,6 +19,7 @@ type FilterButtonProps = {
   onChange: (value: string | string[]) => void;
   isMultiple?: boolean;
   alertText?: string;
+  align?: "start" | "center" | "end";
 };
 
 export const FilterButton = ({
@@ -28,6 +29,7 @@ export const FilterButton = ({
   onChange,
   isMultiple = false,
   alertText = "You can select multiple values.",
+  align = "start",
 }: FilterButtonProps) => {
   const [open, setOpen] = useState(false);
 
@@ -66,7 +68,7 @@ export const FilterButton = ({
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-40 p-0" align="start">
         <Command>
           {isMultiple && (
             <div className="px-3 py-2 text-sm text-muted-foreground flex items-center gap-2">

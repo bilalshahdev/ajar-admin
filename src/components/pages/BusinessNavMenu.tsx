@@ -1,11 +1,6 @@
 "use client";
 
 import { Small } from "@/components/Typography";
-import { businessNavMenu } from "@/config/menu";
-import { cn } from "@/lib/utils";
-import { useLocale } from "next-intl";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -13,6 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { businessNavMenu } from "@/config/menu";
+import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 const BusinessNavMenu = () => {
   const pathname = usePathname();
@@ -38,11 +38,11 @@ const BusinessNavMenu = () => {
       <div className="hidden w-full md:flex justify-between p-4 bg-primary-foreground rounded-md">
         {businessNavMenu.map((item) => (
           <Link
-            key={item.label}
-            href={`/${locale}/business-settings${item.href}`}
+            key={item.title}
+            href={`/${locale}/business-settings${item.path}`}
           >
-            <Small className={cn("", isMenuActive(item.href))}>
-              {item.label}
+            <Small className={cn("", isMenuActive(item.path))}>
+              {item.title}
             </Small>
           </Link>
         ))}
@@ -53,8 +53,8 @@ const BusinessNavMenu = () => {
         <Select
           onValueChange={handleSelectChange}
           defaultValue={
-            businessNavMenu.find((item) => pathname.endsWith(item.href))
-              ?.href || "/"
+            businessNavMenu.find((item) => pathname.endsWith(item.path))
+              ?.path || "/"
           }
         >
           <SelectTrigger className="w-full">
@@ -62,8 +62,8 @@ const BusinessNavMenu = () => {
           </SelectTrigger>
           <SelectContent>
             {businessNavMenu.map((item) => (
-              <SelectItem key={item.label} value={item.href}>
-                {item.label}
+              <SelectItem key={item.title} value={item.path}>
+                {item.title}
               </SelectItem>
             ))}
           </SelectContent>

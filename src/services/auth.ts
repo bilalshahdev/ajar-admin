@@ -1,6 +1,13 @@
 import { asyncHandler } from "@/lib/asyncHandler";
 import { api } from "@/lib/axios";
-import { Login, Signup, AsyncResponse, LoginSuccessData } from "@/types";
+import {
+  ApiResponse,
+  AsyncResponse,
+  Login,
+  LoginSuccessData,
+  Signup,
+  User,
+} from "@/types";
 
 export const registerUser = (data: Signup) =>
   asyncHandler(async () => {
@@ -22,3 +29,10 @@ export const loginUser = (
   data: Login
 ): Promise<AsyncResponse<LoginSuccessData | null>> =>
   asyncHandler<LoginSuccessData>(() => api.post("/users/login", data));
+
+type UserDetails = ApiResponse<{ user: User }>;
+
+export const getUserDetails = async (): Promise<UserDetails> => {
+  const response = await api.get("/users/details");
+  return response.data;
+};

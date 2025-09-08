@@ -11,6 +11,8 @@ import { cloneElement, useState } from "react";
 import { FiEdit2, FiEye, FiSettings, FiTrash2 } from "react-icons/fi";
 import ConfirmDialog from "./ConfirmDialog";
 import Tooltip from "./Tooltip";
+import { allowedOperations } from "@/utils/auth";
+import { usePathname } from "next/navigation";
 
 type ActionType = "view" | "edit" | "delete" | "settings";
 
@@ -27,6 +29,7 @@ interface TableActionsProps {
     title: string;
     description?: string;
     content: React.ReactNode;
+    modal?: boolean;
   };
 }
 const TableActions: React.FC<TableActionsProps> = ({
@@ -39,6 +42,14 @@ const TableActions: React.FC<TableActionsProps> = ({
   editDialog,
 }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+
+  const pathname = usePathname();
+  const operations = allowedOperations(pathname);
+  const isEdit = operations?.includes("update");
+  const isDelete = operations?.includes("delete");
+
+  if (!isEdit && !isDelete) return <>-</>;
+
   return (
     <div className="flex gap-4 items-center">
       {actions.includes("view") && (
@@ -49,7 +60,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         </Tooltip>
       )}
 
-      {actions.includes("settings") && (
+      {isEdit && actions.includes("settings") && (
         <Tooltip content={`Settings ${module}`}>
           <Link href={`${baseRoute}/${id}/settings`}>
             <FiSettings size={18} className="cursor-pointer text-blue-500" />
@@ -57,10 +68,14 @@ const TableActions: React.FC<TableActionsProps> = ({
         </Tooltip>
       )}
 
-      {actions.includes("edit") && (
+      {isEdit && actions.includes("edit") && (
         <>
           {editDialog?.title ? (
-            <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+            <Dialog
+              modal={editDialog.modal}
+              open={editDialogOpen}
+              onOpenChange={setEditDialogOpen}
+            >
               <DialogTrigger>
                 <Tooltip content={`Edit ${module}`}>
                   <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
@@ -96,7 +111,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         </>
       )}
 
-      {actions.includes("delete") && onDelete && (
+      {isDelete && actions.includes("delete") && onDelete && (
         <ConfirmDialog
           title={`Delete ${module}`}
           description={`Are you sure you want to delete this ${module.toLowerCase()}?`}

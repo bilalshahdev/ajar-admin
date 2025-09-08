@@ -1,65 +1,68 @@
 "use client";
 
 import Loader from "@/components/Loader";
-import { jwtDecode } from "jwt-decode";
+import { useUser } from "@/hooks/useAuth";
+import { checkStaffAccess, getAuthInfo } from "@/utils/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-interface DecodedToken {
-  id: string;
-  role: "admin" | "staff";
-  iat: number;
-  exp: number;
-}
+import { toast } from "sonner";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem("token");
+  const { refetch, isFetching } = useUser();
 
-      // ✅ Always allow auth pages
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { token, expired, role } = getAuthInfo();
+
       if (pathname.startsWith("/auth")) {
         setIsVerified(true);
         return;
       }
 
-      if (!token) {
-        setIsVerified(false);
+      if (!token || expired) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("permissions");
+        toast.error("Your session has expired. Please login again.");
         router.replace("/auth/login");
+        setIsVerified(false);
         return;
       }
 
       try {
-        const decoded: DecodedToken = jwtDecode(token);
-        const now = Date.now() / 1000;
+        const user = await refetch();
+        const permissions = user?.data?.data?.user?.allowAccess?.permissions;
 
-        if (decoded.exp < now || decoded.role !== "admin") {
-          setIsVerified(false);
-          router.replace("/auth/login");
-          return;
+        if (role === "staff") {
+          if (permissions) {
+            console.log("inside if of allow user permission");
+            localStorage.setItem("permissions", JSON.stringify(permissions));
+          }
+
+          const { allowed, fallbackPath } = checkStaffAccess(pathname);
+          if (!allowed && fallbackPath) {
+            router.replace(fallbackPath);
+            toast.error("You are not allowed to access this page.");
+            return;
+          }
         }
 
         setIsVerified(true);
-      } catch (error) {
-        console.log("Auth error:", error);
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        localStorage.removeItem("userid");
-
+      } catch (err) {
         setIsVerified(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("permissions");
         router.replace("/auth/login");
       }
     };
 
     checkAuth();
-  }, [pathname, router]);
+  }, [pathname, router, refetch]);
 
-  // ✅ null means "still checking", false means "unauthorized"
-  if (isVerified === null) {
+  if (isVerified === null || isFetching) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="border-aqua" />

@@ -56,20 +56,20 @@ export const sidebarMenu: NavMenuItem[] = [
 
 // Navigation items with icons
 export const navMenu: MenuItem[] = [
-  { href: "/user-verification", label: "User" },
-  { href: "/analytics", label: "reports" },
-  { href: "/rental-listing", label: "listing" },
-  { href: "/rental-policies", label: "rental policies" },
+  { path: "/user-verification", title: "User" },
+  { path: "/analytics", title: "reports" },
+  { path: "/rental-listing", title: "listing" },
+  { path: "/rental-policies", title: "rental policies" },
 ];
 
 export const businessNavMenu: MenuItem[] = [
-  { href: "/", label: "Business Information" },
-  { href: "/payment-methods", label: "Payment Methods" },
-  { href: "/sms-module", label: "SMS Module" },
-  { href: "/mail-config", label: "Mail Config" },
-  { href: "/map-apis", label: "Map API’s" },
-  { href: "/social-logins", label: "Socials Logins" },
-  { href: "/recaptcha", label: "Recaptcha" },
-  { href: "/firebase", label: "Firebase" },
-  // { href: "/storage", label: "Storage" },
+  { path: "/", title: "Business Information" },
+  { path: "/payment-methods", title: "Payment Methods" },
+  { path: "/sms-module", title: "SMS Module" },
+  { path: "/mail-config", title: "Mail Config" },
+  { path: "/map-apis", title: "Map API’s" },
+  { path: "/social-logins", title: "Socials Logins" },
+  { path: "/recaptcha", title: "Recaptcha" },
+  { path: "/firebase", title: "Firebase" },
+  // { path: "/storage", title: "Storage" },
 ];

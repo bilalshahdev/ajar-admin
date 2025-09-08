@@ -17,16 +17,14 @@ declare module "leaflet" {
   }
 }
 
-interface NavMenuItem {
-  title: string;
+interface MenuItem {
   path: string;
-  icon: React.ElementType;
+  title: string;
 }
 
-type MenuItem = {
-  href: string;
-  label: string;
-};
+interface NavMenuItem extends MenuItem {
+  icon: React.ElementType;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -85,7 +83,7 @@ interface User {
   status: UserStatus;
   otp?: UserOTP;
   stripe?: StripeInfo;
-  __v?: number;
+  allowAccess?: EmployeeRole;
 }
 
 type Login = {
@@ -123,18 +121,10 @@ type AsyncResponse<T> = {
   status: "success" | "error";
 };
 
-// Specific type for user data returned on successful login
-interface UserDetailsFromLogin {
-  _id: string; // Assuming _id from login response is a string
-  email?: string;
-  name?: string;
-  // other fields that might be part of the user object in login response
-}
-
 interface LoginSuccessData {
   data: {
     token: string;
-    user: UserDetailsFromLogin;
+    user: User;
   };
 }
 
@@ -542,16 +532,8 @@ export interface Employee {
   phone: string;
   password: string;
   status: "active" | "blocked";
+  role: string;
   allowAccess: EmployeeRole;
-  allowAccess: {
-    _id: string;
-    name: string;
-    permissions: {
-      access: string;
-      operations: string[];
-      _id: string;
-    }[];
-  };
   images: string[];
   profileImage: string;
   address: string;

@@ -65,7 +65,6 @@ export default function FieldForm({ id }: { id?: string }) {
       },
     });
 
-  console.log(field?.data);
   useEffect(() => {
     if (field) {
       const f = field.data;

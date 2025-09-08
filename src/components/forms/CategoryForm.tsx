@@ -142,12 +142,7 @@ const CategoryForm = ({ id }: { id?: string }) => {
           className="md:col-span-2"
         />
         <FileInput control={control} name="thumbnail" label="Thumbnail" />
-        <TextInput
-          control={control}
-          name="icon"
-          label="Icon"
-          placeholder="e.g. Icon"
-        />
+        <FileInput control={control} name="icon" label="Icon" />
       </div>
 
       <Button
