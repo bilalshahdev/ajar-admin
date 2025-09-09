@@ -25,7 +25,7 @@ const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      role: "admin",
+      role: (localStorage.getItem("lastRole") as "admin" | "staff") || "admin",
     },
   });
 
@@ -69,7 +69,10 @@ const LoginForm = () => {
         render={({ field }) => (
           <RadioGroup
             className="flex items-center gap-4"
-            onValueChange={field.onChange}
+            onValueChange={(val) => {
+              field.onChange(val);
+              localStorage.setItem("lastRole", val);
+            }}
             value={field.value}
           >
             <RadioGroupItem value="admin" id="admin" />

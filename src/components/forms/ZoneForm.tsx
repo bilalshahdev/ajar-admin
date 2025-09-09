@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { PolygonSearchMapRef } from "../PolygonSearchMap";
 import TextInput from "./fields/TextInput";
+import { currencies } from "@/config/data";
+import SelectInput from "./fields/SelectInput";
 
 const PolygonSearchMap = dynamic(() => import("../PolygonSearchMap"), {
   ssr: false,
@@ -100,7 +102,6 @@ const ZoneForm = ({
     []
   );
 
-  // ✅ Do conditional rendering here — not before hook calls
   if (isEditMode && !zone && !isLoading) {
     toast.error("Zone not found");
     return null;
@@ -115,11 +116,13 @@ const ZoneForm = ({
           label="Zone Name"
           placeholder="e.g. Gulf Zone"
         />
-        <TextInput
+        <SelectInput
           control={control}
           name="currency"
           label="Currency"
-          placeholder="e.g. AED"
+          options={currencies}
+          labelKey="name"
+          valueKey="value"
         />
       </div>
 

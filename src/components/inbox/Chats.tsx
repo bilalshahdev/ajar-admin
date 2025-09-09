@@ -8,10 +8,10 @@ import { Avatar } from "../Avatar";
 import { Small, XS } from "../Typography";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
-import { setLoading, setError, setChats } from "@/lib/store/slices/chatsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { limit } from "@/config/constants";
+import { setLoading, setError, setChats } from "@/lib/store/slices/chatsSlice";
 
 const Chats = ({
   chatId,

@@ -3,7 +3,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useChat } from "@/hooks/useChat";
 import { socket } from "@/lib/socket";
-import { updateChat } from "@/lib/store/slices/chatsSlice";
 import { cn } from "@/lib/utils";
 import { Message } from "@/types";
 import { useSearchParams } from "next/navigation";
@@ -15,6 +14,7 @@ import ResStatus from "../ResStatus";
 import { Small, XS } from "../Typography";
 import ChatBubble from "./ChatBubble";
 import MessageInput from "./MessageInput";
+import { updateChat } from "@/lib/store/slices/chatsSlice";
 
 const ChatMessages = ({ className }: { className?: string }) => {
   const { userId } = useAuth();

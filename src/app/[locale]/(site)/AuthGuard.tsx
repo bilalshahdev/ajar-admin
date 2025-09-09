@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
+  const [didFetch, setDidFetch] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -32,35 +33,40 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      try {
-        const user = await refetch();
-        const permissions = user?.data?.data?.user?.allowAccess?.permissions;
+      // ✅ Only call refetch once
+      if (!didFetch) {
+        try {
+          const user = await refetch();
+          const permissions = user?.data?.data?.user?.allowAccess?.permissions;
 
-        if (role === "staff") {
-          if (permissions) {
-            console.log("inside if of allow user permission");
+          if (role === "staff" && permissions) {
             localStorage.setItem("permissions", JSON.stringify(permissions));
           }
-
-          const { allowed, fallbackPath } = checkStaffAccess(pathname);
-          if (!allowed && fallbackPath) {
-            router.replace(fallbackPath);
-            toast.error("You are not allowed to access this page.");
-            return;
-          }
+          setDidFetch(true);
+        } catch (err) {
+          setIsVerified(false);
+          localStorage.removeItem("token");
+          localStorage.removeItem("permissions");
+          router.replace("/auth/login");
+          return;
         }
-
-        setIsVerified(true);
-      } catch (err) {
-        setIsVerified(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("permissions");
-        router.replace("/auth/login");
       }
+
+      // ✅ After first fetch, only check access locally
+      if (role === "staff") {
+        const { allowed, fallbackPath } = checkStaffAccess(pathname);
+        if (!allowed && fallbackPath) {
+          router.replace(fallbackPath);
+          // toast.error("You are not allowed to access this page.");
+          return;
+        }
+      }
+
+      setIsVerified(true);
     };
 
     checkAuth();
-  }, [pathname, router, refetch]);
+  }, [pathname, router, refetch, didFetch]);
 
   if (isVerified === null || isFetching) {
     return (

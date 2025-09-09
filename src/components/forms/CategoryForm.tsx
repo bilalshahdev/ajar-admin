@@ -71,7 +71,9 @@ const CategoryForm = ({ id }: { id?: string }) => {
       payload.append("description", formData.description);
     }
 
-    if (formData.icon?.trim()) {
+    if (formData.icon instanceof File) {
+      payload.append("icon", formData.icon);
+    } else if (typeof formData.icon === "string") {
       payload.append("icon", formData.icon);
     }
 

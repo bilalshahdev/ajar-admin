@@ -21,64 +21,7 @@ export interface Field {
   };
 }
 
-const initialState: Field[] = [
-  {
-    _id: "fld-101",
-    name: "full_name",
-    label: "Full Name",
-    type: "text",
-    placeholder: "Enter full name",
-    order: 1,
-    visible: true,
-    readonly: false,
-    isMultiple: false,
-    validation: { required: true },
-  },
-  {
-    _id: "fld-102",
-    name: "email",
-    label: "Email Address",
-    type: "email",
-    placeholder: "Enter email",
-    order: 2,
-    visible: true,
-    validation: {
-      required: true,
-      pattern: "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
-    },
-  },
-  {
-    _id: "fld-103",
-    name: "dob",
-    label: "Date of Birth",
-    type: "date",
-    order: 3,
-    visible: true,
-    validation: { required: true },
-  },
-  {
-    _id: "fld-104",
-    name: "skills",
-    label: "Skills",
-    type: "multiselect",
-    isMultiple: true,
-    options: ["HTML", "CSS", "JS", "React", "Node"],
-    placeholder: "Select skills",
-    order: 4,
-    tooltip: "You can select multiple",
-    validation: { required: false },
-  },
-  {
-    _id: "fld-105",
-    name: "bio",
-    label: "Bio",
-    type: "text",
-    placeholder: "Short introduction",
-    order: 5,
-    visible: true,
-    validation: { required: false, min: 10, max: 250 },
-  },
-];
+const initialState: Field[] = [];
 
 export const fieldSlice = createSlice({
   name: "fields",

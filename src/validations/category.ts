@@ -5,13 +5,8 @@ export const CategorySchema = z.object({
   description: z.string().optional(),
   type: z.enum(["category", "subCategory"]),
   category: z.string().optional(),
-  thumbnail: z
-    .union([
-      z.instanceof(File),
-      z.string().min(1, "Thumbnail must be provided"),
-    ])
-    .optional(),
-  icon: z.string().optional(),
+  thumbnail: z.union([z.instanceof(File), z.string().url()]).optional(),
+  icon: z.union([z.instanceof(File), z.string().url()]).optional(),
 });
 
 export type CategoryFormValues = z.infer<typeof CategorySchema>;
