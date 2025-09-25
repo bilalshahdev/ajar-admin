@@ -40,10 +40,10 @@ export const useUser = () => {
   const query = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserDetails(),
-    staleTime: 0,
-    gcTime: 0,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
+    staleTime: 5 * 60 * 1000, // 5 min cache before considered stale
+    gcTime: 30 * 60 * 1000, // 30 min keep in memory
+    refetchOnMount: false, // don’t force refetch each mount
+    refetchOnWindowFocus: false, // don’t refetch on tab switch
   });
 
   return query;

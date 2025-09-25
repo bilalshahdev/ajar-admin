@@ -6,6 +6,7 @@ import {
   getUsers,
   searchUsers,
   updateUser,
+  reviewUserDocuments,
   updateUserStatus,
 } from "@/services/users";
 import { UserStatus } from "@/types";
@@ -100,6 +101,54 @@ export const useUpdateUserStatus = () => {
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Something went wrong");
+    },
+  });
+};
+
+export const useReviewUserDocuments = () => {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: reviewUserDocuments,
+    onMutate: async (vars) => {
+      const { userId, documentId, status, reason } = vars;
+
+      const userKey = ["user", userId];
+      await qc.cancelQueries({ queryKey: userKey });
+      const prevUser = qc.getQueryData<any>(userKey);
+
+      // optimistic patch
+      if (prevUser?.data?.documents) {
+        const nextUser = structuredClone(prevUser);
+        const doc = nextUser.data.documents.find(
+          (d: any) => d._id === documentId
+        );
+        if (doc) {
+          doc.status = status;
+          if (reason !== undefined) doc.reason = reason;
+        }
+        qc.setQueryData(userKey, nextUser);
+      }
+
+      // optionally reflect on list pages if needed
+      await qc.cancelQueries({ queryKey: ["users", "paginated"] });
+      const prevList = qc.getQueryData<any>(["users", "paginated"]);
+      // If list rows include document flags, patch them similarly.
+
+      return { prevUser, prevList };
+    },
+    onError: (error: any, _vars, ctx) => {
+      if (ctx?.prevUser) qc.setQueryData(["user", _vars.userId], ctx.prevUser);
+      if (ctx?.prevList) qc.setQueryData(["users", "paginated"], ctx.prevList);
+      toast.error(
+        error?.response?.data?.message || "Failed to review document"
+      );
+    },
+    onSuccess: (_res, vars) => {
+      // revalidate fresh
+      qc.invalidateQueries({ queryKey: ["user", vars.userId] });
+      qc.invalidateQueries({ queryKey: ["users", "paginated"], exact: false });
+      toast.success("Document review saved");
     },
   });
 };

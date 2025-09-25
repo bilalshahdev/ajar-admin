@@ -15,13 +15,22 @@ import {
   useUpdateUserStatus,
 } from "@/hooks/useUsers";
 import { cn } from "@/lib/utils";
-import { User } from "@/services/users";
-import { UserStatus } from "@/types";
+import { User, UserStatus } from "@/types";
 import { useState } from "react";
+import { IoDocuments } from "react-icons/io5";
 import TableActions from "../Actions";
 import StatsCard from "../cards/StatsCard";
 import { DataTable } from "../custom/DataTable";
 import ResponseError from "../ResponseError";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import UserDetailsLazy from "../UserDetails";
+import Tooltip from "../Tooltip";
 
 const userStatus = ["active", "inactive", "blocked", "unblocked"];
 
@@ -84,7 +93,15 @@ const Users = () => {
     },
   ];
 
-  const cols = ["User No", "Name", "Phone", "Email", "Status", "Actions"];
+  const cols = [
+    "User No",
+    "Name",
+    "Phone",
+    "Email",
+    "Status",
+    "Documents",
+    "Actions",
+  ];
 
   const row = (user: User) => (
     <>
@@ -120,20 +137,31 @@ const Users = () => {
           </SelectContent>
         </Select>
       </TableCell>
+      <TableCell>
+        <Dialog>
+          <DialogTrigger>
+            <Tooltip content="View Documents">
+              <IoDocuments size={18} className="text-blue-500 cursor-pointer" />
+            </Tooltip>
+          </DialogTrigger>
+          <DialogContent className="max-h-[600px] overflow-scroll">
+            <DialogHeader>
+              <DialogTitle>Documents</DialogTitle>
+            </DialogHeader>
+            <UserDetailsLazy userId={user._id} />
+          </DialogContent>
+        </Dialog>
+      </TableCell>
       <TableCell className="flex gap-4">
         <TableActions
           id={user._id}
-          baseRoute="/users-verification"
-          actions={["delete"]}
+          baseRoute="/users"
           module="User"
-          onDelete={(id: string, closeDialog: () => void) =>
-            deleteUser(id, {
-              onSuccess: () => {
-                closeDialog();
-              },
-            })
-          }
-          deleteLoading={deleteLoading}
+          actions={["delete"]}
+          onDelete={(id, close) => {
+            deleteUser(id);
+            close();
+          }}
         />
       </TableCell>
     </>
@@ -167,3 +195,14 @@ const Users = () => {
 };
 
 export default Users;
+
+const UserDetails = ({ User }: { User: User }) => {
+  return (
+    <>
+      <div>{User.name}</div>
+      <div>{User.email}</div>
+      <div>{User.phone}</div>
+      <div>{User.status}</div>
+    </>
+  );
+};

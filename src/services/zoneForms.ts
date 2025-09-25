@@ -1,83 +1,16 @@
 import { api } from "@/lib/axios";
+import { ApiResponse, ZoneForm } from "@/types";
 
 // ---------------- Types ----------------
 
-export interface ZoneFormSetting {
-  commissionType: "fixed" | "percentage";
-  leaserCommission: {
-    value: number;
-    min: number;
-    max: number;
-  };
-  renterCommission: {
-    value: number;
-    min: number;
-    max: number;
-  };
-  tax: number;
-  expiry: string; // ISO format
-}
+export type GetZoneFormsResponse = ApiResponse<{
+  forms: ZoneForm[];
+  total: number;
+  page: number;
+  limit: number;
+}>;
 
-export interface ZoneFormField {
-  _id: string;
-  name: string;
-  label: string;
-  type: string;
-  placeholder: string;
-  isMultiple: boolean;
-  options?: string[];
-  order?: number;
-  tooltip?: string;
-  visible: boolean;
-  defaultValue?: string;
-  readonly: boolean;
-  validation?: {
-    required?: boolean;
-  };
-  min?: number;
-  max?: number;
-  language: string;
-  languages?: any[];
-}
-
-export interface ZoneForm {
-  _id: string;
-  name: string;
-  description: string;
-  language: string;
-  subCategory: string | any;
-  zone: string | any;
-  fields: ZoneFormField[];
-  setting: ZoneFormSetting;
-  languages?: Array<{
-    locale: string;
-    translations: {
-      name: string;
-      description: string;
-    };
-    _id: string;
-  }>;
-  slug?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface GetZoneFormsResponse {
-  success: boolean;
-  message: string;
-  data: {
-    forms: ZoneForm[];
-    total: number;
-    page: number;
-    limit: number;
-  };
-}
-
-export interface GetZoneFormDetailsResponse {
-  success: boolean;
-  message: string;
-  data: ZoneForm;
-}
+type GetZoneFormDetailsResponse = ApiResponse<ZoneForm>;
 
 // ---------------- API Services ----------------
 

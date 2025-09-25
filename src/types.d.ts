@@ -69,6 +69,15 @@ interface StripeInfo {
 
 type UserStatus = "active" | "inactive" | "blocked" | "unblocked";
 
+interface Document {
+  _id: string;
+  name: string;
+  filesUrl: string[];
+  expiryDate: string;
+  status: "pending" | "approved" | "rejected";
+  reason?: string;
+}
+
 interface User {
   _id: string;
   name: string;
@@ -84,6 +93,7 @@ interface User {
   otp?: UserOTP;
   stripe?: StripeInfo;
   allowAccess?: EmployeeRole;
+  documents?: Document[];
 }
 
 type Login = {
@@ -132,6 +142,70 @@ interface Polygon {
   lat: number;
   lng: number;
   _id: string;
+}
+
+interface ZoneFormSetting {
+  commissionType: "fixed" | "percentage";
+  leaserCommission: {
+    value: number;
+    min: number;
+    max: number;
+  };
+  renterCommission: {
+    value: number;
+    min: number;
+    max: number;
+  };
+  tax: number;
+  expiry: string;
+}
+
+interface ZoneFormField {
+  _id: string;
+  name: string;
+  label: string;
+  type: string;
+  placeholder: string;
+  isMultiple: boolean;
+  options?: string[];
+  order?: number;
+  tooltip?: string;
+  visible: boolean;
+  defaultValue?: string;
+  readonly: boolean;
+  validation?: {
+    required?: boolean;
+  };
+  min?: number;
+  max?: number;
+  language: string;
+  languages?: any[];
+}
+
+interface Language {
+  locale: string;
+  translations: {
+    name: string;
+    description: string;
+  };
+  _id: string;
+}
+
+interface ZoneForm {
+  _id: string;
+  name: string;
+  description: string;
+  language: string;
+  subCategory: string | any;
+  zone: string | any;
+  fields: ZoneFormField[];
+  setting: ZoneFormSetting;
+  languages?: Language[];
+  userDocuments?: string[];
+  leaserDocuments?: string[];
+  slug?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface ZoneLanguage {
@@ -525,7 +599,7 @@ interface AnalyticsData {
 
 type AnalyticsResponse = ApiResponse<AnalyticsData>;
 
-export interface Employee {
+interface Employee {
   _id: string;
   name: string;
   email: string;
@@ -583,3 +657,39 @@ interface SendMessageData {
   receiver: string;
   text: string;
 }
+
+interface DropdownValue {
+  name: string;
+  value: string;
+}
+
+interface Dropdown {
+  _id: string;
+  name: string;
+  values: DropdownValue[];
+}
+
+interface ApiSuccessList<T> {
+  success: true;
+  pagination: Pagination;
+  data: T[];
+}
+
+interface ApiSuccessItem<T> {
+  success: true;
+  data: T;
+}
+
+interface ApiError {
+  success: false;
+  message: string;
+}
+
+interface ListDropdownsQuery {
+  name?: string;
+  page?: number;
+  limit?: number;
+}
+type ListDropdownsResponse = ApiSuccessList<Dropdown>;
+type GetDropdownByIdResponse = ApiSuccessItem<Dropdown>;
+type GetDropdownByNameResponse = ApiSuccessItem<Dropdown>;

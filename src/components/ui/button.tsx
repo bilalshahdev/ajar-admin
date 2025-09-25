@@ -11,6 +11,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+        success:
+          "bg-aqua text-white shadow-xs hover:bg-aqua/90",
         button: "bg-button text-white shadow-xs hover:opacity-80",
         signature:
           "bg-signature text-signature-foreground shadow-xs hover:bg-signature/90",

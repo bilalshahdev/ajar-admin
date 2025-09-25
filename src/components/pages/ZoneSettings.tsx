@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import CommissionInputs from "../forms/fields/CommissionInputs";
 import DateInput from "../forms/fields/DateInput";
 import TextInput from "../forms/fields/TextInput";
@@ -8,32 +8,17 @@ import Loader from "../Loader";
 import SubCategorySelector from "../SubcategorySelector";
 import { Button } from "../ui/button";
 
-import { Badge } from "@/components/ui/badge";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { useGetDropdownByName } from "@/hooks/useDropdowns";
 import { useGetFieldsList } from "@/hooks/useFields";
 import {
   useAddZoneForm,
   useGetZoneFormByZoneAndSubCategory,
   useUpdateZoneForm,
 } from "@/hooks/useZoneForms";
-import { cn } from "@/lib/utils";
 import { Field } from "@/types";
-import { ChevronsUpDown, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Label } from "../ui/label";
+import MultiSelect from "../forms/fields/MultiSelect";
 
 interface ZoneFormValues {
   zone: string;
@@ -56,6 +41,8 @@ interface ZoneFormValues {
     tax: number;
     expiry: string;
   };
+  userDocuments: string[];
+  leaserDocuments: string[];
 }
 
 const ZoneSettings = () => {
@@ -79,15 +66,13 @@ const ZoneSettings = () => {
 
 export default ZoneSettings;
 
-interface SubcategorySettingsFormProps {
-  zoneId: string;
-  selectedSubCategory: string;
-}
-
 const SubcategorySettingsForm = ({
   zoneId,
   selectedSubCategory,
-}: SubcategorySettingsFormProps) => {
+}: {
+  zoneId: string;
+  selectedSubCategory: string;
+}) => {
   const router = useRouter();
 
   const defaultValues = useMemo(
@@ -104,24 +89,27 @@ const SubcategorySettingsForm = ({
         tax: 0,
         expiry: "",
       },
+      userDocuments: [],
+      leaserDocuments: [],
     }),
     [zoneId, selectedSubCategory]
   );
 
-  const { control, handleSubmit, setValue, reset } = useForm<ZoneFormValues>({
+  const { control, handleSubmit, reset } = useForm<ZoneFormValues>({
     defaultValues,
   });
 
-  // useEffect(() => {
-  //   reset({
-  //     ...defaultValues,
-  //     subCategory: selectedSubCategory,
-  //     zone: zoneId,
-  //   });
-  // }, [selectedSubCategory, reset, defaultValues]);
+  const { data: documents, isLoading: documentsLoading } =
+    useGetDropdownByName("userDocuments");
+  const documentsValues: { name: string; value: string }[] =
+    documents?.data?.values ?? [];
 
-  const selectedFields: string[] = useWatch({ control, name: "fields" }) || [];
-  const { data: zoneForm, isLoading } = useGetZoneFormByZoneAndSubCategory(
+  const { data: leaserDocuments, isLoading: leaserDocumentsLoading } =
+    useGetDropdownByName("leaserDocuments");
+  const leaserDocumentsValues: { name: string; value: string }[] =
+    leaserDocuments?.data?.values ?? [];
+
+  const { data: zoneForm } = useGetZoneFormByZoneAndSubCategory(
     zoneId,
     selectedSubCategory
   );
@@ -156,6 +144,8 @@ const SubcategorySettingsForm = ({
         tax,
         expiry,
       },
+      userDocuments: zoneForm.data.userDocuments,
+      leaserDocuments: zoneForm.data.leaserDocuments,
     });
   }, [zoneForm, reset, zoneId, selectedSubCategory]);
 
@@ -190,30 +180,6 @@ const SubcategorySettingsForm = ({
 
   const fields: Field[] = fieldsData?.data?.fields || [];
 
-  const handleAddField = (id: string) => {
-    if (!selectedFields.includes(id)) {
-      setValue("fields", [...selectedFields, id]);
-    }
-  };
-
-  const handleRemoveField = (id: string) => {
-    setValue(
-      "fields",
-      selectedFields.filter((fieldId) => fieldId !== id)
-    );
-  };
-
-  const selectedFieldDetails: Field[] =
-    fields?.filter((field: Field) => selectedFields.includes(field._id)) || [];
-
-  if (!selectedSubCategory || selectedFields === undefined) {
-    return (
-      <p className="text-muted-foreground">
-        Please select a subcategory for its setting
-      </p>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -230,86 +196,52 @@ const SubcategorySettingsForm = ({
           name="description"
           label="Description"
         />
-        <div className="space-y-2 col-span-2">
-          {/*  name and description */}
 
-          <Label>Select Custom Fields</Label>
+        {/* Fields multiselect */}
+        <MultiSelect<Field, ZoneFormValues>
+          control={control}
+          name={"fields"}
+          label="Select Custom Fields"
+          options={fields}
+          loading={fieldsLoading}
+          getOptionValue={(f) => f._id}
+          getOptionLabel={(f) => f.label}
+          className="col-span-2"
+          emptyText="No field found."
+          searchPlaceholder="Search fields..."
+        />
+        {documentsValues.length > 0 && (
+          <MultiSelect<{ name: string; value: string }, ZoneFormValues>
+            control={control}
+            name={"userDocuments"}
+            label="Renter Documents"
+            note="Renter needs in order to request for booking"
+            options={documentsValues}
+            loading={documentsLoading}
+            getOptionValue={(d) => d.value}
+            getOptionLabel={(d) => d.name}
+            className="col-span-2"
+            emptyText="No document found."
+            searchPlaceholder="Search documents..."
+          />
+        )}
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                className={cn(
-                  "w-full justify-between flex-wrap text-left min-h-[40px]",
-                  selectedFields.length === 0 && "text-muted-foreground"
-                )}
-              >
-                {selectedFieldDetails?.length > 0
-                  ? selectedFieldDetails?.length +
-                    ` field${
-                      selectedFieldDetails?.length > 1 ? "s" : ""
-                    } selected`
-                  : "Select fields..."}
-                <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
+        {leaserDocumentsValues.length > 0 && (
+          <MultiSelect<{ name: string; value: string }, ZoneFormValues>
+            control={control}
+            name={"leaserDocuments"}
+            label="Leaser Documents"
+            note="Leaser needs in order to request for booking"
+            options={leaserDocumentsValues}
+            loading={leaserDocumentsLoading}
+            getOptionValue={(d) => d.value}
+            getOptionLabel={(d) => d.name}
+            className="col-span-2"
+            emptyText="No document found."
+            searchPlaceholder="Search documents..."
+          />
+        )}
 
-            <PopoverContent className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search fields..." className="h-9" />
-                <CommandList>
-                  <CommandEmpty>No field found.</CommandEmpty>
-                  <CommandGroup>
-                    {fieldsLoading ? (
-                      <Loader />
-                    ) : fields?.length > 0 ? (
-                      fields?.map((field: Field) => {
-                        const isSelected = selectedFields.includes(field._id);
-                        return (
-                          <CommandItem
-                            key={field._id}
-                            onSelect={() =>
-                              isSelected
-                                ? handleRemoveField(field._id)
-                                : handleAddField(field._id)
-                            }
-                          >
-                            {field.label}
-                            {isSelected && (
-                              <span className="ml-auto text-primary">✔</span>
-                            )}
-                          </CommandItem>
-                        );
-                      })
-                    ) : (
-                      <CommandEmpty>No field found.</CommandEmpty>
-                    )}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-
-          {/* Selected Badges */}
-          {selectedFieldDetails?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {selectedFieldDetails?.map((field: Field) => (
-                <Badge
-                  key={field._id}
-                  variant="secondary"
-                  className="flex items-center gap-1"
-                >
-                  {field.label}
-                  <X
-                    className="w-3 h-3 cursor-pointer text-red-500"
-                    onClick={() => handleRemoveField(field._id)}
-                  />
-                </Badge>
-              ))}
-            </div>
-          )}
-        </div>
         {/* Commission Inputs */}
         <CommissionInputs control={control} className="col-span-2" />
         {/* Expiry */}

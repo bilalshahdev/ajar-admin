@@ -1,24 +1,7 @@
 // services/businessSettings.ts
 
 import { api } from "@/lib/axios";
-import { SettingsPageName } from "@/types";
-
-// Business Information
-// Payment Methods
-// SMS Module
-// Mail Config
-// Map API’s
-// Socials Logins
-// Recaptcha
-// Firebase
-
-// response type/interface
-
-interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
+import { ApiResponse, SettingsPageName } from "@/types";
 
 type BusinessSettingsResponse = ApiResponse<any>;
 

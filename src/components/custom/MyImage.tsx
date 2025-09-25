@@ -14,10 +14,12 @@ const MyImage = ({ src, alt, className, ...rest }: MyImageProps) => {
   if (typeof src === "string") {
     const isFileObjectUrl = src.startsWith("blob:");
     const isAbsoluteUrl = src.startsWith("http");
+    const fileUrl = src.startsWith("/uploads");
     const isPublicPath = src.startsWith("/");
 
-    if (isPublicPath) {
-      // It's in the public folder, don't modify
+    if (fileUrl) {
+      resolvedSrc = `${baseUrl}/${src}`;
+    } else if (isPublicPath) {
       resolvedSrc = src;
     } else if (!isFileObjectUrl && !isAbsoluteUrl) {
       // Relative path like 'uploads/image.jpg'
@@ -29,6 +31,8 @@ const MyImage = ({ src, alt, className, ...rest }: MyImageProps) => {
   } else if (src instanceof File) {
     resolvedSrc = URL.createObjectURL(src);
   }
+
+  console.log(resolvedSrc);
 
   return (
     <Image

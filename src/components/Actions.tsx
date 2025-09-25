@@ -31,7 +31,16 @@ interface TableActionsProps {
     content: React.ReactNode;
     modal?: boolean;
   };
+
+  // ✅ Optional dialog-based view support
+  viewDialog?: {
+    title: string;
+    description?: string;
+    content: React.ReactNode;
+    modal?: boolean;
+  };
 }
+
 const TableActions: React.FC<TableActionsProps> = ({
   id,
   baseRoute,
@@ -40,8 +49,10 @@ const TableActions: React.FC<TableActionsProps> = ({
   onDelete,
   deleteLoading = false,
   editDialog,
+  viewDialog,
 }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
   const pathname = usePathname();
   const operations = allowedOperations(pathname);
@@ -52,14 +63,51 @@ const TableActions: React.FC<TableActionsProps> = ({
 
   return (
     <div className="flex gap-4 items-center">
+      {/* ✅ View Action */}
       {actions.includes("view") && (
-        <Tooltip content={`View ${module}`}>
-          <Link href={`${baseRoute}/${id}`}>
-            <FiEye size={18} className="cursor-pointer text-blue-500" />
-          </Link>
-        </Tooltip>
+        <>
+          {viewDialog?.title ? (
+            <Dialog
+              modal={viewDialog.modal}
+              open={viewDialogOpen}
+              onOpenChange={setViewDialogOpen}
+            >
+              <DialogTrigger>
+                <Tooltip content={`View ${module}`}>
+                  <FiEye size={18} className="cursor-pointer text-blue-500" />
+                </Tooltip>
+              </DialogTrigger>
+              <DialogContent className="max-h-[500px] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{viewDialog.title}</DialogTitle>
+                  {viewDialog.description && (
+                    <DialogDescription>
+                      {viewDialog.description}
+                    </DialogDescription>
+                  )}
+                </DialogHeader>
+                {viewDialog.content &&
+                  cloneElement(
+                    viewDialog.content as React.ReactElement<{
+                      closeDialog: () => void;
+                    }>,
+                    {
+                      closeDialog: () => setViewDialogOpen(false),
+                    }
+                  )}
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Tooltip content={`View ${module}`}>
+              <Link href={`${baseRoute}/${id}`}>
+                <FiEye size={18} className="cursor-pointer text-blue-500" />
+              </Link>
+            </Tooltip>
+          )}
+        </>
       )}
 
+      {/* ✅ Settings Action */}
       {isEdit && actions.includes("settings") && (
         <Tooltip content={`Settings ${module}`}>
           <Link href={`${baseRoute}/${id}/settings`}>
@@ -68,6 +116,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         </Tooltip>
       )}
 
+      {/* ✅ Edit Action */}
       {isEdit && actions.includes("edit") && (
         <>
           {editDialog?.title ? (
@@ -111,6 +160,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         </>
       )}
 
+      {/* ✅ Delete Action */}
       {isDelete && actions.includes("delete") && onDelete && (
         <ConfirmDialog
           title={`Delete ${module}`}

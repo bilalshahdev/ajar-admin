@@ -3,6 +3,7 @@ import {
   FaChartBar,
   FaClipboardList,
   FaEnvelope,
+  FaList,
   FaMoneyCheckAlt,
   FaQuestion,
   FaShapes,
@@ -51,6 +52,7 @@ export const sidebarMenu: NavMenuItem[] = [
   { title: "Messages", path: "/messages", icon: FaEnvelope },
   { title: "Help & Support", path: "/help-support", icon: FaQuestion },
   { title: "FAQs", path: "/faqs", icon: PiQuestionMarkFill },
+  { title: "Dropdowns", path: "/dropdowns", icon: FaList },
   // { title: "Administration", path: "/administration", icon: FaBuilding },
 ];
 

@@ -1,15 +1,7 @@
 // /services/users.ts
 
 import { api } from "@/lib/axios";
-import { ApiResponse, Pagination, UserStats, UserStatus } from "@/types";
-
-export interface User {
-  _id: string;
-  name?: string;
-  email: string;
-  phone: string;
-  status: string;
-}
+import { ApiResponse, Pagination, User, UserStats, UserStatus } from "@/types";
 
 interface GetUsersData {
   users: User[];
@@ -18,6 +10,7 @@ interface GetUsersData {
 }
 
 type GetUsersResponse = ApiResponse<GetUsersData>;
+type GetUserResponse = ApiResponse<User>;
 
 export const getUsers = async ({
   page = 1,
@@ -31,9 +24,7 @@ export const getUsers = async ({
 };
 
 // Get single user
-export const getUser = async (
-  userId: string
-): Promise<{ success: boolean; message: string; data: User }> => {
+export const getUser = async (userId: string): Promise<GetUserResponse> => {
   const response = await api.get(`/users/${userId}`);
   return response.data;
 };
@@ -68,6 +59,17 @@ export const updateUserStatus = async (
   status: UserStatus
 ): Promise<{ success: boolean; message: string; data: User }> => {
   const response = await api.patch(`/users/${userId}/status`, { status });
+  return response.data;
+};
+
+// /services/users.ts
+export const reviewUserDocuments = async (data: {
+  userId: string;
+  documentId: string;
+  status: "approved" | "rejected" | "pending";
+  reason?: string;
+}): Promise<{ success: boolean; message: string; data: { _id: string } }> => {
+  const response = await api.patch(`/users/documents/review`, data);
   return response.data;
 };
 
