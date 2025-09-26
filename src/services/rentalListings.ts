@@ -39,6 +39,16 @@ export const getRentalListing = async (
   return response.data;
 };
 
+export const updateRentalListingStatus = async (
+  id: string,
+  status: "approved" | "rejected"
+): Promise<GetRentalListingResponse> => {
+  const response = await api.patch(`/marketplace-listings/${id}/status`, {
+    status,
+  });
+  return response.data;
+};
+
 export const deleteRentalListing = async (id: string) => {
   const response = await api.delete(`/marketplace-listings/${id}`);
   return response.data;

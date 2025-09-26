@@ -1,32 +1,34 @@
 // /components/users/DocumentsTab.tsx
 "use client";
 
-import { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { useReviewUserDocuments } from "@/hooks/useUsers";
-import { safeUrl } from "@/utils/safeUrl";
-import { cn } from "@/lib/utils";
-import MyImage from "./custom/MyImage";
 import { baseUrl } from "@/config/constants";
+import { useReviewUserDocuments } from "@/hooks/useUsers";
+import { cn } from "@/lib/utils";
+import { getImageUrl } from "@/utils/getImageUrl";
+import { safeUrl } from "@/utils/safeUrl";
 import Link from "next/link";
+import { useState } from "react";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import { toast } from "sonner";
+import MyImage from "./custom/MyImage";
 
 type Document = {
   _id: string;
@@ -133,22 +135,18 @@ function DocumentReviewCard({
           {doc.filesUrl?.map((u, i) => {
             const url = safeUrl(u);
             if (isImage(url)) {
-              console.log(url);
               return (
-                <Link
-                  key={i}
-                  href={baseUrl + url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <MyImage
-                    width={100}
-                    height={100}
-                    src={url}
-                    alt={`${doc.name}-${i}`}
-                    className="h-20 w-20 object-cover rounded border border-primary shadow "
-                  />
-                </Link>
+                <PhotoProvider key={url}>
+                  <PhotoView src={getImageUrl(url)}>
+                    <MyImage
+                      width={100}
+                      height={100}
+                      src={url}
+                      alt={`${doc.name}-${i}`}
+                      className="h-20 w-20 object-cover rounded border border-primary shadow "
+                    />
+                  </PhotoView>
+                </PhotoProvider>
               );
             }
             if (isPdf(url)) {
@@ -173,7 +171,12 @@ function DocumentReviewCard({
       </CardContent>
 
       <CardFooter className="flex items-center gap-2">
-        <Button size="sm" variant="success" onClick={approve} disabled={isPending}>
+        <Button
+          size="sm"
+          variant="success"
+          onClick={approve}
+          disabled={isPending}
+        >
           Approve
         </Button>
 

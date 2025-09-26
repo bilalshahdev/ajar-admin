@@ -224,7 +224,7 @@ interface SubCategory {
   description: string;
   language: string;
   type: string;
-  category: string;
+  category: Category;
   languages: any[]; // refine later if needed
   slug: string;
   createdAt: string;
@@ -249,7 +249,6 @@ interface Category {
   _id: string;
   name: string;
   description?: string;
-  category?: Category;
   type: string;
   slug: string;
   thumbnail?: string;
@@ -292,30 +291,11 @@ type SettingsPageName =
   | "firebase"
   | "pushNotifications";
 
-interface RentalUser {
-  _id: string;
-  name: string;
-  profilePic: string;
-}
-
 interface Subcategory {
   name: string;
   category: {
     name: string;
   };
-}
-
-interface RentalRequest {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  images: string[];
-  date: string;
-  status: string;
-  subcategory: Subcategory;
-  leaser: RentalUser;
-  renter: RentalUser;
 }
 
 type TicketStatus = "active" | "pending" | "rejected";
@@ -380,7 +360,7 @@ type Ticket = {
   updatedAt: string;
 };
 
-type RefundStatus = "pending" | "approved" | "rejected";
+type CommonStatus = "pending" | "approved" | "rejected";
 
 interface RefundRequest {
   _id: string;
@@ -388,7 +368,7 @@ interface RefundRequest {
   user: string;
   dateSubmitted: string;
   amount: number;
-  status: RefundStatus;
+  status: CommonStatus;
 }
 
 interface Faq {
@@ -498,21 +478,23 @@ type Ratings = {
 interface RentalListing {
   _id: string;
   name: string;
-  fullName: string;
-  description: string;
-  address: string;
+  subtitle?: string;
+  description?: string;
   price: number;
+  images: string[];
+  rentalImages: string[];
+  address: string;
+  leaserDocuments: string[];
   isActive: boolean;
   language: string;
-  zone: string;
-  images: string[];
-  facilities: string[];
-  nearLocation: string[];
-  createdAt: string;
-  updatedAt: string;
+  status: CommonStatus;
+  zone: Zone;
   ratings: Ratings;
   leaser: User;
+  renter: User;
   subCategory: SubCategory;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Stats {

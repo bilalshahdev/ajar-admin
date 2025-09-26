@@ -57,7 +57,7 @@ const RentalListings = () => {
   const row = (rentalRequest: RentalListing) => (
     <>
       <TableCell>{rentalRequest._id.slice(-4)}</TableCell>
-      <HighlightCell text={rentalRequest.name} query={search} />
+      <div className="truncate  w-28"><HighlightCell text={rentalRequest.name} query={search} className="" /></div>
       <HighlightCell text={rentalRequest?.subCategory?.name} query={search} />
       <HighlightCell text={rentalRequest?.leaser?.name} query={search} />
       <TableCell>{rentalRequest.createdAt}</TableCell>
@@ -65,7 +65,7 @@ const RentalListings = () => {
         <TableActions
           id={rentalRequest._id}
           baseRoute="/rental-listing"
-          actions={["delete"]}
+          actions={["view", "delete"]}
           module="Rental Request"
           onDelete={(id, closeDialog) =>
             deleteRentalListing(id, {

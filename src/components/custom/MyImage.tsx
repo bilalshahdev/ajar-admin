@@ -1,44 +1,65 @@
-import { baseUrl } from "@/config/constants";
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Image, { ImageProps, StaticImageData } from "next/image";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 interface MyImageProps extends Omit<ImageProps, "src"> {
-  src: string | StaticImageData | File;
+  src?: string | StaticImageData | File | null;
   alt: string;
   className?: string;
+  fallbackSrc?: string;
+  fallbackText?: string;
 }
 
-const MyImage = ({ src, alt, className, ...rest }: MyImageProps) => {
-  let resolvedSrc: string | StaticImageData = src as any;
+const MyImage = ({
+  src,
+  alt,
+  className,
+  fallbackSrc = "/images/fallback.png",
+  fallbackText,
+  ...rest
+}: MyImageProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(!src);
 
-  if (typeof src === "string") {
-    const isFileObjectUrl = src.startsWith("blob:");
-    const isAbsoluteUrl = src.startsWith("http");
-    const fileUrl = src.startsWith("/uploads");
-    const isPublicPath = src.startsWith("/");
+  const resolvedSrc = getImageUrl(src as string | File | null);
 
-    if (fileUrl) {
-      resolvedSrc = `${baseUrl}/${src}`;
-    } else if (isPublicPath) {
-      resolvedSrc = src;
-    } else if (!isFileObjectUrl && !isAbsoluteUrl) {
-      // Relative path like 'uploads/image.jpg'
-      resolvedSrc = `${baseUrl}/${src}`;
-    } else {
-      // Already full URL
-      resolvedSrc = src;
+  if (isError || !resolvedSrc) {
+    if (fallbackText) {
+      return (
+        <div
+          className={cn(
+            "flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-medium",
+            className
+          )}
+        >
+          {fallbackText}
+        </div>
+      );
     }
-  } else if (src instanceof File) {
-    resolvedSrc = URL.createObjectURL(src);
-  }
 
-  console.log(resolvedSrc);
+    return (
+      <Image
+        src={fallbackSrc}
+        alt={alt}
+        className={cn("object-cover rounded-full", className)}
+        {...rest}
+      />
+    );
+  }
 
   return (
     <Image
       src={resolvedSrc}
       alt={alt}
-      className={cn("", className)}
+      className={cn("object-cover rounded-full", className)}
+      onLoadingComplete={() => setIsLoading(false)}
+      onError={() => {
+        setIsError(true);
+        setIsLoading(false);
+      }}
       {...rest}
     />
   );
