@@ -13,6 +13,7 @@ interface ChatBubbleProps {
 }
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isSender }) => {
+
   return (
     <div
       className={cn(

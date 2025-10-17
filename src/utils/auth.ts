@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 export interface DecodedToken {
   exp: number;
-  userId: string;
+  id: string;
   role: string;
 }
 
@@ -35,6 +35,8 @@ export function getAuthInfo(): AuthInfo {
 
   try {
     const decoded: DecodedToken = jwtDecode(token);
+
+    console.log(decoded)
     const now = Date.now() / 1000;
 
     const expired = decoded.exp < now;
@@ -42,7 +44,7 @@ export function getAuthInfo(): AuthInfo {
     return {
       token,
       expired,
-      userId: decoded.userId,
+      userId: decoded.id,
       role: decoded.role,
       permissions: JSON.parse(permissions || "[]"),
     };

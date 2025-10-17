@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // only runs on client
     const storedToken = localStorage.getItem("token");
     const storedUserId = getAuthInfo().userId;
-
     if (storedToken) setToken(storedToken);
     if (storedUserId) setUserId(storedUserId);
   }, []);
