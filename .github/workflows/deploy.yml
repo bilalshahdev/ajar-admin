@@ -22,6 +22,6 @@ jobs:
           script: |
             cd /var/www/html/ajar-admin
             git pull origin main
-            npm ci --omit=dev --legacy-peer-deps
+            npm ci --legacy-peer-deps
             npm run build
             pm2 restart ajar-admin
