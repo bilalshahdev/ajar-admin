@@ -1,0 +1,14 @@
+services:
+  ajar-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BASE_URL: "https://ajar-server.hostdonor.com"
+        BASE_URL: "https://ajar-server.hostdonor.com"
+    container_name: ajar-admin
+    restart: unless-stopped
+    ports:
+      - "2223:3000"
+    env_file:
+      - .env
