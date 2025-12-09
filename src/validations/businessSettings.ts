@@ -1,0 +1,33 @@
+import { z } from "zod";
+
+export const BusinessSettingsSchema = z.object({
+  maintenanceMode: z.boolean().optional(),
+
+  companyName: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().min(1),
+  country: z.string().min(1),
+  address: z.string().optional(),
+  lat: z.string().optional(),
+  long: z.string().optional(),
+  logo: z.any().optional(),
+  favicon: z.any().optional(),
+  timeZone: z.string(),
+  currencySymbol: z.string(),
+  currencyPosition: z.enum(["left", "right"]),
+  decimalPoints: z.coerce.number().int().min(0),
+  copyRight: z.string().optional(),
+  defaultCommissionRate: z.coerce.number().min(0),
+  commissionRate: z.coerce.number().min(0),
+  includeTax: z.boolean(),
+  customerPreference: z.boolean(),
+  orderInfoForAdmin: z.boolean(),
+  orderNotification: z.enum(["firebase", "manual"]),
+  freeServiceOnOrderOver: z.string().optional(),
+  guestCheckout: z.boolean(),
+  whoWillConfirmedOrder: z.enum(["store", "deliveryman"]),
+  additionalChargeName: z.string().optional(),
+  chargeAmount: z.string().optional(),
+  partialPayment: z.boolean(),
+  canPayTheRestUsing: z.enum(["cod", "digital_payment", "both"]),
+});

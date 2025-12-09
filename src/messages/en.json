@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Welcome to Our Multilingual PWA",
+    "subtitle": "Experience seamless internationalization with Next.js 15 & React Query",
+    "description": "This Progressive Web App demonstrates modern internationalization patterns with offline-first data fetching, React Query caching, and professional loading skeletons.",
+    "features": {
+      "title": "Key Features",
+      "i18n": "Full internationalization support",
+      "rtl": "RTL and LTR language support",
+      "images": "Centralized image handling",
+      "api": "React Query with offline support"
+    }
+  },
+  "about": {
+    "title": "About This PWA",
+    "subtitle": "Learn more about our professional multilingual implementation",
+    "description": "This Progressive Web App demonstrates modern patterns using Next.js 15, React Query, and professional architecture.",
+    "features": {
+      "languages": "Support for 5 languages (English, French, German, Urdu, Arabic)",
+      "rtl": "Proper RTL/LTR text direction handling",
+      "images": "Centralized image optimization with loading states",
+      "api": "React Query with offline-first data fetching",
+      "patterns": "Professional loading skeletons and error handling",
+      "design": "Progressive Web App with service worker caching"
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Send us a message and we'll get back to you",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "your@email.com",
+      "messagePlaceholder": "Your message here...",
+      "submit": "Send Message"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error occurred",
+    "retry": "Retry",
+    "language": "Language",
+    "offline": "You are offline. Some features may not work."
+  },
+  "api": {
+    "products": "Products",
+    "users": "Users"
+  },
+  "pwa": {
+    "install": {
+      "title": "Install App",
+      "description": "Install this app for a better experience",
+      "button": "Install",
+      "dismiss": "Not now"
+    }
+  }
+}
