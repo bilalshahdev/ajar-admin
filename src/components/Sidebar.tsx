@@ -69,7 +69,7 @@ export default function Sidebar({ className }: { className?: string }) {
 
   return (
     <SidebarComponent
-      className={cn("h-full", className)}
+      className={cn("", className)}
       collapsible="icon"
       variant="sidebar"
       dir={dir}

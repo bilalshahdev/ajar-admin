@@ -160,7 +160,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    zoom: 0.85;
     @apply bg-background text-foreground;
   }
 }
