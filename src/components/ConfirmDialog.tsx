@@ -42,13 +42,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <>
         <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-xs">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
 
-          <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0">
+         <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-2 sm:space-x-0">
+
             <Button
               variant="outline"
               onClick={() => setOpen(false)}

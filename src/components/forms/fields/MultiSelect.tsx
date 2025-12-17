@@ -1,4 +1,5 @@
-// components/inputs/MultiSelect.tsx
+"use client";
+
 import { useMemo } from "react";
 import { Control, useWatch, useController, FieldPath } from "react-hook-form";
 import {
@@ -20,6 +21,22 @@ import { Label } from "@/components/ui/label";
 import { ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Loader from "@/components/Loader";
+
+// DND Kit imports
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type BaseForm = Record<string, any>;
 
@@ -56,13 +73,16 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   });
 
   const rawSelectedValues: string[] = useWatch({ control, name }) || [];
-
   const selectedValues = rawSelectedValues;
 
   const selectedOptions = useMemo(
-    () => options.filter((o) => selectedValues.includes(getOptionValue(o))),
+    () =>
+      selectedValues
+        .map((val) => options.find((o) => getOptionValue(o) === val))
+        .filter(Boolean) as TOption[],
     [options, selectedValues, getOptionValue]
   );
+
 
   const toggle = (value: string) => {
     if (selectedValues.includes(value)) {
@@ -76,14 +96,18 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
     field.onChange(selectedValues.filter((v) => v !== value));
   };
 
+  // DnD Kit setup
+  const sensors = useSensors(useSensor(PointerSensor));
+
   return (
     <div className={cn("space-y-2", className)}>
       <Label>
-        {label}
+        {label}{" "}
         <span className="text-muted-foreground text-xs normal-case">
           {note && `(${note})`}
         </span>
       </Label>
+
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -95,9 +119,8 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
             )}
           >
             {selectedValues.length > 0
-              ? `${selectedValues.length} item${
-                  selectedValues.length > 1 ? "s" : ""
-                } selected`
+              ? `${selectedValues.length} item${selectedValues.length > 1 ? "s" : ""
+              } selected`
               : "Select..."}
             <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -139,29 +162,75 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
         </PopoverContent>
       </Popover>
 
+      {/* Draggable badges */}
       {selectedOptions.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {selectedOptions.map((opt, idx) => {
-            const value = getOptionValue(opt);
-            const label = getOptionLabel(opt);
-            return (
-              <Badge
-                key={`${value}-${idx}`}
-                variant="secondary"
-                className="flex items-center gap-1"
-              >
-                {label}
-                <X
-                  className="w-3 h-3 cursor-pointer text-red-500"
-                  onClick={() => remove(value)}
-                />
-              </Badge>
-            );
-          })}
-        </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={(event) => {
+            const { active, over } = event;
+            if (over && active.id !== over.id) {
+              const oldIndex = selectedValues.indexOf(active.id as string);
+              const newIndex = selectedValues.indexOf(over.id as string);
+              const newOrder = arrayMove(selectedValues, oldIndex, newIndex);
+              field.onChange(newOrder); // updates order in form state
+            }
+          }}
+
+        >
+          <SortableContext
+            items={selectedValues}
+            strategy={horizontalListSortingStrategy}
+          >
+            <div className="flex flex-wrap gap-2 mt-2">
+              {selectedOptions.map((opt) => {
+                const value = getOptionValue(opt);
+                const label = getOptionLabel(opt);
+                return (
+                  <SortableBadge
+                    key={value}
+                    id={value}
+                    label={label}
+                    remove={remove}
+                  />
+                );
+              })}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
     </div>
   );
 }
+
+// Sortable Badge component
+type SortableBadgeProps = {
+  id: string;
+  label: string;
+  remove: (value: string) => void;
+};
+
+const SortableBadge = ({ id, label, remove }: SortableBadgeProps) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <Badge variant="secondary" className="flex items-center gap-1 cursor-grab">
+        {label}
+        <X
+          className="w-3 h-3 cursor-pointer text-red-500"
+          onClick={() => remove(id)}
+        />
+      </Badge>
+    </div>
+
+  );
+};
 
 export default MultiSelect;

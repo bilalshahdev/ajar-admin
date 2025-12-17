@@ -9,11 +9,12 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => {
     <SocketProvider>
       <SidebarProvider>
         <AuthProvider>
-          <div className="flex w-full min-h-screen overflow-hidden">
+          <div className="flex w-full min-h-screen">
             <Sidebar />
-            <div className="flex flex-col flex-1 overflow-hidden">
+
+            <div className="flex flex-col flex-1">
               <Navbar />
-              <main className="m-4 p-4 rounded-lg bg-background flex-1 overflow-auto">
+              <main className="flex-1 overflow-auto m-4 p-4 rounded-lg bg-background">
                 {children}
               </main>
             </div>
@@ -25,3 +26,26 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default SiteLayout;
+
+
+// const SiteLayout = ({ children }: { children: React.ReactNode }) => {
+//   return (
+//     <SocketProvider>
+//       <SidebarProvider>
+//         <AuthProvider>
+//           <div className="flex w-full min-h-screen overflow-hidden">
+//             <Sidebar />
+//             <div className="flex flex-col flex-1 overflow-hidden">
+//               <Navbar />
+//               <main className="m-4 p-4 rounded-lg bg-background flex-1 overflow-auto">
+//                 {children}
+//               </main>
+//             </div>
+//           </div>
+//         </AuthProvider>
+//       </SidebarProvider>
+//     </SocketProvider>
+//   );
+// };
+
+// export default SiteLayout;

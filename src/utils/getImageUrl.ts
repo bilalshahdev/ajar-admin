@@ -11,11 +11,11 @@ export function getImageUrl(src?: string | File | null): string | undefined {
     const isPublicPath = src.startsWith("/");
 
     if (fileUrl) {
-      return `${baseUrl}/${src}`;
+      return `${baseUrl}${src}`;
     } else if (isPublicPath) {
       return src;
     } else if (!isFileObjectUrl && !isAbsoluteUrl) {
-      return `${baseUrl}/${src}`;
+      return `${baseUrl}${src}`;
     } else {
       return src;
     }

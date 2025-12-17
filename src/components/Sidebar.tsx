@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { NavMenuItem } from "@/types";
-import { getSidebarMenu } from "@/utils/auth";
+import { getSidebarMenu, markLogout } from "@/utils/auth";
 import getDirection from "@/utils/getDirection";
 import { Power } from "lucide-react";
 import { useLocale } from "next-intl";
@@ -61,6 +61,7 @@ export default function Sidebar({ className }: { className?: string }) {
   const bgColor = dir === "rtl" ? "bg-aqua" : "bg-blue";
 
   const handleConfirm = () => {
+    markLogout(); // 👈 tells AuthGuard this is intentional
     localStorage.removeItem("token");
     localStorage.removeItem("permissions");
     router.replace("/auth/login");
@@ -68,7 +69,7 @@ export default function Sidebar({ className }: { className?: string }) {
 
   return (
     <SidebarComponent
-      className={cn("", className)}
+      className={cn("h-full", className)}
       collapsible="icon"
       variant="sidebar"
       dir={dir}
@@ -108,7 +109,7 @@ export default function Sidebar({ className }: { className?: string }) {
         </SidebarGroup>
 
         {/* Sidebar Footer for Logout */}
-        <SidebarFooter>
+        <SidebarFooter className="mb-4">
           <ConfirmDialog
             title="Logout"
             description="Are you sure you want to logout?"

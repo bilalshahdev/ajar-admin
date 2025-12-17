@@ -17,6 +17,22 @@ export interface AuthInfo {
   permissions?: Permission[];
 }
 
+const LOGOUT_FLAG = "intentional_logout";
+
+export const markLogout = () => {
+  sessionStorage.setItem(LOGOUT_FLAG, "true");
+};
+
+export const consumeLogoutFlag = () => {
+  const flag = sessionStorage.getItem(LOGOUT_FLAG);
+  if (flag) {
+    sessionStorage.removeItem(LOGOUT_FLAG);
+    return true;
+  }
+  return false;
+};
+
+
 export function getAuthInfo(): AuthInfo {
   if (typeof window === "undefined")
     return {
