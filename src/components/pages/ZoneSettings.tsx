@@ -164,13 +164,12 @@ const SubcategorySettingsForm = ({
   const error = updateError || addError;
 
   const onSubmit = async (data: any) => {
-    console.log(data)
-    // if (zoneForm) {
-    //   await updateZoneForm({ id: zoneForm?.data?._id, data });
-    // } else {
-    //   await addZoneForm(data);
-    // }
-    // router.push("/zone-management");
+    if (zoneForm) {
+      await updateZoneForm({ id: zoneForm?.data?._id, data });
+    } else {
+      await addZoneForm(data);
+    }
+    router.push("/zone-management");
   };
 
   const shouldFetchFields = !!selectedSubCategory;
