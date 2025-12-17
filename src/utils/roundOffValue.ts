@@ -6,17 +6,21 @@ export const roundOffValue = (
     compact?: boolean;
   }
 ) => {
-  if (typeof value === "string") return value;
+  const { decimals = 2, currency = false, compact = false } = options || {};
 
-  const {
-    decimals = 2,
-    currency = false,
-    compact = false,
-  } = options || {};
+  // Convert string to number
+  let numericValue = typeof value === "number" ? value : parseFloat(value);
+
+  // Handle invalid numbers
+  if (isNaN(numericValue)) return "0";
+
+  // Round the value properly
+  const factor = Math.pow(10, decimals);
+  const roundedValue = Math.round(numericValue * factor) / factor;
 
   return new Intl.NumberFormat("en-US", {
     minimumFractionDigits: currency ? decimals : 0,
     maximumFractionDigits: decimals,
     notation: compact ? "compact" : "standard",
-  }).format(value);
+  }).format(roundedValue);
 };
