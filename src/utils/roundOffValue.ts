@@ -9,7 +9,7 @@ export const roundOffValue = (
   const { decimals = 2, currency = false, compact = false } = options || {};
 
   // Convert string to number
-  let numericValue = typeof value === "number" ? value : parseFloat(value);
+  const numericValue = typeof value === "number" ? value : parseFloat(value);
 
   // Handle invalid numbers
   if (isNaN(numericValue)) return "0";
