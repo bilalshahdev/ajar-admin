@@ -109,10 +109,12 @@ const SubcategorySettingsForm = ({
   const leaserDocumentsValues: { name: string; value: string }[] =
     leaserDocuments?.data?.values ?? [];
 
-  const { data: zoneForm } = useGetZoneFormByZoneAndSubCategory(
+  const { data: zoneForm, error: zoneFormError } = useGetZoneFormByZoneAndSubCategory(
     zoneId,
     selectedSubCategory
   );
+
+  console.log({zoneForm, zoneFormError})
 
   useEffect(() => {
     reset(defaultValues);
@@ -174,11 +176,15 @@ const SubcategorySettingsForm = ({
 
   const shouldFetchFields = !!selectedSubCategory;
 
-  const { data: fieldsData, isLoading: fieldsLoading } = useGetFieldsList({
-    enabled: shouldFetchFields,
-  });
+  const { data: fieldsData, isLoading: fieldsLoading, error: fieldsError, isError } =
+    useGetFieldsList({
+      enabled: shouldFetchFields,
+    });
 
-  const fields: Field[] = fieldsData?.data?.fields || [];
+  // should only set those fields who have isFixed: false
+  const fields: Field[] = fieldsData?.data?.fields?.filter(
+    (f: Field) => !f.isFixed
+  ) || [];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

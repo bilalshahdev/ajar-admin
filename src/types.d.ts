@@ -451,6 +451,7 @@ interface Field {
     min: number;
     max: number;
   };
+  isFixed: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -32,7 +32,7 @@ export const useGetZoneFormByZoneAndSubCategory = (
     queryKey: ["zone-form", zoneId, subCategoryId],
     queryFn: () => getZoneFormByZoneAndSubCategory(zoneId, subCategoryId),
     enabled: !!zoneId && !!subCategoryId,
-    placeholderData: (previousData) => previousData,
+    // placeholderData: (previousData) => previousData,
   });
 
 export const useAddZoneForm = () => {

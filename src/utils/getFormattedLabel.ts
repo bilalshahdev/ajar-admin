@@ -15,9 +15,8 @@ export function getFormattedLabel(
 
   if (filter === "month") {
     const weekOffset = Number(raw);
-    // raw=0 => current week, raw=1 => last week, etc.
     const date = subWeeks(now, 3 - weekOffset);
-    return `W${weekOffset + 1}`; // or format(date, "wo 'week'") for fancy
+    return `W${weekOffset + 1}`;
   }
 
   if (filter === "year") {

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const ZoneSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(3),
   currency: z.string().min(1),
   polygons: z
     .array(
@@ -11,6 +11,5 @@ export const ZoneSchema = z.object({
     )
     .min(1, "At least one polygon is required"),
 });
-
 
 export type ZoneFormValues = z.infer<typeof ZoneSchema>;

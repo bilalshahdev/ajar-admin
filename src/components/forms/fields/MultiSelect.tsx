@@ -97,7 +97,13 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   };
 
   // DnD Kit setup
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 6,
+      },
+    })
+  );
 
   return (
     <div className={cn("space-y-2", className)}>
