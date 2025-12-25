@@ -19,35 +19,14 @@ import { Field } from "@/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import MultiSelect from "../forms/fields/MultiSelect";
-
-interface ZoneFormValues {
-  zone: string;
-  subCategory: string;
-  fields: string[];
-  name: string;
-  description: string;
-  setting: {
-    commissionType: string;
-    leaserCommission: {
-      value: number;
-      min: number;
-      max: number;
-    };
-    renterCommission: {
-      value: number;
-      min: number;
-      max: number;
-    };
-    tax: number;
-    expiry: string;
-  };
-  userDocuments: string[];
-  leaserDocuments: string[];
-}
+import { zoneFormSchema, ZoneFormValues } from "@/validations/zoneSettings";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const ZoneSettings = () => {
   const zoneId = useParams().id;
   const [subCategory, setSubCategory] = useState<string>("");
+
+  const isSubCategorySelected = subCategory !== "";
 
   return (
     <div className="space-y-4">
@@ -56,10 +35,16 @@ const ZoneSettings = () => {
         value={subCategory}
         onChange={(value) => setSubCategory(value)}
       />
-      <SubcategorySettingsForm
-        zoneId={zoneId as string}
-        selectedSubCategory={subCategory}
-      />
+
+      {/* Conditionally render SubcategorySettingsForm only if subCategory is selected */}
+      {isSubCategorySelected ? (
+        <SubcategorySettingsForm
+          zoneId={zoneId as string}
+          selectedSubCategory={subCategory}
+        />
+      ) : (
+        <p className="text-red-500 text-sm">Please select a subcategory to proceed.</p>
+      )}
     </div>
   );
 };
@@ -75,7 +60,7 @@ const SubcategorySettingsForm = ({
 }) => {
   const router = useRouter();
 
-  const defaultValues = useMemo(
+  const defaultValues: ZoneFormValues = useMemo(
     () => ({
       zone: zoneId,
       subCategory: selectedSubCategory,
@@ -95,8 +80,10 @@ const SubcategorySettingsForm = ({
     [zoneId, selectedSubCategory]
   );
 
-  const { control, handleSubmit, reset } = useForm<ZoneFormValues>({
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<ZoneFormValues>({
     defaultValues,
+    resolver: zodResolver(zoneFormSchema),
   });
 
   const { data: documents, isLoading: documentsLoading } =
@@ -109,12 +96,10 @@ const SubcategorySettingsForm = ({
   const leaserDocumentsValues: { name: string; value: string }[] =
     leaserDocuments?.data?.values ?? [];
 
-  const { data: zoneForm, error: zoneFormError } = useGetZoneFormByZoneAndSubCategory(
+  const { data: zoneForm } = useGetZoneFormByZoneAndSubCategory(
     zoneId,
     selectedSubCategory
   );
-
-  console.log({zoneForm, zoneFormError})
 
   useEffect(() => {
     reset(defaultValues);
@@ -176,20 +161,18 @@ const SubcategorySettingsForm = ({
 
   const shouldFetchFields = !!selectedSubCategory;
 
-  const { data: fieldsData, isLoading: fieldsLoading, error: fieldsError, isError } =
+  const { data: fieldsData, isLoading: fieldsLoading } =
     useGetFieldsList({
       enabled: shouldFetchFields,
     });
 
-  // should only set those fields who have isFixed: false
   const fields: Field[] = fieldsData?.data?.fields?.filter(
     (f: Field) => !f.isFixed
   ) || [];
-
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        {/* Select Custom Fields */}
         <TextInput
           control={control}
           placeholder="Enter form name"
@@ -216,8 +199,9 @@ const SubcategorySettingsForm = ({
           emptyText="No field found."
           searchPlaceholder="Search fields..."
         />
+        {errors.fields && <p className="text-red-500 text-sm">{errors.fields.message}</p>}
         {documentsValues.length > 0 && (
-          <MultiSelect<{ name: string; value: string }, ZoneFormValues>
+          <> <MultiSelect<{ name: string; value: string }, ZoneFormValues>
             control={control}
             name={"userDocuments"}
             label="Renter Documents"
@@ -230,22 +214,27 @@ const SubcategorySettingsForm = ({
             emptyText="No document found."
             searchPlaceholder="Search documents..."
           />
+            {errors.userDocuments && <p className="text-red-500 text-sm">{errors.userDocuments.message}</p>}
+          </>
         )}
 
         {leaserDocumentsValues.length > 0 && (
-          <MultiSelect<{ name: string; value: string }, ZoneFormValues>
-            control={control}
-            name={"leaserDocuments"}
-            label="Leaser Documents"
-            note="Leaser needs in order to request for booking"
-            options={leaserDocumentsValues}
-            loading={leaserDocumentsLoading}
-            getOptionValue={(d) => d.value}
-            getOptionLabel={(d) => d.name}
-            className="col-span-2"
-            emptyText="No document found."
-            searchPlaceholder="Search documents..."
-          />
+          <>
+            <MultiSelect<{ name: string; value: string }, ZoneFormValues>
+              control={control}
+              name={"leaserDocuments"}
+              label="Leaser Documents"
+              note="Leaser needs in order to request for booking"
+              options={leaserDocumentsValues}
+              loading={leaserDocumentsLoading}
+              getOptionValue={(d) => d.value}
+              getOptionLabel={(d) => d.name}
+              className="col-span-2"
+              emptyText="No document found."
+              searchPlaceholder="Search documents..."
+            />
+            {errors.leaserDocuments && <p className="text-red-500 text-sm">{errors.leaserDocuments.message}</p>}
+          </>
         )}
 
         {/* Commission Inputs */}
@@ -260,6 +249,8 @@ const SubcategorySettingsForm = ({
             type="number"
             label="Tax"
             note="Tax percentage"
+            min={0}
+            max={100}
           />
         </div>
       </div>

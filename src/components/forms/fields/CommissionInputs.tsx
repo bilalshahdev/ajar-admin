@@ -78,6 +78,8 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
             type="number"
             label="Percentage Value"
             note="% to be applied"
+            min={0}
+            max={100}
           />
           <div className="grid grid-cols-2 gap-2">
             <TextInput
@@ -86,6 +88,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
               name={`setting.${baseName}.min`}
               type="number"
               label="Min"
+              min={0}
             />
             <TextInput
               placeholder="Enter max value"
@@ -93,6 +96,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
               name={`setting.${baseName}.max`}
               type="number"
               label="Max"
+              min={0}
             />
           </div>
         </div>

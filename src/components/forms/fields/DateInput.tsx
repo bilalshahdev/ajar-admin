@@ -71,6 +71,7 @@ const DateInput: React.FC<DateInputProps> = ({
             onSelect={(date) => field.onChange(date)}
             initialFocus
             disabled={disabled}
+            fromDate={new Date()}
           />
         </PopoverContent>
       </Popover>

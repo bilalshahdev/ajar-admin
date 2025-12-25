@@ -35,6 +35,7 @@ export const FieldSchema = z.object({
         required_error: "Validation 'required' flag is required",
       }),
       pattern: z.string().optional(),
+      error: z.string().optional(),
       min: z.number().optional(),
       max: z.number().optional(),
     })

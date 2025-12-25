@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { cloneElement, ReactElement, SVGProps } from "react";
 
 interface GradientIconProps extends SVGProps<SVGSVGElement> {
@@ -8,7 +7,7 @@ interface GradientIconProps extends SVGProps<SVGSVGElement> {
 const GradientIcon = ({ icon, ...props }: GradientIconProps) => {
   const gradientId = "gradientId";
   return (
-    <svg width={24} height={24} {...props}>
+    <svg width={16} height={16} {...props}>
       <defs>
         <linearGradient id={gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor={"var(--blue)"} />

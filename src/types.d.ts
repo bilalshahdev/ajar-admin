@@ -448,6 +448,7 @@ interface Field {
   validation: {
     required: boolean;
     pattern: string;
+    error: string;
     min: number;
     max: number;
   };

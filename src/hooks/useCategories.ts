@@ -98,8 +98,8 @@ export const useDeleteCategory = () => {
       queryClient.invalidateQueries({ queryKey: ["category", data._id] });
       toast.success("Category deleted successfully");
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Something went wrong");
-    },
+    // onError: (error: any) => {
+    //   toast.error(error?.response?.data?.message || "Something went wrong");
+    // },
   });
 };

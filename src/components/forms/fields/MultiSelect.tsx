@@ -67,7 +67,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   emptyText = "No item found.",
   searchPlaceholder = "Search...",
 }: MultiSelectProps<TOption, TForm>) {
-  const { field } = useController<TForm, FieldPath<TForm>>({
+  const { field, fieldState: { error } } = useController<TForm, FieldPath<TForm>>({
     control,
     name,
   });
@@ -105,6 +105,8 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
     })
   );
 
+  const selected = selectedOptions?.length
+
   return (
     <div className={cn("space-y-2", className)}>
       <Label>
@@ -121,11 +123,11 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
             role="combobox"
             className={cn(
               "w-full justify-between flex-wrap text-left min-h-[40px]",
-              selectedValues.length === 0 && "text-muted-foreground"
+              selected === 0 && "text-muted-foreground"
             )}
           >
-            {selectedValues.length > 0
-              ? `${selectedValues.length} item${selectedValues.length > 1 ? "s" : ""
+            {selected > 0
+              ? `${selected} item${selected > 1 ? "s" : ""
               } selected`
               : "Select..."}
             <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
@@ -168,7 +170,6 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
         </PopoverContent>
       </Popover>
 
-      {/* Draggable badges */}
       {selectedOptions.length > 0 && (
         <DndContext
           sensors={sensors}
@@ -179,7 +180,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
               const oldIndex = selectedValues.indexOf(active.id as string);
               const newIndex = selectedValues.indexOf(over.id as string);
               const newOrder = arrayMove(selectedValues, oldIndex, newIndex);
-              field.onChange(newOrder); // updates order in form state
+              field.onChange(newOrder);
             }
           }}
 

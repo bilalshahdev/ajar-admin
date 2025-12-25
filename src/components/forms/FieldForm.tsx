@@ -41,7 +41,7 @@ export default function FieldForm({ id }: { id?: string }) {
     id || "",
     !!id
   );
-  const { control, handleSubmit, watch, reset, setValue } =
+  const { control, handleSubmit, watch, reset } =
     useForm<FieldFormValues>({
       resolver: zodResolver(FieldSchema),
       defaultValues: {
@@ -59,6 +59,7 @@ export default function FieldForm({ id }: { id?: string }) {
         validation: {
           required: false,
           pattern: "",
+          error: "",
           min: 0,
           max: 0,
         },
@@ -84,6 +85,7 @@ export default function FieldForm({ id }: { id?: string }) {
           validation: {
             required: f.validation?.required ?? false,
             pattern: f.validation?.pattern ?? "",
+            error: f.validation?.error ?? "",
             min: f.validation?.min ?? 0,
             max: f.validation?.max ?? 0,
           },
@@ -150,7 +152,7 @@ export default function FieldForm({ id }: { id?: string }) {
           label="Placeholder"
           placeholder="Enter placeholder"
         />
-        <TextInput
+        {/* <TextInput
           control={control}
           name="order"
           note="Order of the field in the form"
@@ -158,7 +160,7 @@ export default function FieldForm({ id }: { id?: string }) {
           label="Order"
           placeholder="Enter order"
           min={0}
-        />
+        /> */}
         <TextInput
           control={control}
           name="tooltip"
@@ -187,6 +189,14 @@ export default function FieldForm({ id }: { id?: string }) {
           name="validation.pattern"
           label="Validation Pattern"
           placeholder="Enter validation pattern"
+        />
+        <TextInput
+          note="Text to be displayed when validation fails"
+          type="text"
+          control={control}
+          name="validation.error"
+          label="Validation Error"
+          placeholder="Enter validation error"
         />
         <TextInput
           control={control}
