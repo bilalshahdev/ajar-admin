@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
+  "home": {
+    "title": "Willkommen in unserer mehrsprachigen App",
+    "subtitle": "Erleben Sie nahtlose Internationalisierung mit Next.js 15",
+    "description": "Diese Anwendung demonstriert moderne Internationalisierungsmuster mit RTL/LTR-Unterstützung, zentralisierter Bildverwaltung und mehrsprachiger API-Integration.",
+    "features": {
+      "title": "Hauptmerkmale",
+      "i18n": "Vollständige Internationalisierungsunterstützung",
+      "rtl": "RTL- und LTR-Sprachunterstützung",
+      "images": "Zentralisierte Bildverwaltung",
+      "api": "Mehrsprachige API-Endpunkte"
+    }
+  },
+  "about": {
+    "title": "Über diese Anwendung",
+    "subtitle": "Erfahren Sie mehr über unsere mehrsprachige Next.js 15-Implementierung",
+    "description": "Diese Anwendung demonstriert moderne Internationalisierungsmuster mit Next.js 15 und next-intl.",
+    "features": {
+      "languages": "Unterstützung für 5 Sprachen (Englisch, Französisch, Deutsch, Urdu, Arabisch)",
+      "rtl": "Ordnungsgemäße RTL/LTR-Textrichtungsbehandlung",
+      "images": "Zentralisierte Bildoptimierung mit Ladezuständen",
+      "api": "Mehrsprachige API-Endpunkte",
+      "patterns": "Moderne Datenabrufmuster",
+      "design": "Responsives Design mit Tailwind CSS"
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Senden Sie uns eine Nachricht und wir melden uns bei Ihnen",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "message": "Nachricht",
+      "namePlaceholder": "Ihr Name",
+      "emailPlaceholder": "ihre@email.com",
+      "messagePlaceholder": "Ihre Nachricht hier...",
+      "submit": "Nachricht senden"
+    }
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Fehler aufgetreten",
+    "retry": "Wiederholen",
+    "language": "Sprache",
+    "offline": "Sie sind offline. Einige Funktionen funktionieren möglicherweise nicht."
+  },
+  "api": {
+    "products": "Produkte",
+    "users": "Benutzer"
+  },
+  "pwa": {
+    "install": {
+      "title": "App installieren",
+      "description": "Installieren Sie diese App für eine bessere Erfahrung",
+      "button": "Installieren",
+      "dismiss": "Nicht jetzt"
+    }
+  }
+}

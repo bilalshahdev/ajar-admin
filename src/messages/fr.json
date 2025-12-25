@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Bienvenue dans notre application multilingue",
+    "subtitle": "Découvrez l'internationalisation transparente avec Next.js 15",
+    "description": "Cette application démontre les modèles d'internationalisation modernes avec le support RTL/LTR, la gestion centralisée des images et l'intégration d'API multilingue.",
+    "features": {
+      "title": "Fonctionnalités clés",
+      "i18n": "Support complet de l'internationalisation",
+      "rtl": "Support des langues RTL et LTR",
+      "images": "Gestion centralisée des images",
+      "api": "Points de terminaison API multilingues"
+    }
+  },
+  "about": {
+    "title": "À propos de cette application",
+    "subtitle": "En savoir plus sur notre implémentation Next.js 15 multilingue",
+    "description": "Cette application démontre les modèles d'internationalisation modernes utilisant Next.js 15 et next-intl.",
+    "features": {
+      "languages": "Support de 5 langues (Anglais, Français, Allemand, Ourdou, Arabe)",
+      "rtl": "Gestion appropriée de la direction du texte RTL/LTR",
+      "images": "Optimisation centralisée des images avec états de chargement",
+      "api": "Points de terminaison API multilingues",
+      "patterns": "Modèles de récupération de données modernes",
+      "design": "Design réactif avec Tailwind CSS"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Envoyez-nous un message et nous vous répondrons",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Votre nom",
+      "emailPlaceholder": "votre@email.com",
+      "messagePlaceholder": "Votre message ici...",
+      "submit": "Envoyer le message"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "language": "Langue",
+    "offline": "Vous êtes hors ligne. Certaines fonctionnalités peuvent ne pas fonctionner."
+  },
+  "api": {
+    "products": "Produits",
+    "users": "Utilisateurs"
+  },
+  "pwa": {
+    "install": {
+      "title": "Installer l'application",
+      "description": "Installez cette application pour une meilleure expérience",
+      "button": "Installer",
+      "dismiss": "Pas maintenant"
+    }
+  }
+}
