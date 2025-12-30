@@ -1,146 +1,50 @@
-import { loginUser, registerUser } from "@/services/auth";
-import { AsyncResponse, LoginSuccessData, ErrorDetails, Login, Signup } from "@/types";
+import { loginUser, registerUser, getUserDetails } from "@/services/auth";
 import {
-  useMutation,
-  UseMutationOptions,
-  // UseMutateFunction, // We'll define our own mutate
-} from "@tanstack/react-query";
+  AsyncResponse,
+  ErrorDetails,
+  Login,
+  LoginSuccessData,
+  Signup,
+} from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-type LoginVariables = Login;
-type RegisterVariables = Signup;
-type RegisterSuccessData = any; // Placeholder
-
-// Options for the useLogin hook itself (e.g., mutationKey)
-type UseLoginHookOptions = Omit<
-  UseMutationOptions<
-    AsyncResponse<LoginSuccessData | null>, // Internal TData
-    ErrorDetails,                           // Internal TError
-    LoginVariables,                         // Internal TVariables
-    unknown                                 // Internal TContext
-  >,
-  'mutationFn' | 'onSuccess' | 'onError' | 'onSettled' // These are handled by our wrapper
->;
-
-// Options for the wrapped mutate function that the component will call
-interface LoginMutateOptions {
-  onSuccess?: (data: LoginSuccessData | null, variables: LoginVariables, context: unknown) => void;
-  onError?: (error: ErrorDetails, variables: LoginVariables, context: unknown) => void;
-  onSettled?: (data: LoginSuccessData | null | undefined, error: ErrorDetails | null, variables: LoginVariables, context: unknown) => void;
-}
-
-export const useLogin = (hookOptions?: UseLoginHookOptions) => {
-  const mutation = useMutation<
-    AsyncResponse<LoginSuccessData | null>,
-    ErrorDetails,
-    LoginVariables,
-    unknown
-  >({
-    mutationFn: loginUser,
-    ...hookOptions, // Pass through other options like mutationKey, retry, etc.
+export const useLogin = () => {
+  return useMutation<LoginSuccessData | null, ErrorDetails, Login>({
+    mutationFn: async (variables) => {
+      const res = await loginUser(variables);
+      if (res.status === "success") return res.data;
+      throw res.error || { message: "Login failed", statusCode: null };
+    },
   });
-
-  const mutate = (variables: LoginVariables, callOptions?: LoginMutateOptions) => {
-    return mutation.mutate(variables, {
-      onSuccess: (response, vars, ctx) => {
-        if (response.status === 'success') {
-          callOptions?.onSuccess?.(response.data, vars, ctx);
-        } else if (response.error) {
-          callOptions?.onError?.(response.error, vars, ctx);
-        } else { // Should not happen with well-formed AsyncResponse
-          callOptions?.onError?.({ message: 'Login failed: Invalid response structure', statusCode: null }, vars, ctx);
-        }
-      },
-      onError: (error, vars, ctx) => { // For network errors or direct throws from loginUser
-        const errorDetails: ErrorDetails = (error && typeof error === 'object' && 'message' in error)
-          ? error as ErrorDetails
-          : { message: 'An unexpected error occurred', statusCode: null };
-        callOptions?.onError?.(errorDetails, vars, ctx);
-      },
-      onSettled: (response, error, vars, ctx) => {
-        if (callOptions?.onSettled) {
-          if (error) {
-            callOptions.onSettled(undefined, error, vars, ctx);
-          } else if (response) {
-            if (response.status === 'success') {
-              callOptions.onSettled(response.data, null, vars, ctx);
-            } else {
-              callOptions.onSettled(undefined, response.error || { message: 'Unknown error in onSettled', statusCode: null }, vars, ctx);
-            }
-          } else {
-             callOptions.onSettled(undefined, null, vars, ctx);
-          }
-        }
-      },
-    });
-  };
-  // Return all properties of the original mutation (isLoading, isError, data, etc.)
-  // but override the mutate function with our wrapped version.
-  return { ...mutation, mutate };
 };
 
-
-// Similar structure for useRegister
-type UseRegisterHookOptions = Omit<
-  UseMutationOptions<
-    AsyncResponse<RegisterSuccessData | null>,
-    ErrorDetails,
-    RegisterVariables,
-    unknown
-  >,
-  'mutationFn' | 'onSuccess' | 'onError' | 'onSettled'
->;
-
-interface RegisterMutateOptions {
-  onSuccess?: (data: RegisterSuccessData | null, variables: RegisterVariables, context: unknown) => void;
-  onError?: (error: ErrorDetails, variables: RegisterVariables, context: unknown) => void;
-  onSettled?: (data: RegisterSuccessData | null | undefined, error: ErrorDetails | null, variables: RegisterVariables, context: unknown) => void;
-}
-
-export const useRegister = (hookOptions?: UseRegisterHookOptions) => {
-  const mutation = useMutation<
-    AsyncResponse<RegisterSuccessData | null>,
-    ErrorDetails,
-    RegisterVariables,
-    unknown
-  >({
+// 🔹 Register Hook
+export const useRegister = () => {
+  return useMutation<AsyncResponse<any | null>, ErrorDetails, Signup>({
     mutationFn: registerUser,
-    ...hookOptions,
+    onSuccess: (response) => {
+      if (response.status === "success") {
+        toast.success("Registration successful!");
+      } else {
+        toast.error(response.error?.message || "Registration failed");
+      }
+    },
+    onError: (error) => {
+      toast.error(error?.message || "An unexpected error occurred");
+    },
+  });
+};
+
+export const useUser = () => {
+  const query = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserDetails(),
+    staleTime: 5 * 60 * 1000, // 5 min cache before considered stale
+    gcTime: 30 * 60 * 1000, // 30 min keep in memory
+    refetchOnMount: false, // don’t force refetch each mount
+    refetchOnWindowFocus: false, // don’t refetch on tab switch
   });
 
-  const mutate = (variables: RegisterVariables, callOptions?: RegisterMutateOptions) => {
-    return mutation.mutate(variables, {
-      onSuccess: (response, vars, ctx) => {
-        if (response.status === 'success') {
-          callOptions?.onSuccess?.(response.data, vars, ctx);
-        } else if (response.error) {
-          callOptions?.onError?.(response.error, vars, ctx);
-        } else {
-          callOptions?.onError?.({ message: 'Registration failed: Invalid response structure', statusCode: null }, vars, ctx);
-        }
-      },
-      onError: (error, vars, ctx) => {
-        const errorDetails: ErrorDetails = (error && typeof error === 'object' && 'message' in error)
-          ? error as ErrorDetails
-          : { message: 'An unexpected error occurred during registration', statusCode: null };
-        callOptions?.onError?.(errorDetails, vars, ctx);
-      },
-      onSettled: (response, error, vars, ctx) => {
-        if (callOptions?.onSettled) {
-          if (error) {
-            callOptions.onSettled(undefined, error, vars, ctx);
-          } else if (response) {
-            if (response.status === 'success') {
-              callOptions.onSettled(response.data, null, vars, ctx);
-            } else {
-              callOptions.onSettled(undefined, response.error || { message: 'Unknown error in onSettled', statusCode: null }, vars, ctx);
-            }
-          } else {
-            callOptions.onSettled(undefined, null, vars, ctx);
-          }
-        }
-      },
-    });
-  };
-
-  return { ...mutation, mutate };
+  return query;
 };

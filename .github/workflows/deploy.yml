@@ -1,0 +1,27 @@
+name: 🚀 Deploy ajar-admin to Server (104.128.190.131)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: 104.128.190.131
+          username: root
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/html/ajar-admin
+            git pull origin main
+            npm ci --legacy-peer-deps
+            npm run build
+            pm2 restart ajar-admin
