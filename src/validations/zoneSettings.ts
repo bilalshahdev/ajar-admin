@@ -38,7 +38,10 @@ export const zoneFormSchema = z.object({
 
     tax: z.number().min(0, "Tax must be 0 or greater"),
 
-    expiry: z.string().min(1, "Expiry date is required"),
+    expiry: z.preprocess(
+      (val) => (val instanceof Date ? val.toISOString() : val),
+      z.string().min(1, "Expiry date is required")
+    ),
   }),
 });
 
