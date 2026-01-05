@@ -41,7 +41,7 @@ const Categories = () => {
         <TableCell>{category.name}</TableCell>
       )}
       <TableCell className="capitalize">{category.type}</TableCell>
-      <TableCell>{category?.name || "—"}</TableCell>
+      <TableCell>{category?.category?.name || "—"}</TableCell>
       <TableCell className="flex gap-4">
         <TableActions
           id={category._id}

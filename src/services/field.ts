@@ -17,8 +17,16 @@ export const getFields = async ({
   return response.data;
 };
 
-export const getFieldsList = async (): Promise<GetFieldsListResponse> => {
-  const response = await api.get("/fields/list");
+export const getFieldsList = async ({
+  isChoiceField,
+}: {
+  isChoiceField?: boolean;
+}): Promise<GetFieldsListResponse> => {
+  const params: any = {};
+  if (isChoiceField !== undefined) {
+    params.isChoiceField = isChoiceField;
+  }
+  const response = await api.get("/fields/list", { params });
   return response.data;
 };
 

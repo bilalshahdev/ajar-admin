@@ -8,7 +8,7 @@ import {
   useGetCategory,
   useUpdateCategory,
 } from "@/hooks/useCategories";
-import { CategoryFormValues, CategorySchema } from "@/validations/category";
+import { CategoryFormValues, CreateCategorySchema, UpdateCategorySchema } from "@/validations/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -21,8 +21,10 @@ const CategoryForm = ({ id }: { id?: string }) => {
   const router = useRouter();
   const { data: fetchedCategory, isLoading: isCategoryLoading } =
     useGetCategory(id || "", !!id);
+
+  const schema = id ? UpdateCategorySchema : CreateCategorySchema;
   const { control, handleSubmit, reset } = useForm<CategoryFormValues>({
-    resolver: zodResolver(CategorySchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       type: fetchedCategory?.data?.type || "category",
       category: fetchedCategory?.data?.category?._id || "",
@@ -55,6 +57,10 @@ const CategoryForm = ({ id }: { id?: string }) => {
   const type = useWatch({ control, name: "type" });
 
   const isEditMode = Boolean(id);
+  const categoryNotFound =
+    isEditMode &&
+    !isCategoryLoading &&
+    !fetchedCategory?.data;
   const updateMutation = useUpdateCategory();
   const addMutation = useAddCategory();
 
@@ -98,6 +104,19 @@ const CategoryForm = ({ id }: { id?: string }) => {
   };
 
   if (isCategoryLoading && id) return <Loader />;
+
+  if (categoryNotFound) {
+    return (
+      <div className="h-64 flex flex-col items-center justify-center gap-4">
+        <p className="text-sm text-muted-foreground">
+          Category not found
+        </p>
+        {/* <Button variant="outline" onClick={() => router.push("/category-management")}>
+          Go back
+        </Button> */}
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

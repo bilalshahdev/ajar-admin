@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import Pagination from "../Pagination";
+import { useEffect } from "react";
 
 type DataTableProps<T> = {
   data: T[];
@@ -40,9 +41,27 @@ export function DataTable<T>({
     total: 0,
     page: 1,
     limit: 10,
-    setPage: () => {},
+    setPage: () => { },
   },
 }: DataTableProps<T>) {
+
+  useEffect(() => {
+    if (!data) return;
+
+    const items = data;
+    const total = pagination.total || 0;
+
+    // if current page has no data AND page > 1
+    if (items.length === 0 && pagination.page && pagination.page > 1) {
+      const lastValidPage = Math.ceil(total / (pagination.limit || 10)) || 1;
+
+      // move back safely
+      pagination.setPage(Math.min(pagination.page - 1, lastValidPage));
+    }
+  }, [data, pagination.page, pagination.limit, pagination.total]);
+
+
+
   return (
     <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">
       {data.length === 0 ? (

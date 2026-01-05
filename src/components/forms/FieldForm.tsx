@@ -5,14 +5,17 @@ import { useForm } from "react-hook-form";
 
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
-import { useAddField, useGetField, useUpdateField } from "@/hooks/useFields";
+import { Switch as USwitch } from "@/components/ui/switch";
+import { useAddField, useGetChoiceFieldsList, useGetField, useUpdateField } from "@/hooks/useFields";
 import { FieldFormValues, FieldSchema } from "@/validations/field";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Label } from "../ui/label";
 import FormArrayInput from "./fields/FormArrayInput";
 import SelectInput from "./fields/SelectInput";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
+
 
 const inputTypes = [
   { name: "String", value: "string" },
@@ -37,6 +40,14 @@ const inputTypes = [
 
 export default function FieldForm({ id }: { id?: string }) {
   const router = useRouter();
+  const [isChoiceField, setIsChoiceField] = useState(false);
+  const [parentFieldId, setParentFieldId] = useState<string | null>(null);
+  const [parentFieldOption, setParentFieldOption] = useState<string | null>(null);
+
+  const [parentFieldIdError, setParentFieldIdError] = useState<string | null>(null);
+  const [parentFieldOptionError, setParentFieldOptionError] = useState<string | null>(null);
+
+
   const { data: field, isLoading: isFieldLoading } = useGetField(
     id || "",
     !!id
@@ -73,7 +84,7 @@ export default function FieldForm({ id }: { id?: string }) {
         {
           name: f.name,
           label: f.label,
-          type: f.type || inputTypes[0].value, // fallback
+          type: f.type || inputTypes[0].value,
           placeholder: f.placeholder,
           order: f.order ?? 0,
           isMultiple: f.isMultiple,
@@ -95,6 +106,8 @@ export default function FieldForm({ id }: { id?: string }) {
     }
   }, [field, reset]);
 
+  const { data: fieldsList, isLoading: isFieldsListLoading } = useGetChoiceFieldsList({ enabled: isChoiceField });
+
   const isEditMode = Boolean(id);
 
   const updateMutation = useUpdateField();
@@ -103,9 +116,31 @@ export default function FieldForm({ id }: { id?: string }) {
   const { mutate: fieldMutation, isPending: fieldLoading } = isEditMode
     ? updateMutation
     : addMutation;
-  const onSubmit = async (formData: FieldFormValues) => {
+
+  const onSubmit = async (formData: any) => {
+    // Clear previous errors
+    setParentFieldIdError(null);
+    setParentFieldOptionError(null);
+
+    // Custom validation for parentFieldId and parentFieldOption
+    if (isChoiceField && !parentFieldId) {
+      setParentFieldIdError("Please select a field.");
+      return;
+    }
+
+    if (isChoiceField && parentFieldId && !parentFieldOption) {
+      setParentFieldOptionError("Please select an option for the selected field.");
+      return;
+    }
+
+    formData.conditional = {
+      dependsOn: parentFieldId,
+      value: parentFieldOption,
+    };
+
+    // Proceed with the mutation if validation passes
     const mutationPayload = id ? { id, data: formData } : formData;
-    fieldMutation(mutationPayload as any, {
+    fieldMutation(mutationPayload, {
       onSuccess: () => {
         reset();
         router.push("/field-management");
@@ -113,13 +148,83 @@ export default function FieldForm({ id }: { id?: string }) {
     });
   };
 
+  const handleChildFieldIdChange = (id: string) => {
+    setParentFieldId(id);
+    setParentFieldOption(null);
+    setParentFieldIdError(null)
+  };
+  const handleChildFieldOptionChange = (value: string) => {
+    setParentFieldOption(value);
+    setParentFieldOptionError(null);
+  };
+
+  const handleDependsOnChange = () => {
+    setIsChoiceField(!isChoiceField)
+    setParentFieldId(null);
+    setParentFieldOption(null);
+    setParentFieldIdError(null)
+    setParentFieldOptionError(null)
+  }
+
+
   if (isFieldLoading && id) return <Loader />;
 
   const type = watch("type");
   const typesWithOptions = ["select", "radio", "multiselect"];
 
+  const selectedField = fieldsList?.data?.fields?.find(
+    (field) => field._id === parentFieldId
+  );
+
+  const fieldOptions = fieldsList?.data?.fields.map((f) => ({
+    label: f.name,
+    value: f._id,
+  }));
+
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
+      {!id && (
+        <div className="inline-flex items-center gap-4 p-4 bg-accent rounded-md">
+          <Label htmlFor="is-child-field" className="cursor-pointer">Is Child Field</Label>
+          <USwitch
+            id="is-child-field"
+            className="cursor-pointer"
+            checked={isChoiceField}
+            onCheckedChange={handleDependsOnChange}
+          />
+        </div>
+      )}
+
+      {isChoiceField && (
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <SelectInput
+              label="Depends On Field"
+              options={fieldOptions || []}
+              value={parentFieldId}
+              onChange={(id) => handleChildFieldIdChange(id)}
+            />
+            {parentFieldIdError && <span className="text-red-500 text-sm">{parentFieldIdError}</span>}
+          </div>
+          {parentFieldId && (
+            <div>
+              <SelectInput
+                label="When Value Is"
+                options={selectedField?.options?.map((opt) => ({ label: opt, value: opt })) || []}
+                value={parentFieldOption}
+                onChange={(value) => {
+                  handleChildFieldOptionChange(value)
+                }}
+              />
+              {parentFieldOptionError && <span className="text-red-500 text-sm">{parentFieldOptionError}</span>}
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="grid sm:grid-cols-2 gap-4">
         <TextInput
           control={control}
@@ -134,6 +239,7 @@ export default function FieldForm({ id }: { id?: string }) {
           options={inputTypes}
           labelKey="name"
           valueKey="value"
+          disabled={!!id}
         />
         {typesWithOptions.includes(type) && (
           <FormArrayInput control={control} name="options" label="Options" />
@@ -152,15 +258,6 @@ export default function FieldForm({ id }: { id?: string }) {
           label="Placeholder"
           placeholder="Enter placeholder"
         />
-        {/* <TextInput
-          control={control}
-          name="order"
-          note="Order of the field in the form"
-          type="number"
-          label="Order"
-          placeholder="Enter order"
-          min={0}
-        /> */}
         <TextInput
           control={control}
           name="tooltip"

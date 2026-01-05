@@ -91,11 +91,11 @@ export const useDeleteCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteCategory(id),
-    onSuccess: ({ data }: { data: { _id: string } }) => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ["categories"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["categories-list"] });
       queryClient.invalidateQueries({ queryKey: ["subcategories-list"] });
-      queryClient.invalidateQueries({ queryKey: ["category", data._id] });
+      queryClient.invalidateQueries({ queryKey: ["category", id] });
       toast.success("Category deleted successfully");
     },
     // onError: (error: any) => {

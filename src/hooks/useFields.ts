@@ -25,14 +25,22 @@ export const useGetFields = ({
   });
 };
 
-export const useGetFieldsList = ({
+export const useGetFieldsList = ({ enabled = true }: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: ["fields-list"],
+    queryFn: () => getFieldsList({}),
+    placeholderData: (previousData) => previousData,
+    enabled,
+  });
+};
+export const useGetChoiceFieldsList = ({
   enabled = true,
 }: {
   enabled?: boolean;
 }) => {
   return useQuery({
-    queryKey: ["fields-list"],
-    queryFn: () => getFieldsList(),
+    queryKey: ["choice-fields-list"],
+    queryFn: () => getFieldsList({ isChoiceField: true }),
     placeholderData: (previousData) => previousData,
     enabled,
   });

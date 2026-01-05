@@ -1,5 +1,3 @@
-"use client";
-
 import { X } from "lucide-react";
 import { useState } from "react";
 import { useController } from "react-hook-form";
@@ -16,6 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+// camelCase regex
+const camelCaseRegex = /^[a-z]+([A-Z][a-z]*)*$/;
+
 const FormArrayInput = ({
   label,
   control,
@@ -30,23 +31,35 @@ const FormArrayInput = ({
     fieldState: { error },
   } = useController({ name, control });
 
-  const [value, setValue] = useState<string>("");
-  const [items, setItems] = useState<string[]>(field.value || []);
+  const [value, setValue] = useState<string>(""); // Current input value
+  const [items, setItems] = useState<string[]>(field.value || []); // List of items
+  const [validationError, setValidationError] = useState<string | null>(null); // To store validation errors
 
+  // Add item to the array, ensuring it's unique and follows camelCase
   const addItem = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== "Enter") return;
 
     event.preventDefault();
 
     const inputValue = value.trim();
+
+    // Check if the value follows camelCase format
+    if (!camelCaseRegex.test(inputValue)) {
+      setValidationError("Value must be in camelCase format.");
+      return;
+    }
+
+    // Check if value is empty or already exists in the list
     if (!inputValue || items.includes(inputValue)) return;
 
     const newItems = [...items, inputValue];
     setItems(newItems);
     field.onChange(newItems);
-    setValue("");
+    setValue(""); // Reset input field
+    setValidationError(null); // Clear validation error if added successfully
   };
 
+  // Remove item from the array
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     setItems(newItems);
@@ -60,9 +73,7 @@ const FormArrayInput = ({
 
         <DialogTrigger asChild>
           <Button
-            className={`w-full bg-secondary/50 ${
-              error ? "border-red-500" : ""
-            }`}
+            className={`w-full bg-secondary/50 ${error ? "border-red-500" : ""}`}
             variant="outline"
           >
             {field.value?.length > 0
@@ -82,6 +93,10 @@ const FormArrayInput = ({
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
+          {validationError && (
+            <span className="text-red-500 text-sm">{validationError}</span>
+          )}
+
           <div className="space-y-2">
             {items.length > 0 ? (
               <div className="max-h-20 overflow-y-scroll flex flex-wrap gap-2">

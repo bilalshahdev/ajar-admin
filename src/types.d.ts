@@ -253,6 +253,7 @@ interface Category {
   slug: string;
   thumbnail?: string;
   icon?: string;
+  category?: Category;
   createdAt: Date;
   updatedAt: Date;
 }

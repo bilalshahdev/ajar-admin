@@ -2,6 +2,7 @@
 
 import { useDeleteFaq, useGetFaqs } from "@/hooks/useFaqs";
 import { Faq } from "@/types";
+import { limit } from "@/config/constants";
 import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
 import TableActions from "../Actions";
@@ -14,10 +15,11 @@ import Tooltip from "../Tooltip";
 import { TableCell } from "../ui/table";
 
 const Faqs = () => {
-  const { data, isLoading, error } = useGetFaqs({ page: 1, limit: 10 });
+
+  const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useGetFaqs({ page, limit:5 });
   const [search, setSearch] = useState("");
 
-  // ✅ Moved faqs inside useMemo to avoid eslint warning
   const filteredFaqs = useMemo(() => {
     const faqs = data?.data?.data || [];
     return filterData({
@@ -83,7 +85,17 @@ const Faqs = () => {
         onChange={(e) => setSearch(e)}
         placeholder="Search Faq"
       />
-      <DataTable cols={cols} data={filteredFaqs} row={row} />
+      <DataTable
+        cols={cols}
+        data={filteredFaqs}
+        row={row}
+        pagination={{
+          total: data?.data?.total || 0,
+          page: data?.data?.page || 1,
+          limit: data?.data?.limit || limit,
+          setPage,
+        }}
+      />
     </div>
   );
 };
