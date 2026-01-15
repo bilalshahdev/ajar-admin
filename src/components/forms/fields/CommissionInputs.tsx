@@ -35,8 +35,8 @@ const CommissionInputs = ({
           ]}
         />
       </div>
-      <CommissionInput control={control} type="leaser" mode={mode} />
-      <CommissionInput control={control} type="renter" mode={mode} />
+      <CommissionInput control={control} type="lessor" mode={mode} />
+      <CommissionInput control={control} type="lessee" mode={mode} />
     </div>
   );
 };
@@ -45,7 +45,7 @@ export default CommissionInputs;
 
 interface CommissionInputProps {
   control: any;
-  type: "leaser" | "renter";
+  type: "lessor" | "lessee";
   mode: "fixed" | "percentage";
 }
 
@@ -54,7 +54,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
   type,
   mode,
 }) => {
-  const label = type === "leaser" ? "Leaser" : "Renter";
+  const label = type === "lessor" ? "Lessor" : "Lessee";
   const baseName = `${type}Commission`;
 
   return (

@@ -195,7 +195,7 @@ const PolygonSearchMap = forwardRef<PolygonSearchMapRef, Props>(
         center={[30.3753, 69.3451]}
         zoom={5}
         scrollWheelZoom={false}
-        style={{ height: "300px", width: "100%", zIndex: 0 }}
+        style={{ height: "250px", width: "100%", zIndex: 0 }}
       >
         <PolygonSearchMapComponent
           ref={ref}

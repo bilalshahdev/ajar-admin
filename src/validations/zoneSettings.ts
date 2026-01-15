@@ -17,7 +17,7 @@ export const zoneFormSchema = z.object({
 
   leaserDocuments: z
     .array(z.string())
-    .min(1, "At least one leaser document is required"),
+    .min(1, "At least one lessor document is required"),
 
   setting: z.object({
     commissionType: z.enum(["percentage", "fixed"], {

@@ -17,7 +17,7 @@ import { TableCell } from "../ui/table";
 const Faqs = () => {
 
   const [page, setPage] = useState(1);
-  const { data, isLoading, error } = useGetFaqs({ page, limit:5 });
+  const { data, isLoading, error } = useGetFaqs({ page, limit });
   const [search, setSearch] = useState("");
 
   const filteredFaqs = useMemo(() => {

@@ -77,7 +77,7 @@ const TableActions: React.FC<TableActionsProps> = ({
                   <FiEye size={18} className="cursor-pointer text-blue-500" />
                 </Tooltip>
               </DialogTrigger>
-              <DialogContent className="max-h-[500px] overflow-y-auto">
+              <DialogContent className="max-h-[600px] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>{viewDialog.title}</DialogTitle>
                   {viewDialog.description && (
@@ -130,7 +130,7 @@ const TableActions: React.FC<TableActionsProps> = ({
                   <FiEdit2 size={18} className="cursor-pointer text-blue-500" />
                 </Tooltip>
               </DialogTrigger>
-              <DialogContent className="max-h-[500px] overflow-y-auto">
+              <DialogContent className="max-h-[600px] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>{editDialog.title}</DialogTitle>
                   {editDialog.description && (

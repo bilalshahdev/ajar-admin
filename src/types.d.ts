@@ -53,6 +53,7 @@ type DashboardStat = {
   value: number | string;
   icon: IconType;
   bgColor: string;
+  path?: string;
 };
 
 interface UserOTP {

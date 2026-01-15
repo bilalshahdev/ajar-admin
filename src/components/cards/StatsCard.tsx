@@ -2,6 +2,7 @@
 
 import { Change, IndicatorLabel } from "@/types";
 import { roundOffValue } from "@/utils/roundOffValue";
+import Link from "next/link";
 
 const StatsCard = ({
   label,
@@ -9,6 +10,7 @@ const StatsCard = ({
   icon,
   change,
   bgColor,
+  path,
   format,
 }: {
   label: string | IndicatorLabel;
@@ -16,14 +18,15 @@ const StatsCard = ({
   icon?: React.ReactNode;
   change?: Change;
   bgColor?: string;
+  path?: string;
   format?: {
     decimals?: number;
     currency?: boolean;
     compact?: boolean;
   };
 }) => {
-  return (
-    <div className="p-4 bg-card rounded-lg shadow dark:shadow-muted flex items-center justify-between">
+  const cardContent = (
+    <div className="p-4 bg-card rounded-lg shadow hover:shadow-lg flex items-center justify-between transition-all">
       <div>
         <p className="text-sm text-muted-foreground">{label}</p>
         <h3 className="text-lg font-semibold">
@@ -32,9 +35,7 @@ const StatsCard = ({
       </div>
 
       {icon && (
-        <div className={`p-4 rounded-full text-white ${bgColor}`}>
-          {icon}
-        </div>
+        <div className={`p-3 rounded-full text-white ${bgColor}`}>{icon}</div>
       )}
 
       {change && (
@@ -48,6 +49,12 @@ const StatsCard = ({
       )}
     </div>
   );
+
+  if (path) {
+    return <Link href={path}>{cardContent}</Link>;
+  }
+
+  return cardContent;
 };
 
 export default StatsCard;
