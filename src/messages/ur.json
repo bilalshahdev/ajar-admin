@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "home": "گھر",
+    "about": "ہمارے بارے میں",
+    "contact": "رابطہ"
+  },
+  "home": {
+    "title": "ہماری کثیر لسانی ایپ میں خوش آمدید",
+    "subtitle": "Next.js 15 کے ساتھ بہترین بین الاقوامی کاری کا تجربہ کریں",
+    "description": "یہ ایپلیکیشن RTL/LTR سپورٹ، مرکزی تصویری ہینڈلنگ، اور کثیر لسانی API انٹیگریشن کے ساتھ جدید بین الاقوامی کاری کے نمونوں کو ظاہر کرتی ہے۔",
+    "features": {
+      "title": "اہم خصوصیات",
+      "i18n": "مکمل بین الاقوامی کاری کی سپورٹ",
+      "rtl": "RTL اور LTR زبان کی سپورٹ",
+      "images": "مرکزی تصویری ہینڈلنگ",
+      "api": "کثیر لسانی API endpoints"
+    }
+  },
+  "about": {
+    "title": "اس ایپلیکیشن کے بارے میں",
+    "subtitle": "ہماری کثیر لسانی Next.js 15 implementation کے بارے میں مزید جانیں",
+    "description": "یہ ایپلیکیشن Next.js 15 اور next-intl استعمال کرتے ہوئے جدید بین الاقوامی کاری کے نمونوں کو ظاہر کرتی ہے۔",
+    "features": {
+      "languages": "5 زبانوں کی سپورٹ (انگریزی، فرانسیسی، جرمن، اردو، عربی)",
+      "rtl": "مناسب RTL/LTR متن کی سمت کا انتظام",
+      "images": "لوڈنگ states کے ساتھ مرکزی تصویری optimization",
+      "api": "کثیر لسانی API endpoints",
+      "patterns": "جدید ڈیٹا fetching patterns",
+      "design": "Tailwind CSS کے ساتھ responsive design"
+    }
+  },
+  "contact": {
+    "title": "رابطے میں رہیں",
+    "subtitle": "ہمیں پیغام بھیجیں اور ہم آپ سے رابطہ کریں گے",
+    "form": {
+      "name": "نام",
+      "email": "ای میل",
+      "message": "پیغام",
+      "namePlaceholder": "آپ کا نام",
+      "emailPlaceholder": "آپ کا@email.com",
+      "messagePlaceholder": "یہاں آپ کا پیغام...",
+      "submit": "پیغام بھیجیں"
+    }
+  },
+  "common": {
+    "loading": "لوڈ ہو رہا ہے...",
+    "error": "خرابی ہوئی",
+    "retry": "دوبارہ کوشش کریں",
+    "language": "زبان",
+    "offline": "آپ آف لائن ہیں۔ کچھ خصوصیات کام نہیں کر سکتیں۔"
+  },
+  "api": {
+    "products": "مصنوعات",
+    "users": "صارفین"
+  },
+  "pwa": {
+    "install": {
+      "title": "ایپ انسٹال کریں",
+      "description": "بہتر تجربے کے لیے یہ ایپ انسٹال کریں",
+      "button": "انسٹال کریں",
+      "dismiss": "ابھی نہیں"
+    }
+  }
+}
