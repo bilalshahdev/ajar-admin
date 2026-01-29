@@ -39,7 +39,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
     createdAt,
     isActive,
     subCategory,
-    leaser: lessor,
+    leaser: leaser,
     zone,
     status,
     documents,
@@ -201,13 +201,13 @@ const RentalListingDetail = ({ id }: { id: string }) => {
         </Card>
       )}
 
-      {lessor && (
+      {leaser && (
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-xl">Leaser Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <UserCard user={lessor} />
+            <UserCard user={leaser} />
           </CardContent>
         </Card>
       )}

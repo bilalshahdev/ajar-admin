@@ -225,8 +225,8 @@ const SubcategorySettingsForm = ({
             <MultiSelect<{ name: string; value: string }, ZoneFormValues>
               control={control}
               name={"leaserDocuments"}
-              label="Lessor Documents"
-              note="Lessor needs in order to request for booking"
+              label="Leaser Documents"
+              note="Leaser needs in order to request for booking"
               options={leaserDocumentsValues}
               loading={leaserDocumentsLoading}
               getOptionValue={(d) => d.value}

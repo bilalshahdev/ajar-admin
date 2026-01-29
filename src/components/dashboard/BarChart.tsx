@@ -31,7 +31,9 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
   const formattedData = chartData.map((item) => ({
     ...item,
     value: getFormattedLabel(item.value, filter),
+    totalEarning: Number(Number(item.totalEarning || 0).toFixed(2)),
   }));
+
 
   const chartConfig: ChartConfig = {
     earnings: {
@@ -39,6 +41,7 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
       color: "hsl(var(--primary))",
     },
   };
+  
   const trendInfo = getTrendInfo(earnings.change);
   return (
     <ChartCard className="space-y-4 h-full">
