@@ -22,7 +22,7 @@ type LineChartProps = {
 
 const LineChart = ({ filter, users }: LineChartProps) => {
   const chartData = useMemo(() => users.record, [users]);
-
+  
   const formattedData = chartData.map((item) => ({
     ...item,
     value: getFormattedLabel(item.value, filter),
@@ -34,9 +34,9 @@ const LineChart = ({ filter, users }: LineChartProps) => {
       color: "hsl(var(--chart-1))",
     },
   };
-
+  
   const trend = getTrendInfo(users?.change);
-
+  
   return (
     <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
@@ -67,7 +67,9 @@ const LineChart = ({ filter, users }: LineChartProps) => {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
+                tickFormatter={(value) =>
+                  filter === "week" ? value : value.slice(0, 3)
+                }
               />
               <ChartTooltip
                 cursor={false}

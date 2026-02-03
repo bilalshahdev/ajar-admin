@@ -16,8 +16,9 @@ import Link from "next/link";
 import HighlightCell from "../HighlightCell";
 
 const TicketsList = () => {
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { data, isLoading, error } = useGetTickets({ page: 1, limit: 10 });
+  const { data, isLoading, error } = useGetTickets({ page, limit: 10 });
   const { mutate: deleteTicket, isPending: deleteLoading } = useDeleteTicket();
 
   const tickets = useMemo(() => {
@@ -103,7 +104,17 @@ const TicketsList = () => {
         onChange={(e) => setSearch(e)}
         placeholder="Search Ticket"
       />
-      <DataTable cols={cols} data={tickets} row={row} />
+      <DataTable
+        cols={cols}
+        data={tickets}
+        row={row}
+        pagination={{
+          total: data?.data?.total || 0,
+          page: data?.data?.page || 1,
+          limit: data?.data?.limit || 10,
+          setPage,
+        }}
+      />
     </div>
   );
 };

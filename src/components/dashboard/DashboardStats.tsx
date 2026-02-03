@@ -39,7 +39,7 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
       path: "/category-management",
     },
     {
-      title: "Lessors",
+      title: "Leasers",
       value: totalLeasers,
       icon: FaHandshake,
       bgColor: "bg-green-500",

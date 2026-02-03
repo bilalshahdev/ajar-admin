@@ -18,6 +18,7 @@ export default function Dashboard() {
   const { data, isLoading, error } = useStats(selectedFilter);
 
   const { stats, charts } = data?.data || {};
+  
   const { users, earnings } = charts || {};
 
   if (error) {

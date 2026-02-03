@@ -151,6 +151,8 @@ const SubcategorySettingsForm = ({
   const error = updateError || addError;
 
   const onSubmit = async (data: any) => {
+    console.log("Form submitted:", data);
+
     if (zoneForm) {
       await updateZoneForm({ id: zoneForm?.data?._id, data });
     } else {
@@ -169,7 +171,7 @@ const SubcategorySettingsForm = ({
   const fields: Field[] = fieldsData?.data?.fields?.filter(
     (f: Field) => !f.isFixed
   ) || [];
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -223,8 +225,8 @@ const SubcategorySettingsForm = ({
             <MultiSelect<{ name: string; value: string }, ZoneFormValues>
               control={control}
               name={"leaserDocuments"}
-              label="Lessor Documents"
-              note="Lessor needs in order to request for booking"
+              label="Leaser Documents"
+              note="Leaser needs in order to request for booking"
               options={leaserDocumentsValues}
               loading={leaserDocumentsLoading}
               getOptionValue={(d) => d.value}

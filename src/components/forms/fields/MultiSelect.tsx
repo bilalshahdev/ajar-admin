@@ -82,8 +82,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
         .filter(Boolean) as TOption[],
     [options, selectedValues, getOptionValue]
   );
-
-
+  
   const toggle = (value: string) => {
     if (selectedValues.includes(value)) {
       field.onChange(selectedValues.filter((v) => v !== value));
@@ -193,6 +192,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
               {selectedOptions.map((opt) => {
                 const value = getOptionValue(opt);
                 const label = getOptionLabel(opt);
+                
                 return (
                   <SortableBadge
                     key={value}

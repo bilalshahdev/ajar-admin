@@ -39,8 +39,8 @@ const RentalListingDetail = ({ id }: { id: string }) => {
     createdAt,
     isActive,
     subCategory,
-    leaser: lessor,
-    address,
+    leaser: leaser,
+    zone,
     status,
     documents,
   }: {
@@ -53,7 +53,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
     isActive?: boolean;
     subCategory?: { name?: string; category?: { name?: string } };
     leaser?: User;
-    address?: string;
+    zone?: { name?: string };
     status?: "pending" | "approved" | "rejected" | string;
     documents?: ListingDocument[];
   } = rentalRequest?.data || {};
@@ -73,9 +73,9 @@ const RentalListingDetail = ({ id }: { id: string }) => {
               {new Date(createdAt || "").toLocaleDateString()}
             </span>
             {/* Active/Inactive */}
-            <Status value={isActive ? "active" : "inactive"} />
+            {/* <Status value={isActive ? "active" : "inactive"} /> */}
             {/* Request Status (pending/approved/rejected) */}
-            {status && <Status value={status} />}
+            {/* {status && <Status value={status} />} */}
           </div>
         </CardHeader>
 
@@ -116,7 +116,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
 
           {/* Common Info */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-            <InfoItem label="Location" value={address} />
+            <InfoItem label="Location" value={zone?.name} />
             <InfoItem label="Status" value={status} />
           </div>
 
@@ -201,13 +201,13 @@ const RentalListingDetail = ({ id }: { id: string }) => {
         </Card>
       )}
 
-      {lessor && (
+      {leaser && (
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-xl">Leaser Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <UserCard user={lessor} />
+            <UserCard user={leaser} />
           </CardContent>
         </Card>
       )}
