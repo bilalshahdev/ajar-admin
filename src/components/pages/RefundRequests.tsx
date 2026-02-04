@@ -57,16 +57,16 @@ const RefundRequests = () => {
   const row = (request: RefundRequest, index: number) => (
     <>
       <TableCell>{index + 1}</TableCell>
-      <TableCell>{request.booking.marketplaceListingId?.name}</TableCell>
-      <TableCell>{request.user.name}</TableCell>
-      <TableCell>{request.createdAt}</TableCell>
-      <TableCell>${request.totalRefundAmount.toFixed(2)}</TableCell>
+      <TableCell>{request?.booking?.marketplaceListingId?.name}</TableCell>
+      <TableCell>{request?.user?.name}</TableCell>
+      <TableCell>{request?.createdAt}</TableCell>
+      <TableCell>${request?.totalRefundAmount.toFixed(2)}</TableCell>
       <TableCell>
-        <Status value={request.status} />
+        <Status value={request?.status} />
       </TableCell>
       <TableCell>
         <Select
-          defaultValue={request.status}
+          defaultValue={request?.status}
           onValueChange={(value) =>
             updateRefundStatus({ id: request._id, data: { status: value } })
           }
