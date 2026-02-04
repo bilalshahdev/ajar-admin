@@ -18,11 +18,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import Status from "../StatusBadge";
 
 const RefundRequests = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetRefundRequests(page, 10);
-  const { mutate : updateRefundStatus, isPending: updateLoading } = useUpdateRefundRequest();
+  const { mutate: updateRefundStatus, isPending: updateLoading } = useUpdateRefundRequest();
   const {
     data: refundRequests = [],
     total,
@@ -49,7 +50,7 @@ const RefundRequests = () => {
     "User",
     "Date Submitted",
     "Amount",
-    // "Status",
+    "Status",
     "Actions",
   ];
 
@@ -60,9 +61,9 @@ const RefundRequests = () => {
       <TableCell>{request.user.name}</TableCell>
       <TableCell>{request.createdAt}</TableCell>
       <TableCell>${request.totalRefundAmount.toFixed(2)}</TableCell>
-      {/* <TableCell>
+      <TableCell>
         <Status value={request.status} />
-      </TableCell> */}
+      </TableCell>
       <TableCell>
         <Select
           defaultValue={request.status}
