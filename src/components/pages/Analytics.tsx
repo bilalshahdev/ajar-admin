@@ -108,7 +108,7 @@ const Analytics = () => {
     performanceIndicators: stats = [],
     charts = initialAnalyticsChartValues,
     filter,
-  } = dummyAnalyticsWeek?.data || {};
+  } = data?.data || {};
 
   // const {
   //   performanceIndicators: stats = [],

@@ -37,7 +37,7 @@ export default function RevenueLineChart({
           {payload.map((item: any) => (
             <p key={item.dataKey} className="flex justify-between gap-4">
               <span>{item.dataKey}</span>
-              <span className="font-medium">{item.value}</span>
+              <span className="font-medium">${item.value.toFixed(2)}</span>
             </p>
           ))}
         </div>

@@ -27,7 +27,9 @@ export const getStats = async (
   return response.data;
 };
 
-export const getAnalytics = async (): Promise<AnalyticsResponse> => {
-  const response = await api.get("/analytics");
+export const getAnalytics = async (
+  filter: FilterOption
+): Promise<AnalyticsResponse> => {
+  const response = await api.get(`/analytics?filter=${filter}`);
   return response.data;
 };
