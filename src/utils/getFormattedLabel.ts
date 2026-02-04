@@ -1,5 +1,3 @@
-// @/utils/getFormattedLabel.ts
-
 import { FilterOption } from "@/types";
 
 export const getFormattedLabel = (value: string, filter: FilterOption): string => {

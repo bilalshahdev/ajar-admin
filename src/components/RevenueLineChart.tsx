@@ -11,7 +11,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Label, Small, XS } from "./Typography";
 
 export default function RevenueLineChart({
   charts,
@@ -63,14 +62,14 @@ export default function RevenueLineChart({
             stroke="white"
             strokeOpacity={0.3}
           />
-          <XAxis
+          {/* <XAxis
             dataKey="label"
             axisLine={false}
             tickLine={false}
             stroke="white"
             tick={{ fontSize: 12, fill: "white", textAnchor: "middle" }}
             tickMargin={10}
-          />
+          /> */}
           <YAxis
             axisLine={false}
             tickLine={false}
@@ -82,7 +81,10 @@ export default function RevenueLineChart({
             content={<CustomTooltip />}
             cursor={{ stroke: "rgba(255,255,255,0.3)", strokeWidth: 2 }}
           />
-          <Legend />
+          
+          <Legend 
+            wrapperStyle={{ paddingTop: "10px" }}
+          />
 
           <Area
             type="monotone"
@@ -119,13 +121,13 @@ export default function RevenueLineChart({
         </AreaChart>
       </ResponsiveContainer>
 
-      <div className="mt-2 text-sm text-muted-foreground space-y-2">
+      {/* <div className="mt-2 text-sm text-muted-foreground space-y-2">
         <Label>Revenue Overview</Label>
         <Small>
           <span className="text-green-600">(+15%) </span>increase in App Usage
         </Small>
       </div>
-      <XS className="">updated 4 min ago</XS>
+      <XS className="">updated 4 min ago</XS> */}
     </div>
   );
 }
