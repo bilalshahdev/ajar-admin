@@ -20,6 +20,7 @@ import {
 import { H4, Label, Small } from "../Typography";
 import ChartCard from "./ChartCard";
 import { FilterOption, EarningsChartRecord } from "@/types";
+import { useTranslations } from "next-intl";
 
 type BarChartProps = {
   filter: FilterOption;
@@ -27,6 +28,7 @@ type BarChartProps = {
 };
 
 const BarChart = ({ filter, earnings }: BarChartProps) => {
+  const t = useTranslations();
   const chartData = useMemo(() => earnings.record, [earnings]);
   const formattedData = chartData.map((item) => ({
     ...item,
@@ -41,25 +43,25 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
       color: "hsl(var(--primary))",
     },
   };
-  
-  const trendInfo = getTrendInfo(earnings.change);
+
+  const trendInfo = getTrendInfo(earnings.change, t);
   return (
     <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
-          <Small>Performance</Small>
-          <H4>{filter} earnings</H4>
+          <Small>{t("translation.performance")}</Small>
+          <H4>{t("translation.earningsByFilter", { value: t(`translation.${filter}`) })}</H4>
         </div>
       </div>
       <ChartCard className="bg-card border p-0">
         <Small className="flex items-center gap-2 border-b p-2 capitalize">
           <BiLineChart />
-          <span>chart</span>
+          <span>{t("translation.chart")}</span>
         </Small>
         <div className="p-4">
           <div>
-            <H4>Total Earnings</H4>
-            <Small>Showing {filter} earnings</Small>
+            <H4>{t("translation.totalEarnings")}</H4>
+            <Small>{t("translation.showingEarnings", { value: t(`translation.${filter}`) })}</Small>
           </div>
           <ChartContainer config={chartConfig}>
             <RechartsBarChart
@@ -95,7 +97,7 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
           </ChartContainer>
           <div>
             <Label>{trendInfo.message}</Label>
-            <Small>Period: {filter}</Small>
+            <Small>{t("translation.period", { value: t(`translation.${filter}`) })}</Small>
           </div>
         </div>
       </ChartCard>

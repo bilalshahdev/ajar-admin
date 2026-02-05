@@ -2,6 +2,7 @@
 
 import { Change, IndicatorLabel } from "@/types";
 import { roundOffValue } from "@/utils/roundOffValue";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 const StatsCard = ({
@@ -25,10 +26,14 @@ const StatsCard = ({
     compact?: boolean;
   };
 }) => {
+  const t = useTranslations();
+
   const cardContent = (
     <div className="p-4 bg-card rounded-lg shadow hover:shadow-lg flex items-center justify-between transition-all">
       <div>
-        <p className="text-sm text-muted-foreground">{label}</p>
+        <p className="text-sm text-muted-foreground">
+          {t(`translation.${label}`)}
+        </p>
         <h3 className="text-lg font-semibold">
           {roundOffValue(value, format)}
         </h3>

@@ -366,10 +366,16 @@ type CommonStatus = "pending" | "approved" | "rejected";
 
 interface RefundRequest {
   _id: string;
-  listing: string;
-  user: string;
-  dateSubmitted: string;
-  amount: number;
+ booking : {
+   marketplaceListingId: {
+    name : string
+  };
+ }
+  user: {
+    name : string
+  };
+  createdAt: string;
+  totalRefundAmount: number;
   status: CommonStatus;
 }
 

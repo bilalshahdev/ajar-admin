@@ -108,8 +108,9 @@ const Analytics = () => {
     performanceIndicators: stats = [],
     charts = initialAnalyticsChartValues,
     filter,
-  } = dummyAnalyticsWeek?.data || {};
-
+  } = data?.data || {};
+  console.log(stats)
+  
   // const {
   //   performanceIndicators: stats = [],
   //   charts = initialAnalyticsChartValues,

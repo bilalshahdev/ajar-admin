@@ -3,7 +3,7 @@ import RentalPolicies from "@/components/pages/RentalPolicies";
 
 const RentalPoliciesPage = () => {
   return (
-    <Container title="Rental Policies">
+    <Container title="rentalPolicies">
       <RentalPolicies />
     </Container>
   );

@@ -1,64 +1,66 @@
 {
-  "navigation": {
-    "home": "Home",
-    "about": "About",
-    "contact": "Contact"
-  },
-  "home": {
-    "title": "Welcome to Our Multilingual PWA",
-    "subtitle": "Experience seamless internationalization with Next.js 15 & React Query",
-    "description": "This Progressive Web App demonstrates modern internationalization patterns with offline-first data fetching, React Query caching, and professional loading skeletons.",
-    "features": {
-      "title": "Key Features",
-      "i18n": "Full internationalization support",
-      "rtl": "RTL and LTR language support",
-      "images": "Centralized image handling",
-      "api": "React Query with offline support"
-    }
-  },
-  "about": {
-    "title": "About This PWA",
-    "subtitle": "Learn more about our professional multilingual implementation",
-    "description": "This Progressive Web App demonstrates modern patterns using Next.js 15, React Query, and professional architecture.",
-    "features": {
-      "languages": "Support for 5 languages (English, French, German, Urdu, Arabic)",
-      "rtl": "Proper RTL/LTR text direction handling",
-      "images": "Centralized image optimization with loading states",
-      "api": "React Query with offline-first data fetching",
-      "patterns": "Professional loading skeletons and error handling",
-      "design": "Progressive Web App with service worker caching"
-    }
-  },
-  "contact": {
-    "title": "Get in Touch",
-    "subtitle": "Send us a message and we'll get back to you",
-    "form": {
-      "name": "Name",
-      "email": "Email",
-      "message": "Message",
-      "namePlaceholder": "Your name",
-      "emailPlaceholder": "your@email.com",
-      "messagePlaceholder": "Your message here...",
-      "submit": "Send Message"
-    }
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error occurred",
-    "retry": "Retry",
-    "language": "Language",
-    "offline": "You are offline. Some features may not work."
-  },
-  "api": {
-    "products": "Products",
-    "users": "Users"
-  },
-  "pwa": {
-    "install": {
-      "title": "Install App",
-      "description": "Install this app for a better experience",
-      "button": "Install",
-      "dismiss": "Not now"
+    "translation": {
+      "user": "User",
+      "reports": "Reports",
+      "listing": "Listing",
+      "rentalPolicies": "Rental Policies",
+      "dashboard": "Dashboard",
+      "zoneManagement": "Zone Management",
+      "categoryManagement": "Category Management",
+      "fieldManagement": "Field Management",
+      "userVerification": "User Verification",
+      "rentalListing": "Rental Listing",
+      "businessSettings": "Business Settings",
+      "tickets": "Tickets",
+      "refundManagement": "Refund Management",
+      "employeeManagement": "Employee Management",
+      "analytics": "Analytics",
+      "messages": "Messages",
+      "helpSupport": "Help & Support",
+      "faqs": "FAQs",
+      "faq": "FAQ",
+      "field": "Field",
+      "dropdowns": "Dropdowns",
+      "administration": "Administration",
+      "inbox": "Inbox",
+      "logout": "Logout",
+      "week": "Week",
+      "month": "Month",
+      "year": "Year",
+      "users": "Users",
+      "zones": "Zones",
+      "zone": "Zone",
+      "categories": "Categories",
+      "leasers": "Leasers",
+      "totalEarning": "Total Earning",
+      "bookings": "Bookings",
+      "overview": "Overview",
+      "performance": "Performance",
+      "usersByFilter": "{value} users",
+      "earningsByFilter": "{value} earnings",
+      "chart": "Chart",
+      "totalEarnings": "Total Earnings",
+      "showingUsers": "Showing {value} users",
+      "showingEarnings": "Showing {value} earnings",
+      "trendingUpBy": "Trending up by {value}%",
+      "period": "Period: {value}",
+      "markAsDefault": "Mark as default {value}",
+      "add": "Add {value}",
+      "category": "Category",
+      "dropdown": "Dropdown",
+      "refundIssued": "Refund Issued",
+      "ownersPayouts": "Owners Payouts",
+      "platformCommission": "Platform Commission",
+      "totalRevenue": "Total Revenue"
+    },
+    "confirm": {
+      "logout": {
+        "description": "Are you sure you want to logout?"
+      }
+    },
+    "date": {
+      "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "week": "Week {{value}}"
     }
   }
-}

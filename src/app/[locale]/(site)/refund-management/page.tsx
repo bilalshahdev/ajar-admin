@@ -3,7 +3,7 @@ import RefundManagement from "@/components/pages/RefundManagement";
 
 const RefundManagementPage = () => {
   return (
-    <Container title="Refund Management">
+    <Container title="refundManagement">
       <RefundManagement />
     </Container>
   );

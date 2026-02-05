@@ -3,7 +3,7 @@ import RentalListings from "@/components/pages/RentalListings";
 
 const RentalListingPage = () => {
   return (
-    <Container title="Rental Listing">
+    <Container title="rentalListing">
       <RentalListings />
     </Container>
   );

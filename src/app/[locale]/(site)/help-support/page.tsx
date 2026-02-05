@@ -3,7 +3,7 @@ import HelpSupportPage from "@/components/pages/HelpSupport";
 
 const HelpAndSupportPage = () => {
   return (
-    <Container title="Help & Support">
+    <Container title="helpSupport">
       <HelpSupportPage />
     </Container>
   );

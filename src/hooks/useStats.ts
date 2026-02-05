@@ -16,7 +16,7 @@ export const useStats = (filter: FilterOption) => {
 export const useAnalytics = (filter: FilterOption) => {
   return useQuery({
     queryKey: ["analytics", filter],
-    queryFn: () => getAnalytics(),
+    queryFn: () => getAnalytics(filter),
     refetchOnWindowFocus: false,
     refetchInterval: 60 * 60 * 1000,
   });

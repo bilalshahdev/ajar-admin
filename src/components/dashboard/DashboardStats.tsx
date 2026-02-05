@@ -18,41 +18,41 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
 
   const dashboardStats: DashboardStat[] = [
     {
-      title: "Users",
+      title: "users",
       value: totalUsers,
       icon: HiUsers,
       bgColor: "bg-rose-500",
       path: "/user-verification",
     },
     {
-      title: "Zones",
+      title: "zones",
       value: totalZones,
       icon: FaMapMarkedAlt,
       bgColor: "bg-orange-500",
       path: "/zone-management",
     },
     {
-      title: "Categories",
+      title: "categories",
       value: totalCategories,
       icon: BiCategoryAlt,
       bgColor: "bg-pink-500",
       path: "/category-management",
     },
     {
-      title: "Leasers",
+      title: "leasers",
       value: totalLeasers,
       icon: FaHandshake,
       bgColor: "bg-green-500",
     },
     {
-      title: "Total Earning",
+      title: "totalEarning",
       value: totalEarning,
       icon: RiMoneyDollarCircleFill,
       bgColor: "bg-yellow-500",
       path: "/rental-listing",
     },
     {
-      title: "Bookings",
+      title: "bookings",
       value: bookingCount,
       icon: MdOutlineRequestPage,
       bgColor: "bg-blue-500",

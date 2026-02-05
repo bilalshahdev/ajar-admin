@@ -7,9 +7,12 @@ import { ThemeToggle } from "./ThemeToggle";
 import { Label } from "./Typography";
 import { SidebarTrigger } from "./ui/sidebar";
 import User from "./User";
+import { useTranslations } from "next-intl";
 
 const Navbar = () => {
+  const t = useTranslations();
   const navMenu = getNavMenu();
+
   return (
     <div className="w-full h-16 sticky top-0 z-50 bg-header flex items-center justify-between px-4">
       <div className="flex items-center gap-8">
@@ -18,7 +21,7 @@ const Navbar = () => {
           {navMenu.map((item) => (
             <li className="capitalize text-white" key={item.title}>
               <Link href={item.path}>
-                <Label>{item.title}</Label>
+                <Label>{t(`translation.${item.title}`)}</Label>
               </Link>
             </li>
           ))}

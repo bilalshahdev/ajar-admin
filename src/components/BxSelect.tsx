@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslations } from "next-intl";
 
 interface BxSelectProps {
   options: string[];
@@ -22,6 +23,7 @@ export default function BxSelect({
   placeholder = "Select option",
   className = "w-[180px] capitalize",
 }: BxSelectProps) {
+  const t = useTranslations();
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className={className}>
@@ -30,7 +32,7 @@ export default function BxSelect({
       <SelectContent className="capitalize">
         {options.map((option) => (
           <SelectItem key={option} value={option}>
-            {option}
+            {t(`translation.${option}`)}
           </SelectItem>
         ))}
       </SelectContent>

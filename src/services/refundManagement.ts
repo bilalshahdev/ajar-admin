@@ -21,7 +21,7 @@ export const getRefundRequest = async (id: string) => {
 };
 
 export const updateRefundRequest = async (id: string, data: any) => {
-  const response = await api.put(`/refund-requests/${id}`, data);
+  const response = await api.patch(`/refund-requests/${id}/status`, data);
   return response.data;
 };
 

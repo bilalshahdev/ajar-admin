@@ -4,7 +4,7 @@ import Fields from "@/components/pages/Fields";
 
 export default function FieldManagementPage() {
   return (
-    <Container title="Field Management" addBtnTitle="Field">
+    <Container title="fieldManagement" addBtnTitle="field">
       <Fields />
     </Container>
   );

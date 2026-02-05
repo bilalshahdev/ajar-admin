@@ -3,7 +3,7 @@ import { DropdownsPage } from "@/components/pages/DropdownsPage";
 
 export default function Dropdowns() {
   return (
-    <Container title="Dropdowns" addBtnTitle="Add Dropdown">
+    <Container title="dropdowns" addBtnTitle="dropdown">
       <DropdownsPage />
     </Container>
   );

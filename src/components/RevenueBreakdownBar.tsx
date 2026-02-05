@@ -60,7 +60,7 @@ export default function RevenueBreakdownBar({
                       <text textAnchor="middle" fill="#666" fontSize={12}>
                         {item.name}{" "}
                         <tspan fontSize={10} fill={trendColor}>
-                          ({item.value}% {trendSymbol})
+                          ({Number(item.value).toFixed(2)}% {trendSymbol})
                         </tspan>
                       </text>
                     </g>
@@ -82,7 +82,7 @@ export default function RevenueBreakdownBar({
                         <p className="font-semibold">{item.name}</p>
                         <p>Value: {item.value}</p>
                         <p style={{ color: trendColor }}>
-                          Change: {item.value}% {trendSymbol}
+                          Change: {item.value.toFixed(2)}% {trendSymbol}
                         </p>
                       </div>
                     );
