@@ -65,6 +65,7 @@ export default async function RootLayout({
   return (
     <html dir={dir} lang={locale} suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-secondary`}
       >
         {error ? (

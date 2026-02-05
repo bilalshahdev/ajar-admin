@@ -21,32 +21,31 @@ const SocketContext = createContext<SocketContextType>({
 });
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const [socket] = useState(() => getSocket());
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  // 1. Initialize with null/false to match the Server's state
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!socket) return;
+    // 2. This only runs on the Client after the first render
+    const socketInstance = getSocket();
+    setSocket(socketInstance);
+    setMounted(true);
 
-    const onConnect = () => {
-      setIsConnected(true);
-    };
+    const onConnect = () => setIsConnected(true);
+    const onDisconnect = () => setIsConnected(false);
 
-    const onDisconnect = (reason: string) => {
-      setIsConnected(false);
-    };
-
-    const onConnectError = (err: Error) => {};
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("connect_error", onConnectError);
+    socketInstance.on("connect", onConnect);
+    socketInstance.on("disconnect", onDisconnect);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("connect_error", onConnectError);
+      socketInstance.off("connect", onConnect);
+      socketInstance.off("disconnect", onDisconnect);
     };
-  }, [socket]);
+  }, []);
+
+  // 3. Optional: Don't render children until mounted to avoid UI flickering
+  if (!mounted) return null;
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>

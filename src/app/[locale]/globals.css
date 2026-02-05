@@ -171,16 +171,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track); /* ✅ OKLCH used directly */
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb); /* ✅ Use OKLCH directly */
+  background: var(--scrollbar-thumb); 
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
+
 @keyframes syncedPulse {
   0%,
   100% {
