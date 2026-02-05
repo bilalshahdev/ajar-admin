@@ -3,7 +3,7 @@ import Messages from "@/components/pages/Messages";
 
 const MessagesPage = () => {
   return (
-    <Container title="Inbox">
+    <Container title="inbox">
       <Messages />
     </Container>
   );

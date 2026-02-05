@@ -109,6 +109,7 @@ const Analytics = () => {
     charts = initialAnalyticsChartValues,
     filter,
   } = data?.data || {};
+  console.log(stats)
   
   // const {
   //   performanceIndicators: stats = [],

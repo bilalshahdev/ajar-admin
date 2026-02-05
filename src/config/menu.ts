@@ -18,50 +18,50 @@ import { PiQuestionMarkFill } from "react-icons/pi";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 
 export const sidebarMenu: NavMenuItem[] = [
-  { title: "Dashboard", path: "/", icon: MdOutlineDashboard },
-  { title: "Zone Management", path: "/zone-management", icon: FaVectorSquare },
+  { title: "dashboard", path: "/", icon: MdOutlineDashboard },
+  { title: "zoneManagement", path: "/zone-management", icon: FaVectorSquare },
   {
-    title: "Category Management",
+    title: "categoryManagement",
     path: "/category-management",
     icon: FaShapes,
   },
   {
-    title: "Field Management",
+    title: "fieldManagement",
     path: "/field-management",
     icon: TbAdjustmentsHorizontal,
   },
-  { title: "User Verification", path: "/user-verification", icon: FaUsers },
-  { title: "Rental Listing", path: "/rental-listing", icon: FaClipboardList },
+  { title: "userVerification", path: "/user-verification", icon: FaUsers },
+  { title: "rentalListing", path: "/rental-listing", icon: FaClipboardList },
   {
-    title: "Business Settings",
+    title: "businessSettings",
     path: "/business-settings",
     icon: FaMoneyCheckAlt,
   },
-  { title: "Tickets", path: "/tickets", icon: FaTicketAlt },
-  { title: "Refund Management", path: "/refund-management", icon: FaUndo },
+  { title: "tickets", path: "/tickets", icon: FaTicketAlt },
+  { title: "refundManagement", path: "/refund-management", icon: FaUndo },
   {
-    title: "Employee Management",
+    title: "employeeManagement",
     path: "/employee-management",
     icon: FaUserFriends,
   },
   {
-    title: "Analytics",
+    title: "analytics",
     path: "/analytics",
     icon: FaChartBar,
   },
-  { title: "Messages", path: "/messages", icon: FaEnvelope },
-  { title: "Help & Support", path: "/help-support", icon: FaQuestion },
-  { title: "FAQs", path: "/faqs", icon: PiQuestionMarkFill },
-  { title: "Dropdowns", path: "/dropdowns", icon: FaList },
+  { title: "messages", path: "/messages", icon: FaEnvelope },
+  { title: "helpSupport", path: "/help-support", icon: FaQuestion },
+  { title: "faqs", path: "/faqs", icon: PiQuestionMarkFill },
+  { title: "dropdowns", path: "/dropdowns", icon: FaList },
   // { title: "Administration", path: "/administration", icon: FaBuilding },
 ];
 
 // Navigation items with icons
 export const navMenu: MenuItem[] = [
-  { path: "/user-verification", title: "User" },
+  { path: "/user-verification", title: "user" },
   { path: "/analytics", title: "reports" },
   { path: "/rental-listing", title: "listing" },
-  { path: "/rental-policies", title: "rental policies" },
+  { path: "/rental-policies", title: "rentalPolicies" },
 ];
 
 export const businessNavMenu: MenuItem[] = [

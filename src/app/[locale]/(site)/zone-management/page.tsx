@@ -5,8 +5,8 @@ import Zones from "@/components/pages/Zones";
 const ZoneManagementPage = () => {
   return (
     <Container
-      title="Zone Management"
-      addBtnTitle="Zone"
+      title="zoneManagement"
+      addBtnTitle="zone"
       isDialog
       dialogContent={<ZoneForm />}
     >

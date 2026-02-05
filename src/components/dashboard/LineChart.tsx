@@ -14,6 +14,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import ChartCard from "./ChartCard";
 import { H4, Label, Small } from "../Typography";
 import { FilterOption, UsersChartRecord } from "@/types";
+import { useTranslations } from "next-intl";
 
 type LineChartProps = {
   filter: FilterOption;
@@ -21,8 +22,10 @@ type LineChartProps = {
 };
 
 const LineChart = ({ filter, users }: LineChartProps) => {
+  const t = useTranslations();
+
   const chartData = useMemo(() => users.record, [users]);
-  
+
   const formattedData = chartData.map((item) => ({
     ...item,
     value: getFormattedLabel(item.value, filter),
@@ -34,26 +37,30 @@ const LineChart = ({ filter, users }: LineChartProps) => {
       color: "hsl(var(--chart-1))",
     },
   };
-  
-  const trend = getTrendInfo(users?.change);
-  
+
+  const trend = getTrendInfo(users?.change, t);
+
   return (
     <ChartCard className="space-y-4 h-full">
       <div className="flex items-center justify-between capitalize">
         <div className="flex flex-col">
-          <Small>Overview</Small>
-          <H4>{filter} users</H4>
+          <Small>{t("translation.overview")}</Small>
+          <H4>
+            {t("translation.usersByFilter", {
+              value: t(`translation.${filter}`)
+            })}
+          </H4>
         </div>
       </div>
       <ChartCard className="bg-card border p-0">
         <Small className="flex items-center gap-2 border-b p-2 capitalize">
           <BiLineChart />
-          <span>chart</span>
+          <span>{t("translation.chart")}</span>
         </Small>
         <div className="p-4">
           <div>
-            <H4>Users</H4>
-            <Small>Showing {filter} users</Small>
+            <H4>{t("translation.users")}</H4>
+            <Small>{t("translation.showingUsers", { value: t(`translation.${filter}`) })}</Small>
           </div>
           <ChartContainer config={chartConfig}>
             <AreaChart
@@ -86,7 +93,7 @@ const LineChart = ({ filter, users }: LineChartProps) => {
           </ChartContainer>
           <div>
             <Label>{trend.message}</Label>
-            <Small>Period: {filter}</Small>
+            <Small>{t("translation.period", { value: t(`translation.${filter}`) })}</Small>
           </div>
         </div>
       </ChartCard>

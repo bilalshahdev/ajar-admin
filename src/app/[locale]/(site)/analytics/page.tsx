@@ -3,7 +3,7 @@ import Analytics from "@/components/pages/Analytics";
 
 const AnalyticsPage = () => {
   return (
-    <Container title="Analytics">
+    <Container title="analytics">
       <Analytics />
     </Container>
   );

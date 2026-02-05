@@ -5,8 +5,8 @@ import FaqForm from "@/components/forms/FaqForm";
 const FaqsPage = () => {
   return (
     <Container
-      title="FAQs"
-      addBtnTitle="FAQ"
+      title="faqs"
+      addBtnTitle="faq"
       isDialog
       dialogContent={<FaqForm />}
     >

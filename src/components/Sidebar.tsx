@@ -23,8 +23,10 @@ import { useEffect, useState } from "react";
 import Brand from "./Brand";
 import ConfirmDialog from "./ConfirmDialog";
 import GradientIcon from "./GradientIcon";
+import { useTranslations } from "next-intl";
 
 export default function Sidebar({ className }: { className?: string }) {
+  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const [currentPath, setCurrentPath] = useState(pathname);
@@ -100,7 +102,7 @@ export default function Sidebar({ className }: { className?: string }) {
                     ) : (
                       <Icon size={20} className="text-foreground/50" />
                     )}
-                    <span>{title}</span>
+                    <span>{t(`translation.${title}`)}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -111,14 +113,14 @@ export default function Sidebar({ className }: { className?: string }) {
         {/* Sidebar Footer for Logout */}
         <SidebarFooter className="mb-4">
           <ConfirmDialog
-            title="Logout"
-            description="Are you sure you want to logout?"
+            title={t("translation.logout")}
+            description={t("confirm.logout.description")}
             onConfirm={() => handleConfirm()}
             variant="destructive"
             asChild
           >
             <SidebarMenuButton className="bg-red-500 hover:bg-red-600 hover:text-white text-white transition-colors">
-              <Power size={16} /> <span>Logout</span>
+              <Power size={16} /> <span>{t("translation.logout")}</span>
             </SidebarMenuButton>
           </ConfirmDialog>
         </SidebarFooter>

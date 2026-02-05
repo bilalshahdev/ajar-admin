@@ -13,6 +13,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cloneElement, ReactElement, useState } from "react";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 interface Props {
   addBtnTitle: string;
@@ -27,6 +28,7 @@ const AddButton = ({
   dialogContent,
   modal = true,
 }: Props) => {
+  const t = useTranslations();
   const pathname = usePathname();
   const href = `${pathname}/add`;
   const [open, setOpen] = useState(false);
@@ -38,7 +40,7 @@ const AddButton = ({
   const ButtonContent = (
     <Button variant="button">
       <Plus />
-      <span className="hidden sm:inline-block capitalize">{`Add ${addBtnTitle}`}</span>
+      <span className="hidden sm:inline-block capitalize">{t("translation.add", { value: t(`translation.${addBtnTitle}`) })}</span>
     </Button>
   );
 

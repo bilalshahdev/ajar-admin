@@ -3,7 +3,7 @@ import TicketsList from "@/components/pages/TicketsList";
 
 const TicketsPage = () => {
   return (
-    <Container title="Tickets">
+    <Container title="tickets">
       <TicketsList />
     </Container>
   );

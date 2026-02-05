@@ -3,7 +3,7 @@ import Users from "@/components/pages/Users";
 
 const UserVerificationPage = () => {
   return (
-    <Container title="User Verification">
+    <Container title="userVerification">
       <Users />
     </Container>
   );

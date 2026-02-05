@@ -3,13 +3,15 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import Container from "./Container";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 export const PageTitle = ({ title }: { title: string }) => {
+  const t = useTranslations();
   return (
     <Container className="h-12">
       <div className="flex items-center w-full h-full gap-4 md:gap-8 capitalize">
         <h3 className="text-xl md:text-2xl font-semibold">
-          {title}
+          {t(`translation.${title}`)}
         </h3>
       </div>
     </Container>

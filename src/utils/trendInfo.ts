@@ -1,12 +1,14 @@
 import { Change } from "@/types";
 
-const getTrendInfo = (change: Change) => {
+type TranslateFn = (key: string, values?: Record<string, any>) => string;
+
+const getTrendInfo = (change: Change, t: TranslateFn) => {
   const value = change.value;
   const trend = change.trend;
 
   if (trend === "up") {
     return {
-      message: `📈 Trending up by ${value}%`,
+      message: `📈 ${t("translation.trendingUpBy", { value })}`,
       icon: "📈",
       isUp: true,
     };
@@ -14,16 +16,16 @@ const getTrendInfo = (change: Change) => {
 
   if (trend === "down") {
     return {
-      message: `📉 Trending down by ${value}%`,
+      message: `📉 ${t("translation.trendingDownBy", { value })}`,
       icon: "📉",
       isUp: false,
     };
   }
 
   return {
-    message: "➖ No significant change",
-    icon: "➖",
-    isUp: null,
+    message: `➖ ${t("translation.noSignificantChange")}`,
+      icon: "➖",
+      isUp: null,
   };
 };
 
