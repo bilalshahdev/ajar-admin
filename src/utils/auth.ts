@@ -51,10 +51,7 @@ export function getAuthInfo(): AuthInfo {
 
   try {
     const decoded: DecodedToken = jwtDecode(token);
-
-    console.log(decoded)
     const now = Date.now() / 1000;
-
     const expired = decoded.exp < now;
 
     return {
