@@ -63,8 +63,6 @@ export function DataTable<T>({
     }
   }, [data, pagination.page, pagination.limit, pagination.total]);
 
-
-
   return (
     <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">
       {data.length === 0 ? (

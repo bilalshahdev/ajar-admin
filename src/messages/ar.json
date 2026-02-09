@@ -22,6 +22,7 @@
     "administration": "الإدارة",
     "inbox": "صندوق الوارد",
     "logout": "تسجيل الخروج",
+    "filter": "تصفية",
     "week": "أسبوع",
     "month": "شهر",
     "year": "سنة",
@@ -256,7 +257,9 @@
     "total": "إجمالي {value}",
     "viewDocuments" : "عرض المستندات",
     "delete": "حذف",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "revenueBreakdown": "تحليل الإيرادات",
+    "performanceIndicators": "مؤشرات الأداء"
   },
   "confirm": {
     "logout": {

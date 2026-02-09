@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { PerformanceIndicator } from "@/types";
+import { useTranslations } from "next-intl";
 import {
   Bar,
   BarChart,
@@ -23,15 +24,19 @@ export default function RevenueBreakdownBar({
     trend: item.change.trend,
   }));
 
+  const t = useTranslations();
+
   return (
     <Card>
       <CardContent className="p-4">
         {/* Header */}
         <div className="flex justify-between mb-4">
           <div>
-            <h4 className="text-md font-semibold">Revenue Breakdown</h4>
+            <h4 className="text-md font-semibold">
+              {t("translation.revenueBreakdown")}
+            </h4>
             <p className="text-xs text-muted-foreground">
-              Performance Indicators
+              {t("translation.performanceIndicators")}
             </p>
           </div>
         </div>
@@ -58,7 +63,7 @@ export default function RevenueBreakdownBar({
                   return (
                     <g transform={`translate(${x},${y + 20})`}>
                       <text textAnchor="middle" fill="#666" fontSize={12}>
-                        {item.name}{" "}
+                        {t(`translation.${item.name}`)}{" "}
                         <tspan fontSize={10} fill={trendColor}>
                           ({Number(item.value).toFixed(2)}% {trendSymbol})
                         </tspan>

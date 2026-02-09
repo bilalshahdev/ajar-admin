@@ -22,6 +22,7 @@
     "administration": "Administration",
     "inbox": "Inbox",
     "logout": "Logout",
+    "filter": "Filter",
     "week": "Week",
     "month": "Month",
     "year": "Year",
@@ -256,7 +257,9 @@
     "total" : "Total {value}",
     "viewDocuments" : "View Documents",
     "delete": "Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "revenueBreakdown": "Revenue Breakdown",
+    "performanceIndicators": "Performance Indicators"
   },
   "confirm": {
     "logout": {

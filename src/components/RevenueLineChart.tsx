@@ -1,6 +1,7 @@
 "use client";
 import { AnalyticsCharts, FilterOption } from "@/types";
 import { getFormattedLabel } from "@/utils/getFormattedLabel";
+import { useTranslations } from "next-intl";
 import {
   CartesianGrid,
   Legend,
@@ -19,6 +20,7 @@ export default function RevenueLineChart({
   filter: FilterOption;
   charts: AnalyticsCharts;
 }) {
+  const t = useTranslations()
   const data = charts.totalRevenue.record.map((d, i) => ({
     label: getFormattedLabel(d.value, filter),
     "Total Revenue": charts.totalRevenue.record[i].amount,
@@ -81,14 +83,15 @@ export default function RevenueLineChart({
             content={<CustomTooltip />}
             cursor={{ stroke: "rgba(255,255,255,0.3)", strokeWidth: 2 }}
           />
-          
-          <Legend 
+
+          <Legend
             wrapperStyle={{ paddingTop: "10px" }}
           />
 
           <Area
             type="monotone"
-            dataKey="Total Revenue"
+            dataKey="totalRevenue"
+            name={t("translation.totalRevenue")}
             stroke="#ffffff"
             fill="rgba(255,255,255,0.6)"
             strokeWidth={2}
@@ -96,7 +99,8 @@ export default function RevenueLineChart({
           />
           <Area
             type="monotone"
-            dataKey="Platform Commission"
+            dataKey="platformCommission"
+            name={t("translation.platformCommission")}
             stroke="#ffb347"
             fill="rgba(255,179,71,0.6)"
             strokeWidth={2}
@@ -104,7 +108,8 @@ export default function RevenueLineChart({
           />
           <Area
             type="monotone"
-            dataKey="Owners Payouts"
+            dataKey="ownersPayouts"
+            name={t("translation.ownersPayouts")}
             stroke="#90ee90"
             fill="rgba(144,238,144,0.6)"
             strokeWidth={2}
@@ -112,7 +117,8 @@ export default function RevenueLineChart({
           />
           <Area
             type="monotone"
-            dataKey="Refund Issued"
+            dataKey="refundIssued"
+            name={t("translation.refundIssued")}
             stroke="#ff6961"
             fill="rgba(255,105,97,0.6)"
             strokeWidth={2}
