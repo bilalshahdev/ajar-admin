@@ -21,7 +21,8 @@ const Categories = () => {
   const { mutate: deleteCategory, isPending: deleteLoading } =
     useDeleteCategory();
 
-  const cols = ["ID", "Name", "Type", "Parent", "Actions"];
+  const cols = ["id", "name", "type", "parent", "actions"];
+  
   if (isLoading) {
     return <TableSkeleton cols={cols.length} rows={10} />;
   }

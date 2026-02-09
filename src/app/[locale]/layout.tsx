@@ -1,7 +1,7 @@
 import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet/dist/leaflet.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import "react-photo-view/dist/react-photo-view.css";
 import "./globals.css";
 
@@ -11,15 +11,15 @@ import { baseUrl } from "@/config/constants";
 import getDirection from "@/utils/getDirection";
 import AuthGuard from "./(site)/AuthGuard";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Ajar",
@@ -66,7 +66,7 @@ export default async function RootLayout({
     <html dir={dir} lang={locale} suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-secondary`}
+        className={`antialiased bg-secondary`}
       >
         {error ? (
           <ResponseError className="h-screen" error={error} />

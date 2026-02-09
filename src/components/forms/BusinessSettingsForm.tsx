@@ -16,10 +16,13 @@ import FileInput from "./fields/FileInput";
 import SelectInput from "./fields/SelectInput";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 type FormData = z.infer<typeof BusinessSettingsSchema>;
 
 const BusinessSettingsForm = () => {
+  const t = useTranslations();
+
   const { data, isLoading } = useGetBusinessSettings("businessInfo");
   const businessInfo = data?.data?.pageSettings;
 
@@ -77,7 +80,7 @@ const BusinessSettingsForm = () => {
       <Switch
         control={control}
         name="maintenanceMode"
-        label="Maintenance Mode"
+        label="maintenanceMode"
       />
 
       {/* Company Info */}
@@ -86,56 +89,56 @@ const BusinessSettingsForm = () => {
           control={control}
           name="companyName"
           placeholder="Company Name"
-          label="Company Name"
+          label="companyName"
         />
         <TextInput
           control={control}
           name="email"
           placeholder="Company Email"
-          label="Company Email"
+          label="companyEmail"
           type="email"
         />
         <TextInput
           control={control}
           name="phone"
           placeholder="Phone"
-          label="Phone"
+          label="phone"
         />
         <TextInput
           control={control}
           name="country"
           placeholder="Country"
-          label="Country"
+          label="country"
         />
         <TextInput
           control={control}
           name="address"
           placeholder="Address"
-          label="Address"
+          label="address"
         />
         <TextInput
           control={control}
           name="lat"
           placeholder="Latitude"
-          label="Latitude"
+          label="latitude"
         />
         <TextInput
           control={control}
           name="long"
           placeholder="Longitude"
-          label="Longitude"
+          label="longitude"
         />
         <FileInput
           control={control}
           name="logo"
           placeholder="Logo"
-          label="Logo"
+          label="logo"
         />
         <FileInput
           control={control}
           name="favicon"
           placeholder="Favicon"
-          label="Favicon"
+          label="favicon"
         />
       </div>
 
@@ -145,35 +148,35 @@ const BusinessSettingsForm = () => {
           control={control}
           name="timeZone"
           placeholder="Timezone"
-          label="Timezone"
+          label="timezone"
         />
         <TextInput
           control={control}
           name="currencySymbol"
           placeholder="Currency Symbol"
-          label="Currency Symbol"
+          label="currencySymbol"
         />
         <SelectInput
           control={control}
           name="currencyPosition"
-          label="Currency Position"
+          label="currencyPosition"
           options={[
-            { label: "Left", value: "left" },
-            { label: "Right", value: "right" },
+            { label: "left", value: "left" },
+            { label: "right", value: "right" },
           ]}
         />
         <TextInput
           control={control}
           name="decimalPoints"
           placeholder="Decimal Points"
-          label="Decimal Points"
+          label="decimalPoints"
           type="number"
         />
         <TextInput
           control={control}
           name="copyRight"
           placeholder="Copyright"
-          label="Copyright"
+          label="copyright"
         />
       </div>
 
@@ -183,50 +186,50 @@ const BusinessSettingsForm = () => {
           control={control}
           name="defaultCommissionRate"
           placeholder="Default Commission Rate (%)"
-          label="Default Commission Rate (%)"
+          label="defaultCommissionRate"
           type="number"
         />
         <TextInput
           control={control}
           name="commissionRate"
           placeholder="Commission Rate (%)"
-          label="Commission Rate (%)"
+          label="commissionRate"
           type="number"
         />
-        <Switch control={control} name="includeTax" label="Include Tax" />
+        <Switch control={control} name="includeTax" label="includeTax" />
         <Switch
           control={control}
           name="customerPreference"
-          label="Customer Preference"
+          label="customerPreference"
         />
         <Switch
           control={control}
           name="orderInfoForAdmin"
-          label="Order Info for Admin"
+          label="orderInfoForAdmin"
         />
         <SelectInput
           control={control}
           name="orderNotification"
-          label="Order Notification"
+          label="orderNotification"
           options={[
-            { label: "Firebase", value: "firebase" },
-            { label: "Manual", value: "manual" },
+            { label: "firebase", value: "firebase" },
+            { label: "manual", value: "manual" },
           ]}
         />
         <TextInput
           control={control}
           name="freeServiceOnOrderOver"
           placeholder="Free Service on Order Over"
-          label="Free Service on Order Over"
+          label="freeServiceOnOrderOver"
         />
-        <Switch control={control} name="guestCheckout" label="Guest Checkout" />
+        <Switch control={control} name="guestCheckout" label="guestCheckout" />
         <SelectInput
           control={control}
           name="whoWillConfirmedOrder"
-          label="Who Will Confirm Order"
+          label="whoWillConfirmedOrder"
           options={[
-            { label: "Store", value: "store" },
-            { label: "Deliveryman", value: "deliveryman" },
+            { label: "store", value: "store" },
+            { label: "deliveryman", value: "deliveryman" },
           ]}
         />
       </div>
@@ -237,13 +240,13 @@ const BusinessSettingsForm = () => {
           control={control}
           name="additionalChargeName"
           placeholder="Additional Charge Name"
-          label="Additional Charge Name"
+          label="additionalChargeName"
         />
         <TextInput
           control={control}
           name="chargeAmount"
           placeholder="Charge Amount"
-          label="Charge Amount"
+          label="chargeAmount"
         />
       </div>
 
@@ -252,16 +255,16 @@ const BusinessSettingsForm = () => {
         <Switch
           control={control}
           name="partialPayment"
-          label="Partial Payment"
+          label="partialPayment"
         />
         <SelectInput
           control={control}
           name="canPayTheRestUsing"
-          label="Can pay the rest using"
+          label="canPayTheRestUsing"
           options={[
-            { label: "Cash on Delivery", value: "cod" },
-            { label: "Digital Payment", value: "digital_payment" },
-            { label: "Both", value: "both" },
+            { label: "cashOnDelivery", value: "cod" },
+            { label: "digitalPayment", value: "digital_payment" },
+            { label: "both", value: "both" },
           ]}
         />
       </div>
@@ -272,7 +275,7 @@ const BusinessSettingsForm = () => {
         variant="button"
         className="mt-6 flex ml-auto"
       >
-        {isPending ? "Saving..." : "Save Settings"}
+        {isPending ? t("translation.saving") : t("translation.saveSettings")}
       </Button>
     </form>
   );

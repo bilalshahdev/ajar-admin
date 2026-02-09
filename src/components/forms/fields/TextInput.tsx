@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import React, { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { useController, Control } from "react-hook-form";
 
@@ -30,6 +31,8 @@ const TextInput = ({
   className,
   ...props
 }: TextInputProps) => {
+  const t = useTranslations();
+
   const {
     field,
     fieldState: { error },
@@ -39,7 +42,7 @@ const TextInput = ({
     <div className={cn("space-y-2", className)}>
       {label && (
         <Label className="capitalize">
-          {label}{" "}
+          {t(`translation.${label}`)}{" "}
           <span className="text-muted-foreground text-xs normal-case">
             {note && `(${note})`}
           </span>

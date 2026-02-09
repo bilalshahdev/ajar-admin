@@ -13,16 +13,17 @@ import { cn } from "@/lib/utils";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const BusinessNavMenu = () => {
+  const t = useTranslations();
   const pathname = usePathname();
   const locale = useLocale();
   const router = useRouter();
 
   const isMenuActive = (path: string) => {
-    const targetPath = `/${locale}/business-settings${
-      path === "/" ? "" : path
-    }`;
+    const targetPath = `/${locale}/business-settings${path === "/" ? "" : path
+      }`;
     return pathname === targetPath
       ? "bg-gradient-to-l from-blue-500 to-aqua bg-clip-text text-transparent"
       : "hover:bg-gradient-to-l hover:from-blue hover:to-aqua hover:bg-clip-text hover:text-transparent transition";
@@ -42,7 +43,7 @@ const BusinessNavMenu = () => {
             href={`/${locale}/business-settings${item.path}`}
           >
             <Small className={cn("", isMenuActive(item.path))}>
-              {item.title}
+              {t(`translation.${item.title}`)}
             </Small>
           </Link>
         ))}

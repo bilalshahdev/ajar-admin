@@ -38,12 +38,12 @@ const RentalListings = () => {
   }, [rentalRequests, search]);
 
   const cols = [
-    "ID",
-    "Product name",
-    "Sub category",
-    "Owner",
-    "Created at",
-    "Actions",
+    "id",
+    "productName",
+    "subCategory",
+    "owner",
+    "createdAt",
+    "actions",
   ];
 
   if (isLoading) {

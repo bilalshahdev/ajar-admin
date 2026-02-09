@@ -9,7 +9,7 @@ const RentalListingDetailPage = async ({
   const { id } = await params;
 
   return (
-    <Container title="Rental Listing">
+    <Container title="rentalListing">
       <RentalListingDetail id={id} />
     </Container>
   );

@@ -9,7 +9,7 @@ export default async function EditFieldPage({
 
   console.log(id)
   return (
-    <Container title="Edit Field">
+    <Container title="editField">
       <FieldForm id={id} />
     </Container>
   );

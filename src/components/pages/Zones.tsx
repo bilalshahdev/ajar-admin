@@ -18,7 +18,7 @@ const Zones = () => {
 
   const { mutate: deleteZone, isPending: deleteLoading } = useDeleteZone();
 
-  const cols = ["Id", "Name", "Currency", "Actions"];
+  const cols = ["id", "name", "currency", "actions"];
   const row = (zone: Zone) => (
     <>
       <TableCell>{slice(zone._id, 0, 8)}</TableCell>

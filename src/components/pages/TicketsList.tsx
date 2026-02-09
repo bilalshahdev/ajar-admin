@@ -38,13 +38,13 @@ const TicketsList = () => {
   }, [data, search]);
 
   const cols = [
-    "ID",
-    "Sender",
-    "Email",
-    "Subject",
-    "Created At",
-    "Status",
-    "Actions",
+    "id",
+    "sender",
+    "email",
+    "subject",
+    "createdAt",
+    "status",
+    "actions",
   ];
 
   if (isLoading) {

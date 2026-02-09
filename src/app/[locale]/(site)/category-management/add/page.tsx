@@ -3,7 +3,7 @@ import Container from "@/components/Container";
 
 const AddCategoryPage = () => {
   return (
-    <Container title="Add New Category">
+    <Container title="addNewCategory">
       <CategoryForm />
     </Container>
   );

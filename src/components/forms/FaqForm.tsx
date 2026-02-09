@@ -73,19 +73,19 @@ const FaqForm = ({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         <TextInput
           name="question"
-          label="Question"
+          label="question"
           placeholder="Enter question"
           control={control}
         />
         <TextInput
           name="answer"
-          label="Answer"
+          label="answer"
           placeholder="Enter answer"
           control={control}
         />
         <TextInput
           name="order"
-          label="Order"
+          label="order"
           placeholder="Enter order"
           type="number"
           min={1}

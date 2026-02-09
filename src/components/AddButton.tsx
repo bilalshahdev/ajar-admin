@@ -50,7 +50,7 @@ const AddButton = ({
         <DialogTrigger asChild>{ButtonContent}</DialogTrigger>
         <DialogContent className=" max-h-[500px] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Add {addBtnTitle}</DialogTitle>
+            <DialogTitle>{t("translation.add", { value: t(`translation.${addBtnTitle}`) })}</DialogTitle>
             {/* <DialogDescription>
               Add a new {addBtnTitle} to the system.
             </DialogDescription> */}

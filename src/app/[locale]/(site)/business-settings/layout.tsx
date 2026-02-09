@@ -4,7 +4,7 @@ import Container from "@/components/Container";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Container title="Business Settings">
+    <Container title="businessSettings">
       <BusinessNavMenu />
       <Container>{children}</Container>
     </Container>

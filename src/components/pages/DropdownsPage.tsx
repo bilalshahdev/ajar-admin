@@ -35,7 +35,7 @@ export function DropdownsPage() {
 
   const dropdowns: Dropdown[] = data?.data ?? [];
 
-  const cols = useMemo(() => ["Name", "Values", "actions"], []);
+  const cols = useMemo(() => ["name", "values", "actions"], []);
 
   const rows = (row: Dropdown) => {
     return (

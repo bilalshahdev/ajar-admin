@@ -5,7 +5,7 @@ const EditCategoryPage = async ({ params }: { params: Promise<{ id: string }> })
   const { id } = await params;
 
   return (
-    <Container title="Edit Category">
+    <Container title="editCategory">
       <CategoryForm id={id} />
     </Container>
   );

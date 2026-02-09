@@ -65,13 +65,13 @@ export const navMenu: MenuItem[] = [
 ];
 
 export const businessNavMenu: MenuItem[] = [
-  { path: "/", title: "Business Information" },
-  { path: "/payment-methods", title: "Payment Methods" },
-  { path: "/sms-module", title: "SMS Module" },
-  { path: "/mail-config", title: "Mail Config" },
-  { path: "/map-apis", title: "Map API’s" },
-  { path: "/social-logins", title: "Socials Logins" },
-  { path: "/recaptcha", title: "Recaptcha" },
-  { path: "/firebase", title: "Firebase" },
+  { path: "/", title: "businessInformation" },
+  { path: "/payment-methods", title: "paymentMethods" },
+  { path: "/sms-module", title: "smsModule" },
+  { path: "/mail-config", title: "mailConfig" },
+  { path: "/map-apis", title: "mapApis" },
+  { path: "/social-logins", title: "socialLogins" },
+  { path: "/recaptcha", title: "recaptcha" },
+  { path: "/firebase", title: "firebase" },
   // { path: "/storage", title: "Storage" },
 ];

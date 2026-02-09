@@ -14,6 +14,7 @@ import { PolygonSearchMapRef } from "../PolygonSearchMap";
 import TextInput from "./fields/TextInput";
 import SelectInput from "./fields/SelectInput";
 import { currencies } from "@/config/data";
+import { useTranslations } from "next-intl";
 
 const PolygonSearchMap = dynamic(() => import("../PolygonSearchMap"), {
   ssr: false,
@@ -26,6 +27,7 @@ const ZoneForm = ({
   id?: string;
   closeDialog?: () => void;
 }) => {
+  const t = useTranslations();
   const isEditMode = Boolean(id);
 
   const { data, isLoading } = useGetZone(id as string, isEditMode);
@@ -116,17 +118,18 @@ const ZoneForm = ({
         <TextInput
           control={control}
           name="name"
-          label="Zone Name"
-          placeholder="e.g. Gulf Zone"
+          label="zoneName"
+          placeholder={t("translation.egGulfZone")}
         />
 
         <SelectInput
           control={control}
           name="currency"
-          label="Currency"
+          label="currency"
           options={currencies}
           labelKey="name"
           valueKey="value"
+          isTranslations={false}
         />
       </div>
 
@@ -153,9 +156,9 @@ const ZoneForm = ({
         {isSubmitting ? (
           <Loader className="border-foreground" />
         ) : id ? (
-          "Update Zone"
+          t("translation.updateZone")
         ) : (
-          "Create Zone"
+          t("translation.createZone")
         )}
       </Button>
     </form>

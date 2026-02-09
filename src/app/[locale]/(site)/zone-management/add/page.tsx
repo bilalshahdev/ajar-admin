@@ -3,7 +3,7 @@ import Container from "@/components/Container";
 
 const AddZonePage = () => {
   return (
-    <Container title="Add New Zone">
+    <Container title="addNewZone">
       <ZoneForm />
     </Container>
   );

@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { Controller } from "react-hook-form";
 import ReactSelect from "react-select";
 
@@ -18,6 +19,7 @@ interface SelectInputProps {
   loading?: boolean;
   className?: string;
   isClearable?: boolean;
+  isTranslations ?: boolean;
 }
 
 const SelectInput = ({
@@ -33,7 +35,9 @@ const SelectInput = ({
   className,
   loading,
   isClearable = false,
+  isTranslations = true
 }: SelectInputProps) => {
+  const t = useTranslations();
   const isFormMode = !!control && !!name;
 
   const customTheme = (theme: any) => ({
@@ -74,7 +78,7 @@ const SelectInput = ({
         isDisabled={disabled || loading}
         isLoading={loading}
         isClearable={isClearable}
-        getOptionLabel={(opt) => opt[labelKey]}
+        getOptionLabel={(opt) => isTranslations ? t(`translation.${opt[labelKey]}`) : opt[labelKey]}
         getOptionValue={(opt) => String(opt[valueKey])}
         value={selectedOption || null}
         onChange={(val) => handleChange(val ? val[valueKey] : "")}
@@ -89,7 +93,7 @@ const SelectInput = ({
 
   return (
     <div className={cn(label ? "space-y-2" : "", className)}>
-      {label && <Label>{label}</Label>}
+      {label && <Label>{t(`translation.${label}`)}</Label>}
 
       {isFormMode ? (
         <Controller

@@ -93,15 +93,7 @@ const Users = () => {
     },
   ];
 
-  const cols = [
-    "User No",
-    "Name",
-    "Phone",
-    "Email",
-    "Status",
-    "Documents",
-    "Actions",
-  ];
+  const cols = ["userNo", "name", "phone", "email", "status", "documents", "actions"];
 
   const row = (user: User) => (
     <>

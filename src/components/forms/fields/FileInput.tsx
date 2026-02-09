@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import MyImage from "@/components/custom/MyImage";
 import { baseUrl } from "@/config/constants";
+import { useTranslations } from "next-intl";
 
 interface FileInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -14,13 +15,14 @@ interface FileInputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
+  const t = useTranslations();
   const {
     field: { onChange, ref, value },
     fieldState: { error },
   } = useController({ name, control });
 
   const [preview, setPreview] = useState<string | null>(null);
-
+  
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -31,7 +33,7 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
 
   return (
     <div className="space-y-2">
-      {label && <Label className="capitalize">{label}</Label>}
+      {label && <Label className="capitalize">{t(`translation.${label}`)}</Label>}
 
       <Input
         ref={ref}
@@ -46,7 +48,7 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
 
       {(preview || value) && (
         <MyImage
-          src={preview || value}
+          src={preview || `${baseUrl}/${value}`}
           alt="preview"
           width={20}
           height={20}

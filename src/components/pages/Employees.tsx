@@ -41,7 +41,7 @@ const Employees = () => {
     });
   }, [employees, search, selectedStatus]);
 
-  const cols = ["Name", "Email", "Phone", "Status", "Actions"];
+  const cols = ["name", "email", "phone", "status", "actions"];
   const row = (employee: Employee) => {
     return (
       <>

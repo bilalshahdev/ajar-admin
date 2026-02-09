@@ -3,7 +3,7 @@ import DropdownForm from "@/components/forms/DropdownForm";
 
 export default function AddDropdown() {
   return (
-    <Container title="Add Dropdown">
+    <Container title="addDropdown">
       <DropdownForm />
     </Container>
   );

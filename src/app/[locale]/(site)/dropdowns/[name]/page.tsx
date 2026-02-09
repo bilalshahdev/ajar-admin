@@ -11,7 +11,7 @@ const DropdownDetailPage = async ({
 
   if (!name) return;
   return (
-    <Container title="Dropdown details">
+    <Container title="dropdownDetails">
       <DropdownDetails name={name} />
     </Container>
   );

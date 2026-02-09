@@ -16,8 +16,10 @@ import { useForm, useWatch } from "react-hook-form";
 import FileInput from "./fields/FileInput";
 import SelectInput from "./fields/SelectInput";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 const CategoryForm = ({ id }: { id?: string }) => {
+  const t = useTranslations();
   const router = useRouter();
   const { data: fetchedCategory, isLoading: isCategoryLoading } =
     useGetCategory(id || "", !!id);
@@ -125,10 +127,10 @@ const CategoryForm = ({ id }: { id?: string }) => {
           <SelectInput
             control={control}
             name="type"
-            label="Type"
+            label="type"
             options={[
-              { label: "Category", value: "category" },
-              { label: "SubCategory", value: "subCategory" },
+              { label: "category", value: "category" },
+              { label: "subCategory", value: "subCategory" },
             ]}
             disabled={isEditMode}
           />
@@ -138,7 +140,7 @@ const CategoryForm = ({ id }: { id?: string }) => {
           <SelectInput
             control={control}
             name="category"
-            label="Category"
+            label="category"
             options={
               allCategories?.data?.map((cat: any) => ({
                 label: cat.name,
@@ -151,19 +153,19 @@ const CategoryForm = ({ id }: { id?: string }) => {
         <TextInput
           control={control}
           name="name"
-          label="Name"
-          placeholder="e.g. Restaurants"
+          label="name"
+          placeholder={t("translation.egRestaurants")}
         />
         <TextInput
           control={control}
           type="textarea"
           name="description"
-          label="Description"
-          placeholder="e.g. Description"
+          label="description"
+          placeholder={t("translation.egDescription")}
           className="md:col-span-2"
         />
-        <FileInput control={control} name="thumbnail" label="Thumbnail" />
-        <FileInput control={control} name="icon" label="Icon" />
+        <FileInput control={control} name="thumbnail" label="thumbnail" />
+        <FileInput control={control} name="icon" label="icon" />
       </div>
 
       <Button
@@ -175,9 +177,9 @@ const CategoryForm = ({ id }: { id?: string }) => {
         {categoryLoading ? (
           <Loader className="border-foreground" />
         ) : id ? (
-          "Update Category"
+          t("translation.updateCategory")
         ) : (
-          "Create Category"
+          t("translation.createCategory")
         )}
       </Button>
     </form>

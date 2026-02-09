@@ -7,7 +7,7 @@ const EditEmployeePage = async ({
 }) => {
   const { id } = await params;
   return (
-    <Container title="Edit Employee">
+    <Container title="editEmployee">
       <EmployeeForm id={id} />
     </Container>
   );

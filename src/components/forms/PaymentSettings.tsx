@@ -16,12 +16,13 @@ import {
   useSaveBusinessSettings,
 } from "@/hooks/useBusinessSettings";
 import { useEffect } from "react";
-import PaymentSettingsSkeleton from "../skeletons/PaymentSettingsSkeleton"; // Import the skeleton
+import PaymentSettingsSkeleton from "../skeletons/PaymentSettingsSkeleton";
+import { useTranslations } from "next-intl";
 
 type FormData = z.infer<typeof PaymentSettingsSchema>;
 
 const PaymentSettingsForm = () => {
-  // Fetch payment settings
+  const t = useTranslations();
   const { data, isLoading } = useGetBusinessSettings("paymentMethods");
   const paymentInfo = data?.data?.pageSettings;
 
@@ -49,29 +50,25 @@ const PaymentSettingsForm = () => {
       reset(paymentInfo);
     }
   }, [paymentInfo, reset]);
-  
-  // Mutate hook for saving settings
+
   const {
     mutate: savePaymentSettings,
     isPending,
-    error: saveError,
   } = useSaveBusinessSettings("paymentMethods");
 
-  // Handle form submission
   const onSubmit = (data: FormData) => {
     savePaymentSettings(data);
   };
 
   if (isLoading) {
-    return <PaymentSettingsSkeleton />; // Display skeleton while loading
+    return <PaymentSettingsSkeleton />;
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      {/* Payment Method Toggles */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="space-y-2">
-          <Switch control={control} name="cash" label="Cash" />
+          <Switch control={control} name="cash" label="cash" />
           {errors.cash && (
             <p className="text-red-500 text-sm mt-1">{errors.cash.message}</p>
           )}
@@ -80,7 +77,7 @@ const PaymentSettingsForm = () => {
           <Switch
             control={control}
             name="digitalPayment"
-            label="Digital Payment"
+            label="digitalPayment"
           />
           {errors.digitalPayment && (
             <p className="text-red-500 text-sm mt-1">
@@ -89,23 +86,22 @@ const PaymentSettingsForm = () => {
           )}
         </div>
         <div className="space-y-2">
-          <Switch control={control} name="stripe" label="Stripe" />
+          <Switch control={control} name="stripe" label="stripe" />
           {errors.stripe && (
             <p className="text-red-500 text-sm mt-1">{errors.stripe.message}</p>
           )}
         </div>
       </div>
 
-      {/* Stripe Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="space-y-2">
           <SelectInput
             control={control}
             name="stripeEnvironment"
-            label="Stripe Environment"
+            label="stripeEnvironment"
             options={[
-              { label: "Live", value: "live" },
-              { label: "Sandbox", value: "sandbox" },
+              { label: "live", value: "live" },
+              { label: "sandbox", value: "sandbox" },
             ]}
           />
           {errors.stripeEnvironment && (
@@ -119,7 +115,7 @@ const PaymentSettingsForm = () => {
           <TextInput
             control={control}
             name="apiKey"
-            label="API Key"
+            label="apiKey"
             placeholder="Enter Stripe API key"
           />
           {errors.apiKey && (
@@ -131,7 +127,7 @@ const PaymentSettingsForm = () => {
           <TextInput
             control={control}
             name="publishKey"
-            label="Published Key"
+            label="publishKey"
             placeholder="Enter Stripe publishable key"
           />
           {errors.publishKey && (
@@ -145,7 +141,7 @@ const PaymentSettingsForm = () => {
           <TextInput
             control={control}
             name="paymentGatewayTitle"
-            label="Payment Gateway Title"
+            label="paymentGatewayTitle"
             placeholder="e.g., STRIPE"
           />
           {errors.paymentGatewayTitle && (
@@ -156,14 +152,13 @@ const PaymentSettingsForm = () => {
         </div>
 
         <div className="space-y-2">
-          <FileInput control={control} name="logo" label="Logo" />
+          <FileInput control={control} name="logo" label="logo" />
           {/* {errors.logo && (
             <p className="text-red-500 text-sm mt-1">{errors.logo.message}</p>
           )} */}
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex gap-4 mt-6 justify-end">
         <Button
           type="submit"
@@ -171,7 +166,10 @@ const PaymentSettingsForm = () => {
           variant="button"
           className="px-6"
         >
-          {isSubmitting || isPending ? "Saving..." : "Save Information"}
+          {isSubmitting || isPending
+            ? t("translation.saving")
+            : t("translation.saveInformation")
+          }
         </Button>
       </div>
     </form>

@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import Pagination from "../Pagination";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 type DataTableProps<T> = {
   data: T[];
@@ -45,6 +46,8 @@ export function DataTable<T>({
   },
 }: DataTableProps<T>) {
 
+  const t = useTranslations();
+
   useEffect(() => {
     if (!data) return;
 
@@ -78,7 +81,7 @@ export function DataTable<T>({
                     className={cn("capitalize", headClassName)}
                     key={i}
                   >
-                    {col}
+                    {t(`translation.${col}`)}
                   </TableHead>
                 ))}
               </TableRow>

@@ -4,6 +4,7 @@ import { Controller, Control, useController } from "react-hook-form";
 import { Switch as SwitchUI } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface SwitchProps {
   control: Control<any>;
@@ -15,13 +16,14 @@ const Switch = ({ control, name, label, className }: SwitchProps) => {
   const {
     fieldState: { error },
   } = useController({ name, control });
+  const t = useTranslations();
   return (
     <Controller
       name={name}
       control={control}
       render={({ field }) => (
         <div className={cn("flex items-center gap-2", className)}>
-          <Label htmlFor={name}>{label}</Label>
+          <Label htmlFor={name}>{t(`translation.${label}`)}</Label>
           <SwitchUI
             checked={field.value}
             onCheckedChange={field.onChange}

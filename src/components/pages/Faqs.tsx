@@ -31,7 +31,7 @@ const Faqs = () => {
 
   const { mutate: deleteFaq, isPending: deleteLoading } = useDeleteFaq();
 
-  const cols = ["Question", "Answer", "Actions"];
+  const cols = ["question", "answer", "actions"];
 
   if (isLoading) {
     return <TableSkeleton cols={cols.length} rows={10} />;

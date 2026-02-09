@@ -45,13 +45,13 @@ const RefundRequests = () => {
   const refundStatus = ["pending","accept", "reject"];
 
   const cols = [
-    "ID",
-    "Listing",
-    "User",
-    "Date Submitted",
-    "Amount",
-    "Status",
-    "Actions",
+    "id",
+    "listing",
+    "user",
+    "dateSubmitted",
+    "amount",
+    "status",
+    "actions",
   ];
 
   const row = (request: RefundRequest, index: number) => (

@@ -5,7 +5,7 @@ import React from 'react'
 const EditZonePage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   return (
-    <Container title="Edit Zone">
+    <Container title="editZone">
       <ZoneForm id={id} />
     </Container>
   )

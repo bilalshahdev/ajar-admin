@@ -13,7 +13,7 @@ const Fields = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetFields({ page, limit });
   const { mutate: deleteField, isPending: deleteLoading } = useDeleteField();
-  const cols = ["Label", "Name", "Type", "Actions"];
+  const cols = ["label", "name", "type", "actions"];
 
   if (isLoading) {
     return <TableSkeleton cols={cols.length} rows={10} />;

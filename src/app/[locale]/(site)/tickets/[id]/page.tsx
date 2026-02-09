@@ -8,7 +8,7 @@ const TicketDetailsPage = async ({
 }) => {
   const { id } = await params;
   return (
-    <Container title="Ticket Details">
+    <Container title="ticketDetails">
       <TicketDetails id={id} />
     </Container>
   );
