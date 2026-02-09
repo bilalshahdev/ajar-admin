@@ -3,7 +3,7 @@ import ZoneSettings from "@/components/pages/ZoneSettings";
 
 const SettingsPage = async () => {
   return (
-    <Container title="Zone Settings">
+    <Container title="zoneSettings">
       <ZoneSettings />
     </Container>
   );

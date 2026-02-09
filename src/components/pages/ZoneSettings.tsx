@@ -21,8 +21,10 @@ import { useEffect, useMemo, useState } from "react";
 import MultiSelect from "../forms/fields/MultiSelect";
 import { zoneFormSchema, ZoneFormValues } from "@/validations/zoneSettings";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl"; // Import for translation
 
 const ZoneSettings = () => {
+  const t = useTranslations(); // Initialize translation
   const zoneId = useParams().id;
   const [subCategory, setSubCategory] = useState<string>("");
 
@@ -43,7 +45,7 @@ const ZoneSettings = () => {
           selectedSubCategory={subCategory}
         />
       ) : (
-        <p className="text-red-500 text-sm">Please select a subcategory to proceed.</p>
+        <p className="text-red-500 text-sm">{t("translation.selectSubcategoryToProceed")}</p>
       )}
     </div>
   );
@@ -58,6 +60,7 @@ const SubcategorySettingsForm = ({
   zoneId: string;
   selectedSubCategory: string;
 }) => {
+  const t = useTranslations(); // Initialize translation
   const router = useRouter();
 
   const defaultValues: ZoneFormValues = useMemo(
@@ -177,44 +180,44 @@ const SubcategorySettingsForm = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <TextInput
           control={control}
-          placeholder="Enter form name"
+          placeholder={t("translation.enterFormName")}
           name="name"
-          label="Name"
+          label="name"
         />
         <TextInput
           control={control}
-          placeholder="Enter form description"
+          placeholder={t("translation.enterFormDescription")}
           name="description"
-          label="Description"
+          label="description"
         />
 
         {/* Fields multiselect */}
         <MultiSelect<Field, ZoneFormValues>
           control={control}
           name={"fields"}
-          label="Select Custom Fields"
+          label="selectCustomFields"
           options={fields}
           loading={fieldsLoading}
           getOptionValue={(f) => f._id}
           getOptionLabel={(f) => f.label}
           className="col-span-2"
-          emptyText="No field found."
-          searchPlaceholder="Search fields..."
+          emptyText={t("translation.noFieldFound")}
+          searchPlaceholder={t("translation.searchFields")}
         />
         {errors.fields && <p className="text-red-500 text-sm">{errors.fields.message}</p>}
         {documentsValues.length > 0 && (
           <> <MultiSelect<{ name: string; value: string }, ZoneFormValues>
             control={control}
             name={"userDocuments"}
-            label="Renter Documents"
-            note="Renter needs in order to request for booking"
+            label="renterDocuments"
+            note="renterDocumentsNote"
             options={documentsValues}
             loading={documentsLoading}
             getOptionValue={(d) => d.value}
             getOptionLabel={(d) => d.name}
             className="col-span-2"
-            emptyText="No document found."
-            searchPlaceholder="Search documents..."
+            emptyText={t("translation.noDocumentFound")}
+            searchPlaceholder={t("translation.searchDocuments")}
           />
             {errors.userDocuments && <p className="text-red-500 text-sm">{errors.userDocuments.message}</p>}
           </>
@@ -225,15 +228,15 @@ const SubcategorySettingsForm = ({
             <MultiSelect<{ name: string; value: string }, ZoneFormValues>
               control={control}
               name={"leaserDocuments"}
-              label="Leaser Documents"
-              note="Leaser needs in order to request for booking"
+              label="leaserDocuments"
+              note="leaserDocumentsNote"
               options={leaserDocumentsValues}
               loading={leaserDocumentsLoading}
               getOptionValue={(d) => d.value}
               getOptionLabel={(d) => d.name}
               className="col-span-2"
-              emptyText="No document found."
-              searchPlaceholder="Search documents..."
+              emptyText={t("translation.noDocumentFound")}
+              searchPlaceholder={t("translation.searchDocuments")}
             />
             {errors.leaserDocuments && <p className="text-red-500 text-sm">{errors.leaserDocuments.message}</p>}
           </>
@@ -242,15 +245,15 @@ const SubcategorySettingsForm = ({
         {/* Commission Inputs */}
         <CommissionInputs control={control} className="col-span-2" />
         {/* Expiry */}
-        <DateInput control={control} name="setting.expiry" label="Expiry" />
+        <DateInput control={control} name="setting.expiry" label="expiry" />
         {/* Tax Input */}
         <div className="col-span-2 md:col-span-1">
           <TextInput
             control={control}
             name="setting.tax"
             type="number"
-            label="Tax"
-            note="Tax percentage"
+            label="tax" // 
+            note={t("translation.taxPercentageNote")}
             min={0}
             max={100}
           />
@@ -264,7 +267,7 @@ const SubcategorySettingsForm = ({
         disabled={loading}
         type="submit"
       >
-        {loading ? <Loader /> : "Save"}
+        {loading ? <Loader /> : t("translation.save")}
       </Button>
       {error && <p className="text-red-500 text-sm">{error.message}</p>}
     </form>

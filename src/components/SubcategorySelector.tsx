@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { useGetSubCategoriesList } from "@/hooks/useCategories";
 import { useGetZone, useUpdateZoneCategories } from "@/hooks/useZones";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 type SubCategory = {
   _id: string;
@@ -40,6 +41,7 @@ const SubCategorySelector = ({
   value: string;
   onChange: (id: string) => void;
 }) => {
+  const t = useTranslations();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
@@ -93,7 +95,7 @@ const SubCategorySelector = ({
 
   return (
     <div>
-      <Label className="mb-2 block">Subcategories</Label>
+      <Label className="mb-2 block">{t("translation.subcategories")}</Label>
       <div className="relative w-full h-12 p-2 flex items-center border-2 rounded-md">
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {isLoading ? (
@@ -135,9 +137,9 @@ const SubCategorySelector = ({
 
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Subcategories</DialogTitle>
+              <DialogTitle>{t("translation.editSubcategories")}</DialogTitle>
               <DialogDescription>
-                Add or remove subcategories for this zone
+                {t("translation.editSubcategoriesDescription")}
               </DialogDescription>
             </DialogHeader>
 
@@ -188,7 +190,7 @@ const SubCategorySelector = ({
             )}
 
             <Button onClick={handleSave} disabled={isPending}>
-              {isPending ? "Saving..." : "Save"}
+              {isPending ? t("translation.saving") : t("translation.save")}
             </Button>
           </DialogContent>
         </Dialog>

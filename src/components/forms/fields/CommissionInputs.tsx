@@ -28,10 +28,10 @@ const CommissionInputs = ({
         <SelectInput
           control={control}
           name="setting.commissionType"
-          label="Commission Type"
+          label="commissionType"
           options={[
-            { label: "Percentage", value: "percentage" },
-            { label: "Fixed", value: "fixed" },
+            { label: "percentage", value: "percentage" },
+            { label: "fixed", value: "fixed" },
           ]}
         />
       </div>
@@ -69,7 +69,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
           control={control}
           name={`setting.${baseName}.value`}
           type="number"
-          label="Value"
+          label="value"
         />
       ) : (
         <div className="grid md:grid-cols-2 gap-2">
@@ -78,7 +78,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
             control={control}
             name={`setting.${baseName}.value`}
             type="number"
-            label="Percentage Value"
+            label="percentageValue"
             note="% to be applied"
             min={0}
             max={100}
@@ -89,7 +89,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
               control={control}
               name={`setting.${baseName}.min`}
               type="number"
-              label="Min"
+              label="min"
               min={0}
             />
             <TextInput
@@ -97,7 +97,7 @@ const CommissionInput: React.FC<CommissionInputProps> = ({
               control={control}
               name={`setting.${baseName}.max`}
               type="number"
-              label="Max"
+              label="max"
               min={0}
             />
           </div>

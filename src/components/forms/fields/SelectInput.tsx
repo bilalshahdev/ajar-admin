@@ -82,7 +82,7 @@ const SelectInput = ({
         getOptionValue={(opt) => String(opt[valueKey])}
         value={selectedOption || null}
         onChange={(val) => handleChange(val ? val[valueKey] : "")}
-        placeholder={loading ? "Loading..." : `Select ${label}`}
+        placeholder={loading ? t("translation.loading") : t("translation.selectLabel", { label: t(`translation.${label}`) })}
         className="react-select-container"
         classNamePrefix="react-select"
         theme={customTheme}

@@ -37,6 +37,7 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useTranslations } from "next-intl";
 
 type BaseForm = Record<string, any>;
 
@@ -67,6 +68,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   emptyText = "No item found.",
   searchPlaceholder = "Search...",
 }: MultiSelectProps<TOption, TForm>) {
+  const t = useTranslations();
   const { field, fieldState: { error } } = useController<TForm, FieldPath<TForm>>({
     control,
     name,
@@ -82,7 +84,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
         .filter(Boolean) as TOption[],
     [options, selectedValues, getOptionValue]
   );
-  
+
   const toggle = (value: string) => {
     if (selectedValues.includes(value)) {
       field.onChange(selectedValues.filter((v) => v !== value));
@@ -109,9 +111,9 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   return (
     <div className={cn("space-y-2", className)}>
       <Label>
-        {label}{" "}
+        {t(`translation.${label}`)}{" "}
         <span className="text-muted-foreground text-xs normal-case">
-          {note && `(${note})`}
+          {note && `(${t(`translation.${note}`)})`}
         </span>
       </Label>
 
@@ -126,9 +128,8 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
             )}
           >
             {selected > 0
-              ? `${selected} item${selected > 1 ? "s" : ""
-              } selected`
-              : "Select..."}
+              ? t("translation.itemsSelected", { count: selected }) // Using pluralization
+              : t("translation.selectPlaceholder")}
             <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -192,7 +193,7 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
               {selectedOptions.map((opt) => {
                 const value = getOptionValue(opt);
                 const label = getOptionLabel(opt);
-                
+
                 return (
                   <SortableBadge
                     key={value}

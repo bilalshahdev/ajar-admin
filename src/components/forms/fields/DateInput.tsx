@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { useController, Control } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import React, { InputHTMLAttributes } from "react";
+import { useTranslations } from "next-intl";
 
 interface DateInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -26,10 +27,11 @@ const DateInput: React.FC<DateInputProps> = ({
   note,
   control,
   name,
-  placeholder = "Pick a date",
+  placeholder = "pickADate",
   disabled = false,
   ...props
 }) => {
+  const t = useTranslations();
   const {
     field,
     fieldState: { error },
@@ -39,10 +41,10 @@ const DateInput: React.FC<DateInputProps> = ({
     <div {...props} className="space-y-2">
       {label && (
         <Label className="capitalize">
-          {label}
+          {t(`translation.${label}`)}
           {note && (
             <span className="text-muted-foreground text-xs ml-1 normal-case">
-              ({note})
+              ({t(`translation.${note}`)})
             </span>
           )}
         </Label>
@@ -60,7 +62,7 @@ const DateInput: React.FC<DateInputProps> = ({
             disabled={disabled}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {field.value ? format(field.value, "PPP") : placeholder}
+            {field.value ? format(field.value, "PPP") : t(`translation.${placeholder}`)}
           </Button>
         </PopoverTrigger>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { InputHTMLAttributes, useEffect, useState } from "react";
+import { InputHTMLAttributes, useEffect, useState, useRef } from "react";
 import { Control, useController } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,29 +22,50 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
   } = useController({ name, control });
 
   const [preview, setPreview] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      onChange(file); // Store File object
-      setPreview(URL.createObjectURL(file)); // Show local preview
+      onChange(file);
+      setPreview(URL.createObjectURL(file));
+      setFileName(file.name);
     }
+  };
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
     <div className="space-y-2">
       {label && <Label className="capitalize">{t(`translation.${label}`)}</Label>}
 
-      <Input
-        ref={ref}
-        type="file"
-        accept="image/*"
-        onChange={handleFile}
-        className={`bg-secondary/50 cursor-pointer ${
-          error ? "border-red-500 focus:ring-red-500" : ""
-        }`}
-        {...props}
-      />
+      <div className="relative">
+        <Input
+          ref={(e) => {
+            ref(e);
+            (fileInputRef as any).current = e;
+          }}
+          type="file"
+          accept="image/*"
+          onChange={handleFile}
+          className="hidden"
+          {...props}
+        />
+        
+        <div
+          onClick={handleClick}
+          className={`flex h-10 w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm cursor-pointer hover:bg-secondary/70 transition-colors ${
+            error ? "border-red-500 focus:ring-red-500" : ""
+          }`}
+        >
+          <span className="text-muted-foreground">
+            {fileName || t("translation.noFileChosen")}
+          </span>
+        </div>
+      </div>
 
       {(preview || value) && (
         <MyImage
