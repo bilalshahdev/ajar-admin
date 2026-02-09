@@ -18,11 +18,13 @@ import PasswordInput from "./fields/PasswordInput";
 import TextInput from "./fields/TextInput";
 import { useEffect, useState } from "react";
 import * as secureCrypto from "../../utils/secureCrypto";
+import { useTranslations } from "next-intl"; // Added import
 
 const STORAGE_KEY = "myapp_remember_credentials_v1";
 const KEY_STORE = "myapp_remember_key_v1";
 
 const LoginForm = () => {
+  const t = useTranslations("translation"); // Initialize translation
   const router = useRouter();
   const { mutate: login, isPending } = useLogin();
 
@@ -42,8 +44,8 @@ const LoginForm = () => {
   });
 
   /* =========================
-     LOAD REMEMBERED CREDENTIALS
-     ========================= */
+      LOAD REMEMBERED CREDENTIALS
+      ========================= */
   useEffect(() => {
     let mounted = true;
 
@@ -85,8 +87,8 @@ const LoginForm = () => {
   }, [setValue]);
 
   /* =========================
-     SUBMIT
-     ========================= */
+      SUBMIT
+      ========================= */
   const onSubmit = async (formData: Login) => {
     try {
       /* Remember Me logic */
@@ -137,7 +139,7 @@ const LoginForm = () => {
             );
           }
 
-          toast.success("Login successful");
+          toast.success(t("loginSuccessful"));
           router.push("/");
         },
         onError: (err) => {
@@ -152,7 +154,7 @@ const LoginForm = () => {
 
   if (loadingRemembered) {
     return (
-      <div className="py-8 text-center">Checking saved credentials...</div>
+      <div className="py-8 text-center">{t("checkingSavedCredentials")}</div>
     );
   }
 
@@ -173,11 +175,11 @@ const LoginForm = () => {
           >
             <RadioGroupItem value="admin" id="admin" />
             <Label htmlFor="admin" className="mr-4">
-              Admin
+              {t("admin")}
             </Label>
 
             <RadioGroupItem value="staff" id="staff" />
-            <Label htmlFor="staff">Staff</Label>
+            <Label htmlFor="staff">{t("staff")}</Label>
           </RadioGroup>
         )}
       />
@@ -185,16 +187,16 @@ const LoginForm = () => {
       {/* FIELDS */}
       <div className="grid gap-2">
         <TextInput
-          label="email id"
+          label="email"
           name="email"
-          placeholder="Enter email"
+          placeholder={t("enterValue", { value: t("email") })}
           control={control}
           icon={<FaEnvelope />}
         />
         <PasswordInput
           label="password"
           name="password"
-          placeholder="Enter password"
+          placeholder={t("enterValue", { value: t("password") })}
           control={control}
         />
 
@@ -206,11 +208,11 @@ const LoginForm = () => {
               onChange={(e) => setRemember(e.target.checked)}
               className="rounded"
             />
-            <span>Remember me</span>
+            <span>{t("rememberMe")}</span>
           </label>
 
           <Link href="#" className="text-sm text-signature">
-            Forgot password?
+            {t("forgotPassword")}
           </Link>
         </div>
       </div>
@@ -220,7 +222,7 @@ const LoginForm = () => {
         className="w-full font-semibold text-white"
         disabled={isPending}
       >
-        {isPending ? <Loader /> : "Login"}
+        {isPending ? <Loader /> : t("login")}
       </Button>
     </form>
   );

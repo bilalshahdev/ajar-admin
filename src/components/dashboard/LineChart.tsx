@@ -26,10 +26,17 @@ const LineChart = ({ filter, users }: LineChartProps) => {
 
   const chartData = useMemo(() => users.record, [users]);
 
-  const formattedData = chartData.map((item) => ({
-    ...item,
-    value: getFormattedLabel(item.value, filter),
-  }));
+  const formattedData = useMemo(() => {
+    return chartData.map((item) => {
+      const formattedValue = getFormattedLabel(item.value, filter);
+      const translationKey = formattedValue.toLowerCase().replace(" ", "");
+
+      return {
+        ...item,
+        value: t(`date.${translationKey}`),
+      };
+    });
+  }, [chartData, filter, t]);
 
   const chartConfig: ChartConfig = {
     users: {
@@ -84,6 +91,7 @@ const LineChart = ({ filter, users }: LineChartProps) => {
               />
               <Area
                 dataKey="totalUsers"
+                name={t("translation.totalUsers")}
                 type="natural"
                 fill="var(--color-signature)"
                 fillOpacity={0.4}

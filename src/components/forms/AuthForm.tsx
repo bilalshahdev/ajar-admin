@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import MyImage from "../custom/MyImage";
+import { useTranslations } from "next-intl";
 
 const AuthForm = ({
   children,
@@ -8,7 +11,9 @@ const AuthForm = ({
   children: React.ReactNode;
   type: "login" | "signup";
 }) => {
+  const t = useTranslations("translation");
   const login = type === "login";
+
   return (
     <div className="h-screen flex items-center justify-center md:gap-8 bg-secondary/50">
       <MyImage
@@ -23,23 +28,24 @@ const AuthForm = ({
         <div className="flex flex-col items-center justify-center gap-4">
           <MyImage
             src="/images/brand.png"
-            alt="Login"
+            alt="Brand"
             width={100}
             height={100}
           />
-          <p>{login ? "Login to your account" : "Create an account"}</p>
+          {/* Dynamic header text */}
+          <p>{login ? t("loginToAccount") : t("createAccount")}</p>
         </div>
         <div className="flex flex-col items-center w-xs max-h-80 p-4 overflow-y-auto">
           {children}
         </div>
         <div className="text-center">
           <p className="text-muted-foreground">
-            {login ? "Don't have an account?" : "Already have an account?"}{" "}
+            {login ? t("dontHaveAccount") : t("alreadyHaveAccount")}{" "}
             <Link
               href={`/auth/${login ? "signup" : "login"}`}
               className="text-signature font-semibold"
             >
-              {login ? "Sign Up" : "Login"}
+              {login ? t("signup") : t("login")}
             </Link>
           </p>
         </div>

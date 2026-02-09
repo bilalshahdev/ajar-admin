@@ -20,9 +20,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const SignupForm = () => {
+  const t = useTranslations("translation");
   const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -46,7 +49,6 @@ const SignupForm = () => {
   const { mutate: register, isPending } = useRegister();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
-  // Connect DOB with ShadCN Calendar
   const {
     field: dobField,
     fieldState: { error: dobError },
@@ -57,23 +59,20 @@ const SignupForm = () => {
 
   const onSubmit = async (data: Signup) => {
     register(data, {
-      onSuccess: (res) => {
-        console.log(res);
+      onSuccess: () => {
         router.push("/");
       },
       onError: (error: ErrorDetails) => {
         if (error?.errors && Array.isArray(error.errors)) {
           error.errors.forEach((err: { path: string[]; message: string }) => {
             if (err.path && err.path.length > 0) {
-              const fieldName = err.path[0] as keyof Signup; // Cast to keyof Signup
-              setError(fieldName, { // No need to cast fieldName again
+              const fieldName = err.path[0] as keyof Signup;
+              setError(fieldName, {
                 type: "server",
                 message: err.message,
               });
             }
           });
-        } else if (error?.message) {
-          alert(error.message);
         }
       },
     });
@@ -82,39 +81,38 @@ const SignupForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
       <TextInput
-        label="Name"
+        label="name"
         name="name"
-        placeholder="Enter name"
+        placeholder={t("enterValue", { value: t("name") })}
         control={control}
       />
       <TextInput
-        label="Email"
+        label="email"
         name="email"
-        placeholder="Enter email"
+        placeholder={t("enterValue", { value: t("email") })}
         control={control}
       />
       <PasswordInput
-        label="Password"
+        label="password"
         name="password"
-        placeholder="Enter password"
+        placeholder={t("enterValue", { value: t("password") })}
         control={control}
       />
       <PasswordInput
-        label="Confirm Password"
+        label="confirmPassword"
         name="confirmPassword"
-        placeholder="Confirm password"
+        placeholder={t("enterValue", { value: t("confirmPassword") })}
         control={control}
       />
       <TextInput
-        label="Phone"
+        label="phone"
         name="phone"
-        placeholder="Enter phone"
+        placeholder={t("enterValue", { value: t("phone") })}
         control={control}
       />
 
-      {/* DOB using ShadCN Date Picker */}
       <div className="space-y-2">
-        <label htmlFor="dob-button">Date of Birth</label>
+        <label htmlFor="dob-button">{t("dateOfBirth")}</label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -124,7 +122,7 @@ const SignupForm = () => {
             >
               {dobField.value
                 ? format(new Date(dobField.value), "PPP")
-                : "Pick a date"}
+                : t("pickADate")}
             </Button>
           </PopoverTrigger>
           <PopoverContent>
@@ -139,23 +137,25 @@ const SignupForm = () => {
       </div>
 
       <TextInput
-        label="Nationality"
+        label="nationality"
         name="nationality"
-        placeholder="Enter nationality"
+        placeholder={t("enterValue", { value: t("nationality") })}
         control={control}
       />
 
       {/* File Input */}
-      <input
-        type="file"
-        onChange={(e) => {
-          if (e.target.files?.[0]) setValue("image", e.target.files[0]);
-        }}
-        accept="image/*"
-        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-lg"
-      />
+      <div className="space-y-1">
+        <label className="text-sm">{t("profileImage")}</label>
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files?.[0]) setValue("image", e.target.files[0]);
+          }}
+          accept="image/*"
+          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-lg"
+        />
+      </div>
 
-      {/* Checkbox for terms */}
       <div className="flex items-center justify-end gap-2">
         <Input
           type="checkbox"
@@ -165,23 +165,17 @@ const SignupForm = () => {
           onChange={(e) => setIsTermsChecked(e.target.checked)}
         />
         <Link href="#" className="text-sm text-signature underline">
-          Agree with terms and conditions
+          {t("agreeWithTerms")}
         </Link>
       </div>
 
-      {/* <Button
-        variant={"button"}
-        type="submit"
-        className="w-full font-semibold text-white"
-        disabled={isSubmitting}
-      > */}
       <Button
         variant={"button"}
         type="submit"
         className="w-full font-semibold text-white"
         disabled={isSubmitting || !isTermsChecked}
       >
-        {isSubmitting ? <Loader /> : "Sign Up"}
+        {isSubmitting ? <Loader /> : t("signup")}
       </Button>
     </form>
   );

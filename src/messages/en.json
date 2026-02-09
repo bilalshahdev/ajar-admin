@@ -314,7 +314,23 @@
     "full": "Full",
     "partial": "Partial",
     "custom": "Custom",
-    "noteText": "Note Text"
+    "noteText": "Note Text",
+    "confirm": "Confirm",
+    "admin": "Admin",
+    "staff": "Staff",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "login": "Login",
+    "loginSuccessful": "Login successful",
+    "checkingSavedCredentials": "Checking saved credentials...",
+    "loginToAccount": "Login to your account",
+    "createAccount": "Create an account",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "agreeWithTerms": "Agree with terms and conditions",
+    "dateOfBirth": "Date of Birth",
+    "nationality": "Nationality",
+    "signup": "Sign Up"
   },
   "confirm": {
     "logout": {
@@ -326,30 +342,28 @@
     }
   },
   "date": {
-    "daysShort": [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ],
-    "monthsShort": [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
-    ],
-    "week": "Week {{value}}"
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec",
+    "week": "Week {value}",
+    "month": "Month {value}",
+    "year": "Year {value}"
   },
   "status": {
     "active": "Active",

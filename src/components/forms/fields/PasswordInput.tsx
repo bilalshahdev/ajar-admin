@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
 import { InputHTMLAttributes, useState } from "react";
 import { useController, Control } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -23,6 +24,7 @@ const PasswordInput = ({
   cPassword,
   ...props
 }: PasswordInputProps) => {
+  const t = useTranslations("translation");
   const {
     field,
     fieldState: { error },
@@ -43,9 +45,9 @@ const PasswordInput = ({
       <div className="space-y-2">
         {label && (
           <Label className="capitalize">
-            {label}{" "}
+            {t(label)}{" "}
             <span className="text-muted-foreground text-xs normal-case">
-              {note && `(${note})`}
+              {note && `(${t(note)})`}
             </span>
           </Label>
         )}

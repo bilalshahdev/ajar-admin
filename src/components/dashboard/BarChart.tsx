@@ -30,12 +30,19 @@ type BarChartProps = {
 const BarChart = ({ filter, earnings }: BarChartProps) => {
   const t = useTranslations();
   const chartData = useMemo(() => earnings.record, [earnings]);
-  const formattedData = chartData.map((item) => ({
-    ...item,
-    value: getFormattedLabel(item.value, filter),
-    totalEarning: Number(Number(item.totalEarning || 0).toFixed(2)),
-  }));
 
+  const formattedData = useMemo(() => {
+    return chartData.map((item) => {
+      const formattedValue = getFormattedLabel(item.value, filter);
+      const translationKey = formattedValue.toLowerCase().replace(" ", "");
+
+      return {
+        ...item,
+        value: t(`date.${translationKey}`),
+        totalEarning: Number(Number(item.totalEarning || 0).toFixed(2))
+      };
+    });
+  }, [chartData, filter, t]);
 
   const chartConfig: ChartConfig = {
     earnings: {
@@ -75,7 +82,9 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
+                tickFormatter={(value) =>
+                  filter === "week" ? value : value.slice(0, 3)
+                }
               />
               <ChartTooltip
                 cursor={false}
@@ -83,6 +92,7 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
               />
               <Bar
                 dataKey="totalEarning"
+                name={t("translation.totalEarning")}
                 fill="var(--color-signature)"
                 radius={8}
               >

@@ -28,8 +28,8 @@ interface ConfirmDialogProps {
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   title = "Are you sure?",
   description = "This action cannot be undone.",
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText = "confirm",
+  cancelText = "cancel",
   onConfirm,
   loading = false,
   variant = "default",
@@ -64,7 +64,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               onClick={() => onConfirm?.(closeDialog)}
               disabled={loading}
             >
-              {loading ? "Please wait..." : confirmText}
+              {loading ? t("translation.pleaseWait") : t(`translation.${confirmText}`)}
             </Button>
           </DialogFooter>
         </DialogContent>
