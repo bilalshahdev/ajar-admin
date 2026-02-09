@@ -7,7 +7,6 @@ export default async function EditFieldPage({
 }) {
   const { id } = await params;
 
-  console.log(id)
   return (
     <Container title="editField">
       <FieldForm id={id} />

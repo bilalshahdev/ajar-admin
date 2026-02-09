@@ -147,6 +147,7 @@ const CategoryForm = ({ id }: { id?: string }) => {
                 value: cat._id,
               })) || []
             }
+            isTranslations = {false}
           />
         )}
 
