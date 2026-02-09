@@ -296,7 +296,25 @@
     "allowedPermission": "الصلاحية المسموحة",
     "profileImage": "صورة الملف الشخصي",
     "updateEmployee": "تحديث بيانات الموظف",
-    "somethingWentWrong": "حدث خطأ ما"
+    "somethingWentWrong": "حدث خطأ ما",
+    "refundPolicies": "سياسات الاسترداد",
+    "refundRequests": "طلبات الاسترداد",
+    "listRefundRequests": "قائمة طلبات الاسترداد",
+    "selectZone": "اختر منطقة",
+    "selectCategory": "اختر فئة",
+    "allowRefund": "السماح بالاسترداد",
+    "cutoffTimeDays": "وقت القطع (بالأيام)",
+    "hours": "ساعات",
+    "days": "أيام",
+    "flatFee": "رسوم ثابتة",
+    "amountSymbol": "المبلغ ($)",
+    "timeDays": "الوقت (بالأيام)",
+    "timeHours": "الوقت (بالساعات)",
+    "refundWindow": "نافذة الاسترداد",
+    "full": "كامل",
+    "partial": "جزئي",
+    "custom": "مخصص",
+    "noteText": "نص الملاحظة"
   },
   "confirm": {
     "logout": {

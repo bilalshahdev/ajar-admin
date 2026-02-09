@@ -11,12 +11,12 @@ const RefundManagement = () => {
         defaultValue="refund-policies"
         tabs={[
           {
-            label: "Refund Policies",
+            label: "refundPolicies",
             value: "refund-policies",
             content: <RefundPoliciesForm />,
           },
           {
-            label: "Refund Requests",
+            label: "refundRequests",
             value: "refund-requests",
             content: <RefundRequests />,
           },

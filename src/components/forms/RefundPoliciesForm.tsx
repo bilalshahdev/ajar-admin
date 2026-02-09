@@ -22,8 +22,10 @@ import { Separator } from "../ui/separator";
 import SelectInput from "./fields/SelectInput";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl"; // Added import
 
 const RefundPoliciesForm = () => {
+  const t = useTranslations("translation"); // Initialize translation
   const [page, setPage] = useState(1);
   const [zone, setZone] = useState("");
   const [subCategory, setSubCategory] = useState("");
@@ -48,8 +50,6 @@ const RefundPoliciesForm = () => {
 
   const methods = useForm({
     defaultValues: {
-      // zone: zone,
-      // subCategory: subCategory,
       allowFund: refundPolicyData?.allowFund || false,
       refundWindow: refundPolicyData?.refundWindow || "",
       cancellationCutoffTime: {
@@ -102,7 +102,6 @@ const RefundPoliciesForm = () => {
   } = useSaveRefundPolicy();
 
   const onSubmit = (data: any) => {
-    // Send data to API
     saveRefundPolicy({
       zone,
       subCategory,
@@ -116,13 +115,12 @@ const RefundPoliciesForm = () => {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Zone & Category */}
           <div className="space-y-2">
-            <Label>Zone</Label>
+            <Label>{t("zone")}</Label>
             <Select value={zone} onValueChange={setZone} disabled={isLoading}>
               <SelectTrigger className="w-full" disabled={isLoading}>
                 <SelectValue
-                  placeholder={isLoading ? "Loading..." : "Select a zone"}
+                  placeholder={isLoading ? t("loading") : t("selectZone")}
                 />
               </SelectTrigger>
               <SelectContent>
@@ -135,7 +133,7 @@ const RefundPoliciesForm = () => {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Sub Category</Label>
+            <Label>{t("subCategory")}</Label>
             <div>
               <Select
                 value={subCategory}
@@ -149,8 +147,8 @@ const RefundPoliciesForm = () => {
                   <SelectValue
                     placeholder={
                       isLoading || zoneLoading
-                        ? "Loading..."
-                        : "Select a category"
+                        ? t("loading")
+                        : t("selectCategory")
                     }
                   />
                 </SelectTrigger>
@@ -168,57 +166,54 @@ const RefundPoliciesForm = () => {
             </div>
           </div>
 
-          {/* Allow Refund */}
-          <Switch name="allowFund" label="Allow Refund" control={control} />
+          <Switch name="allowFund" label="allowRefund" control={control} />
 
-          {/* Cancellation Cutoff Time */}
           <div className="grid grid-cols-2 gap-4">
             <TextInput
               name="cancellationCutoffTime.days"
-              label="Cutoff Time (Days)"
+              label="cutoffTimeDays"
               type="number"
               control={control}
-              placeholder="Days"
+              placeholder={t("days")}
               min={0}
             />
             <TextInput
               name="cancellationCutoffTime.hours"
-              label="(Hours)"
+              label="hours"
               type="number"
               control={control}
-              placeholder="Hours"
+              placeholder={t("hours")}
               min={0}
             />
           </div>
 
-          {/* Flat Fee Fields */}
           <Separator className="md:col-span-2 mt-4" />
           <div className="space-y-2 grid md:col-span-2">
-            <H4>Flat Fee</H4>
+            <H4>{t("flatFee")}</H4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TextInput
                 name="flatFee.amount"
-                label="Amount ($)"
+                label="amountSymbol"
                 type="number"
                 control={control}
-                placeholder="Amount"
+                placeholder={t("amount")}
                 min={0}
               />
               <div className="grid grid-cols-2 gap-4">
                 <TextInput
                   name="flatFee.days"
-                  label="Time (Days)"
+                  label="timeDays"
                   type="number"
                   control={control}
-                  placeholder="Days"
+                  placeholder={t("days")}
                   min={0}
                 />
                 <TextInput
                   name="flatFee.hours"
-                  label="Time (Hours)"
+                  label="timeHours"
                   type="number"
                   control={control}
-                  placeholder="Hours"
+                  placeholder={t("hours")}
                   min={0}
                 />
               </div>
@@ -226,35 +221,30 @@ const RefundPoliciesForm = () => {
             <Separator className="mt-4" />
           </div>
 
-          {/* refund window: full , partial, custom */}
           <SelectInput
             name="refundWindow"
-            label="Refund Window"
+            label="refundWindow"
             control={control}
             options={[
-              { value: "full", label: "Full" },
-              { value: "partial", label: "Partial" },
-              { value: "custom", label: "Custom" },
+              { value: "full", label: t("full") },
+              { value: "partial", label: t("partial") },
+              { value: "custom", label: t("custom") },
             ]}
             disabled={!zone || zoneLoading}
             loading={zoneLoading}
           />
-          {/* Notes */}
           <TextInput
             name="noteText"
-            label="Note Text"
+            label="noteText"
             control={control}
-            placeholder="Enter Note Text"
+            placeholder={t("enterValue", { value: t("noteText") })}
             type="textarea"
           />
         </div>
 
         <div className="flex items-center justify-end gap-4">
-          {/* <Button type="button" variant="outline">
-            Reset
-          </Button> */}
           <Button type="submit" variant="button" disabled={disabled}>
-            {isPending ? "Saving..." : "Save Information"}
+            {isPending ? t("saving") : t("saveInformation")}
           </Button>
         </div>
       </form>

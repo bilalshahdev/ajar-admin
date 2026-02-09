@@ -296,7 +296,25 @@
     "allowedPermission": "Allowed Permission",
     "profileImage": "Profile Image",
     "updateEmployee": "Update Employee",
-    "somethingWentWrong": "Something went wrong"
+    "somethingWentWrong": "Something went wrong",
+    "refundPolicies": "Refund Policies",
+    "refundRequests": "Refund Requests",
+    "listRefundRequests": "List of Refund Requests",
+    "selectZone": "Select a zone",
+    "selectCategory": "Select a category",
+    "allowRefund": "Allow Refund",
+    "cutoffTimeDays": "Cutoff Time (Days)",
+    "hours": "Hours",
+    "days": "Days",
+    "flatFee": "Flat Fee",
+    "amountSymbol": "Amount ($)",
+    "timeDays": "Time (Days)",
+    "timeHours": "Time (Hours)",
+    "refundWindow": "Refund Window",
+    "full": "Full",
+    "partial": "Partial",
+    "custom": "Custom",
+    "noteText": "Note Text"
   },
   "confirm": {
     "logout": {

@@ -19,8 +19,10 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import Status from "../StatusBadge";
+import { useTranslations } from "next-intl";
 
 const RefundRequests = () => {
+  const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetRefundRequests(page, 10);
   const { mutate: updateRefundStatus, isPending: updateLoading } = useUpdateRefundRequest();
@@ -42,7 +44,7 @@ const RefundRequests = () => {
     });
   }, [refundRequests, search]);
 
-  const refundStatus = ["pending","accept", "reject"];
+  const refundStatus = ["pending", "accept", "reject"];
 
   const cols = [
     "id",
@@ -108,7 +110,7 @@ const RefundRequests = () => {
     <div className="flex flex-col gap-4 md:gap-8">
       <div>
         <div className="flex items-center justify-between mb-4">
-          <Label>List of Refund Requests</Label>
+          <Label>{t("listRefundRequests")}</Label>
           <div className="flex gap-2">
             <SearchInput
               placeholder="searchRefundRequest"
