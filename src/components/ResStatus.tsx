@@ -2,6 +2,7 @@ import React from "react";
 import { XS } from "./Typography";
 import { cn } from "@/lib/utils";
 import Loader from "./Loader";
+import { useTranslations } from "next-intl";
 
 const ResStatus = ({
   loading,
@@ -14,6 +15,7 @@ const ResStatus = ({
   className?: string;
   text?: string;
 }) => {
+  const t = useTranslations();
   return (
     <div
       className={cn(
@@ -26,7 +28,7 @@ const ResStatus = ({
       ) : error ? (
         <XS className="text-red-500">{text}</XS>
       ) : (
-        <XS className="text-muted-foreground">{text}</XS>
+        <XS className="text-muted-foreground">{t(`translation.${text}`)}</XS>
       )}
     </div>
   );

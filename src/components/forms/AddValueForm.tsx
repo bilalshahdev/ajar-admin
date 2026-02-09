@@ -6,8 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle, TriangleAlert } from "lucide-react";
 import { useForm } from "react-hook-form";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 export function AddValueForm({ doc, addValue, adding }: any) {
+  const t = useTranslations("translation");
   const {
     handleSubmit,
     control,
@@ -34,17 +36,17 @@ export function AddValueForm({ doc, addValue, adding }: any) {
     <form onSubmit={handleSubmit(onSubmit)} className="w-full flex items-end gap-2">
       <div className="flex gap-2 w-full">
         <TextInput
-          label="Label"
+          label="label"
           className="w-full"
-          placeholder="Label (e.g. CNIC)"
+          placeholder={t("egCnic")}
           control={control}
           name="name"
           disabled={adding}
         />
         <TextInput
-          label="Value"
+          label="value"
           className="w-full"
-          placeholder="Value (e.g. cnic)"
+          placeholder={t("egCnicSmall")}
           control={control}
           name="value"
           disabled={adding}
@@ -52,7 +54,7 @@ export function AddValueForm({ doc, addValue, adding }: any) {
       </div>
       <Button type="submit" disabled={adding} className="">
         <PlusCircle className="h-4 w-4 mr-1" />
-        {adding ? "Adding…" : "Add"}
+        {adding ? t("adding") : t("addBtn")}
       </Button>
     </form>
   );

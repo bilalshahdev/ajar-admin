@@ -80,11 +80,11 @@ const Faqs = () => {
 
   return (
     <div>
-      <SearchInput
-        className="w-full ml-auto"
-        onChange={(e) => setSearch(e)}
-        placeholder="Search Faq"
-      />
+        <SearchInput
+          className="w-full ml-auto"
+          onChange={(e) => setSearch(e)}
+          placeholder="searchFaq"
+        />
       <DataTable
         cols={cols}
         data={filteredFaqs}

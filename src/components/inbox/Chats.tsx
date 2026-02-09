@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { limit } from "@/config/constants";
 import { setLoading, setError, setChats } from "@/lib/store/slices/chatsSlice";
+import { useTranslations } from "next-intl";
 
 const Chats = ({
   chatId,
@@ -22,6 +23,7 @@ const Chats = ({
   setChatId: (id: string | null) => void;
   className?: string;
 }) => {
+  const t = useTranslations();
   const { userId } = useAuth();
   const dispatch = useDispatch();
   const {
@@ -48,13 +50,13 @@ const Chats = ({
 
   return (
     <div className={cn("space-y-2 overflow-y-auto", className)}>
-      <div className="text-lg font-semibold">Chats</div>
+      <div className="text-lg font-semibold">{t("translation.chats")}</div>
       {loading ? (
-        <Small className="text-muted-foreground">Loading...</Small>
+        <Small className="text-muted-foreground">{t("translation.loading")}</Small>
       ) : error ? (
         <Small className="text-red-500">{error}</Small>
       ) : chats.length === 0 ? (
-        <Small className="text-muted-foreground">No chats</Small>
+        <Small className="text-muted-foreground">{t("translation.noChats")}</Small>
       ) : (
         chats.map((chat: Chat) => {
           const otherUser = chat.participants.find(

@@ -111,7 +111,7 @@ const RefundRequests = () => {
           <Label>List of Refund Requests</Label>
           <div className="flex gap-2">
             <SearchInput
-              placeholder="Search Refund Request"
+              placeholder="searchRefundRequest"
               onChange={(e) => setSearch(e)}
               debounceDelay={500}
             />

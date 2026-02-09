@@ -28,8 +28,10 @@ import { Dropdown } from "@/types";
 import { Database, Search, TriangleAlert, XCircle } from "lucide-react";
 
 import { AddValueForm } from "../forms/AddValueForm";
+import { useTranslations } from "next-intl";
 
 export default function DropdownDetails({ name }: { name: string }) {
+  const t = useTranslations();
   const { data, isLoading, isError } = useGetDropdownByName(name, true);
   const doc: Dropdown | undefined = data?.data;
 
@@ -67,11 +69,11 @@ export default function DropdownDetails({ name }: { name: string }) {
         <div className="pb-3">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-xl sm:text-2xl">{doc?.name ?? ""}</div>
+              <div className="text-xl sm:text-2xl capitalize">{doc?.name ?? ""}</div>
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <Badge variant="secondary" className="gap-1">
                   <Database className="h-3.5 w-3.5" />
-                  {doc?.values?.length ?? 0} values
+                  {doc?.values?.length ?? 0} {t("translation.values")}
                 </Badge>
               </div>
             </div>
@@ -84,13 +86,13 @@ export default function DropdownDetails({ name }: { name: string }) {
           {isError && (
             <div className="flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               <TriangleAlert className="h-4 w-4" />
-              Failed to load dropdown. Try refreshing.
+              {t("failedToLoadDropdown")}
             </div>
           )}
 
           {!doc && !isError && (
             <div className="text-sm text-muted-foreground">
-              No dropdown found for “{name}”.
+              {t("noDropdownFound")}
             </div>
           )}
 
@@ -102,7 +104,7 @@ export default function DropdownDetails({ name }: { name: string }) {
                 <Input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
-                  placeholder="Search by name or value…"
+                  placeholder={t("search.searchByNameOrValue")}
                   className="pl-8"
                 />
               </div>
@@ -114,8 +116,8 @@ export default function DropdownDetails({ name }: { name: string }) {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[40%]">Name</TableHead>
-                      <TableHead>Value</TableHead>
+                      <TableHead className="w-[40%]">{t(`translation.name`)}</TableHead>
+                      <TableHead>{t(`translation.value`)}</TableHead>
                       <TableHead className="w-[60px] text-right"></TableHead>
                     </TableRow>
                   </TableHeader>

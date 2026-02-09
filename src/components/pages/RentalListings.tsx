@@ -92,7 +92,7 @@ const RentalListings = () => {
       <SearchInput
         className="w-full ml-auto"
         onChange={(e) => setSearch(e)}
-        placeholder="Search Rental Request"
+        placeholder="searchRentalRequest"
       />
       <DataTable
         cols={cols}

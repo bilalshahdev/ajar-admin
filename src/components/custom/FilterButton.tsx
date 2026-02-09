@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { AlertTriangle, Check, ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 type Option = { label: string; value: string };
@@ -31,6 +32,7 @@ export const FilterButton = ({
   alertText = "You can select multiple values.",
   align = "start",
 }: FilterButtonProps) => {
+  const t = useTranslations("status");
   const [open, setOpen] = useState(false);
 
   const isSelected = (val: string) =>
@@ -64,7 +66,7 @@ export const FilterButton = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" className="min-w-[150px] justify-between">
-          {selectedLabel()}
+          {t(selectedLabel())}
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </PopoverTrigger>
@@ -82,7 +84,7 @@ export const FilterButton = ({
                 key={opt.value}
                 onSelect={() => handleSelect(opt.value)}
               >
-                <span>{opt.label}</span>
+                <span>{t(opt.label)}</span>
                 {isSelected(opt.value) && <Check className="ml-auto h-4 w-4" />}
               </CommandItem>
             ))}

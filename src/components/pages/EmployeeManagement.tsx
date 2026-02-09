@@ -10,12 +10,12 @@ const EmployeeManagement = () => {
         defaultValue="employees"
         tabs={[
           {
-            label: "Employees",
+            label: "employees",
             value: "employees",
             content: <Employees />,
           },
           {
-            label: "Employee Roles",
+            label: "employeeRoles",
             value: "employee-roles",
             content: <EmployeeRoles />,
           },

@@ -58,8 +58,8 @@ const ContactDetails = () => {
 
   return (
     <Container
-      subtitle="Contact Details"
-      addBtnTitle="Contact"
+      subtitle="contactDetails"
+      addBtnTitle="contact"
       isDialog
       dialogContent={<ContactDetailForm />}
     >

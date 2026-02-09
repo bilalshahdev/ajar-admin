@@ -1,6 +1,7 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useTranslations } from "next-intl";
 
 type TabItem = {
   label: string;
@@ -15,6 +16,7 @@ interface BxTabsProps {
 }
 
 export default function BxTabs({ defaultValue, tabs, className = "" }: BxTabsProps) {
+  const t = useTranslations();
   return (
     <Tabs defaultValue={defaultValue} className={className}>
       <TabsList className="mb-4">
@@ -24,7 +26,7 @@ export default function BxTabs({ defaultValue, tabs, className = "" }: BxTabsPro
             value={tab.value}
             className="cursor-pointer"
           >
-            {tab.label}
+            {t(`translation.${tab.label}`)}
           </TabsTrigger>
         ))}
       </TabsList>

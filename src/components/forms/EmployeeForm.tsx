@@ -18,21 +18,15 @@ import {
 import { EmployeeRole } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useTranslations } from "next-intl"; // Added import
 
 const statusOptions = [
-  { label: "Active", value: "active" },
-  { label: "Blocked", value: "blocked" },
+  { label: "active", value: "active" },
+  { label: "blocked", value: "blocked" },
 ];
 
 export default function EmployeeForm({ id }: { id?: string }) {
+  const t = useTranslations("translation"); // Initialize translation scoped to translation
   const router = useRouter();
 
   const { data: rolesData, isLoading: rolesLoading } = useGetEmployeeRoles();
@@ -121,34 +115,34 @@ export default function EmployeeForm({ id }: { id?: string }) {
         <TextInput
           control={control}
           name="name"
-          label="Full Name"
-          placeholder="Enter full name"
+          label="fullName"
+          placeholder={t("enterValue", { value: t("fullName") })}
         />
         <TextInput
           control={control}
           name="email"
-          label="Email Address"
+          label="emailAddress"
           type="email"
-          placeholder="Enter email"
+          placeholder={t("enterValue", { value: t("emailAddress") })}
         />
         <TextInput
           control={control}
           name="phone"
-          label="Phone Number"
-          placeholder="Enter phone number"
+          label="phoneNumber"
+          placeholder={t("enterValue", { value: t("phoneNumber") })}
         />
         <PasswordInput
           control={control}
           name="password"
-          label="Password"
-          placeholder="Enter password"
+          label="password"
+          placeholder={t("enterValue", { value: t("password") })}
           cPassword="confirmPassword"
         />
         {employee && employeeRoles.length > 0 && (
           <SelectInput
             control={control}
             name="allowAccess"
-            label="Allowed Permission"
+            label="allowedPermission"
             options={employeeRoles}
             labelKey="name"
             valueKey="_id"
@@ -157,16 +151,16 @@ export default function EmployeeForm({ id }: { id?: string }) {
         <TextInput
           control={control}
           name="address"
-          label="Address"
-          placeholder="Enter address"
+          label="address"
+          placeholder={t("enterValue", { value: t("address") })}
         />
         <SelectInput
           control={control}
           name="status"
-          label="Status"
+          label="status"
           options={statusOptions}
         />
-        <FileInput control={control} name="image" label="Profile Image" />
+        <FileInput control={control} name="image" label="profileImage" />
       </div>
 
       <Button
@@ -175,11 +169,11 @@ export default function EmployeeForm({ id }: { id?: string }) {
         variant="button"
         disabled={isPending}
       >
-        {isPending ? <Loader /> : id ? "Update Employee" : "Create Employee"}
+        {isPending ? <Loader /> : id ? t("updateEmployee") : t("addEmployee")}
       </Button>
       {error && (
         <p className="text-red-500">
-          {error?.message || "Something went wrong"}
+          {error?.message || t("somethingWentWrong")}
         </p>
       )}
     </form>

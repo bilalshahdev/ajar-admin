@@ -76,7 +76,7 @@ const UsersList = ({ users }: { users: User[] }) => {
         <Label>List of users</Label>
         <div className="flex gap-2">
           <SearchInput
-            placeholder="Search User"
+            placeholder="searchUser"
             onChange={(e) => setSearch(e)}
             debounceDelay={500}
           />

@@ -19,6 +19,7 @@
     "faq": "FAQ",
     "field": "Field",
     "dropdowns": "Dropdowns",
+    "editDropdown": "Edit Dropdown",
     "administration": "Administration",
     "inbox": "Inbox",
     "logout": "Logout",
@@ -254,12 +255,48 @@
     "activeUsers": "Active Users",
     "inactiveUsers": "Inactive Users",
     "blockedUsers": "Blocked Users",
-    "total" : "Total {value}",
-    "viewDocuments" : "View Documents",
+    "total": "Total {value}",
+    "viewDocuments": "View Documents",
     "delete": "Delete",
     "cancel": "Cancel",
     "revenueBreakdown": "Revenue Breakdown",
-    "performanceIndicators": "Performance Indicators"
+    "performanceIndicators": "Performance Indicators",
+    "chats": "Chats",
+    "noChats": "No chats found",
+    "startConversation": "Start the conversation!",
+    "selectChatToStart": "Select a chat to start",
+    "queries": "Queries",
+    "contactDetails": "Contact Details",
+    "contact": "Contact",
+    "enterValue": "Enter {value}",
+    "submit": "Submit",
+    "egCnic": "e.g. CNIC",
+    "egCnicSmall": "e.g. cnic",
+    "addBtn": "Add",
+    "adding": "Adding...",
+    "employee": "Employee",
+    "employees": "Employees",
+    "employeeRoles": "Employee Roles",
+    "roleName": "Role Name",
+    "permission": "Permission",
+    "permissions": "Permissions",
+    "rolePermission": "Role-Permission",
+    "editEmployeeRole": "Edit Employee Role",
+    "selectAccess": "Select access...",
+    "noPermissionFound": "No permission found.",
+    "searchPermission": "Search permission...",
+    "saveRole": "Save Role",
+    "active": "Active",
+    "blocked": "Blocked",
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "allowedPermission": "Allowed Permission",
+    "profileImage": "Profile Image",
+    "updateEmployee": "Update Employee",
+    "somethingWentWrong": "Something went wrong"
   },
   "confirm": {
     "logout": {
@@ -271,19 +308,52 @@
     }
   },
   "date": {
-    "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "daysShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "monthsShort": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
     "week": "Week {{value}}"
   },
-  "status" : {
+  "status": {
     "active": "Active",
     "inactive": "Inactive",
     "blocked": "Blocked",
-    "unblocked": "Unblocked"
+    "unblocked": "Unblocked",
+    "all": "All"
   },
   "search": {
     "placeholder": "Search...",
     "noResults": "No results found",
-    "noDocuments": "No documents found"
+    "noDocuments": "No documents found",
+    "noData": "No Data",
+    "searchTicket": "Search ticket",
+    "searchUser": "Search user",
+    "searchEmployeeRole": "Search employee role",
+    "searchEmployee": "Search employee",
+    "searchFaq": "Search FAQ",
+    "searchRefundRequest": "Search refund request",
+    "searchRentalRequest": "Search rental request",
+    "failedToLoadDropdown": "Failed to load dropdown",
+    "noDropdownFound": "No dropdown found",
+    "searchByNameOrValue": "Search by name or value"
   }
 }

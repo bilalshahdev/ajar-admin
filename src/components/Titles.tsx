@@ -19,11 +19,12 @@ export const PageTitle = ({ title }: { title: string }) => {
 };
 
 export const PageSubtitle = ({ subtitle }: { subtitle: string }) => {
+  const t = useTranslations();
   return (
     <Container className="h-12">
       <div className="flex items-center w-full h-full gap-4 md:gap-8 capitalize">
         <h3 className="md:text-lg font-semibold">
-          {subtitle}
+          {t(`translation.${subtitle}`)}
         </h3>
       </div>
     </Container>

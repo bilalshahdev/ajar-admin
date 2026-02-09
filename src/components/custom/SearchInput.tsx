@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type Props = {
   placeholder?: string;
@@ -18,6 +19,7 @@ export const SearchInput = ({
   debounceDelay = 500,
   className,
 }: Props) => {
+  const t = useTranslations("search");
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export const SearchInput = ({
     <Input
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      placeholder={placeholder}
+      placeholder={t(`${placeholder}`)}
       className={cn("w-full max-w-sm", className)}
     />
   );

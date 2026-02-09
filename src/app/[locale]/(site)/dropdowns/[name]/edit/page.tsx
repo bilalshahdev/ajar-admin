@@ -8,7 +8,7 @@ const EditDropdown = async ({
 }) => {
   const { name } = await params;
   return (
-    <Container title="Edit Dropdown">
+    <Container title="editDropdown">
       <DropdownDetails name={name} />
     </Container>
   );

@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 const FaqForm = ({
   id,
@@ -17,6 +18,7 @@ const FaqForm = ({
   id?: string;
   closeDialog?: () => void;
 }) => {
+  const t = useTranslations("translation");
   const isEditMode = Boolean(id);
 
   // ✅ Always call hooks at the top
@@ -74,25 +76,25 @@ const FaqForm = ({
         <TextInput
           name="question"
           label="question"
-          placeholder="Enter question"
+          placeholder={t("enterValue", { value: t("question") })}
           control={control}
         />
         <TextInput
           name="answer"
           label="answer"
-          placeholder="Enter answer"
+          placeholder={t("enterValue", { value: t("answer") })}
           control={control}
         />
         <TextInput
           name="order"
           label="order"
-          placeholder="Enter order"
+          placeholder={t("enterValue", { value: t("order") })}
           type="number"
           min={1}
           control={control}
         />
         <Button type="submit" variant="button">
-          Submit
+          {t("submit")}
         </Button>
       </form>
     </FormProvider>

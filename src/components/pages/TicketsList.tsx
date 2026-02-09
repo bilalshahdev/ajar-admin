@@ -102,7 +102,7 @@ const TicketsList = () => {
       <SearchInput
         className="w-full ml-auto"
         onChange={(e) => setSearch(e)}
-        placeholder="Search Ticket"
+        placeholder="searchTicket"
       />
       <DataTable
         cols={cols}

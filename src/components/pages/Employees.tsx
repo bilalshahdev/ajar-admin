@@ -72,10 +72,10 @@ const Employees = () => {
   };
 
   const statusOptions = [
-    { label: "All", value: "all" },
-    { label: "Active", value: "active" },
-    { label: "Inactive", value: "inactive" },
-    { label: "Blocked", value: "blocked" },
+    { label: "all", value: "all" },
+    { label: "active", value: "active" },
+    { label: "inactive", value: "inactive" },
+    { label: "blocked", value: "blocked" },
   ];
 
   if (isLoading) {
@@ -98,19 +98,19 @@ const Employees = () => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-4">
           <SearchInput
-            placeholder="Search employee"
+            placeholder="searchEmployee"
             onChange={(e) => setSearch(e)}
             debounceDelay={500}
           />
 
           <FilterButton
-            label="Status"
+            label="status"
             value={selectedStatus}
             onChange={(val) => setSelectedStatus(val as string)}
             options={statusOptions}
           />
         </div>
-        <AddButton addBtnTitle="Employee" />
+        <AddButton addBtnTitle="employee" />
       </div>
       <DataTable
         cols={cols}

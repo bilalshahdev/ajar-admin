@@ -92,7 +92,7 @@ const Queries = () => {
       <SearchInput
         className="w-full ml-auto"
         onChange={(e: string) => setSearch(e)}
-        placeholder="Search Ticket"
+        placeholder="searchTicket"
       />
       <DataTable cols={cols} data={queries} row={row} />
     </div>

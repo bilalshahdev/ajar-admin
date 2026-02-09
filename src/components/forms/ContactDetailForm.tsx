@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import TextInput from "./fields/TextInput";
 import { toast } from "sonner";
 import Loader from "../Loader";
+import { useTranslations } from "next-intl";
 const ContactDetailForm = ({
   id,
   closeDialog,
@@ -20,6 +21,7 @@ const ContactDetailForm = ({
   id?: string;
   closeDialog?: () => void;
 }) => {
+  const t = useTranslations("translation");
   const isEditMode = Boolean(id);
   const { data: contact } = useContact(id!, isEditMode);
 
@@ -83,26 +85,26 @@ const ContactDetailForm = ({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
       <TextInput
         name="phone"
-        label="Phone"
-        placeholder="Enter phone"
+        label="phone"
+        placeholder={t("enterValue", { value: t("phone") })}
         control={control}
       />
       <TextInput
         name="email"
-        label="Email"
-        placeholder="Enter email"
+        label="email"
+        placeholder={t("enterValue", { value: t("email") })}
         control={control}
       />
       <TextInput
         name="address"
-        label="Address"
-        placeholder="Enter address"
+        label="address"
+        placeholder={t("enterValue", { value: t("address") })}
         control={control}
       />
       <TextInput
         name="order"
-        label="Order"
-        placeholder="Enter order"
+        label="order"
+        placeholder={t("enterValue", { value: t("order") })}
         control={control}
       />
       <Button

@@ -67,7 +67,7 @@ export function DataTable<T>({
     <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">
       {data.length === 0 ? (
         <div className="h-80 flex items-center justify-center text-muted-foreground text-sm">
-          No Data
+          {t(`search.noData`)}
         </div>
       ) : (
         <Table className={cn("h-full", tableClassName)}>

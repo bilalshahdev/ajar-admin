@@ -14,8 +14,10 @@ import ResponseError from "../ResponseError";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { TableCell } from "../ui/table";
 import EmployeeRoleForm from "../forms/EmployeeRoleForm";
+import { useTranslations } from "next-intl";
 
 const EmployeeRoles = () => {
+  const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetEmployeeRoles();
   const { employeeRoles = [], limit, total } = data?.data || {};
@@ -33,14 +35,14 @@ const EmployeeRoles = () => {
     });
   }, [employeeRoles, search]);
 
-  const cols = ["ID", "Role name", "Permissions", "Actions"];
+  const cols = ["id", "roleName", "permissions", "actions"];
   const row = (employeeRole: any) => {
     return (
       <>
         <TableCell>{employeeRole._id.slice(-4)}</TableCell>
         <HighlightCell text={employeeRole.name} query={search} />
         <TableCell>
-          {employeeRole.permissions?.length || 0} Permissions
+          {employeeRole.permissions?.length || 0} {t("permissions")}
         </TableCell>
         <TableCell className="flex gap-4">
           <TableActions
@@ -56,7 +58,7 @@ const EmployeeRoles = () => {
               })
             }
             editDialog={{
-              title: "Edit Employee Role",
+              title: t("editEmployeeRole"),
               content: <EmployeeRoleForm id={employeeRole._id} />,
               modal: false,
             }}
@@ -87,13 +89,13 @@ const EmployeeRoles = () => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-4">
           <SearchInput
-            placeholder="Search employee role"
+            placeholder="searchEmployeeRole"
             onChange={(e) => setSearch(e)}
             debounceDelay={500}
           />
         </div>
         <AddButton
-          addBtnTitle="Role-permission"
+          addBtnTitle="rolePermission"
           isDialog
           dialogContent={<EmployeeRoleForm />}
           modal={false}

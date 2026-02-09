@@ -10,12 +10,12 @@ const HelpSupportPage = () => {
         defaultValue="queries"
         tabs={[
           {
-            label: "Queries",
+            label: "queries",
             value: "queries",
             content: <Queries />,
           },
           {
-            label: "Contact details",
+            label: "contactDetails",
             value: "contact-details",
             content: <ContactDetails />,
           },

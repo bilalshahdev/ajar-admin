@@ -180,10 +180,10 @@ const ChatMessages = ({ className }: { className?: string }) => {
   }, [messages, userId, isChatActive]);
 
   if (!chatId) {
-    return <ResStatus text="Select a chat to start" />;
+    return <ResStatus text="selectChatToStart" />;
   }
   if (isLoading) {
-    return <ResStatus text="Loading..." />;
+    return <ResStatus text="loading" />;
   }
   if (error) {
     return <ResponseError error={error?.message || "Something went wrong"} />;

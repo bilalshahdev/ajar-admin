@@ -26,6 +26,7 @@ import Loader from "../Loader";
 import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { useTranslations } from "next-intl";
 
 const accessOptions = [
   { value: "stats", label: "Stats" },
@@ -69,6 +70,7 @@ const EmployeeRoleForm = ({
   id?: string;
   closeDialog?: () => void;
 }) => {
+  const t = useTranslations("translation");
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [permission, setPermission] = useState<Permission>({
@@ -174,10 +176,10 @@ const EmployeeRoleForm = ({
     <form onSubmit={onSubmit} className="space-y-4">
       {/* Role Name */}
       <div className="space-y-2">
-        <Label>Role name</Label>
+        <Label>{t("roleName")}</Label>
         <Input
           type="text"
-          placeholder="Role name"
+          placeholder={t("enterValue", { value: t("roleName") })}
           value={allowAccess.name}
           onChange={(e) =>
             setAllowAccess({ ...allowAccess, name: e.target.value })
@@ -187,7 +189,7 @@ const EmployeeRoleForm = ({
 
       {/* Permission Selection */}
       <div className="space-y-2 border rounded-lg p-3">
-        <Label>Add Permission</Label>
+        <Label>{t("add", { value: t("permission") })}</Label>
         <div className="flex items-center justify-between gap-2">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -200,14 +202,14 @@ const EmployeeRoleForm = ({
               >
                 {value
                   ? accessOptions.find((a) => a.value === value)?.label
-                  : "Select access..."}
+                  : t("selectAccess")}
                 <ChevronsUpDown className="opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0 z-50" align="start">
               <Command>
-                <CommandInput placeholder="Search permission..." />
-                <CommandEmpty>No permission found.</CommandEmpty>
+                <CommandInput placeholder={t("searchPermission")} />
+                <CommandEmpty>{t("noPermissionFound")}</CommandEmpty>
                 <CommandGroup className="h-48 overflow-scroll">
                   {availableAccessOptions.map((access) => (
                     <CommandItem
@@ -232,7 +234,7 @@ const EmployeeRoleForm = ({
             onClick={addPermission}
             disabled={disableAddPermission()}
           >
-            Add
+            {t("addBtn")}
           </Button>
         </div>
         {/* i want the label of text also to be clickable and make checkbox check uncheck */}
@@ -257,7 +259,7 @@ const EmployeeRoleForm = ({
       {/* Added Permissions */}
       {allowAccess?.permissions?.length ? (
         <div>
-          <Label className="font-medium text-base">Permissions</Label>
+          <Label className="font-medium text-base">{t("permissions")}</Label>
           <div className="max-h-32 overflow-scroll rounded-lg border p-2 space-y-2">
             {allowAccess.permissions.map(({ access, operations }: any, i) => (
               <div
@@ -297,7 +299,7 @@ const EmployeeRoleForm = ({
         className="w-full"
         variant="button"
       >
-        {addLoading || updateLoading ? <Loader /> : "Save Role"}
+        {addLoading || updateLoading ? <Loader /> : t("saveRole")}
       </Button>
     </form>
   );

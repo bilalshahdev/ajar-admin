@@ -4,7 +4,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useTranslations } from "next-intl";
 
 interface TooltipProps {
   children: React.ReactNode;
@@ -13,12 +12,11 @@ interface TooltipProps {
 }
 
 const Tooltip = ({ children, content, asChild }: TooltipProps) => {
-  const t = useTranslations();
   return (
     <TooltipProvider>
       <TooltipComponent>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>{t(`translation.${content}`)}</TooltipContent>
+        <TooltipContent>{content}</TooltipContent>
       </TooltipComponent>
     </TooltipProvider>
   );
