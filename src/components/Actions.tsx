@@ -13,6 +13,7 @@ import ConfirmDialog from "./ConfirmDialog";
 import Tooltip from "./Tooltip";
 import { allowedOperations } from "@/utils/auth";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type ActionType = "view" | "edit" | "delete" | "settings";
 
@@ -51,6 +52,7 @@ const TableActions: React.FC<TableActionsProps> = ({
   editDialog,
   viewDialog,
 }) => {
+  const t = useTranslations();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
@@ -163,17 +165,18 @@ const TableActions: React.FC<TableActionsProps> = ({
       {/* ✅ Delete Action */}
       {isDelete && actions.includes("delete") && onDelete && (
         <ConfirmDialog
-          title={`Delete ${module}`}
-          description={`Are you sure you want to delete this ${module.toLowerCase()}?`}
-          confirmText="Delete"
+          title={t("confirm.delete.title", { module: t(`translation.${module.toLowerCase()}`) })}
+          description={t("confirm.delete.description", { module: t(`translation.${module.toLowerCase()}`) })}
+          confirmText={t("translation.delete")}
           cancelText="Cancel"
           onConfirm={(closeDialog) => onDelete(id, closeDialog)}
           loading={deleteLoading}
           variant="destructive"
         >
-          <Tooltip content={`Delete ${module}`}>
+          <FiTrash2 size={18} className="cursor-pointer text-red-500" />
+          {/* <Tooltip content={`Delete ${module}`}>
             <FiTrash2 size={18} className="cursor-pointer text-red-500" />
-          </Tooltip>
+          </Tooltip> */}
         </ConfirmDialog>
       )}
     </div>

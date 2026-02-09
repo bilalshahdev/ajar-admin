@@ -31,10 +31,12 @@ import {
 } from "../ui/dialog";
 import UserDetailsLazy from "../UserDetails";
 import Tooltip from "../Tooltip";
+import { useTranslations } from "next-intl";
 
 const userStatus = ["active", "inactive", "blocked", "unblocked"];
 
 const Users = () => {
+  const t = useTranslations();
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetUsers({ page, limit: 10 });
   const { mutate: deleteUser, isPending: deleteLoading } = useDeleteUser();
@@ -60,7 +62,7 @@ const Users = () => {
 
   const UserStats = [
     {
-      title: "Total Users",
+      title: "totalUsers",
       value: totalUsers?.toString() || "0",
       change: {
         value: 0,
@@ -68,7 +70,7 @@ const Users = () => {
       },
     },
     {
-      title: "Active Users",
+      title: "activeUsers",
       value: totalActiveUsers?.toString() || "0",
       change: {
         value: 0,
@@ -76,7 +78,7 @@ const Users = () => {
       },
     },
     {
-      title: "Inactive Users",
+      title: "inactiveUsers",
       value: totalInactiveUsers?.toString() || "0",
       change: {
         value: 0,
@@ -84,7 +86,7 @@ const Users = () => {
       },
     },
     {
-      title: "Blocked Users",
+      title: "blockedUsers",
       value: totalBlockedUsers?.toString() || "0",
       change: {
         value: 0,
@@ -123,7 +125,7 @@ const Users = () => {
           <SelectContent>
             {userStatus.map((status) => (
               <SelectItem key={status} value={status} className="capitalize">
-                {status}
+                {t(`status.${status}`)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -132,13 +134,13 @@ const Users = () => {
       <TableCell>
         <Dialog>
           <DialogTrigger>
-            <Tooltip content="View Documents">
+            <Tooltip content="viewDocuments">
               <IoDocuments size={18} className="text-blue-500 cursor-pointer" />
             </Tooltip>
           </DialogTrigger>
           <DialogContent className="max-h-[600px] overflow-scroll">
             <DialogHeader>
-              <DialogTitle>Documents</DialogTitle>
+              <DialogTitle>{t(`translation.documents`)}</DialogTitle>
             </DialogHeader>
             <UserDetailsLazy userId={user._id} />
           </DialogContent>

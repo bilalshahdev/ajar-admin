@@ -11,6 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface ConfirmDialogProps {
   title?: string;
@@ -35,6 +36,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   children,
   asChild,
 }) => {
+  const t = useTranslations();
   const [open, setOpen] = React.useState(false);
   const closeDialog = () => setOpen(false);
 
@@ -55,7 +57,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               onClick={() => setOpen(false)}
               disabled={loading}
             >
-              {cancelText}
+              {t(`translation.cancel`)}
             </Button>
             <Button
               variant={variant}

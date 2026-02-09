@@ -248,16 +248,39 @@
     "next": "التالي",
     "goToPreviousPage": "الذهاب إلى الصفحة السابقة",
     "goToNextPage": "الذهاب إلى الصفحة التالية",
-    "morePages": "المزيد من الصفحات"
+    "morePages": "المزيد من الصفحات",
+    "totalUsers": "إجمالي المستخدمين",
+    "activeUsers": "المستخدمون النشطون",
+    "inactiveUsers": "المستخدمون غير النشطين",
+    "blockedUsers": "المستخدمون المحظورون",
+    "total": "إجمالي {value}",
+    "viewDocuments" : "عرض المستندات",
+    "delete": "حذف",
+    "cancel": "إلغاء"
   },
   "confirm": {
     "logout": {
       "description": "هل أنت متأكد أنك تريد تسجيل الخروج؟"
+    },
+    "delete": {
+      "title": "حذف {module}",
+      "description": "هل أنت متأكد أنك تريد حذف {module}؟"
     }
   },
   "date": {
     "daysShort": ["أحد", "إثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"],
     "monthsShort": ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
     "week": "أسبوع {{value}}"
+  },
+  "status" : {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "blocked": "محظور",
+    "unblocked": "غير محظور"
+  },
+  "search": {
+    "placeholder": "بحث...",
+    "noResults": "لا نتائج",
+    "noDocuments": "لا مستندات"
   }
 }

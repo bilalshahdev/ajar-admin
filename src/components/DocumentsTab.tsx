@@ -29,6 +29,7 @@ import { useState } from "react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { toast } from "sonner";
 import MyImage from "./custom/MyImage";
+import { useTranslations } from "next-intl";
 
 type Document = {
   _id: string;
@@ -46,10 +47,11 @@ export default function DocumentsTab({
   userId: string;
   documents: Document[];
 }) {
+  const t = useTranslations();
   if (!documents?.length) {
     return (
       <div className="text-sm text-muted-foreground">
-        No documents uploaded.
+        {t("search.noDocuments")}
       </div>
     );
   }
@@ -57,7 +59,7 @@ export default function DocumentsTab({
   return (
     <div className="grid grid-cols-1 gap-4">
       <div className="text-sm text-muted-foreground">
-        {"Total " + documents?.length}
+        {t("translation.total", { value: documents?.length })}
       </div>
       {documents.map((doc) => (
         <DocumentReviewCard key={doc._id} userId={userId} doc={doc} />

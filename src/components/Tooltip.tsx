@@ -1,10 +1,10 @@
-// tooltip reuseable component
 import {
   Tooltip as TooltipComponent,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
 interface TooltipProps {
   children: React.ReactNode;
@@ -13,11 +13,12 @@ interface TooltipProps {
 }
 
 const Tooltip = ({ children, content, asChild }: TooltipProps) => {
+  const t = useTranslations();
   return (
     <TooltipProvider>
       <TooltipComponent>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>{content}</TooltipContent>
+        <TooltipContent>{t(`translation.${content}`)}</TooltipContent>
       </TooltipComponent>
     </TooltipProvider>
   );

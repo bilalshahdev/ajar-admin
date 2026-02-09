@@ -248,16 +248,39 @@
     "next": "Next",
     "goToPreviousPage": "Go to previous page",
     "goToNextPage": "Go to next page",
-    "morePages": "More pages"
+    "morePages": "More pages",
+    "totalUsers": "Total Users",
+    "activeUsers": "Active Users",
+    "inactiveUsers": "Inactive Users",
+    "blockedUsers": "Blocked Users",
+    "total" : "Total {value}",
+    "viewDocuments" : "View Documents",
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "confirm": {
     "logout": {
       "description": "Are you sure you want to logout?"
+    },
+    "delete": {
+      "title": "Delete {value}",
+      "description": "Are you sure you want to delete this {value}?"
     }
   },
   "date": {
     "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     "week": "Week {{value}}"
+  },
+  "status" : {
+    "active": "Active",
+    "inactive": "Inactive",
+    "blocked": "Blocked",
+    "unblocked": "Unblocked"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "noResults": "No results found",
+    "noDocuments": "No documents found"
   }
 }
