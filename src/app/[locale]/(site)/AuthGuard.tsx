@@ -20,15 +20,18 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   const { refetch, isFetching } = useUser();
 
+  // ✅ Check if current path is an auth page (ignoring locale prefix)
+  const isAuthPage = pathname.includes("/auth/");
+
   useEffect(() => {
     const checkAuth = async () => {
-      const { token, expired, role } = getAuthInfo();
-
-      // Auth pages are always allowed
-      if (pathname.startsWith("/auth")) {
+      // ✅ 1. Early return if on login or signup pages
+      if (isAuthPage) {
         setIsVerified(true);
         return;
       }
+
+      const { token, expired, role } = getAuthInfo();
 
       // 🚪 No token → silent redirect
       if (!token) {
@@ -84,9 +87,10 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     };
 
     checkAuth();
-  }, [pathname, router, refetch, didFetch]);
+  }, [pathname, router, refetch, didFetch, isAuthPage]);
 
-  if (isVerified === null || isFetching) {
+  // ✅ 2. Loader visibility logic
+  if (isVerified === null || (isFetching && !isAuthPage)) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader />

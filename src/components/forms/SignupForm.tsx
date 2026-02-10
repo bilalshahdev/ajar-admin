@@ -144,16 +144,30 @@ const SignupForm = () => {
       />
 
       {/* File Input */}
-      <div className="space-y-1">
-        <label className="text-sm">{t("profileImage")}</label>
-        <input
-          type="file"
-          onChange={(e) => {
-            if (e.target.files?.[0]) setValue("image", e.target.files[0]);
-          }}
-          accept="image/*"
-          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-lg"
-        />
+      <div>
+        <label className="block text-sm font-medium mb-2">
+          {t("profileImage")}
+        </label>
+        <div className="relative">
+          <input
+            type="file"
+            id="file-upload"
+            onChange={(e) => {
+              if (e.target.files?.[0]) setValue("image", e.target.files[0]);
+            }}
+            accept="image/*"
+            className="hidden"
+          />
+          <label
+            htmlFor="file-upload"
+            className="inline-block cursor-pointer px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white hover:bg-gray-50"
+          >
+            {t("chooseFile")}
+          </label>
+          <span className="ml-3 text-sm text-gray-500">
+            {t("noFileChosen")}
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center justify-end gap-2">
