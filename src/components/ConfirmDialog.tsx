@@ -64,7 +64,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               onClick={() => onConfirm?.(closeDialog)}
               disabled={loading}
             >
-              {loading ? t("translation.pleaseWait") : t(`translation.${confirmText}`)}
+              {loading ? t("translation.pleaseWait") : `${confirmText}`}
             </Button>
           </DialogFooter>
         </DialogContent>

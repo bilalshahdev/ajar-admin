@@ -330,7 +330,8 @@
     "agreeWithTerms": "أوافق على الشروط والأحكام",
     "dateOfBirth": "تاريخ الميلاد",
     "nationality": "الجنسية",
-    "signup": "إنشاء حساب"
+    "signup": "إنشاء حساب",
+    "update" : "تحديث"
   },
   "confirm": {
     "logout": {

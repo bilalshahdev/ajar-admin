@@ -30,7 +30,7 @@ const LineChart = ({ filter, users }: LineChartProps) => {
     return chartData.map((item) => {
       const formattedValue = getFormattedLabel(item.value, filter);
       const translationKey = formattedValue.toLowerCase().replace(" ", "");
-
+      
       return {
         ...item,
         value: t(`date.${translationKey}`),

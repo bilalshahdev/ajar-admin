@@ -113,7 +113,7 @@ const ContactDetailForm = ({
         disabled={isLoading}
         className="w-full mt-4"
       >
-        {isLoading ? <Loader /> : id ? "Update" : "Add"}
+        {isLoading ? <Loader /> : id ? t("update") : t("addBtn")}
       </Button>
     </form>
   );

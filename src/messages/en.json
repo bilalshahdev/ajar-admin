@@ -330,7 +330,8 @@
     "agreeWithTerms": "Agree with terms and conditions",
     "dateOfBirth": "Date of Birth",
     "nationality": "Nationality",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+    "update" : "Update"
   },
   "confirm": {
     "logout": {
@@ -361,7 +362,10 @@
     "oct": "Oct",
     "nov": "Nov",
     "dec": "Dec",
-    "week": "Week {value}",
+    "week1": "Week 1",
+    "week2": "Week 2",
+    "week3": "Week 3",
+    "week4": "Week 4",
     "month": "Month {value}",
     "year": "Year {value}"
   },
