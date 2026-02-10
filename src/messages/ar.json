@@ -46,6 +46,7 @@
     "showingUsers": "عرض {value} مستخدم",
     "showingEarnings": "عرض {value} أرباح",
     "trendingUpBy": "ارتفاع بنسبة {value}%",
+    "trendingDownBy": "انخفاض بنسبة {value}%",
     "period": "الفترة: {value}",
     "markAsDefault": "تعيين كافتراضي {value}",
     "add": "إضافة {value}",

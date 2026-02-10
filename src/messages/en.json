@@ -46,6 +46,7 @@
     "showingUsers": "Showing {value} users",
     "showingEarnings": "Showing {value} earnings",
     "trendingUpBy": "Trending up by {value}%",
+    "trendingDownBy": "Trending down by {value}%",
     "period": "Period: {value}",
     "markAsDefault": "Mark as default {value}",
     "add": "Add {value}",
