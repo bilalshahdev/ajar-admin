@@ -8,6 +8,7 @@ import { Label } from "./Typography";
 import { SidebarTrigger } from "./ui/sidebar";
 import User from "./User";
 import { useTranslations } from "next-intl";
+import { Bell } from "lucide-react";
 
 const Navbar = () => {
   const t = useTranslations();
@@ -28,6 +29,9 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="flex items-center gap-4">
+        <Link href="/notifications">
+          <Bell className="w-5 h-5 text-white cursor-pointer hover:scale-110 transition" />
+        </Link>
         <User />
         <LanguageSwitcher />
         <ThemeToggle />

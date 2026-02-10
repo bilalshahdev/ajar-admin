@@ -695,6 +695,16 @@ interface Transaction {
     requestedAt: string;
     __v: number;
 }
+
+interface Notification {
+  _id: string;
+  title: string;
+  message: string;
+  createdAt: string | Date;
+  isRead: boolean;
+  data: NotificationData;
+}
+
 type ListDropdownsResponse = ApiSuccessList<Dropdown>;
 type GetDropdownByIdResponse = ApiSuccessItem<Dropdown>;
 type GetDropdownByNameResponse = ApiSuccessItem<Dropdown>;
