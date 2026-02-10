@@ -73,7 +73,7 @@ const Notification = () => {
                                     <div className="space-y-1">
                                         <h2 className="text-lg font-semibold text-slate-900">All caught up!</h2>
                                         <p className="text-sm text-slate-500 max-w-[200px]">
-                                            You don't have any notifications right now.
+                                            You don&apos;t have any notifications right now.
                                         </p>
                                     </div>
                                 </div>
