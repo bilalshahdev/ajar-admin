@@ -165,8 +165,8 @@ const TableActions: React.FC<TableActionsProps> = ({
       {/* ✅ Delete Action */}
       {isDelete && actions.includes("delete") && onDelete && (
         <ConfirmDialog
-          title={t("confirm.delete.title", { module: t(`translation.${module.toLowerCase()}`) })}
-          description={t("confirm.delete.description", { module: t(`translation.${module.toLowerCase()}`) })}
+          title={t("confirm.delete.title", { value: t(`translation.${module.toLowerCase()}`) })}
+          description={t("confirm.delete.description", { value: t(`translation.${module.toLowerCase()}`) })}
           confirmText={t("translation.delete")}
           cancelText="Cancel"
           onConfirm={(closeDialog) => onDelete(id, closeDialog)}

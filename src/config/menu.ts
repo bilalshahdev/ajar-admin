@@ -12,6 +12,7 @@ import {
   FaUserFriends,
   FaUsers,
   FaVectorSquare,
+  FaWallet 
 } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
 import { PiQuestionMarkFill } from "react-icons/pi";
@@ -49,6 +50,7 @@ export const sidebarMenu: NavMenuItem[] = [
     path: "/analytics",
     icon: FaChartBar,
   },
+  {title : "wallet", path: "/wallet", icon: FaWallet },
   { title: "messages", path: "/messages", icon: FaEnvelope },
   { title: "helpSupport", path: "/help-support", icon: FaQuestion },
   { title: "faqs", path: "/faqs", icon: PiQuestionMarkFill },

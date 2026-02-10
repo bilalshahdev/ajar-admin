@@ -117,6 +117,7 @@ export default function Sidebar({ className }: { className?: string }) {
             description={t("confirm.logout.description")}
             onConfirm={() => handleConfirm()}
             variant="destructive"
+            confirmText={t("translation.confirm")}
             asChild
           >
             <SidebarMenuButton className="bg-red-500 hover:bg-red-600 hover:text-white text-white transition-colors">
