@@ -11,7 +11,6 @@ const Wallet = () => {
     const [showBalance, setShowBalance] = useState(true);
 
     const balance = data?.balance || 0;
-    console.log(balance)
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleString('en-GB', {
