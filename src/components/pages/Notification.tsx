@@ -1,6 +1,6 @@
 "use client"
 
-import { Clock, BellOff} from 'lucide-react'
+import { Clock, BellOff } from 'lucide-react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useNotification } from "@/hooks/useNotification"
@@ -27,7 +27,7 @@ const Notification = () => {
                             </div>
                         ))}
                     </div> :
-                    <div className="max-w-2xl mx-auto p-6">
+                    <div className="max-w-2xl mx-auto p-">
                         <div className="space-y-3">
                             {notifications && notifications.length > 0 ? (
                                 notifications.map((item: Notification) => (
@@ -38,7 +38,7 @@ const Notification = () => {
                                     >
                                         <Card className={`border-none shadow-sm rounded-2xl transition-all duration-200 group-hover:shadow-md ${!item.isRead ? 'bg-blue-50/40 ring-1 ring-blue-100' : 'bg-white'
                                             }`}>
-                                            <CardContent className="p-4">
+                                            <CardContent className="">
                                                 <div className="flex gap-4">
                                                     <div className="relative">
                                                         <div className={`p-2 rounded-full ${!item.isRead ? 'bg-aqua/10 text-aqua' : 'bg-slate-100 text-slate-400'}`}>
