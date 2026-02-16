@@ -20,14 +20,16 @@ export default function RevenueLineChart({
   filter: FilterOption;
   charts: AnalyticsCharts;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
+
   const data = charts.totalRevenue.record.map((d, i) => ({
     label: getFormattedLabel(d.value, filter),
-    "Total Revenue": charts.totalRevenue.record[i].amount,
-    "Platform Commission": charts.platformCommission.record[i].amount,
-    "Owners Payouts": charts.ownersPayouts.record[i].amount,
-    "Refund Issued": charts.refundIssued.record[i].amount,
+    totalRevenue: charts.totalRevenue.record[i]?.amount || 0,
+    platformCommission: charts.platformCommission.record[i]?.amount || 0,
+    ownersPayouts: charts.ownersPayouts.record[i]?.amount || 0,
+    refundIssued: charts.refundIssued.record[i]?.amount || 0,
   }));
+
 
   // Custom tooltip component
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -37,7 +39,7 @@ export default function RevenueLineChart({
           <p className="font-semibold mb-1">{label}</p>
           {payload.map((item: any) => (
             <p key={item.dataKey} className="flex justify-between gap-4">
-              <span>{item.dataKey}</span>
+              <span>{t(`translation.${item.dataKey}`)}</span>
               <span className="font-medium">${item.value.toFixed(2)}</span>
             </p>
           ))}

@@ -84,8 +84,8 @@ export default function RevenueBreakdownBar({
 
                     return (
                       <div className="bg-white p-2 rounded shadow text-xs">
-                        <p className="font-semibold">{item.name}</p>
-                        <p>Value: {item.value}</p>
+                        <p className="font-semibold">{t(`translation.${item.name}`)}</p>
+                        <p>Value: {item.value.toFixed(2)}</p>
                         <p style={{ color: trendColor }}>
                           Change: {item.value.toFixed(2)}% {trendSymbol}
                         </p>

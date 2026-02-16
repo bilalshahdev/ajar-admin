@@ -22,7 +22,7 @@ const Analytics = () => {
     charts = initialAnalyticsChartValues,
     filter,
   } = data?.data || {};
-
+  
   // Map stats to camelCase here so it flows into every component
   const stats = rawStats.map((stat) => ({
     ...stat,

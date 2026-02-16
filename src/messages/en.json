@@ -9,6 +9,7 @@
     "userVerification": "User Verification",
     "rentalListing": "Rental Listing",
     "businessSettings": "Business Settings",
+    "ticket": "Ticket",
     "tickets": "Tickets",
     "refundManagement": "Refund Management",
     "employeeManagement": "Employee Management",
@@ -334,7 +335,15 @@
     "dateOfBirth": "Date of Birth",
     "nationality": "Nationality",
     "signup": "Sign Up",
-    "update" : "Update"
+    "update": "Update",
+    "bookingDetails": "Booking Details",
+    "checkIn": "Check-In",
+    "checkOut": "Check-Out",
+    "userInfo": "User Info",
+    "issue": "Issue",
+    "details": "Details",
+    "created": "Created",
+    "updated": "Updated"
   },
   "confirm": {
     "logout": {
@@ -373,6 +382,7 @@
     "year": "Year {value}"
   },
   "status": {
+    "pending": "Pending",
     "active": "Active",
     "inactive": "Inactive",
     "blocked": "Blocked",

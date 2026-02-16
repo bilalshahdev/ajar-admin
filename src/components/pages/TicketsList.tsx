@@ -23,7 +23,7 @@ const TicketsList = () => {
 
   const tickets = useMemo(() => {
     const raw = data?.data?.tickets || [];
-
+    
     const flattened = raw.map((t: any) => ({
       ...t,
       name: t.user?.name || "",
@@ -81,7 +81,7 @@ const TicketsList = () => {
           <TableActions
             id={ticket._id}
             baseRoute="/tickets"
-            module="Ticket"
+            module="ticket"
             actions={["delete"]}
             onDelete={(id, closeDialog) =>
               deleteTicket(id, {

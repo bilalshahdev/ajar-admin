@@ -9,6 +9,7 @@
     "userVerification": "التحقق من المستخدم",
     "rentalListing": "قائمة الإيجارات",
     "businessSettings": "إعدادات العمل",
+    "ticket": "تذكرة",
     "tickets": "التذاكر",
     "refundManagement": "إدارة الاسترداد",
     "employeeManagement": "إدارة الموظفين",
@@ -334,7 +335,15 @@
     "dateOfBirth": "تاريخ الميلاد",
     "nationality": "الجنسية",
     "signup": "إنشاء حساب",
-    "update" : "تحديث"
+    "update": "تحديث",
+    "bookingDetails": "تفاصيل الحجز",
+    "checkIn": "تسجيل الوصول",
+    "checkOut": "تسجيل المغادرة",
+    "userInfo": "معلومات المستخدم",
+    "issue": "المشكلة",
+    "details": "التفاصيل",
+    "created": "تم الإنشاء",
+    "updated": "تم التحديث"
   },
   "confirm": {
     "logout": {
@@ -345,7 +354,7 @@
       "description": "هل أنت متأكد أنك تريد حذف {module}؟"
     }
   },
- "date": {
+  "date": {
     "sun": "الأحد",
     "mon": "الإثنين",
     "tue": "الثلاثاء",
@@ -370,6 +379,7 @@
     "year": "سنة {value}"
   },
   "status": {
+    "pending": "قيد الانتظار",
     "active": "نشط",
     "inactive": "غير نشط",
     "blocked": "محظور",

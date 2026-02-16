@@ -8,8 +8,10 @@ import { Separator } from "@/components/ui/separator";
 import { useGetTicket } from "@/hooks/useTickets";
 import { format } from "date-fns";
 import TicketDetailSkeleton from "../skeletons/TicketSkeleton";
+import { useTranslations } from "next-intl";
 
 const TicketDetail = ({ id }: { id: string }) => {
+  const t = useTranslations();
   const { data, isLoading, error } = useGetTicket(id, true);
   const ticket = data?.data;
 
@@ -34,7 +36,7 @@ const TicketDetail = ({ id }: { id: string }) => {
   } = ticket || {};
 
   const localeRoomType =
-    booking?.languages.find((lang) => lang.locale === "en")?.translations
+    booking?.languages?.find((lang) => lang.locale === "en")?.translations
       .roomType || booking?.roomType;
 
   return (
@@ -43,40 +45,40 @@ const TicketDetail = ({ id }: { id: string }) => {
         <CardHeader>
           {status && (
             <CardTitle className="text-xl font-semibold flex justify-between items-center">
-              Ticket ID: {id}
-              <Status value={status!} />
+              {t("translation.tickets")} ID: {id}
+              <Status value={t("status." + status.toLowerCase())} />
             </CardTitle>
           )}
         </CardHeader>
         <CardContent className="space-y-4">
           {booking && (
             <div>
-              <h3 className="text-lg font-medium">Booking Details</h3>
+              <h3 className="text-lg font-medium">{t("translation.bookingDetails")}</h3>
               <Separator className="my-2" />
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="font-medium">Check-In:</span>{" "}
+                  <span className="font-medium">{t("translation.checkIn")}:</span>{" "}
                   {format(new Date(booking.dates.checkIn), "PP")}
                 </div>
                 <div>
-                  <span className="font-medium">Check-Out:</span>{" "}
+                  <span className="font-medium">{t("translation.checkOut")}:</span>{" "}
                   {format(new Date(booking.dates.checkOut), "PP")}
                 </div>
                 <div>
-                  <span className="font-medium">Room Type:</span>{" "}
+                  <span className="font-medium">{t("translation.category")}:</span>{" "}
                   {localeRoomType}
                 </div>
                 <div>
-                  <span className="font-medium">Guests:</span>{" "}
+                  <span className="font-medium">{t("translation.users")}:</span>{" "}
                   {booking.noOfGuests}
                 </div>
                 <div>
-                  <span className="font-medium">Total Price:</span> $
-                  {booking.priceDetails.totalPrice}
+                  <span className="font-medium">{t("translation.totalEarnings")}:</span> $
+                  {booking?.priceDetails?.totalPrice}
                 </div>
                 <div>
-                  <span className="font-medium">Extension Charges:</span> $
-                  {booking.extensionCharges.totalPrice}
+                  <span className="font-medium">{t("translation.totalEarning")}:</span> $
+                  {booking?.extensionCharges?.totalPrice}
                 </div>
               </div>
             </div>
@@ -84,7 +86,7 @@ const TicketDetail = ({ id }: { id: string }) => {
 
           {user && (
             <div>
-              <h3 className="text-lg font-medium">User Info</h3>
+              <h3 className="text-lg font-medium">{t("translation.userInfo")}</h3>
               <Separator className="my-2" />
               <div className="flex items-center gap-4">
                 <MyImage
@@ -104,32 +106,32 @@ const TicketDetail = ({ id }: { id: string }) => {
           )}
 
           <div>
-            <h3 className="text-lg font-medium">Issue</h3>
+            <h3 className="text-lg font-medium">{t("translation.issue")}</h3>
             <Separator className="my-2" />
             <div className="text-sm">
               <div>
-                <span className="font-medium">Type:</span> {issueType}
+                <span className="font-medium">{t("translation.type")}:</span> {issueType}
               </div>
               <div>
-                <span className="font-medium">Details:</span> {rentalText}
+                <span className="font-medium">{t("translation.details")}:</span> {rentalText}
               </div>
               <div>
-                <span className="font-medium">Additional Fees:</span> $
+                <span className="font-medium">{t("translation.refundIssued")}:</span> $
                 {additionalFees}
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-medium">Meta</h3>
+            <h3 className="text-lg font-medium">{t("translation.administration")}</h3>
             <Separator className="my-2" />
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="font-medium">Created:</span>{" "}
+                <span className="font-medium">{t("translation.created")}:</span>{" "}
                 {format(new Date(createdAt!), "PPpp")}
               </div>
               <div>
-                <span className="font-medium">Updated:</span>{" "}
+                <span className="font-medium">{t("translation.updated")}:</span>{" "}
                 {format(new Date(updatedAt!), "PPpp")}
               </div>
             </div>
