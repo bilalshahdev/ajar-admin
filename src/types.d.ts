@@ -122,12 +122,12 @@ type ErrorFieldDetail = {
 
 type ErrorDetails = {
   message: string;
-  errors?: ErrorFieldDetail[] | null; // More specific type for errors
+  errors?: ErrorFieldDetail[] | null;
   statusCode?: number | null;
 };
 
 type AsyncResponse<T> = {
-  data: T | null; // Data can be null in case of error
+  data: T | null;
   error: ErrorDetails | null;
   status: "success" | "error";
 };
@@ -366,13 +366,13 @@ type CommonStatus = "pending" | "approved" | "rejected";
 
 interface RefundRequest {
   _id: string;
- booking : {
-   marketplaceListingId: {
-    name : string
+  booking: {
+    marketplaceListingId: {
+      name: string;
+    };
   };
- }
   user: {
-    name : string
+    name: string;
   };
   createdAt: string;
   totalRefundAmount: number;
@@ -461,6 +461,10 @@ interface Field {
     max: number;
   };
   isFixed: boolean;
+  conditional?: {
+    dependsOn: string;
+    value: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
@@ -684,16 +688,16 @@ interface ListDropdownsQuery {
 }
 
 interface Transaction {
-    _id: string;
-    userId: string;
-    type: "credit" | "debit";
-    amount: number;
-    status: "pending" | "succeeded" | "failed";
-    source: string;
-    paymentIntentId: string;
-    createdAt: string;
-    requestedAt: string;
-    __v: number;
+  _id: string;
+  userId: string;
+  type: "credit" | "debit";
+  amount: number;
+  status: "pending" | "succeeded" | "failed";
+  source: string;
+  paymentIntentId: string;
+  createdAt: string;
+  requestedAt: string;
+  __v: number;
 }
 
 interface Notification {

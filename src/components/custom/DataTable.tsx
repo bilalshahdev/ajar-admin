@@ -42,26 +42,21 @@ export function DataTable<T>({
     total: 0,
     page: 1,
     limit: 10,
-    setPage: () => { },
+    setPage: () => {},
   },
 }: DataTableProps<T>) {
-
   const t = useTranslations();
+  const { total = 0, page = 1, limit = 10, setPage } = pagination || {};
 
   useEffect(() => {
     if (!data) return;
 
     const items = data;
-    const total = pagination.total || 0;
-
-    // if current page has no data AND page > 1
-    if (items.length === 0 && pagination.page && pagination.page > 1) {
-      const lastValidPage = Math.ceil(total / (pagination.limit || 10)) || 1;
-
-      // move back safely
-      pagination.setPage(Math.min(pagination.page - 1, lastValidPage));
+    if (items.length === 0 && page && page > 1) {
+      const lastValidPage = Math.ceil(total / (limit || 10)) || 1;
+      setPage(Math.min(page - 1, lastValidPage));
     }
-  }, [data, pagination.page, pagination.limit, pagination.total]);
+  }, [data, page, limit, total, setPage]);
 
   return (
     <div className="flex flex-col gap-4 justify-between md:gap-8 h-full">
@@ -97,11 +92,11 @@ export function DataTable<T>({
       {pagination && (
         <Pagination
           pagination={{
-            total: pagination?.total || 0,
-            page: pagination?.page || 1,
-            limit: pagination?.limit || 10,
+            total,
+            page,
+            limit,
           }}
-          changePage={(newPage) => pagination?.setPage(newPage)}
+          changePage={(newPage) => setPage(newPage)}
         />
       )}
     </div>
