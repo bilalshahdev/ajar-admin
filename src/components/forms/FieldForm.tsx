@@ -257,7 +257,6 @@ export default function FieldForm({ id }: { id?: string }) {
           labelKey="name"
           valueKey="value"
           disabled={!!id}
-          isTranslations={false}
         />
         {typesWithOptions.includes(type) && (
           <FormArrayInput control={control} name="options" label="options" />

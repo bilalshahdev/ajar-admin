@@ -13,8 +13,10 @@ import SmsConfigFormSkeleton from "../skeletons/SmsConfigFormSkeleton";
 import { Button } from "../ui/button";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 const SmsConfigForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("smsModule");
   const smsConfig = data?.data?.pageSettings;
 
@@ -63,47 +65,47 @@ const SmsConfigForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="border p-4 rounded shadow space-y-4">
-            <h3 className="font-semibold mb-2">Twilio</h3>
-            <Switch name="twilio.active" label="Active" control={control} />
+            <h3 className="font-semibold mb-2">{t("twilio")}</h3>
+            <Switch name="twilio.active" label="active" control={control} />
             <TextInput
               name="twilio.sid"
-              label="SID"
-              placeholder="Enter SID"
+              label="sid"
+              placeholder={t("enterSid")}
               control={control}
             />
             <TextInput
               name="twilio.messagingServiceSid"
-              label="Messaging Service SID"
-              placeholder="Enter Messaging Service SID"
+              label="messagingServiceSID"
+              placeholder={t("enterMessagingServiceSid")}
               control={control}
             />
             <TextInput
               name="twilio.token"
-              label="Token"
-              placeholder="Enter Token"
+              label="token"
+              placeholder={t("enterToken")}
               control={control}
             />
             <TextInput
               name="twilio.from"
-              label="From"
-              placeholder="Enter From"
+              label="from"
+              placeholder={t("enterFrom")}
               control={control}
             />
             <TextInput
               name="twilio.otpTemplate"
-              label="OTP Template"
-              placeholder="Enter OTP Template"
+              label="otpTemplate"
+              placeholder={t("enterOtpTemplate")}
               control={control}
             />
           </div>
 
           <div className="border p-4 rounded shadow space-y-4">
-            <h3 className="font-semibold mb-2">2Factor</h3>
-            <Switch name="twoFactor.active" label="Active" control={control} />
+            <h3 className="font-semibold mb-2">{t("2Factor")}</h3>
+            <Switch name="twoFactor.active" label="active" control={control} />
             <TextInput
               name="twoFactor.apiKey"
-              label="API Key"
-              placeholder="Enter API Key"
+              label="apiKey"
+              placeholder={t("enterApiKey")}
               control={control}
             />
           </div>
@@ -114,11 +116,11 @@ const SmsConfigForm = () => {
           variant="button"
           disabled={isPending}
         >
-          {isPending ? "Saving..." : "Save"}
+          {isPending ? t("saving") : t("save")}
         </Button>
         {saveError && (
           <p className="text-red-500 mt-2">
-            {saveError?.message || "Something went wrong"}
+            {saveError?.message || t("somethingWentWrong")}
           </p>
         )}
       </form>

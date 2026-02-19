@@ -16,6 +16,7 @@ import SelectInput from "../forms/fields/SelectInput";
 import Switch from "../forms/fields/Switch";
 import TextInput from "../forms/fields/TextInput";
 import SmtpConfigSkeleton from "../skeletons/SmtpConfigSkeleton";
+import { useTranslations } from "next-intl";
 
 const testMailSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -28,12 +29,12 @@ const SmtpConfig = () => {
         defaultValue="mail-config"
         tabs={[
           {
-            label: "Mail Config",
+            label: "mailConfig",
             value: "mail-config",
             content: <SmtpMailConfigForm />,
           },
           {
-            label: "Send Test Mail",
+            label: "sendTest",
             value: "send-test",
             content: <TestMailForm />,
           },
@@ -48,9 +49,10 @@ export default SmtpConfig;
 //
 // -------------------- SMTP Mail Config Form --------------------
 const SmtpMailConfigForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("mailConfig");
   const smsConfig = data?.data?.pageSettings;
-  console.log(data);
+
   const methods = useForm<z.infer<typeof SmtpMailSchema>>({
     resolver: zodResolver(SmtpMailSchema),
     defaultValues: {
@@ -92,67 +94,67 @@ const SmtpMailConfigForm = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4">
-        <Switch name="enabled" control={control} label="Enable Mail" />
+        <Switch name="enabled" control={control} label="enableMail" />
 
         <div className="grid md:grid-cols-2 gap-4">
           <TextInput
             name="mailerName"
-            label="Mailer Name"
-            placeholder="Enter mailer name"
+            label="mailerName"
+            placeholder={t("enterMailerName")}
             control={control}
           />
           <TextInput
             name="driver"
-            label="Driver"
-            placeholder="Enter driver"
+            label="driver"
+            placeholder={t("enterDriver")}
             control={control}
           />
           <TextInput
             name="host"
-            label="Host"
-            placeholder="Enter host"
+            label="host"
+            placeholder={t("enterHost")}
             control={control}
           />
           <TextInput
             name="port"
-            label="Port"
-            placeholder="Enter port"
+            label="port"
+            placeholder={t("enterPort")}
             control={control}
             type="number"
           />
           <TextInput
             name="userName"
-            label="User Name"
-            placeholder="Enter user name"
+            label="userName"
+            placeholder={t("enterUserName")}
             control={control}
           />
           <TextInput
             name="email"
-            label="Email ID"
-            placeholder="Enter email id"
+            label="email"
+            placeholder={t("enterEmail")}
             control={control}
           />
           <TextInput
             name="password"
-            label="Password"
-            placeholder="Enter password"
+            label="password"
+            placeholder={t("enterPassword")}
             control={control}
           />
           <SelectInput
             name="encryption"
             control={control}
-            label="Encryption"
+            label="encryption"
             options={[
-              { label: "TLS", value: "tls" },
-              { label: "SSL", value: "ssl" },
-              { label: "None", value: "none" },
+              { label: "tls", value: "tls" },
+              { label: "ssl", value: "ssl" },
+              { label: "none", value: "none" },
             ]}
           />
         </div>
 
         <div className="flex justify-end">
           <Button variant="button" type="submit" disabled={isPending}>
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
         </div>
       </form>
@@ -163,6 +165,7 @@ const SmtpMailConfigForm = () => {
 //
 // -------------------- Test Mail Form --------------------
 const TestMailForm = () => {
+  const t = useTranslations("translation");
   const methods = useForm<z.infer<typeof testMailSchema>>({
     resolver: zodResolver(testMailSchema),
     defaultValues: {
@@ -182,9 +185,9 @@ const TestMailForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <TextInput
           name="email"
-          label="Email"
+          label="email"
           control={control}
-          placeholder="e.g. test@example.com"
+          placeholder={t("enterEmail")}
         />
 
         <div className="flex justify-end">
@@ -193,7 +196,7 @@ const TestMailForm = () => {
             type="submit"
             disabled={methods.formState.isSubmitting}
           >
-            {methods.formState.isSubmitting ? "Sending..." : "Send Mail"}
+            {methods.formState.isSubmitting ? t("sending") : t("sendMail")}
           </Button>
         </div>
       </form>

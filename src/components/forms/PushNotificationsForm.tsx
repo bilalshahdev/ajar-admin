@@ -11,17 +11,19 @@ import {
 } from "@/hooks/useBusinessSettings";
 import { useEffect } from "react";
 import PushNotificationFormSkeleton from "../skeletons/PushNotificationFormSkeleton";
+import { useTranslations } from "next-intl";
 
 const messagesEN = [
-  { key: "bookingPending", label: "Booking Pending Message" },
-  { key: "bookingConfirmed", label: "Booking Confirmation Message" },
-  { key: "bookingProcessing", label: "Booking Processing Message" },
-  { key: "bookingDelivered", label: "Booking Delivered Message" },
-  { key: "bookingCanceled", label: "Booking Canceled Message" },
-  { key: "refundCanceled", label: "Refund Request Canceled Message" },
+  { key: "bookingPending", label: "bookingPending" },
+  { key: "bookingConfirmed", label: "bookingConfirmed" },
+  { key: "bookingProcessing", label: "bookingProcessing" },
+  { key: "bookingDelivered", label: "bookingDelivered" },
+  { key: "bookingCanceled", label: "bookingCanceled" },
+  { key: "refundCanceled", label: "refundCanceled" },
 ];
 
 const PushNotificationForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("firebase");
   const pageSettings = data?.data?.pageSettings;
   const pushNotifications = pageSettings?.pushNotifications;
@@ -76,12 +78,12 @@ const PushNotificationForm = () => {
                 <Switch
                   name={`messages.${idx}.enabled`}
                   control={control}
-                  label=""
+                  label="enable"
                 />
               </div>
               <Textarea
                 {...methods.register(`messages.${idx}.value`)}
-                placeholder="Write your message..."
+                placeholder={t("writeYourMessage")}
               />
             </div>
           ))}
@@ -89,12 +91,12 @@ const PushNotificationForm = () => {
 
         <div className="flex justify-end gap-2">
           <Button type="submit" variant="button" disabled={isPending}>
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
         </div>
         {saveError && (
           <p className="text-red-500 mt-2">
-            {saveError?.message || "Something went wrong"}
+            {saveError?.message || t("somethingWentWrong")}
           </p>
         )}
       </form>

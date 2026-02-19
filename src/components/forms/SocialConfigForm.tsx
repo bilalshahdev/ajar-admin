@@ -16,8 +16,10 @@ import {
 } from "@/hooks/useBusinessSettings";
 import { useEffect } from "react";
 import { SocialConfigFormSkeleton } from "../skeletons/SocialConfigFormSkeleton";
+import { useTranslations } from "next-intl";
 
 const SocialConfigForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("socialLogins");
   const socialLogin = data?.data?.pageSettings;
 
@@ -73,46 +75,46 @@ const SocialConfigForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ProviderBlock
-            title="Google"
+            title="google"
             switchName="google.enabled"
             control={control}
             fields={[
-              { name: "google.callbackUrl", label: "Callback URL" },
-              { name: "google.clientId", label: "Client ID" },
-              { name: "google.clientSecret", label: "Client Secret" },
+              { name: "google.callbackUrl", label: "callbackUrl" },
+              { name: "google.clientId", label: "clientId" },
+              { name: "google.clientSecret", label: "clientSecret" },
             ]}
           />
           <ProviderBlock
-            title="Facebook"
+            title="facebook"
             switchName="facebook.enabled"
             control={control}
             fields={[
-              { name: "facebook.callbackUrl", label: "Callback URL" },
-              { name: "facebook.clientId", label: "Client ID" },
-              { name: "facebook.clientSecret", label: "Client Secret" },
+              { name: "facebook.callbackUrl", label: "callbackUrl" },
+              { name: "facebook.clientId", label: "clientId" },
+              { name: "facebook.clientSecret", label: "clientSecret" },
             ]}
           />
           <ProviderBlock
-            title="Apple"
+            title="apple"
             switchName="apple.enabled"
             control={control}
             fields={[
-              { name: "apple.clientId", label: "Client ID" },
-              { name: "apple.teamId", label: "Team ID" },
-              { name: "apple.keyId", label: "Key ID" },
+              { name: "apple.clientId", label: "clientId" },
+              { name: "apple.teamId", label: "teamId" },
+              { name: "apple.keyId", label: "keyId" },
             ]}
-            fileField={{ name: "apple.serviceFile", label: "Service File" }}
+            fileField={{ name: "apple.serviceFile", label: "serviceFile" }}
           />
         </div>
 
         <div className="flex justify-end">
           <Button type="submit" variant="button" disabled={isPending}>
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
         </div>
         {saveError && (
           <p className="text-red-500 mt-2">
-            {saveError?.message || "Something went wrong"}
+            {saveError?.message || t("somethingWentWrong")}
           </p>
         )}
       </form>
@@ -145,12 +147,14 @@ const ProviderBlock = ({
   control,
   fileField,
 }: ProviderBlockProps) => {
+  const t = useTranslations("translation");
   const switchValue = useWatch({ control, name: switchName });
+
   return (
-    <div className="border  rounded shadow">
+    <div className="border rounded shadow">
       <div className="flex items-center justify-between border-b p-4">
-        <h3 className="font-semibold">{title}</h3>
-        <Switch name={switchName} control={control} label="Enable" />
+        <h3 className="font-semibold">{t(title)}</h3>
+        <Switch name={switchName} control={control} label="enable" />
       </div>
 
       <div className="p-4 space-y-4">
@@ -159,7 +163,7 @@ const ProviderBlock = ({
             key={field.name}
             name={field.name}
             label={field.label}
-            placeholder={`Enter ${field.label}`}
+            placeholder={t(`enter${field.label.charAt(0).toUpperCase() + field.label.slice(1)}`)}
             control={control}
             type={field.type as any}
             disabled={!switchValue}
@@ -170,7 +174,7 @@ const ProviderBlock = ({
           <FileInput
             name={fileField.name}
             label={fileField.label}
-            placeholder={`Upload ${fileField.label}`}
+            placeholder={t(`upload${fileField.label.charAt(0).toUpperCase() + fileField.label.slice(1)}`)}
             control={control}
             disabled={!switchValue}
           />

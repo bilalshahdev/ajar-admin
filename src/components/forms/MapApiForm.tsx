@@ -13,11 +13,13 @@ import {
 import { useEffect } from "react";
 import MapApiFormSkeleton from "../skeletons/MapApiFormSkeleton";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 const MapApiForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("mapAPI");
   const mapApi = data?.data?.pageSettings;
-  console.log(data);
+
   const methods = useForm<z.infer<typeof MapApiSchema>>({
     resolver: zodResolver(MapApiSchema),
     defaultValues: {
@@ -50,21 +52,22 @@ const MapApiForm = () => {
         <div className="grid md:grid-cols-2 gap-4">
           <TextInput
             name="clientKey"
-            label="Map API Key (Client)"
+            label="mapApiKeyClient"
             control={control}
-            placeholder="Enter Map API Key (Client)"
+            placeholder={t("enterMapApiKeyClient")}
           />
+
           <TextInput
             name="serverKey"
-            label="Map API Key (Server)"
+            label="mapApiKeyServer"
             control={control}
-            placeholder="Enter Map API Key (Server)"
+            placeholder={t("enterMapApiKeyServer")}
           />
         </div>
 
         <div className="flex justify-end">
           <Button variant="button" type="submit" disabled={isPending}>
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
         </div>
       </form>

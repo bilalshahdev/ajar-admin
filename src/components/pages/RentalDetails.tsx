@@ -14,7 +14,7 @@ import ResponseError from "../ResponseError";
 import Status from "../StatusBadge";
 import { Button } from "../ui/button";
 import { getImageUrl } from "@/utils/getImageUrl";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type ListingDocument = {
   _id: string;
@@ -23,6 +23,7 @@ type ListingDocument = {
 };
 
 const RentalListingDetail = ({ id }: { id: string }) => {
+  const t = useTranslations("translation");
   const { data: rentalRequest, isLoading, error } = useRentalListing(id);
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateRentalListing();
@@ -107,7 +108,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
           {/* Description */}
           {description && (
             <div className="space-y-1">
-              <h3 className="text-lg font-semibold">Description</h3>
+              <h3 className="text-lg font-semibold">{t("description")}</h3>
               <p className="text-muted-foreground whitespace-pre-line">
                 {description}
               </p>
@@ -116,8 +117,8 @@ const RentalListingDetail = ({ id }: { id: string }) => {
 
           {/* Common Info */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-            <InfoItem label="Location" value={zone?.name} />
-            <InfoItem label="Status" value={status} />
+            <InfoItem label={t("location")} value={zone?.name} />
+            <InfoItem label={t("status")} value={status} />
           </div>
 
           {/* Price */}
@@ -132,7 +133,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-xl">
-              Documents{" "}
+              {t("documents")}{" "}
               <span className="text-sm text-muted-foreground">
                 ({documents.length})
               </span>
@@ -204,7 +205,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
       {leaser && (
         <Card className="shadow-md">
           <CardHeader>
-            <CardTitle className="text-xl">Leaser Information</CardTitle>
+            <CardTitle className="text-xl">{t("leaserInformation")}</CardTitle>
           </CardHeader>
           <CardContent>
             <UserCard user={leaser} />
@@ -220,14 +221,14 @@ const RentalListingDetail = ({ id }: { id: string }) => {
             disabled={isUpdating}
             onClick={() => updateStatus({ id, status: "rejected" })}
           >
-            Reject
+            {t("reject")}
           </Button>
           <Button
             variant="success"
             disabled={isUpdating}
             onClick={() => updateStatus({ id, status: "approved" })}
           >
-            Approve
+            {t("approve")}
           </Button>
         </div>
       )}

@@ -15,8 +15,10 @@ import RecaptchaFormSkeleton from "../skeletons/RecaptchaFormSkeleton";
 import { Button } from "../ui/button";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
+import { useTranslations } from "next-intl";
 
 const RecaptchaForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("recaptcha");
   const recaptcha = data?.data?.pageSettings;
 
@@ -56,59 +58,44 @@ const RecaptchaForm = () => {
         className="space-y-6 border rounded-lg p-6"
       >
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Recaptcha Credential Setups</h2>
+          <h2 className="text-lg font-semibold">{t("recaptchaCredentialSetups")}</h2>
 
-          <Switch name="enabled" control={control} label="Turn OFF" />
+          <Switch name="enabled" control={control} label="turnOFF" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <TextInput
               name="siteKey"
-              label="Site Key"
+              label="siteKey"
               control={control}
-              placeholder="Enter reCAPTCHA site key"
+              placeholder={t("enterRecaptchaSiteKey")}
               disabled={!enabled}
             />
             <TextInput
               name="secretKey"
-              label="Secret Key"
+              label="secretKey"
               control={control}
-              placeholder="Enter reCAPTCHA secret key"
+              placeholder={t("enterRecaptchaSecretKey")}
               disabled={!enabled}
             />
           </div>
 
           <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
             <li>
-              Go to the Credentials page (
+              {t("recaptchaStep1")}
               <Link
                 className="text-blue-500 underline"
                 href="https://www.google.com/recaptcha/admin"
                 target="_blank"
               >
-                Click Here
+                {t("clickHere")}
               </Link>
-              )
             </li>
-            <li>
-              Add a <strong>Label</strong> (Ex: Test Label)
-            </li>
-            <li>
-              Select reCAPTCHA v2 as <strong>reCAPTCHA Type</strong> (Sub type:
-              I’m not a robot Checkbox)
-            </li>
-            <li>
-              Add <strong>Domain</strong> (e.g. https://www.example.com)
-            </li>
-            <li>
-              Check in <strong>Accept the reCAPTCHA Terms of Service</strong>
-            </li>
-            <li>
-              Press <strong>Submit</strong>
-            </li>
-            <li>
-              Copy <strong>Site Key</strong> and <strong>Secret Key</strong>,
-              then paste below and click Save.
-            </li>
+            <li>{t("recaptchaStep2")}</li>
+            <li>{t("recaptchaStep3")}</li>
+            <li>{t("recaptchaStep4")}</li>
+            <li>{t("recaptchaStep5")}</li>
+            <li>{t("recaptchaStep6")}</li>
+            <li>{t("recaptchaStep7")}</li>
           </ul>
         </div>
 
@@ -118,7 +105,7 @@ const RecaptchaForm = () => {
             variant="button"
             disabled={!enabled || isPending}
           >
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
         </div>
       </form>

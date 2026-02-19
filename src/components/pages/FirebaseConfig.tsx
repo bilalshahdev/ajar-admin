@@ -11,12 +11,12 @@ const FirebaseConfig = () => {
         defaultValue="firebase-config"
         tabs={[
           {
-            label: "Firebase config",
+            label: "firebaseConfig",
             value: "firebase-config",
             content: <FirebaseConfigForm />,
           },
           {
-            label: "Push Notification",
+            label: "pushNotification",
             value: "push-notification",
             content: <PushNotificationForm />,
           },

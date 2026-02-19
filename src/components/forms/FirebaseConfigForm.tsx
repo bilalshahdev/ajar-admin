@@ -9,8 +9,10 @@ import {
 } from "@/hooks/useBusinessSettings";
 import FirebaseConfigFormSkeleton from "../skeletons/FirebaseConfigFormSkeleton";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const FirebaseConfigForm = () => {
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("firebase");
   const pageSettings = data?.data?.pageSettings;
   const firebase = pageSettings?.firebaseConfig;
@@ -51,58 +53,58 @@ const FirebaseConfigForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <TextInput
           name="serviceFile"
-          label="Service file content"
+          label="serviceFileContent"
           control={control}
-          placeholder="Paste your service JSON here"
+          placeholder={t("pasteServiceJson")}
         />
         <div className="grid md:grid-cols-3 gap-4">
           <TextInput
             name="apiKey"
-            label="API KEY"
+            label="apiKey"
             control={control}
-            placeholder="Enter API KEY"
+            placeholder={t("enterApiKey")}
           />
           <TextInput
             name="projectId"
-            label="FCM PROJECT ID"
+            label="fcmProjectId"
             control={control}
-            placeholder="Enter FCM PROJECT ID"
+            placeholder={t("enterFcmProjectId")}
           />
           <TextInput
             name="authDomain"
-            label="Auth Domain"
+            label="authDomain"
             control={control}
-            placeholder="Enter Auth Domain"
+            placeholder={t("enterAuthDomain")}
           />
           <TextInput
             name="storageBucket"
-            label="Storage Bucket"
+            label="storageBucket"
             control={control}
-            placeholder="Enter Storage Bucket"
+            placeholder={t("enterStorageBucket")}
           />
           <TextInput
             name="messagingSenderId"
-            label="Messaging Sender Id"
+            label="messagingSenderId"
             control={control}
-            placeholder="Enter Messaging Sender Id"
+            placeholder={t("enterMessagingSenderId")}
           />
           <TextInput
             name="appId"
-            label="App Id"
+            label="appId"
             control={control}
-            placeholder="Enter App Id"
+            placeholder={t("enterAppId")}
           />
           <TextInput
             name="measurementId"
-            label="Measurement Id"
+            label="measurementId"
             control={control}
-            placeholder="Enter Measurement Id"
+            placeholder={t("enterMeasurementId")}
           />
         </div>
 
         <div className="flex justify-end gap-2">
           <Button type="submit" variant="button" disabled={isPending}>
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("saving") : t("save")}
           </Button>
         </div>
       </form>
