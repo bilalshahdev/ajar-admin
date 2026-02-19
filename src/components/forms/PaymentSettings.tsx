@@ -22,7 +22,7 @@ import { useTranslations } from "next-intl";
 type FormData = z.infer<typeof PaymentSettingsSchema>;
 
 const PaymentSettingsForm = () => {
-  const t = useTranslations();
+  const t = useTranslations("translation");
   const { data, isLoading } = useGetBusinessSettings("paymentMethods");
   const paymentInfo = data?.data?.pageSettings;
 
@@ -116,7 +116,7 @@ const PaymentSettingsForm = () => {
             control={control}
             name="apiKey"
             label="apiKey"
-            placeholder="Enter Stripe API key"
+            placeholder={t("enterStripeApiKey")}
           />
           {errors.apiKey && (
             <p className="text-red-500 text-sm mt-1">{errors.apiKey.message}</p>
@@ -128,7 +128,7 @@ const PaymentSettingsForm = () => {
             control={control}
             name="publishKey"
             label="publishKey"
-            placeholder="Enter Stripe publishable key"
+            placeholder={t("enterStripePublishKey")}
           />
           {errors.publishKey && (
             <p className="text-red-500 text-sm mt-1">
@@ -142,7 +142,7 @@ const PaymentSettingsForm = () => {
             control={control}
             name="paymentGatewayTitle"
             label="paymentGatewayTitle"
-            placeholder="e.g., STRIPE"
+            placeholder={t("egStripe")}
           />
           {errors.paymentGatewayTitle && (
             <p className="text-red-500 text-sm mt-1">
@@ -167,8 +167,8 @@ const PaymentSettingsForm = () => {
           className="px-6"
         >
           {isSubmitting || isPending
-            ? t("translation.saving")
-            : t("translation.saveInformation")
+            ? t("saving")
+            : t("saveInformation")
           }
         </Button>
       </div>

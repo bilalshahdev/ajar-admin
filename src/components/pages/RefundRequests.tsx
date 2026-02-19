@@ -82,13 +82,13 @@ const RefundRequests = () => {
                   refundStatus.includes(request.status) ? "bg-green-500" : "bg-gray-300"
                 )}
               />
-              <SelectValue placeholder="Select status" />
+              <SelectValue placeholder={t("selectStatus")} />
             </div>
           </SelectTrigger>
           <SelectContent>
             {refundStatus.map((status) => (
               <SelectItem key={status} value={status} className="capitalize">
-                {status}
+                {t(`${status}`)}
               </SelectItem>
             ))}
           </SelectContent>

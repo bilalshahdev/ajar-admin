@@ -444,7 +444,15 @@
     "bookingDelivered": "Booking Delivered Message",
     "bookingCanceled": "Booking Canceled Message",
     "refundCanceled": "Refund Request Canceled Message",
-    "writeYourMessage": "Write your message..."
+    "writeYourMessage": "Write your message...",
+    "enterStripeApiKey": "Enter Stripe API key",
+    "enterStripePublishKey": "Enter Stripe publishable key",
+    "enterPaymentGatewayTitle": "Enter payment gateway title",
+    "egStripe": "e.g., STRIPE",
+    "uploadLogo": "Upload Logo",
+    "selectStatus": "Select status",
+    "pending": "Pending",
+    "accept": "Accept"
   },
   "confirm": {
     "logout": {

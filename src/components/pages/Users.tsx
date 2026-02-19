@@ -119,7 +119,7 @@ const Users = () => {
                   statusColors[user.status as UserStatus] || "bg-gray-300"
                 )}
               />
-              <SelectValue placeholder="Select status" />
+              <SelectValue placeholder={t("translation.selectStatus")} />
             </div>
           </SelectTrigger>
           <SelectContent>

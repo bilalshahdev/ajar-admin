@@ -444,7 +444,15 @@
     "bookingDelivered": "رسالة تم توصيل الحجز",
     "bookingCanceled": "رسالة إلغاء الحجز",
     "refundCanceled": "رسالة إلغاء طلب الاسترداد",
-    "writeYourMessage": "اكتب رسالتك هنا..."
+    "writeYourMessage": "اكتب رسالتك هنا...",
+    "enterStripeApiKey": "أدخل مفتاح Stripe API",
+    "enterStripePublishKey": "أدخل مفتاح Stripe القابل للنشر",
+    "enterPaymentGatewayTitle": "أدخل عنوان بوابة الدفع",
+    "egStripe": "مثال: STRIPE",
+    "uploadLogo": "رفع الشعار",
+    "selectStatus": "اختر الحالة",
+    "pending": "قيد الانتظار",
+    "accept": "قبول"
   },
   "confirm": {
     "logout": {
