@@ -3,7 +3,6 @@ import BxTabs from "../BxTabs";
 import DamageLiabilityTerms from "../DamageLiabilityTerms";
 import RentalDurationLimits from "../RentalDurationLimits";
 import SecurityDepositRules from "../SecurityDepositRules";
-import { useSelector } from "react-redux";
 import {
   Select,
   SelectContent,
