@@ -350,8 +350,8 @@
       "description": "هل أنت متأكد أنك تريد تسجيل الخروج؟"
     },
     "delete": {
-      "title": "حذف {module}",
-      "description": "هل أنت متأكد أنك تريد حذف {module}؟"
+      "title": "حذف {value}",
+      "description": "هل أنت متأكد أنك تريد حذف {value}؟"
     }
   },
   "date": {
