@@ -452,7 +452,8 @@
     "uploadLogo": "رفع الشعار",
     "selectStatus": "اختر الحالة",
     "pending": "قيد الانتظار",
-    "accept": "قبول"
+    "accept": "قبول",
+    "editZoneDescription": "قم بتعديل تفاصيل المنطقة أدناه."
   },
   "confirm": {
     "logout": {

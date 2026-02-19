@@ -10,8 +10,10 @@ import ResponseError from "../ResponseError";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { useState } from "react";
 import { limit } from "@/config/constants";
+import { useTranslations } from "next-intl";
 
 const Zones = () => {
+  const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetZones({ page, limit });
   const zones = data?.data?.zones || [];
@@ -39,8 +41,8 @@ const Zones = () => {
           }
           deleteLoading={deleteLoading}
           editDialog={{
-            title: "Edit Zone",
-            description: "Edit the zone details below.",
+            title: t("editZone"),
+            description: t("editZoneDescription"),
             content: <ZoneForm id={zone._id} />,
           }}
         />

@@ -452,7 +452,8 @@
     "uploadLogo": "Upload Logo",
     "selectStatus": "Select status",
     "pending": "Pending",
-    "accept": "Accept"
+    "accept": "Accept",
+    "editZoneDescription": "Edit the zone details below."
   },
   "confirm": {
     "logout": {
