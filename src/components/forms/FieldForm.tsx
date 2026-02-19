@@ -2,12 +2,17 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useTranslations } from "next-intl"; // Added import
+import { useTranslations } from "next-intl";
 
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Switch as USwitch } from "@/components/ui/switch";
-import { useAddField, useGetChoiceFieldsList, useGetField, useUpdateField } from "@/hooks/useFields";
+import {
+  useAddField,
+  useGetChoiceFieldsList,
+  useGetField,
+  useUpdateField,
+} from "@/hooks/useFields";
 import { FieldFormValues, FieldSchema } from "@/validations/field";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,7 +22,6 @@ import SelectInput from "./fields/SelectInput";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
 
-// Labels turned into camelCase keys for translation
 const inputTypes = [
   { name: "string", value: "string" },
   { name: "text", value: "text" },
@@ -40,17 +44,26 @@ const inputTypes = [
 ];
 
 export default function FieldForm({ id }: { id?: string }) {
-  const t = useTranslations(); // Initialize translation
+  const t = useTranslations();
   const router = useRouter();
   const [isChoiceField, setIsChoiceField] = useState(false);
   const [parentFieldId, setParentFieldId] = useState<string | null>(null);
-  const [parentFieldOption, setParentFieldOption] = useState<string | null>(null);
+  const [parentFieldOption, setParentFieldOption] = useState<string | null>(
+    null,
+  );
 
-  const [parentFieldIdError, setParentFieldIdError] = useState<string | null>(null);
-  const [parentFieldOptionError, setParentFieldOptionError] = useState<string | null>(null);
+  const [parentFieldIdError, setParentFieldIdError] = useState<string | null>(
+    null,
+  );
+  const [parentFieldOptionError, setParentFieldOptionError] = useState<
+    string | null
+  >(null);
 
-  const { data: field, isLoading: isFieldLoading } = useGetField(id || "", !!id);
-  
+  const { data: field, isLoading: isFieldLoading } = useGetField(
+    id || "",
+    !!id,
+  );
+
   const { control, handleSubmit, watch, reset } = useForm<FieldFormValues>({
     resolver: zodResolver(FieldSchema),
     defaultValues: {
@@ -98,16 +111,25 @@ export default function FieldForm({ id }: { id?: string }) {
           max: f.validation?.max ?? 0,
         },
       });
+      if (f.conditional?.dependsOn) {
+        setIsChoiceField(true);
+        setParentFieldId(f.conditional.dependsOn);
+        setParentFieldOption(f.conditional.value);
+      }
     }
   }, [field, reset]);
 
-  const { data: fieldsList } = useGetChoiceFieldsList({ enabled: isChoiceField });
+  const { data: fieldsList } = useGetChoiceFieldsList({
+    enabled: isChoiceField,
+  });
 
   const isEditMode = Boolean(id);
   const updateMutation = useUpdateField();
   const addMutation = useAddField();
 
-  const { mutate: fieldMutation, isPending: fieldLoading } = isEditMode ? updateMutation : addMutation;
+  const { mutate: fieldMutation, isPending: fieldLoading } = isEditMode
+    ? updateMutation
+    : addMutation;
 
   const onSubmit = async (formData: any) => {
     setParentFieldIdError(null);
@@ -137,12 +159,14 @@ export default function FieldForm({ id }: { id?: string }) {
     });
   };
 
-  const handleDependsOnChange = () => {
-    setIsChoiceField(!isChoiceField);
-    setParentFieldId(null);
-    setParentFieldOption(null);
-    setParentFieldIdError(null);
-    setParentFieldOptionError(null);
+  const handleDependsOnChange = (checked: boolean) => {
+    setIsChoiceField(checked);
+    if (!checked) {
+      setParentFieldId(null);
+      setParentFieldOption(null);
+      setParentFieldIdError(null);
+      setParentFieldOptionError(null);
+    }
   };
 
   if (isFieldLoading && id) return <Loader />;
@@ -150,7 +174,9 @@ export default function FieldForm({ id }: { id?: string }) {
   const type = watch("type");
   const typesWithOptions = ["select", "radio", "multiselect"];
 
-  const selectedField = fieldsList?.data?.fields?.find((f) => f._id === parentFieldId);
+  const selectedField = fieldsList?.data?.fields?.find(
+    (f) => f._id === parentFieldId,
+  );
 
   const fieldOptions = fieldsList?.data?.fields.map((f) => ({
     label: f.name,
@@ -159,19 +185,17 @@ export default function FieldForm({ id }: { id?: string }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {!id && (
-        <div className="inline-flex items-center gap-4 p-4 bg-accent rounded-md">
-          <Label htmlFor="is-child-field" className="cursor-pointer">
-            {t("translation.isChildField")}
-          </Label>
-          <USwitch
-            id="is-child-field"
-            className="cursor-pointer"
-            checked={isChoiceField}
-            onCheckedChange={handleDependsOnChange}
-          />
-        </div>
-      )}
+      <div className="inline-flex items-center gap-4 p-4 bg-accent rounded-md">
+        <Label htmlFor="is-child-field" className="cursor-pointer">
+          {t("translation.isChildField")}
+        </Label>
+        <USwitch
+          id="is-child-field"
+          className="cursor-pointer"
+          checked={isChoiceField}
+          onCheckedChange={handleDependsOnChange}
+        />
+      </div>
 
       {isChoiceField && (
         <div className="grid sm:grid-cols-2 gap-4">
@@ -185,21 +209,34 @@ export default function FieldForm({ id }: { id?: string }) {
                 setParentFieldOption(null);
                 setParentFieldIdError(null);
               }}
+              isTranslations={false}
             />
-            {parentFieldIdError && <span className="text-red-500 text-sm">{parentFieldIdError}</span>}
+            {parentFieldIdError && (
+              <span className="text-red-500 text-sm">{parentFieldIdError}</span>
+            )}
           </div>
           {parentFieldId && (
             <div>
               <SelectInput
                 label="whenValueIs"
-                options={selectedField?.options?.map((opt) => ({ label: opt, value: opt })) || []}
+                options={
+                  selectedField?.options?.map((opt) => ({
+                    label: opt,
+                    value: opt,
+                  })) || []
+                }
                 value={parentFieldOption}
                 onChange={(value) => {
                   setParentFieldOption(value);
                   setParentFieldOptionError(null);
                 }}
+                isTranslations={false}
               />
-              {parentFieldOptionError && <span className="text-red-500 text-sm">{parentFieldOptionError}</span>}
+              {parentFieldOptionError && (
+                <span className="text-red-500 text-sm">
+                  {parentFieldOptionError}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -220,6 +257,7 @@ export default function FieldForm({ id }: { id?: string }) {
           labelKey="name"
           valueKey="value"
           disabled={!!id}
+          isTranslations={false}
         />
         {typesWithOptions.includes(type) && (
           <FormArrayInput control={control} name="options" label="options" />
@@ -299,7 +337,13 @@ export default function FieldForm({ id }: { id?: string }) {
         className="w-full"
         disabled={fieldLoading}
       >
-        {fieldLoading ? <Loader /> : id ? t("translation.updateField") : t("translation.createField")}
+        {fieldLoading ? (
+          <Loader />
+        ) : id ? (
+          t("translation.updateField")
+        ) : (
+          t("translation.createField")
+        )}
       </Button>
     </form>
   );
