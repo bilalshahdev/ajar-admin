@@ -314,14 +314,17 @@ interface BookingLanguage {
 
 type Booking = {
   _id: string;
-  status: string;
-  renter: string;
-  marketplaceListingId: string;
-  noOfGuests: number;
-  roomType: string;
-  phone: string;
+  status: "pending" | "approved" | "cancelled" | "in_progress" | string;
+  renter: Renter | string;
+  leaser: {
+    name : string
+  };
+  marketplaceListingId: string | null;
+  noOfGuests?: number;
+  roomType?: string;
+  phone?: string;
   language: string;
-  languages: {
+  languages?: {
     locale: string;
     translations: {
       roomType: string;
@@ -333,18 +336,33 @@ type Booking = {
     checkIn: string;
     checkOut: string;
   };
+  otp: string;
+  isVerified: boolean;
   priceDetails: {
     price: number;
     adminFee: number;
+    tax: number;
     totalPrice: number;
   };
-  extensionCharges: {
+  pricingMeta: {
+    priceFromListing: number;
+    unit: "hour" | "day" | "month";
+    duration: number;
+  };
+  extraRequestCharges: {
+    additionalCharges: number;
+    totalPrice?: number;
+  };
+  extensionCharges?: {
     adminFee: number;
     additionalCharges: number;
     totalPrice: number;
   };
-  actualReturnedAt: string | null;
-  otp: string;
+  isExtend: boolean;
+  extensions: unknown[];
+  reviews: unknown[];
+  paymentStatus: string | null;
+  actualReturnedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 };

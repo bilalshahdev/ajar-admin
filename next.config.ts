@@ -42,6 +42,15 @@ const nextConfig: NextConfig = {
         hostname: "192.168.18.64",
         port: "5000",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+      },
+      {
+  protocol: "https",
+  hostname: "lh3.googleusercontent.com",
+}
     ],
   },
 };

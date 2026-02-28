@@ -22,13 +22,18 @@ export interface GetRentalListingResponse {
 export const getRentalListings = async ({
   page = 1,
   limit = 10,
+  zone,
 }: {
   page: number;
   limit: number;
+  zone?: string;
 }): Promise<GetRentalListingsResponse> => {
-  const response = await api.get(
-    `/marketplace-listings?page=${page}&limit=${limit}`
-  );
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    ...(zone && { zone }),
+  });
+  const response = await api.get(`/marketplace-listings?${params}`);
   return response.data;
 };
 

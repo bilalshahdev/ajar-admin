@@ -49,7 +49,7 @@ const EmployeeRoles = () => {
             id={employeeRole._id}
             baseRoute="/employee-management"
             actions={["edit", "delete"]}
-            module="Employee Role"
+            module="employeeRole"
             onDelete={(id, closeDialog) =>
               deleteEmployeeRole(id, {
                 onSuccess: () => {

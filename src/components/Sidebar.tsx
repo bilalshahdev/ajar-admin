@@ -35,6 +35,7 @@ export default function Sidebar({ className }: { className?: string }) {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const sidebarMenu = getSidebarMenu();
   const locale = useLocale();
+  
   const isMenuActive = (path: string) => {
     const targetPath = `/${locale}${path === "/" ? "" : path}`;
     if (path === "/") {

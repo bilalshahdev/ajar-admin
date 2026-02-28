@@ -10,15 +10,22 @@ type TabItem = {
 };
 
 interface BxTabsProps {
-  defaultValue: string;
+  defaultValue?: string;
   tabs: TabItem[];
   className?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
 }
 
-export default function BxTabs({ defaultValue, tabs, className = "" }: BxTabsProps) {
+export default function BxTabs({ defaultValue, tabs, className = "", value, onValueChange }: BxTabsProps) {
   const t = useTranslations();
   return (
-    <Tabs defaultValue={defaultValue} className={className}>
+    <Tabs
+      defaultValue={defaultValue}
+      value={value}
+      onValueChange={onValueChange}
+      className={className}
+    >
       <TabsList className="mb-4">
         {tabs.map((tab) => (
           <TabsTrigger

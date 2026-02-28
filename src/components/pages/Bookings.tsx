@@ -1,10 +1,7 @@
 "use client";
-import {
-  useDeleteRentalListing,
-  useRentalListings,
-} from "@/hooks/useRentalListings";
+import { useBookings, useDeleteBooking } from "@/hooks/useBookings";
 import { useGetZones } from "@/hooks/useZones";
-import { RentalListing } from "@/types";
+import { Booking } from "@/types";
 import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
 import TableActions from "../Actions";
@@ -23,45 +20,44 @@ import {
 } from "../ui/select";
 import { useTranslations } from "next-intl";
 
-const RentalListings = () => {
+const Bookings = () => {
   const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const [zone, setZone] = useState<string | undefined>(undefined);
 
-  const { data: zonesData } = useGetZones({
-    page: 1,
-    limit: 10
-  });
+  const { data: zonesData } = useGetZones({ page: 1, limit: 100 });
   const zones = zonesData?.data?.zones || [];
 
   const {
-    data: rentalRequests,
+    data: bookings,
     isLoading,
     error,
-  } = useRentalListings({
+  } = useBookings({
     page,
     limit: 10,
     zone,
   });
-  const { mutate: deleteRentalListing, isPending: deleteLoading } =
-    useDeleteRentalListing();
+  const { mutate: deleteBooking, isPending: deleteLoading } = useDeleteBooking();
 
   const [search, setSearch] = useState("");
-  const filteredRentalRequests = useMemo(() => {
-    const rentalListings = rentalRequests?.data?.listings || [];
+  const filteredBookings = useMemo(() => {
+    const bookingList = bookings?.data?.bookings || [];
     return filterData({
-      data: rentalListings,
+      data: bookingList,
       search,
-      searchKeys: ["name", "subCategory.name", "leaser.name"],
+      searchKeys: ["leaser.name", "status"],
     });
-  }, [rentalRequests, search]);
+  }, [bookings, search]);
 
   const cols = [
     "id",
-    "productName",
-    "subCategory",
-    "owner",
-    "createdAt",
+    "leaser",
+    "checkIn",
+    "checkOut",
+    "totalPrice",
+    "status",
+    "duration",
+    "unit",
     "actions",
   ];
 
@@ -73,21 +69,38 @@ const RentalListings = () => {
     return <ResponseError error={error.message} />;
   }
 
-  const row = (rentalRequest: RentalListing) => (
+  const row = (booking: Booking) => (
     <>
-      <TableCell>{rentalRequest._id.slice(-4)}</TableCell>
-      <HighlightCell text={rentalRequest.name} query={search} className="truncate w-28" />
-      <HighlightCell text={rentalRequest?.subCategory?.name} query={search} />
-      <HighlightCell text={rentalRequest?.leaser?.name} query={search} />
-      <TableCell>{rentalRequest.createdAt}</TableCell>
+      <TableCell>{booking._id.slice(-4)}</TableCell>
+      <HighlightCell text={booking.leaser?.name} query={search} />
+      <TableCell>{new Date(booking.dates.checkIn).toLocaleDateString()}</TableCell>
+      <TableCell>{new Date(booking.dates.checkOut).toLocaleDateString()}</TableCell>
+      <TableCell>${booking.priceDetails.totalPrice.toFixed(2)}</TableCell>
+      <TableCell>
+        <span
+          className={`capitalize px-2 py-1 rounded-full text-xs font-medium ${
+            booking.status === "approved"
+              ? "bg-green-100 text-green-700"
+              : booking.status === "cancelled"
+              ? "bg-red-100 text-red-700"
+              : booking.status === "in_progress"
+              ? "bg-blue-100 text-blue-700"
+              : "bg-yellow-100 text-yellow-700"
+          }`}
+        >
+          {booking.status.replace("_", " ")}
+        </span>
+      </TableCell>
+      <TableCell>{booking.pricingMeta.duration}</TableCell>
+      <TableCell className="capitalize">{booking.pricingMeta.unit}</TableCell>
       <TableCell>
         <TableActions
-          id={rentalRequest._id}
-          baseRoute="/rental-listing"
+          id={booking._id}
+          baseRoute="/bookings"
           actions={["view", "delete"]}
-          module="Listing"
+          module="Booking"
           onDelete={(id, closeDialog) =>
-            deleteRentalListing(id, {
+            deleteBooking(id, {
               onSuccess: () => {
                 closeDialog();
               },
@@ -100,9 +113,9 @@ const RentalListings = () => {
   );
 
   const pagination = {
-    total: rentalRequests?.data?.total || 0,
-    page: rentalRequests?.data?.page || 1,
-    limit: rentalRequests?.data?.limit || 10,
+    total: bookings?.data?.total || 0,
+    page: bookings?.data?.page || 1,
+    limit: bookings?.data?.limit || 10,
     setPage: setPage,
   };
 
@@ -131,12 +144,12 @@ const RentalListings = () => {
         <SearchInput
           className="w-full"
           onChange={(e) => setSearch(e)}
-          placeholder="searchRentalRequest"
+          placeholder="searchBookings"
         />
       </div>
       <DataTable
         cols={cols}
-        data={filteredRentalRequests}
+        data={filteredBookings as Booking[]}
         row={row}
         pagination={pagination}
       />
@@ -144,4 +157,4 @@ const RentalListings = () => {
   );
 };
 
-export default RentalListings;
+export default Bookings;

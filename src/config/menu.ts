@@ -1,5 +1,6 @@
 import { MenuItem, NavMenuItem } from "@/types";
 import {
+  FaCalendarCheck,
   FaChartBar,
   FaClipboardList,
   FaEnvelope,
@@ -33,6 +34,7 @@ export const sidebarMenu: NavMenuItem[] = [
   },
   { title: "userVerification", path: "/user-verification", icon: FaUsers },
   { title: "rentalListing", path: "/rental-listing", icon: FaClipboardList },
+  { title: "bookings", path: "/bookings", icon: FaCalendarCheck },
   {
     title: "businessSettings",
     path: "/business-settings",

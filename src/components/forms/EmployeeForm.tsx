@@ -26,10 +26,11 @@ const statusOptions = [
 ];
 
 export default function EmployeeForm({ id }: { id?: string }) {
-  const t = useTranslations("translation"); // Initialize translation scoped to translation
+  const t = useTranslations("translation");
   const router = useRouter();
 
   const { data: rolesData, isLoading: rolesLoading } = useGetEmployeeRoles();
+  
   const { data, isLoading: employeeLoading } = useGetEmployee(id || "");
 
   const employee = data?.data;
@@ -42,7 +43,6 @@ export default function EmployeeForm({ id }: { id?: string }) {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm<EmployeeFormValues>({
     resolver: zodResolver(EmployeeSchema),
     defaultValues: {
@@ -99,15 +99,15 @@ export default function EmployeeForm({ id }: { id?: string }) {
 
   if (employeeLoading || rolesLoading) return <Loader />;
 
-  console.log(
-    employeeRoles?.map((role) => role._id),
-    "employeeRoles Ids",
-    `values.allowAccess`,
-    employee?.allowAccess?._id
-  );
+  // console.log(
+  //   employeeRoles?.map((role) => role._id),
+  //   "employeeRoles Ids",
+  //   `values.allowAccess`,
+  //   employee?.allowAccess?._id
+  // );
 
-  console.log({ employee });
-  console.log({ values });
+  // console.log({ employee });
+  // console.log({ values });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -138,7 +138,7 @@ export default function EmployeeForm({ id }: { id?: string }) {
           placeholder={t("enterValue", { value: t("password") })}
           cPassword="confirmPassword"
         />
-        {employee && employeeRoles.length > 0 && (
+        {employeeRoles.length > 0 && (
           <SelectInput
             control={control}
             name="allowAccess"
@@ -146,6 +146,7 @@ export default function EmployeeForm({ id }: { id?: string }) {
             options={employeeRoles}
             labelKey="name"
             valueKey="_id"
+            isTranslations={false}
           />
         )}
         <TextInput

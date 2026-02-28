@@ -12,13 +12,15 @@ import { toast } from "sonner";
 export const useRentalListings = ({
   page = 1,
   limit = 10,
+  zone,
 }: {
   page: number;
   limit: number;
+  zone?: string;
 }) => {
   return useQuery({
-    queryKey: ["rental-listings", page, limit],
-    queryFn: () => getRentalListings({ page, limit }),
+    queryKey: ["rental-listings", page, limit, zone],
+    queryFn: () => getRentalListings({ page, limit, zone }),
   });
 };
 
