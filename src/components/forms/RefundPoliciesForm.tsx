@@ -22,10 +22,10 @@ import { Separator } from "../ui/separator";
 import SelectInput from "./fields/SelectInput";
 import Switch from "./fields/Switch";
 import TextInput from "./fields/TextInput";
-import { useTranslations } from "next-intl"; // Added import
+import { useTranslations } from "next-intl";
 
 const RefundPoliciesForm = () => {
-  const t = useTranslations("translation"); // Initialize translation
+  const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const [zone, setZone] = useState("");
   const [subCategory, setSubCategory] = useState("");

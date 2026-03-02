@@ -75,7 +75,7 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
         <div className="space-y-4">
           <TextInput
             name="responsibilityClause"
-            label="responsibilityClause" // Matching JSON key
+            label="responsibilityClause"
             control={control}
             placeholder={t("enterResponsibilityClause")}
             type="textarea"
