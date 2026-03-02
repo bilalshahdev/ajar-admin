@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import Loader from "./Loader";
 import ResponseError from "./ResponseError";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 interface SecurityDepositRulesFormValues {
   depositRequired: boolean;
@@ -21,6 +22,7 @@ interface SecurityDepositRulesFormValues {
 }
 
 const SecurityDepositRules = ({ zone }: { zone: string }) => {
+  const t = useTranslations("translation");
   const { data, isLoading, error } = useGetSecurityDepositRules(zone);
 
   const {
@@ -75,20 +77,20 @@ const SecurityDepositRules = ({ zone }: { zone: string }) => {
         <div className="grid md:grid-cols-2 gap-4">
           <Switch
             name="depositRequired"
-            label="Deposit Required"
+            label="securityDepositRules"
             control={control}
           />
           <TextInput
             name="depositAmount"
-            label="Deposit Amount"
+            label="depositAmount"
             control={control}
-            placeholder="Enter Deposit Amount"
+            placeholder={t("enterDepositAmount")}
           />
           <TextInput
             name="depositConditions"
-            label="Deposit Conditions"
+            label="depositConditions"
             control={control}
-            placeholder="Enter Deposit Conditions"
+            placeholder={t("enterDepositConditions")}
             type="textarea"
             className="col-span-2"
           />
@@ -100,12 +102,12 @@ const SecurityDepositRules = ({ zone }: { zone: string }) => {
             type="submit"
             disabled={isLoading || updating}
           >
-            {updating ? "Saving..." : "Save"}
+            {updating ? t("saving") : t("save")}
           </Button>
         </div>
         {updateError && (
           <p className="text-red-500">
-            {updateError?.message || "Failed to update security deposit rules"}
+            {updateError?.message || t("failedToUpdateSecurityDepositRules")}
           </p>
         )}
       </form>

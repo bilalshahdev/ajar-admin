@@ -30,9 +30,9 @@ export default function RevenueBreakdownBar({
     <Card>
       <CardContent className="p-4">
         {/* Header */}
-        <div className="flex justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
           <div>
-            <h4 className="text-md font-semibold">
+            <h4 className="text-sm sm:text-md font-semibold">
               {t("translation.revenueBreakdown")}
             </h4>
             <p className="text-xs text-muted-foreground">
@@ -46,11 +46,16 @@ export default function RevenueBreakdownBar({
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+              margin={{
+                top: 20,
+                right: 10,
+                left: -30,
+              }}
             >
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
                 dataKey="name"
+                interval={0}
                 tick={(props: any) => {
                   const { x, y, payload } = props;
                   const item = data.find((d) => d.name === payload.value);
@@ -61,12 +66,12 @@ export default function RevenueBreakdownBar({
                   const trendSymbol = item.trend === "up" ? "▲" : "▼";
 
                   return (
-                    <g transform={`translate(${x},${y + 20})`}>
-                      <text textAnchor="middle" fill="#666" fontSize={12}>
-                        {t(`translation.${item.name}`)}{" "}
-                        <tspan fontSize={10} fill={trendColor}>
-                          ({Number(item.value).toFixed(2)}% {trendSymbol})
-                        </tspan>
+                    <g transform={`translate(${x},${y + 8})`}>
+                      <text textAnchor="middle" fill="#666" fontSize={10}>
+                        {t(`translation.${item.name}`)}
+                      </text>
+                      <text y={14} textAnchor="middle" fontSize={10} fill={trendColor}>
+                        {Number(item.value).toFixed(2)}% {trendSymbol}
                       </text>
                     </g>
                   );

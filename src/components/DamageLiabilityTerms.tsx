@@ -14,6 +14,7 @@ import {
 import Loader from "./Loader";
 import ResponseError from "./ResponseError";
 import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 interface DamageLiabilityTermsFormValues {
   responsibilityClause: string;
@@ -22,6 +23,7 @@ interface DamageLiabilityTermsFormValues {
 }
 
 const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
+  const t = useTranslations("translation");
   const { data, isLoading, error } = useGetDamageLiabilityTerms(zone);
   const {
     responsibilityClause = "",
@@ -73,20 +75,21 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
         <div className="space-y-4">
           <TextInput
             name="responsibilityClause"
-            label="Responsibility Clause"
+            label="responsibilityClause" // Matching JSON key
             control={control}
-            placeholder="Enter Responsibility Clause"
+            placeholder={t("enterResponsibilityClause")}
             type="textarea"
           />
+
           <div className="flex gap-4">
             <Switch
               name="inspectionRequired"
-              label="Inspection"
+              label="inspectionRequired"
               control={control}
             />
             <Switch
               name="insuranceRequired"
-              label="Insurance"
+              label="insuranceRequired"
               control={control}
             />
           </div>
@@ -98,12 +101,12 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
             type="submit"
             disabled={isLoading || updating}
           >
-            {updating ? "Saving..." : "Save"}
+            {updating ? t("saving") : t("save")}
           </Button>
         </div>
         {updateError && (
           <p className="text-red-500">
-            {updateError?.message || "Failed to update damage liability terms"}
+            {updateError?.message || t("failedToUpdateDamageLiabilityTerms")}
           </p>
         )}
       </form>

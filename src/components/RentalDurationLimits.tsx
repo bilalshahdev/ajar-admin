@@ -14,13 +14,14 @@ import TextInput from "./forms/fields/TextInput";
 import Loader from "./Loader";
 import ResponseError from "./ResponseError";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 const durations = [
-  { label: "Hours", value: "hours" },
-  { label: "Days", value: "days" },
-  { label: "Weeks", value: "weeks" },
-  { label: "Months", value: "months" },
-  { label: "Years", value: "years" },
+  { label: "hours", value: "hours" },
+  { label: "days", value: "days" },
+  { label: "weeks", value: "weeks" },
+  { label: "months", value: "months" },
+  { label: "years", value: "years" },
 ];
 
 const durationSchema = z.object({
@@ -37,6 +38,7 @@ const schema = z.object({
 type RentalDurationFormValues = z.infer<typeof schema>;
 
 const RentalDurationLimits = ({ zone }: { zone: string }) => {
+  const t = useTranslations("translation");
   const { data, isLoading, error } = useGetRentalDurationLimits(zone);
 
   const {
@@ -85,7 +87,7 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="w-full">
-            <label className="font-semibold mb-1 block">Minimum Duration</label>
+            <label className="font-semibold mb-1 block">{t("minimumDuration")}</label>
             <div className="flex items-center gap-2">
               <TextInput
                 name="minimumDuration.value"
@@ -102,12 +104,12 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
               />
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Set minimum length of a rental period
+              {t("setMinDurationNote")}
             </p>
           </div>
 
           <div>
-            <label className="font-semibold mb-1 block">Maximum Duration</label>
+            <label className="font-semibold mb-1 block">{t("maximumDuration")}</label>
             <div className="flex items-center gap-2">
               <TextInput
                 name="maximumDuration.value"
@@ -123,13 +125,13 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
               />
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Set maximum length of a rental period
+              {t("setMinDurationNote")}
             </p>
           </div>
 
           <Switch
             name="extensionAllowed"
-            label="Extension Allowed"
+            label="extensionAllowed"
             control={control}
           />
         </div>
@@ -140,12 +142,12 @@ const RentalDurationLimits = ({ zone }: { zone: string }) => {
             variant="button"
             disabled={isLoading || updating}
           >
-            {updating ? "Saving..." : "Save"}
+            {updating ? t("saving") : t("save")}
           </Button>
         </div>
         {updateError && (
           <p className="text-red-500">
-            {updateError?.message || "Failed to update rental duration limits"}
+            {updateError?.message || t("failedToUpdateRentalDurationLimits")}
           </p>
         )}
       </form>

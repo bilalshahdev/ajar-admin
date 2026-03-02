@@ -13,8 +13,10 @@ import {
 import { useState } from "react";
 import { useGetZones } from "@/hooks/useZones";
 import { limit } from "@/config/constants";
+import { useTranslations } from "next-intl";
 
 const RentalPolicies = () => {
+  const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetZones({ page, limit });
   const [selectedZone, setSelectedZone] = useState<string | undefined>(
@@ -28,7 +30,9 @@ const RentalPolicies = () => {
         <Select value={selectedZone} onValueChange={setSelectedZone}>
           <SelectTrigger disabled={isLoading || !zones?.length}>
             <SelectValue
-              placeholder={isLoading ? "Loading..." : "Select a zone"}
+              placeholder={
+                isLoading ? t("loading") : t("selectZone")
+              }
             />
           </SelectTrigger>
           <SelectContent>
@@ -41,8 +45,7 @@ const RentalPolicies = () => {
         </Select>
       </div>{" "}
       <p className="text-sm bg-amber-100 text-black p-2 rounded-md">
-        ⚠️ Policy changes will only apply to new rentals. Ongoing bookings are
-        not affected.
+        ⚠️ {t("policyChangeNote")}
       </p>
       <>
         {selectedZone && (
@@ -50,17 +53,17 @@ const RentalPolicies = () => {
             defaultValue="security-deposit"
             tabs={[
               {
-                label: "Security Deposit Rules",
+                label: "securityDepositRules",
                 value: "security-deposit",
                 content: <SecurityDepositRules zone={selectedZone} />,
               },
               {
-                label: "Damage Liability Terms",
+                label: "damageLiabilityTerms",
                 value: "damage-liability",
                 content: <DamageLiabilityTerms zone={selectedZone} />,
               },
               {
-                label: "Rental Duration Limits",
+                label: "rentalDurationLimits",
                 value: "rental-duration",
                 content: <RentalDurationLimits zone={selectedZone} />,
               },
