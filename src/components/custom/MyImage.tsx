@@ -13,6 +13,10 @@ interface MyImageProps extends Omit<ImageProps, "src"> {
   fallbackText?: string;
 }
 
+const normalizeUrl = (url: string) => {
+  return url.replace(/([^:]\/)\/+/g, "$1");
+};
+
 const MyImage = ({
   src,
   alt,
@@ -24,7 +28,11 @@ const MyImage = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(!src);
 
-  const resolvedSrc = getImageUrl(src as string | File | null);
+  let resolvedSrc = getImageUrl(src as string | File | null);
+
+  if (typeof resolvedSrc === "string") {
+    resolvedSrc = normalizeUrl(resolvedSrc);
+  }
 
   if (isError || !resolvedSrc) {
     if (fallbackText) {
