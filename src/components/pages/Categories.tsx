@@ -34,13 +34,13 @@ const Categories = () => {
   const row = (category: Category) => (
     <>
       <TableCell>{category._id.slice(-4)}</TableCell>
-      {category?.description?.trim() ? (
+      {/* {category?.description?.trim() ? (
         <Tooltip content={category?.description || ""}>
           <TableCell>{category.name}</TableCell>
         </Tooltip>
-      ) : (
+      ) : ( */}
         <TableCell>{category.name}</TableCell>
-      )}
+      {/* )} */}
       <TableCell className="capitalize">{category.type}</TableCell>
       <TableCell>{category?.category?.name || "—"}</TableCell>
       <TableCell className="flex gap-4">

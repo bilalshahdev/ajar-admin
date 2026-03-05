@@ -3,7 +3,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
-/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compiler: {
@@ -13,44 +12,35 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.example.com",
-      },
-      {
-        protocol: "https",
-        hostname: "example.com",
-      },
-      {
-        protocol: "https",
         hostname: "ajar-server.hostdonor.com",
+        pathname: "/uploads/**",
       },
       {
         protocol: "https",
         hostname: "server.ajarhub.com",
+        pathname: "/**",
       },
       {
-        protocol: "http",
-        hostname: "192.168.18.64",
-        port: "5000",
+        protocol: "https",
+        hostname: "cdn.example.com",
+        pathname: "/**",
       },
       {
-        protocol: "http",
-        hostname: "192.168.18.145",
-        port: "5000",
+        protocol: "https",
+        hostname: "example.com",
+        pathname: "/**",
       },
       {
-        protocol: "http",
-        hostname: "192.168.18.64",
-        port: "5000",
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
       },
       {
         protocol: "http",
         hostname: "localhost",
         port: "5000",
-      },
-      {
-  protocol: "https",
-  hostname: "lh3.googleusercontent.com",
-}
+        pathname: "/**",
+      }
     ],
   },
 };

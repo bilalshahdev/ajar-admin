@@ -63,35 +63,19 @@ const Users = () => {
   const UserStats = [
     {
       title: "totalUsers",
-      value: totalUsers?.toString() || "0",
-      change: {
-        value: 0,
-        trend: "up",
-      },
+      value: totalUsers?.toString() || "0"
     },
     {
       title: "activeUsers",
-      value: totalActiveUsers?.toString() || "0",
-      change: {
-        value: 0,
-        trend: "up",
-      },
+      value: totalActiveUsers?.toString() || "0"
     },
     {
       title: "inactiveUsers",
-      value: totalInactiveUsers?.toString() || "0",
-      change: {
-        value: 0,
-        trend: "up",
-      },
+      value: totalInactiveUsers?.toString() || "0"
     },
     {
       title: "blockedUsers",
-      value: totalBlockedUsers?.toString() || "0",
-      change: {
-        value: 0,
-        trend: "up",
-      },
+      value: totalBlockedUsers?.toString() || "0"
     },
   ];
 
@@ -169,7 +153,6 @@ const Users = () => {
             key={data.title}
             label={data.title}
             value={data.value}
-            change={data.change}
           />
         ))}
       </div>

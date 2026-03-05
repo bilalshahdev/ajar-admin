@@ -37,11 +37,6 @@ const MessageInput = ({
         <Paperclip className="h-5 w-5 text-muted-foreground" />
       </Button>
 
-      {/* Voice icon */}
-      <Button variant="ghost" size="icon">
-        <Mic className="h-5 w-5 text-muted-foreground" />
-      </Button>
-
       {/* Message input */}
       <Input
         value={message}

@@ -25,6 +25,7 @@ const RefundRequests = () => {
   const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetRefundRequests(page, 10);
+
   const { mutate: updateRefundStatus, isPending: updateLoading } = useUpdateRefundRequest();
   const {
     data: refundRequests = [],
@@ -36,11 +37,13 @@ const RefundRequests = () => {
   const [search, setSearch] = useState("");
 
   const filteredRefundRequests: any = useMemo(() => {
-    return filterData({
-      data: refundRequests || [],
-      search,
-      searchKeys: ["listing", "user"],
-      filters: {},
+    if (!search) return refundRequests || [];
+
+    const lower = search.toLowerCase();
+    return (refundRequests || []).filter((request: RefundRequest) => {
+      const listingName = request?.booking?.marketplaceListingId?.name?.toLowerCase() || "";
+      const userName = request?.user?.name?.toLowerCase() || "";
+      return listingName.includes(lower) || userName.includes(lower);
     });
   }, [refundRequests, search]);
 
