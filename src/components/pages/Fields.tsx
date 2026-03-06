@@ -3,17 +3,30 @@
 import { TableCell } from "@/components/ui/table";
 import { limit } from "@/config/constants";
 import { useDeleteField, useGetFields } from "@/hooks/useFields";
-import { useState } from "react";
+import { filterData } from "@/utils/filterData";
+import { useMemo, useState } from "react";
 import TableActions from "../Actions";
 import { DataTable } from "../custom/DataTable";
+import { SearchInput } from "../custom/SearchInput";
+import HighlightCell from "../HighlightCell";
 import ResponseError from "../ResponseError";
 import TableSkeleton from "../skeletons/TableSkeleton";
 
 const Fields = () => {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const { data, isLoading, error } = useGetFields({ page, limit });
   const { mutate: deleteField, isPending: deleteLoading } = useDeleteField();
   const cols = ["label", "name", "type", "actions"];
+
+  const filteredFields = useMemo(() => {
+    const fields = data?.data?.fields || [];
+    return filterData({
+      data: fields,
+      search,
+      searchKeys: ["label", "name"],
+    });
+  }, [data, search]);
 
   if (isLoading) {
     return <TableSkeleton cols={cols.length} rows={10} />;
@@ -23,11 +36,10 @@ const Fields = () => {
     return <ResponseError error={error.message} />;
   }
 
-  // const row = (field: Field) => (
   const row = (field: any) => (
     <>
-      <TableCell>{field.label ?? "—"}</TableCell>
-      <TableCell>{field.name}</TableCell>
+      <HighlightCell text={field.label ?? "—"} query={search} />
+      <HighlightCell text={field.name} query={search} />
       <TableCell className="capitalize">{field.type}</TableCell>
       <TableCell className="flex gap-4">
         <TableActions
@@ -49,9 +61,16 @@ const Fields = () => {
   );
 
   return (
-    <div className="h-full">
+    <div className="flex flex-col gap-4 md:gap-8 h-full">
+      <div className="flex items-center justify-end">
+        <SearchInput
+          className="w-full"
+          onChange={(e) => setSearch(e)}
+          placeholder="searchField"
+        />
+      </div>
       <DataTable
-        data={data?.data?.fields || []}
+        data={filteredFields}
         cols={cols}
         row={row}
         pagination={{
