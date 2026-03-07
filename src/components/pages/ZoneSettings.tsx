@@ -199,7 +199,7 @@ const SubcategorySettingsForm = ({
           options={fields}
           loading={fieldsLoading}
           getOptionValue={(f) => f._id}
-          getOptionLabel={(f) => f.label}
+          getOptionLabel={(f) => f.name}
           className="col-span-2"
           emptyText={t("translation.noFieldFound")}
           searchPlaceholder={t("translation.searchFields")}

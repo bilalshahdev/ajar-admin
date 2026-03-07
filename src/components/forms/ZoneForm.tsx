@@ -37,6 +37,8 @@ const ZoneForm = ({
     zone?.polygons || []
   );
 
+  console.log(zone)
+
   const mapRef = useRef<PolygonSearchMapRef>(null);
 
   const {
@@ -57,14 +59,41 @@ const ZoneForm = ({
   // Populate form on edit
   useEffect(() => {
     if (zone) {
+      let convertedPolygons: { lat: number; lng: number }[][] = [];
+
+      if (zone.polygons?.type === "MultiPolygon") {
+        convertedPolygons = zone.polygons.coordinates.map(
+          (polygon: number[][][]) =>
+            polygon[0].map((coord: number[]) => ({ lat: coord[1], lng: coord[0] }))
+        );
+      } else if (zone.polygons?.type === "Polygon") {
+        convertedPolygons = zone.polygons.coordinates.map(
+          (ring: number[][]) =>
+            ring.map((coord: number[]) => ({ lat: coord[1], lng: coord[0] }))
+        );
+      } else if (Array.isArray(zone.polygons)) {
+        convertedPolygons = zone.polygons;
+      }
+
       reset({
         name: zone.name,
         currency: zone.currency,
-        polygons: zone.polygons,
+        polygons: convertedPolygons,
       });
-      setPolygons(zone.polygons || []);
+      setPolygons(convertedPolygons);
     }
   }, [zone, reset]);
+  
+  // useEffect(() => {
+  //   if (zone) {
+  //     reset({
+  //       name: zone.name,
+  //       currency: zone.currency,
+  //       polygons: zone.polygons,
+  //     });
+  //     setPolygons(zone.polygons || []);
+  //   }
+  // }, [zone, reset]);
 
   // Sync polygons with form
   useEffect(() => {
