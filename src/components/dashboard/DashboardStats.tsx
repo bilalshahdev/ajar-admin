@@ -1,6 +1,6 @@
 import { DashboardStat, Stats } from "@/types";
 import { BiCategoryAlt } from "react-icons/bi";
-import { FaHandshake, FaMapMarkedAlt } from "react-icons/fa";
+import { FaFileAlt, FaHandshake, FaMapMarkedAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { MdOutlineRequestPage } from "react-icons/md";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
@@ -14,6 +14,7 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
     totalZones,
     bookingCount,
     totalEarning,
+    pendingDocumentUsers
   } = stats || ({} as Stats);
 
   const dashboardStats: DashboardStat[] = [
@@ -56,6 +57,13 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
       value: bookingCount,
       icon: MdOutlineRequestPage,
       bgColor: "bg-blue-500",
+    },
+    {
+      title: "pendingUserDocuments",
+      value: pendingDocumentUsers,
+      icon: FaFileAlt,
+      bgColor: "bg-purple-500",
+      path: "/user-verification",
     },
   ];
 

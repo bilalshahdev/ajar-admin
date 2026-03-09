@@ -16,13 +16,23 @@ import { toast } from "sonner";
 export const useGetUsers = ({
   page = 1,
   limit = 10,
+  search,
+  status,
+  documentStatus,
+  fromDate,
+  toDate,
 }: {
   page: number;
   limit: number;
+  search?: string;
+  status?: string;
+  documentStatus?: string;
+  fromDate?: string;
+  toDate?: string;
 }) => {
   return useQuery({
-    queryKey: ["users", "paginated", page, limit],
-    queryFn: () => getUsers({ page, limit }),
+    queryKey: ["users", "paginated", page, limit, search, status, documentStatus, fromDate, toDate],
+    queryFn: () => getUsers({ page, limit, search, status, documentStatus, fromDate, toDate }),
     placeholderData: (previousData) => previousData,
   });
 };

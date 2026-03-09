@@ -15,11 +15,31 @@ type GetUserResponse = ApiResponse<User>;
 export const getUsers = async ({
   page = 1,
   limit = 10,
+  search,
+  status,
+  documentStatus,
+  fromDate,
+  toDate,
 }: {
   page: number;
   limit: number;
+  search?: string;
+  status?: string;
+  documentStatus?: string;
+  fromDate?: string;
+  toDate?: string;
 }): Promise<GetUsersResponse> => {
-  const response = await api.get(`/users/all?page=${page}&limit=${limit}`);
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    ...(search && { search }),
+    ...(status && { status }),
+    ...(documentStatus && { documentStatus }),
+    ...(fromDate && { fromDate }),
+    ...(toDate && { toDate }),
+  });
+
+  const response = await api.get(`/users/all?${params.toString()}`);
   return response.data;
 };
 

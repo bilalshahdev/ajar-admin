@@ -498,7 +498,17 @@
     "months": "Months",
     "years": "Years",
     "failedToUpdateRentalDurationLimits": "Failed to update rental duration limits",
-    "undefined": "Undefined"
+    "undefined": "Undefined",
+    "documentStatus": "Document Status",
+    "allDocuments": "All Documents",
+    "userStatus": "User Status",
+    "allStatuses": "All Statuses",
+    "pendingUserDocuments": "Pending User Documents",
+    "documentDate": "Document Date",
+    "to": "To",
+    "clearDates": "Clear dates",
+    "apply": "Apply",
+    "fromDate": "From"
   },
   "confirm": {
     "logout": {
@@ -542,6 +552,8 @@
     "inactive": "Inactive",
     "blocked": "Blocked",
     "unblocked": "Unblocked",
+    "approved": "Approved",
+    "rejected": "Rejected",
     "all": "All"
   },
   "search": {
@@ -558,6 +570,7 @@
     "searchFaq": "Search FAQ",
     "searchRefundRequest": "Search refund request",
     "searchRentalRequest": "Search rental request",
+    "searchUsers": "Search users...",
     "failedToLoadDropdown": "Failed to load dropdown",
     "noDropdownFound": "No dropdown found",
     "searchByNameOrValue": "Search by name or value"

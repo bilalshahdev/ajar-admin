@@ -498,7 +498,17 @@
     "months": "شهور",
     "years": "سنوات",
     "failedToUpdateRentalDurationLimits": "فشل تحديث حدود مدة الإيجار",
-    "undefined": "غير محدد"
+    "undefined": "غير محدد",
+    "documentStatus": "حالة الوثيقة",
+    "allDocuments": "جميع الوثائق",
+    "userStatus": "حالة المستخدم",
+    "allStatuses": "جميع الحالات",
+    "pendingUserDocuments": "وثائق معلقة",
+    "documentDate": "تاريخ الوثيقة",
+    "to": "إلى",
+    "clearDates": "مسح التواريخ",
+    "apply": "تطبيق",
+    "fromDate": "من"
   },
   "confirm": {
     "logout": {
@@ -542,6 +552,8 @@
     "inactive": "غير نشط",
     "blocked": "محظور",
     "unblocked": "غير محظور",
+    "approved": "موافق عليه",
+    "rejected": "مرفوض",
     "all": "الكل"
   },
   "search": {
@@ -557,6 +569,7 @@
     "searchEmployee": "البحث عن موظف",
     "searchFaq": "البحث في الأسئلة الشائعة",
     "searchRefundRequest": "البحث عن طلب استرداد",
+    "searchUsers": "البحث عن مستخدمين...",
     "searchRentalRequest": "البحث عن طلب تأجير",
     "failedToLoadDropdown": "فشل تحميل القائمة المنسدلة",
     "noDropdownFound": "لم يتم العثور على قائمة منسدلة",

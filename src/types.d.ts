@@ -539,6 +539,7 @@ interface Stats {
   totalZones: number;
   bookingCount: number;
   totalEarning: number;
+  pendingDocumentUsers: number;
 }
 
 type Trend = "up" | "down";
