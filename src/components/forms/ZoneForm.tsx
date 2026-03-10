@@ -37,8 +37,6 @@ const ZoneForm = ({
     zone?.polygons || []
   );
 
-  console.log(zone)
-
   const mapRef = useRef<PolygonSearchMapRef>(null);
 
   const {

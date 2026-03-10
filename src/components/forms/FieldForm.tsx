@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
@@ -46,6 +46,9 @@ const inputTypes = [
 export default function FieldForm({ id }: { id?: string }) {
   const t = useTranslations();
   const router = useRouter();
+  const locale = useLocale();
+  const [nameError, setNameError] = useState<string | null>(null);
+
   const [isChoiceField, setIsChoiceField] = useState(false);
   const [parentFieldId, setParentFieldId] = useState<string | null>(null);
   const [parentFieldOption, setParentFieldOption] = useState<string | null>(
@@ -132,6 +135,15 @@ export default function FieldForm({ id }: { id?: string }) {
     : addMutation;
 
   const onSubmit = async (formData: any) => {
+    const camelCaseRegex = /^[a-z]+([A-Z][a-z]*)*$/;
+    if (!camelCaseRegex.test(formData.name)) {
+      if (locale !== "ar") {
+        setNameError("Field name must be camelCase");
+        return;
+      }
+    }
+
+    setNameError(null);
     setParentFieldIdError(null);
     setParentFieldOptionError(null);
 
@@ -261,14 +273,17 @@ export default function FieldForm({ id }: { id?: string }) {
         {typesWithOptions.includes(type) && (
           <FormArrayInput control={control} name="options" label="options" />
         )}
-        <TextInput
-          control={control}
-          name="name"
-          note={t("translation.fieldNameNote")}
-          label="fieldName"
-          placeholder={t("translation.egEnterFieldName")}
-          disabled={isEditMode}
-        />
+        <div className="space-y-1">
+          <TextInput
+            control={control}
+            name="name"
+            note={locale !== "ar" ? t("translation.fieldNameNote") : undefined}
+            label="fieldName"
+            placeholder={t("translation.egEnterFieldName")}
+            disabled={isEditMode}
+          />
+          {nameError && <span className="text-red-500 text-sm">{nameError}</span>}
+        </div>
         <TextInput
           control={control}
           name="placeholder"

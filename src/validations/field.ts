@@ -4,8 +4,8 @@ export const FieldSchema = z.object({
   // name must be camelCase
   name: z
     .string({ required_error: "Field name is required" })
-    .min(1, "Field name must be at least 1 character")
-    .regex(/^[a-z]+([A-Z][a-z]*)*$/, "Field name must be camelCase"),
+    .min(1, "Field name must be at least 1 character"),
+    // .regex(/^[a-z]+([A-Z][a-z]*)*$/, "Field name must be camelCase"),
 
   label: z
     .string({ required_error: "Label is required" })
