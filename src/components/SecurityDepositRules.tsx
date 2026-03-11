@@ -83,6 +83,7 @@ const SecurityDepositRules = ({ zone }: { zone: string }) => {
           <TextInput
             name="depositAmount"
             label="depositAmount"
+            type="number"
             control={control}
             placeholder={t("enterDepositAmount")}
           />
