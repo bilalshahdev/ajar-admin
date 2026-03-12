@@ -103,6 +103,8 @@ const SubcategorySettingsForm = ({
     zoneId,
     selectedSubCategory
   );
+  
+  console.log("zoneForm",zoneForm)
 
   useEffect(() => {
     reset(defaultValues);

@@ -1,5 +1,7 @@
+"use client";
+
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useController } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-// camelCase regex
-const camelCaseRegex = /^[a-z]+([A-Z][a-z]*)*$/;
+// Allows alphanumeric starting with lowercase
+const camelCaseRegex = /^[a-z0-9]+([A-Z0-9][a-z0-9]*)*$/;
 
 const FormArrayInput = ({
   label,
@@ -31,35 +33,35 @@ const FormArrayInput = ({
     fieldState: { error },
   } = useController({ name, control });
 
-  const [value, setValue] = useState<string>(""); // Current input value
-  const [items, setItems] = useState<string[]>(field.value || []); // List of items
-  const [validationError, setValidationError] = useState<string | null>(null); // To store validation errors
+  const [value, setValue] = useState<string>(""); 
+  const [items, setItems] = useState<string[]>(field.value || []); 
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  // Add item to the array, ensuring it's unique and follows camelCase
+  // Sync internal state with hook-form when reset via setValue from parent
+  useEffect(() => {
+    setItems(field.value || []);
+  }, [field.value]);
+
   const addItem = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== "Enter") return;
-
     event.preventDefault();
 
     const inputValue = value.trim();
 
-    // Check if the value follows camelCase format
     if (!camelCaseRegex.test(inputValue)) {
-      setValidationError("Value must be in camelCase format.");
+      setValidationError("Value must be camelCase (numbers allowed).");
       return;
     }
 
-    // Check if value is empty or already exists in the list
     if (!inputValue || items.includes(inputValue)) return;
 
     const newItems = [...items, inputValue];
     setItems(newItems);
     field.onChange(newItems);
-    setValue(""); // Reset input field
-    setValidationError(null); // Clear validation error if added successfully
+    setValue(""); 
+    setValidationError(null);
   };
 
-  // Remove item from the array
   const removeItem = (index: number) => {
     const newItems = items.filter((_, i) => i !== index);
     setItems(newItems);
@@ -77,7 +79,7 @@ const FormArrayInput = ({
             variant="outline"
           >
             {field.value?.length > 0
-              ? field.value?.length + ` ${label}`
+              ? `${field.value?.length} ${label}`
               : `Manage ${label}`}
           </Button>
         </DialogTrigger>
@@ -86,7 +88,6 @@ const FormArrayInput = ({
             <DialogTitle>Manage {label}</DialogTitle>
           </DialogHeader>
 
-          {/* Input Field */}
           <Input
             placeholder={`Enter ${label?.toLowerCase()} and press Enter`}
             onKeyDown={addItem}
@@ -99,10 +100,10 @@ const FormArrayInput = ({
 
           <div className="space-y-2">
             {items.length > 0 ? (
-              <div className="max-h-20 overflow-y-scroll flex flex-wrap gap-2">
+              <div className="max-h-40 overflow-y-auto flex flex-wrap gap-2">
                 {items.map((item, index) => (
                   <div
-                    key={index}
+                    key={`${item}-${index}`}
                     className="flex items-center gap-1 bg-secondary text-foreground px-3 py-1 rounded-lg"
                   >
                     <span className="text-sm truncate w-20 sm:w-24">

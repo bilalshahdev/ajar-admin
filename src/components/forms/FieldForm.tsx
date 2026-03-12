@@ -67,7 +67,7 @@ export default function FieldForm({ id }: { id?: string }) {
     !!id,
   );
 
-  const { control, handleSubmit, watch, reset } = useForm<FieldFormValues>({
+  const { control, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<FieldFormValues>({
     resolver: zodResolver(FieldSchema),
     defaultValues: {
       name: "",
@@ -178,6 +178,7 @@ export default function FieldForm({ id }: { id?: string }) {
       setParentFieldOption(null);
       setParentFieldIdError(null);
       setParentFieldOptionError(null);
+      setValue("options", []); // Reset when turning off child field mode
     }
   };
 
@@ -220,6 +221,7 @@ export default function FieldForm({ id }: { id?: string }) {
                 setParentFieldId(id);
                 setParentFieldOption(null);
                 setParentFieldIdError(null);
+                setValue("options", []); // Reset options when the parent field changes
               }}
               isTranslations={false}
             />
@@ -241,6 +243,7 @@ export default function FieldForm({ id }: { id?: string }) {
                 onChange={(value) => {
                   setParentFieldOption(value);
                   setParentFieldOptionError(null);
+                  setValue("options", []); // RESET OPTIONS HERE when "whenValueIs" changes
                 }}
                 isTranslations={false}
               />
@@ -271,8 +274,16 @@ export default function FieldForm({ id }: { id?: string }) {
           disabled={!!id}
         />
         {typesWithOptions.includes(type) && (
-          <FormArrayInput control={control} name="options" label="options" />
+          <div className="space-y-1">
+            <FormArrayInput control={control} name="options" label="options" />
+            {errors.options && (
+              <p className="text-red-500 text-sm">
+                {errors.options.message}
+              </p>
+            )}
+          </div>
         )}
+
         <div className="space-y-1">
           <TextInput
             control={control}
