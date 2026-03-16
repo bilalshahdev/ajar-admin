@@ -573,6 +573,7 @@
     "searchUsers": "Search users...",
     "failedToLoadDropdown": "Failed to load dropdown",
     "noDropdownFound": "No dropdown found",
-    "searchByNameOrValue": "Search by name or value"
+    "searchByNameOrValue": "Search by name or value",
+    "searchByNameOrEmail": "Search by name or email..."
   }
 }

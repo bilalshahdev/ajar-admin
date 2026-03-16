@@ -573,6 +573,7 @@
     "searchRentalRequest": "البحث عن طلب تأجير",
     "failedToLoadDropdown": "فشل تحميل القائمة المنسدلة",
     "noDropdownFound": "لم يتم العثور على قائمة منسدلة",
-    "searchByNameOrValue": "البحث بالاسم أو القيمة"
+    "searchByNameOrValue": "البحث بالاسم أو القيمة",
+    "searchByNameOrEmail": "البحث بالاسم أو البريد الإلكتروني..."
   }
 }

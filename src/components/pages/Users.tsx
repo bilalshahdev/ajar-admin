@@ -225,7 +225,7 @@ const Users = () => {
             setPage(1);
             setSearch(value || undefined);
           }}
-          placeholder="searchUsers"
+          placeholder="searchByNameOrEmail"
         />
       </div>
 
