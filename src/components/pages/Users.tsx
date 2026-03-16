@@ -35,18 +35,22 @@ import { useTranslations } from "next-intl";
 import { SearchInput } from "../custom/SearchInput";
 import { useDebounce } from "@/hooks/use-debounce";
 import DateRangePicker from "@/components/DateRangePicker";
+import { useSearchParams } from "next/navigation";
 
 const userStatus = ["active", "inactive", "blocked", "unblocked"];
 const documentStatuses = ["pending", "approved", "rejected"];
 
 const Users = () => {
   const t = useTranslations();
+  const searchParams = useSearchParams();
   const [page, setPage] = useState(1);
+
+  const initialDocumentStatus = searchParams.get("documentStatus") || undefined;
 
   // Filter states
   const [search, setSearch] = useState<string | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
-  const [documentStatus, setDocumentStatus] = useState<string | undefined>(undefined);
+  const [documentStatus, setDocumentStatus] = useState<string | undefined>(initialDocumentStatus);
   const [fromDate, setFromDate] = useState<string | undefined>(undefined);
   const [toDate, setToDate] = useState<string | undefined>(undefined);
 

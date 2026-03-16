@@ -63,7 +63,7 @@ const DashboardStats = ({ stats }: { stats: Stats }) => {
       value: pendingDocumentUsers,
       icon: FaFileAlt,
       bgColor: "bg-purple-500",
-      path: "/user-verification",
+      path: "/user-verification?documentStatus=pending"
     },
   ];
 
