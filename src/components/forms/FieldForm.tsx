@@ -43,6 +43,8 @@ const inputTypes = [
   { name: "location", value: "location" },
 ];
 
+type ConditionsMap = Record<string, string[]>;
+
 export default function FieldForm({ id }: { id?: string }) {
   const t = useTranslations();
   const router = useRouter();
@@ -51,23 +53,22 @@ export default function FieldForm({ id }: { id?: string }) {
 
   const [isChoiceField, setIsChoiceField] = useState(false);
   const [parentFieldId, setParentFieldId] = useState<string | null>(null);
-  const [parentFieldOption, setParentFieldOption] = useState<string | null>(
-    null,
-  );
+  const [parentFieldOption, setParentFieldOption] = useState<string | null>(null);
+  const [conditionsMap, setConditionsMap] = useState<ConditionsMap>({});
 
-  const [parentFieldIdError, setParentFieldIdError] = useState<string | null>(
-    null,
-  );
-  const [parentFieldOptionError, setParentFieldOptionError] = useState<
-    string | null
-  >(null);
+  const [parentFieldIdError, setParentFieldIdError] = useState<string | null>(null);
+  const [parentFieldOptionError, setParentFieldOptionError] = useState<string | null>(null);
 
-  const { data: field, isLoading: isFieldLoading } = useGetField(
-    id || "",
-    !!id,
-  );
+  const { data: field, isLoading: isFieldLoading } = useGetField(id || "", !!id);
 
-  const { control, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<FieldFormValues>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<FieldFormValues>({
     resolver: zodResolver(FieldSchema),
     defaultValues: {
       name: "",
@@ -114,17 +115,42 @@ export default function FieldForm({ id }: { id?: string }) {
           max: f.validation?.max ?? 0,
         },
       });
+
       if (f.conditional?.dependsOn) {
         setIsChoiceField(true);
         setParentFieldId(f.conditional.dependsOn);
-        setParentFieldOption(f.conditional.value);
+
+        const conditional = f.conditional as any;
+        const savedMap: ConditionsMap = {};
+
+        (conditional.conditions || []).forEach(
+          (c: { value: string; options: string[] }) => {
+            savedMap[c.value] = c.options || [];
+          }
+        );
+        setConditionsMap(savedMap);
+
+        if (conditional.conditions?.length > 0) {
+          const firstValue = conditional.conditions[0].value;
+          setParentFieldOption(firstValue);
+          setValue("options", savedMap[firstValue] || []);
+        }
       }
     }
   }, [field, reset]);
 
-  const { data: fieldsList } = useGetChoiceFieldsList({
-    enabled: isChoiceField,
-  });
+  const type = watch("type");
+  const typesWithOptions = ["select", "radio", "multiselect"];
+  const isChildFieldAllowed = ["select", "radio"].includes(type);
+
+  // ✅ Auto-reset child field if type changes to non-select/radio
+  useEffect(() => {
+    if (!isChildFieldAllowed && isChoiceField) {
+      handleDependsOnChange(false);
+    }
+  }, [type]);
+
+  const { data: fieldsList } = useGetChoiceFieldsList({ enabled: isChoiceField });
 
   const isEditMode = Boolean(id);
   const updateMutation = useUpdateField();
@@ -157,10 +183,23 @@ export default function FieldForm({ id }: { id?: string }) {
       return;
     }
 
+    const finalMap = parentFieldOption
+      ? { ...conditionsMap, [parentFieldOption]: formData.options || [] }
+      : conditionsMap;
+
+    const conditions = Object.entries(finalMap).map(([value, options]) => ({
+      value,
+      options,
+    }));
+
     formData.conditional = {
       dependsOn: parentFieldId,
-      value: parentFieldOption,
+      conditions,
     };
+
+    if (isChoiceField) {
+      formData.options = [];
+    }
 
     const mutationPayload = id ? { id, data: formData } : formData;
     fieldMutation(mutationPayload, {
@@ -176,19 +215,17 @@ export default function FieldForm({ id }: { id?: string }) {
     if (!checked) {
       setParentFieldId(null);
       setParentFieldOption(null);
+      setConditionsMap({});
       setParentFieldIdError(null);
       setParentFieldOptionError(null);
-      setValue("options", []); // Reset when turning off child field mode
+      setValue("options", []);
     }
   };
 
   if (isFieldLoading && id) return <Loader />;
 
-  const type = watch("type");
-  const typesWithOptions = ["select", "radio", "multiselect"];
-
   const selectedField = fieldsList?.data?.fields?.find(
-    (f) => f._id === parentFieldId,
+    (f) => f._id === parentFieldId
   );
 
   const fieldOptions = fieldsList?.data?.fields.map((f) => ({
@@ -198,16 +235,26 @@ export default function FieldForm({ id }: { id?: string }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* ✅ isChildField switch — disabled for non select/radio types */}
       <div className="inline-flex items-center gap-4 p-4 bg-accent rounded-md">
-        <Label htmlFor="is-child-field" className="cursor-pointer">
+        <Label
+          htmlFor="is-child-field"
+          className={`cursor-pointer ${!isChildFieldAllowed ? "opacity-50" : ""}`}
+        >
           {t("translation.isChildField")}
         </Label>
         <USwitch
           id="is-child-field"
           className="cursor-pointer"
           checked={isChoiceField}
+          disabled={!isChildFieldAllowed}
           onCheckedChange={handleDependsOnChange}
         />
+        {!isChildFieldAllowed && (
+          <span className="text-xs text-muted-foreground">
+            {t("translation.onlyForSelectRadio")}
+          </span>
+        )}
       </div>
 
       {isChoiceField && (
@@ -220,8 +267,9 @@ export default function FieldForm({ id }: { id?: string }) {
               onChange={(id) => {
                 setParentFieldId(id);
                 setParentFieldOption(null);
+                setConditionsMap({});
                 setParentFieldIdError(null);
-                setValue("options", []); // Reset options when the parent field changes
+                setValue("options", []);
               }}
               isTranslations={false}
             />
@@ -229,6 +277,7 @@ export default function FieldForm({ id }: { id?: string }) {
               <span className="text-red-500 text-sm">{parentFieldIdError}</span>
             )}
           </div>
+
           {parentFieldId && (
             <div>
               <SelectInput
@@ -241,9 +290,20 @@ export default function FieldForm({ id }: { id?: string }) {
                 }
                 value={parentFieldOption}
                 onChange={(value) => {
+                  // ✅ Save current options for previous value before switching
+                  if (parentFieldOption) {
+                    const currentOptions = watch("options") || [];
+                    setConditionsMap((prev) => ({
+                      ...prev,
+                      [parentFieldOption]: currentOptions,
+                    }));
+                  }
+
                   setParentFieldOption(value);
                   setParentFieldOptionError(null);
-                  setValue("options", []); // RESET OPTIONS HERE when "whenValueIs" changes
+
+                  // ✅ Load saved options for newly selected value (or empty)
+                  setValue("options", conditionsMap[value] || []);
                 }}
                 isTranslations={false}
               />
@@ -277,9 +337,7 @@ export default function FieldForm({ id }: { id?: string }) {
           <div className="space-y-1">
             <FormArrayInput control={control} name="options" label="options" />
             {errors.options && (
-              <p className="text-red-500 text-sm">
-                {errors.options.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.options.message}</p>
             )}
           </div>
         )}
@@ -293,7 +351,9 @@ export default function FieldForm({ id }: { id?: string }) {
             placeholder={t("translation.egEnterFieldName")}
             disabled={isEditMode}
           />
-          {nameError && <span className="text-red-500 text-sm">{nameError}</span>}
+          {nameError && (
+            <span className="text-red-500 text-sm">{nameError}</span>
+          )}
         </div>
         <TextInput
           control={control}

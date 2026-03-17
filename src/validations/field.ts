@@ -37,19 +37,7 @@ export const FieldSchema = z.object({
 
   // Keep this as is for the base structure
   options: z.array(z.string()).optional(),
-}).superRefine((data, ctx) => {
-  // Logic: If type is a choice type, options MUST have at least 1 item
-  const typesWithOptions = ["select", "radio", "multiselect"];
 
-  if (typesWithOptions.includes(data.type)) {
-    if (!data.options || data.options.length === 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "At least one option is required for this input type",
-        path: ["options"], // This points the error specifically to the options field
-      });
-    }
-  }
 });
 
 export type FieldFormValues = z.infer<typeof FieldSchema>;

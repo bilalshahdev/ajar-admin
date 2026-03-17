@@ -508,7 +508,9 @@
     "to": "إلى",
     "clearDates": "مسح التواريخ",
     "apply": "تطبيق",
-    "fromDate": "من"
+    "fromDate": "من",
+    "remove": "إزالة",
+    "onlyForSelectRadio": "متاح فقط لحقول الاختيار والزر"
   },
   "confirm": {
     "logout": {

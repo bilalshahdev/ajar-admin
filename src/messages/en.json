@@ -508,7 +508,9 @@
     "to": "To",
     "clearDates": "Clear dates",
     "apply": "Apply",
-    "fromDate": "From"
+    "fromDate": "From",
+    "remove": "Remove",
+    "onlyForSelectRadio": "Only available for Select and Radio field types"
   },
   "confirm": {
     "logout": {
