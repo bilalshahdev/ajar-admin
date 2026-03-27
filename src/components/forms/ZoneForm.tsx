@@ -94,6 +94,7 @@ const ZoneForm = ({
   // }, [zone, reset]);
 
   // Sync polygons with form
+  
   useEffect(() => {
     setValue("polygons", polygons);
   }, [polygons, setValue]);

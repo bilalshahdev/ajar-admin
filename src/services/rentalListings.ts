@@ -46,10 +46,12 @@ export const getRentalListing = async (
 
 export const updateRentalListingStatus = async (
   id: string,
-  status: "approved" | "rejected"
+  status: "approved" | "rejected",
+  rejectionNote?: string
 ): Promise<GetRentalListingResponse> => {
   const response = await api.patch(`/marketplace-listings/${id}/status`, {
     status,
+    rejectionNote,
   });
   return response.data;
 };

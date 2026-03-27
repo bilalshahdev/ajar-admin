@@ -231,6 +231,7 @@ const RefundPoliciesForm = () => {
               { value: "custom", label: t("custom") },
             ]}
             disabled={!zone || zoneLoading}
+            isTranslations={false}
             loading={zoneLoading}
           />
           <TextInput

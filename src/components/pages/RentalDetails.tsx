@@ -15,6 +15,16 @@ import Status from "../StatusBadge";
 import { Button } from "../ui/button";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 type ListingDocument = {
   _id: string;
@@ -27,6 +37,9 @@ const RentalListingDetail = ({ id }: { id: string }) => {
   const { data: rentalRequest, isLoading, error } = useRentalListing(id);
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateRentalListing();
+
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [rejectionNote, setRejectionNote] = useState("");
 
   if (isLoading) return <Loader />;
   if (error) return <ResponseError error={error.message} />;
@@ -219,7 +232,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
           <Button
             variant="destructive"
             disabled={isUpdating}
-            onClick={() => updateStatus({ id, status: "rejected" })}
+            onClick={() => setRejectDialogOpen(true)}
           >
             {t("reject")}
           </Button>
@@ -232,6 +245,54 @@ const RentalListingDetail = ({ id }: { id: string }) => {
           </Button>
         </div>
       )}
+
+      {/* Rejection Note Dialog */}
+      <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("rejectionNote")}</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-2">
+            <Textarea
+              id="rejectionNote"
+              className="min-h-30" 
+              placeholder={t("rejectionNotePlaceholder")}
+              value={rejectionNote}
+              onChange={(e) => setRejectionNote(e.target.value)}
+            />
+          </div>
+
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setRejectDialogOpen(false);
+                setRejectionNote("");
+              }}
+            >
+              {t("cancel")}
+            </Button>
+            <Button
+              variant="destructive"
+              disabled={!rejectionNote.trim() || isUpdating}
+              onClick={() => {
+                updateStatus(
+                  { id, status: "rejected", rejectionNote },
+                  {
+                    onSuccess: () => {
+                      setRejectDialogOpen(false);
+                      setRejectionNote("");
+                    },
+                  }
+                );
+              }}
+            >
+              {isUpdating ? t("rejecting") : t("confirmReject")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

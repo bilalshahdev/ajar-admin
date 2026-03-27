@@ -38,10 +38,12 @@ export const useUpdateRentalListing = () => {
     mutationFn: ({
       id,
       status,
+      rejectionNote,
     }: {
       id: string;
       status: "approved" | "rejected";
-    }) => updateRentalListingStatus(id, status),
+      rejectionNote?: string;
+    }) => updateRentalListingStatus(id, status, rejectionNote),
 
     onSuccess: (_, { id, status }) => {
       toast.success(`Listing ${status} successfully`);
@@ -50,7 +52,7 @@ export const useUpdateRentalListing = () => {
     },
 
     onError: (error: any) => {
-      toast.error(error?.message || "Failed to update rental listing status");
+      toast.error(error?.response?.data?.message || "Failed to update rental listing status");
     },
   });
 };

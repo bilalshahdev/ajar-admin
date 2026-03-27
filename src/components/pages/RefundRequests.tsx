@@ -1,32 +1,25 @@
 "use client";
 
 import { TableCell } from "@/components/ui/table";
-import { useGetRefundRequests, useUpdateRefundRequest } from "@/hooks/useRefundManagement";
+import { useGetRefundRequests } from "@/hooks/useRefundManagement";
 import { RefundRequest } from "@/types";
-import { filterData } from "@/utils/filterData";
 import { useMemo, useState } from "react";
 import { DataTable } from "../custom/DataTable";
 import { SearchInput } from "../custom/SearchInput";
 import Loader from "../Loader";
 import ResponseError from "../ResponseError";
 import { Label } from "../Typography";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import Status from "../StatusBadge";
 import { useTranslations } from "next-intl";
+import TableActions from "../Actions";
 
 const RefundRequests = () => {
   const t = useTranslations("translation");
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
   const { data, isLoading, error } = useGetRefundRequests(page, 10);
 
-  const { mutate: updateRefundStatus, isPending: updateLoading } = useUpdateRefundRequest();
   const {
     data: refundRequests = [],
     total,
@@ -34,9 +27,7 @@ const RefundRequests = () => {
     limit,
   } = data || {};
 
-  const [search, setSearch] = useState("");
-
-  const filteredRefundRequests: any = useMemo(() => {
+  const filteredRefundRequests = useMemo(() => {
     if (!search) return refundRequests || [];
 
     const lower = search.toLowerCase();
@@ -46,8 +37,6 @@ const RefundRequests = () => {
       return listingName.includes(lower) || userName.includes(lower);
     });
   }, [refundRequests, search]);
-
-  const refundStatus = ["pending", "accept", "reject"];
 
   const cols = [
     "id",
@@ -62,43 +51,26 @@ const RefundRequests = () => {
   const row = (request: RefundRequest, index: number) => (
     <>
       <TableCell>{index + 1}</TableCell>
-      <TableCell>{request?.booking?.marketplaceListingId?.name}</TableCell>
+      <TableCell className="font-medium">
+        {request?.booking?.marketplaceListingId?.name}
+      </TableCell>
       <TableCell>{request?.user?.name}</TableCell>
-      <TableCell>{request?.createdAt}</TableCell>
+      <TableCell>{new Date(request?.createdAt).toLocaleDateString()}</TableCell>
       <TableCell>${request?.totalRefundAmount.toFixed(2)}</TableCell>
       <TableCell>
         <Status value={request?.status} />
       </TableCell>
       <TableCell>
-        <Select
-          defaultValue={request?.status}
-          onValueChange={(value) =>
-            updateRefundStatus({ id: request._id, data: { status: value } })
-          }
-          disabled={updateLoading}
-        >
-          <SelectTrigger className="capitalize w-[160px]">
-            <div className="flex items-center gap-2">
-              <span
-                className={cn(
-                  "h-2 w-2 rounded-full",
-                  refundStatus.includes(request.status) ? "bg-green-500" : "bg-gray-300"
-                )}
-              />
-              <SelectValue placeholder={t("selectStatus")} />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            {refundStatus.map((status) => (
-              <SelectItem key={status} value={status} className="capitalize">
-                {t(`${status}`)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <TableActions
+          id={request._id}
+          baseRoute="/refund-management"
+          actions={["view"]}
+          module="Refund"
+        />
       </TableCell>
     </>
   );
+
   const pagination = {
     total,
     page: currentPage,
@@ -111,24 +83,24 @@ const RefundRequests = () => {
 
   return (
     <div className="flex flex-col gap-4 md:gap-8">
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <Label>{t("listRefundRequests")}</Label>
-          <div className="flex gap-2">
-            <SearchInput
-              placeholder="searchRefundRequest"
-              onChange={(e) => setSearch(e)}
-              debounceDelay={500}
-            />
-          </div>
+      <div className="flex items-center justify-between mb-4">
+        <Label className="text-xl font-semibold">
+          {t("listRefundRequests")}
+        </Label>
+        <div className="flex gap-2">
+          <SearchInput
+            placeholder="searchRefundRequest"
+            onChange={(e) => setSearch(e)}
+            debounceDelay={500}
+          />
         </div>
-        <DataTable
-          data={filteredRefundRequests}
-          cols={cols}
-          row={row}
-          pagination={pagination}
-        />
       </div>
+      <DataTable
+        data={filteredRefundRequests}
+        cols={cols}
+        row={row}
+        pagination={pagination}
+      />
     </div>
   );
 };

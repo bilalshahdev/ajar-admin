@@ -52,12 +52,12 @@ const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
         const layer = (event as any).layer;
         drawnItems.addLayer(layer);
 
-        const latLngs = layer.getLatLngs()[0].map((pt: any) => ({
-          lat: pt.lat,
-          lng: pt.lng,
-        }));
+        // ✅ collect ALL drawn polygons after adding the new one
+        const allPolygons = drawnItems.getLayers().map((l: any) =>
+          l.getLatLngs()[0].map((pt: any) => ({ lat: pt.lat, lng: pt.lng }))
+        );
 
-        onUserPolygonDrawn?.([latLngs]);
+        onUserPolygonDrawn?.(allPolygons);
       });
 
       return () => {
@@ -122,7 +122,10 @@ const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
           );
         }
 
-        onUserPolygonDrawn?.(latLngArray);
+        const existingPolygons = drawnItems.getLayers().map((l: any) =>
+          l.getLatLngs()[0].map((pt: any) => ({ lat: pt.lat, lng: pt.lng }))
+        );
+        onUserPolygonDrawn?.([...existingPolygons, ...latLngArray]);
 
         // Remove old layer if any
         if (geoJsonLayer) {
