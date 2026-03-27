@@ -20,7 +20,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
 const RefundDetail = ({ id }: { id: string }) => {
   const t = useTranslations("translation");
@@ -132,8 +131,8 @@ const RefundDetail = ({ id }: { id: string }) => {
               <MyImage
                 src={user?.profilePicture || ""}
                 alt={user?.name || "User"}
-                width={60}
-                height={60}
+                width={256}
+                height={256}
                 className="w-14 h-14 rounded-full object-cover border"
               />
               <div>
