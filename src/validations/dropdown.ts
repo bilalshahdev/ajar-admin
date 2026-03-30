@@ -15,6 +15,9 @@ export const ValueSchema = z.object({
       /^[a-z0-9]+(?:_[a-z0-9]+)*$/,
       "For key, use snake_case: lowercase letters/numbers with underscores"
     ),
+  // New fields added here - optional to maintain backward compatibility
+  hasExpiry: z.boolean().optional().default(false),
+  autoApproval: z.boolean().optional().default(false),
 });
 
 export const DropdownSchema = z.object({

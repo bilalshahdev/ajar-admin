@@ -605,5 +605,7 @@
     "noDropdownFound": "لم يتم العثور على قائمة منسدلة",
     "searchByNameOrValue": "البحث بالاسم أو القيمة",
     "searchByNameOrEmail": "البحث بالاسم أو البريد الإلكتروني..."
-  }
+  },
+  "hasExpiry": "يحتوي على تاريخ انتهاء",
+  "autoApproval": "الموافقة التلقائية"
 }

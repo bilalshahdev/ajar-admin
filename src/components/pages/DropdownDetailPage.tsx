@@ -109,7 +109,7 @@ export default function DropdownDetails({ name }: { name: string }) {
                 />
               </div>
 
-              <AddValueForm doc={doc} addValue={addValue} adding={adding} />
+              <AddValueForm doc={doc} addValue={addValue} adding={adding} name={name} />
 
               {/* Values table */}
               <div className="rounded-xl border bg-card">

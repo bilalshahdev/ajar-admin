@@ -538,7 +538,9 @@
     "breakdown": "Price Breakdown",
     "finalAmount": "Final Refund Amount",
     "requesterInformation": "Requester Information",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "hasExpiry": "Has Expiry Date",
+    "autoApproval": "Auto Approval"
   },
   "confirm": {
     "logout": {
