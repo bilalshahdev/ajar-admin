@@ -540,7 +540,8 @@
     "requesterInformation": "Requester Information",
     "rejected": "Rejected",
     "hasExpiry": "Has Expiry Date",
-    "autoApproval": "Auto Approval"
+    "autoApproval": "Auto Approval",
+    "item": "Item"
   },
   "confirm": {
     "logout": {

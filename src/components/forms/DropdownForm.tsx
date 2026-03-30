@@ -35,7 +35,7 @@ export default function DropdownForm({ name }: { name?: string }) {
 
   const form = useForm<DropdownFormValues>({
     resolver: zodResolver(DropdownSchema),
-    defaultValues: { name: "", values: [{ name: "", value: "" }] },
+    defaultValues: { name: "", values: [{ name: "", value: "", hasExpiry: false, autoApproval: false }] },
     mode: "onChange",
   });
 
@@ -47,7 +47,7 @@ export default function DropdownForm({ name }: { name?: string }) {
     if (isEdit && doc) {
       reset({
         name: doc.name ?? "",
-        values: doc.values?.length ? doc.values : [{ name: "", value: "" }],
+        values: doc.values?.length ? doc.values : [{ name: "", value: "", hasExpiry: false, autoApproval: false }],
       });
     }
   }, [isEdit, doc, reset]);
@@ -62,6 +62,8 @@ export default function DropdownForm({ name }: { name?: string }) {
       values: values.values.map((v) => ({
         name: v.name.trim(),
         value: v.value.trim().toLowerCase(),
+        hasExpiry: v.hasExpiry,
+        autoApproval: v.autoApproval,
       })),
     };
 
@@ -109,7 +111,7 @@ export default function DropdownForm({ name }: { name?: string }) {
                 type="button"
                 variant="secondary"
                 size="sm"
-                onClick={() => append({ name: "", value: "" })}
+                onClick={() => append({ name: "", value: "", hasExpiry: false, autoApproval: false })}
                 disabled={pending}
               >
                 <Plus className="h-4 w-4 mr-1" /> Add Value
