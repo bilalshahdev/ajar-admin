@@ -116,8 +116,10 @@ export default function DropdownDetails({ name }: { name: string }) {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[40%]">{t(`translation.name`)}</TableHead>
+                      <TableHead className="w-[30%]">{t(`translation.name`)}</TableHead>
                       <TableHead>{t(`translation.value`)}</TableHead>
+                      <TableHead>Has Expiry</TableHead>   
+                      <TableHead>Auto Approval</TableHead> 
                       <TableHead className="w-[60px] text-right"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -129,9 +131,17 @@ export default function DropdownDetails({ name }: { name: string }) {
                       >
                         <TableCell className="font-medium">{v.name}</TableCell>
                         <TableCell>
-                          <code className="rounded bg-muted px-2 py-1 text-xs">
-                            {v.value}
-                          </code>
+                          <code className="rounded bg-muted px-2 py-1 text-xs">{v.value}</code>
+                        </TableCell>
+                        <TableCell>                                         
+                          <Badge variant={v.hasExpiry ? "default" : "secondary"}>
+                            {v.hasExpiry ? "Yes" : "No"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>                                         
+                          <Badge variant={v.autoApproval ? "default" : "secondary"}>
+                            {v.autoApproval ? "Yes" : "No"}
+                          </Badge>
                         </TableCell>
                         <TableCell className="text-right">
                           <Button
