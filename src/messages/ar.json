@@ -538,7 +538,17 @@
     "breakdown": "تفصيل السعر",
     "finalAmount": "مبلغ الاسترداد النهائي",
     "requesterInformation": "معلومات مقدم الطلب",
-    "rejected": "مرفوض"
+    "rejected": "مرفوض",
+    "cancellationTiers": "مستويات الإلغاء",
+    "addTier": "إضافة مستوى",
+    "noTiersAdded": "لم يتم إضافة أي مستويات إلغاء بعد. انقر على 'إضافة مستوى' للبدء.",
+    "daysBeforeCheckIn": "الأيام قبل تسجيل الوصول",
+    "deductionPercentage": "نسبة الخصم %",
+    "tierLabel": "التسمية",
+    "eg_earlyCancel": "مثال: إلغاء مبكر",
+    "requiredField": "هذا الحقل مطلوب",
+    "minZero": "يجب أن تكون القيمة 0 على الأقل",
+    "max100": "يجب ألا تتجاوز القيمة 100"
   },
   "confirm": {
     "logout": {

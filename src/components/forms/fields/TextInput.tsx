@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import React, { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { useController, Control } from "react-hook-form";
+import { useController, Control, RegisterOptions } from "react-hook-form";
 
 // Allow both input and textarea props
 type CombinedProps = InputHTMLAttributes<HTMLInputElement> &
@@ -19,6 +19,7 @@ interface TextInputProps extends CombinedProps {
   type?: "text" | "email" | "number" | "textarea";
   icon?: React.ReactNode;
   className?: string;
+  rules?: RegisterOptions;
 }
 
 const TextInput = ({
@@ -29,6 +30,7 @@ const TextInput = ({
   type = "text",
   icon,
   className,
+  rules,
   ...props
 }: TextInputProps) => {
   const t = useTranslations();
