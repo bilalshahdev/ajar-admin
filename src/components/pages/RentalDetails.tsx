@@ -11,7 +11,6 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import Loader from "../Loader";
 import ResponseError from "../ResponseError";
-import Status from "../StatusBadge";
 import { Button } from "../ui/button";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { useTranslations } from "next-intl";
@@ -24,12 +23,14 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
 type ListingDocument = {
   _id: string;
   name: string;
-  filesUrl: string[];
+  fileUrl: string;
+  expiryDate?: string;
+  isExpired?: boolean;
+  reminderSent?: boolean;
 };
 
 const RentalListingDetail = ({ id }: { id: string }) => {
@@ -141,7 +142,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
         </CardContent>
       </Card>
 
-      {/* Documents */}
+      {/* Documents Card */}
       {Array.isArray(documents) && documents.length > 0 && (
         <Card className="shadow-md">
           <CardHeader>
@@ -153,64 +154,67 @@ const RentalListingDetail = ({ id }: { id: string }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {documents.map((doc) => (
-              <div key={doc._id} className="space-y-3">
-                <div className="text-base font-medium capitalize">
-                  {doc.name?.replaceAll?.("_", " ") || "Document"}
-                </div>
+            {documents.map((doc: any) => {
+              const url = normalizeSafeUrl(doc.fileUrl);
+              const isExpired = doc.isExpired;
+              const isExpiringSoon = doc.reminderSent && !doc.isExpired;
 
-                <div className="flex flex-wrap gap-3">
-                  {doc.filesUrl?.map((rawUrl, i) => {
-                    const url = normalizeSafeUrl(rawUrl);
+              return (
+                <div key={doc._id} className="p-4 border rounded-lg space-y-3 bg-slate-50/50">
+                  <div className="flex items-center justify-between">
+                    <div className="text-base font-semibold capitalize flex items-center gap-2">
+                      {doc.name?.replaceAll?.("_", " ") || "Document"}
 
-                    if (!url) return null;
+                      {/* --- Status Badges --- */}
+                      {isExpired && (
+                        <span className="px-2 py-0.5 text-[10px] bg-red-100 text-red-600 border border-red-200 rounded-full uppercase font-bold">
+                          {t("expired")}
+                        </span>
+                      )}
+                      {isExpiringSoon && (
+                        <span className="px-2 py-0.5 text-[10px] bg-amber-100 text-amber-600 border border-amber-200 rounded-full uppercase font-bold">
+                          {t("expiringSoon")}
+                        </span>
+                      )}
+                    </div>
 
-                    if (isImage(url)) {
-                      return (
-                        <PhotoProvider key={`${doc._id}-${i}`}>
-                          <PhotoView src={getImageUrl(url)}>
+                    {doc.expiryDate && (
+                      <span className="text-xs text-muted-foreground">
+                        {t("expiry")}: {new Date(doc.expiryDate).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    {url && isImage(url) ? (
+                      <PhotoProvider>
+                        <PhotoView src={getImageUrl(url)}>
+                          <div className="relative group">
                             <MyImage
-                              width={100}
-                              height={100}
+                              width={120}
+                              height={120}
                               src={url}
-                              alt={`${doc.name}-${i}`}
-                              className="h-20 w-20 object-cover rounded border shadow cursor-zoom-in"
+                              alt={doc.name}
+                              className={`h-24 w-24 object-cover rounded-md border shadow-sm cursor-zoom-in transition-opacity ${isExpired ? 'opacity-50 grayscale' : ''}`}
                             />
-                          </PhotoView>
-                        </PhotoProvider>
-                      );
-                    }
-
-                    // if (isPdf(url)) {
-                    //   return (
-                    //     <Link
-                    //       key={`${doc._id}-${i}`}
-                    //       href={getImageUrl(url)}
-                    //       target="_blank"
-                    //       rel="noreferrer"
-                    //       className="text-xs underline"
-                    //     >
-                    //       View PDF {i + 1}
-                    //     </Link>
-                    //   );
-                    // }
-
-                    // // Fallback link for other file types
-                    // return (
-                    //   <Link
-                    //     key={`${doc._id}-${i}`}
-                    //     href={getImageUrl(url)}
-                    //     target="_blank"
-                    //     rel="noreferrer"
-                    //     className="text-xs underline"
-                    //   >
-                    //     Open file {i + 1}
-                    //   </Link>
-                    // );
-                  })}
+                          </div>
+                        </PhotoView>
+                      </PhotoProvider>
+                    ) : url ? (
+                      <a
+                        href={getImageUrl(url)}
+                        target="_blank"
+                        className="text-sm font-medium text-blue-600 hover:underline flex items-center gap-1"
+                      >
+                        <span className="p-2 bg-blue-50 rounded">View Attachment</span>
+                      </a>
+                    ) : (
+                      <span className="text-xs text-destructive italic">No file available</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </CardContent>
         </Card>
       )}
@@ -256,7 +260,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
           <div className="space-y-2">
             <Textarea
               id="rejectionNote"
-              className="min-h-30" 
+              className="min-h-30"
               placeholder={t("rejectionNotePlaceholder")}
               value={rejectionNote}
               onChange={(e) => setRejectionNote(e.target.value)}
