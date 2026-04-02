@@ -12,7 +12,8 @@ import { useTranslations } from "next-intl";
 export function AddValueForm({ doc, addValue, adding }: any) {
   const t = useTranslations("translation");
 
-  const isDocumentType = ["leaserDocuments", "renterDocuments","userDocuments"].includes(doc.name);
+  const isDocumentType = ["leaserDocuments", "renterDocuments", "userDocuments"].includes(doc.name);
+  const showAutoApproval = doc.name !== "leaserDocuments";
 
   const { handleSubmit, control, reset } = useForm<DropdownValues>({
     resolver: zodResolver(ValueSchema),
@@ -91,26 +92,25 @@ export function AddValueForm({ doc, addValue, adding }: any) {
           />
 
           {/* Auto Approval */}
-          <Controller
-            control={control}
-            name="autoApproval"
-            render={({ field }) => (
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="autoApproval"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  disabled={adding}
-                />
-                <label
-                  htmlFor="autoApproval"
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
-                  {t("autoApproval")}
-                </label>
-              </div>
-            )}
-          />
+          {showAutoApproval && (
+            <Controller
+              control={control}
+              name="autoApproval"
+              render={({ field }) => (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="autoApproval"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={adding}
+                  />
+                  <label htmlFor="autoApproval" className="text-sm font-medium cursor-pointer">
+                    {t("autoApproval")}
+                  </label>
+                </div>
+              )}
+            />
+          )}
         </div>
       )}
     </form>

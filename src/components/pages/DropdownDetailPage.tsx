@@ -39,6 +39,7 @@ export default function DropdownDetails({ name }: { name: string }) {
   const { mutateAsync: removeValue, isPending: removing } =
     useRemoveDropdownValue();
 
+  const showAutoApproval = name !== "leaserDocuments";
   const [q, setQ] = useState("");
 
   const filtered = useMemo(() => {
@@ -118,8 +119,8 @@ export default function DropdownDetails({ name }: { name: string }) {
                     <TableRow>
                       <TableHead className="w-[30%]">{t(`translation.name`)}</TableHead>
                       <TableHead>{t(`translation.value`)}</TableHead>
-                      <TableHead>Has Expiry</TableHead>   
-                      <TableHead>Auto Approval</TableHead> 
+                      <TableHead>Has Expiry</TableHead>
+                      {showAutoApproval && <TableHead>Auto Approval</TableHead>}
                       <TableHead className="w-[60px] text-right"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -133,16 +134,20 @@ export default function DropdownDetails({ name }: { name: string }) {
                         <TableCell>
                           <code className="rounded bg-muted px-2 py-1 text-xs">{v.value}</code>
                         </TableCell>
-                        <TableCell>                                         
+                        <TableCell>
                           <Badge variant={v.hasExpiry ? "default" : "secondary"}>
                             {v.hasExpiry ? "Yes" : "No"}
                           </Badge>
                         </TableCell>
-                        <TableCell>                                         
-                          <Badge variant={v.autoApproval ? "default" : "secondary"}>
-                            {v.autoApproval ? "Yes" : "No"}
-                          </Badge>
-                        </TableCell>
+                        {
+                          showAutoApproval && (
+                            <TableCell>
+                              <Badge variant={v.autoApproval ? "default" : "secondary"}>
+                                {v.autoApproval ? "Yes" : "No"}
+                              </Badge>
+                            </TableCell>
+                          )
+                        }
                         <TableCell className="text-right">
                           <Button
                             variant="ghost"
