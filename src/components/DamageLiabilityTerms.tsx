@@ -81,7 +81,7 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
             type="textarea"
           />
 
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <Switch
               name="inspectionRequired"
               label="inspectionRequired"
@@ -92,7 +92,7 @@ const DamageLiabilityTerms = ({ zone }: { zone: string }) => {
               label="insuranceRequired"
               control={control}
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="flex justify-end">
