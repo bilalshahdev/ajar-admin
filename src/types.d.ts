@@ -730,6 +730,18 @@ interface Notification {
   data: NotificationData;
 }
 
+interface SeasonalGraphWeek {
+  week: string;
+  totalBookings: number;
+}
+
+interface SeasonalGraphMonth {
+  month: string;
+  monthNumber: number;
+  totalBookings: number;
+  weeks: SeasonalGraphWeek[];
+}
+
 type ListDropdownsResponse = ApiSuccessList<Dropdown>;
 type GetDropdownByIdResponse = ApiSuccessItem<Dropdown>;
 type GetDropdownByNameResponse = ApiSuccessItem<Dropdown>;

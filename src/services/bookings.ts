@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { Booking } from "@/types";
+import { Booking, SeasonalGraphMonth } from "@/types";
 
 export interface GetBookingsResponse {
     success: boolean;
@@ -17,6 +17,16 @@ export interface GetBookingResponse {
     message: string;
     data: Booking;
 }
+
+export interface GetSeasonalGraphResponse {
+  success: boolean;
+  message: string;
+  data: {
+    year: number;
+    months: SeasonalGraphMonth[];
+  };
+}
+
 
 export const getBookings = async ({
     page = 1,
@@ -47,4 +57,12 @@ export const getBooking = async (
 export const deleteBooking = async (id: string) => {
     const response = await api.delete(`/bookings/${id}`);
     return response.data;
+};
+
+export const getSeasonalBookingsGraph = async (year?: number): Promise<GetSeasonalGraphResponse> => {
+  const params = new URLSearchParams({
+    ...(year && { year: String(year) }),
+  });
+  const response = await api.get(`/bookings/graph/seasonal?${params}`);
+  return response.data.data;
 };

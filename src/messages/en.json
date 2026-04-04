@@ -555,12 +555,16 @@
     "expired": "Expired",
     "expiringSoon": "Expiring Soon",
     "extensionPolicy": "Extension Policy",
-  "globalExtensionNote": "Allow renters to request extensions for all bookings in this zone.",
-  "unitSpecificLimits": "Unit-Specific Rental Limits",
-  "addPolicy": "Add Policy",
-  "appliesToPriceUnit": "Applies to Price Unit",
-  "noCustomLimitsSet": "No specific limits set for this zone yet.",
-  "extensionPolicyNote": "Note: This setting will affect all listings in this zone regardless of their rental unit."
+    "globalExtensionNote": "Allow renters to request extensions for all bookings in this zone.",
+    "unitSpecificLimits": "Unit-Specific Rental Limits",
+    "addPolicy": "Add Policy",
+    "appliesToPriceUnit": "Applies to Price Unit",
+    "noCustomLimitsSet": "No specific limits set for this zone yet.",
+    "extensionPolicyNote": "Note: This setting will affect all listings in this zone regardless of their rental unit.",
+    "seasonalBookings": "Seasonal Bookings",
+    "totalBookings": "Total Bookings",
+    "showingSeasonalBookings": "Showing bookings breakdown by week for each month",
+    "totalbooking": "Total"
   },
   "confirm": {
     "logout": {

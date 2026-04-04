@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteBooking, getBooking, getBookings } from "../services/bookings";
+import { deleteBooking, getBooking, getBookings, getSeasonalBookingsGraph } from "../services/bookings";
 import { toast } from "sonner";
 
 export const useBookings = ({
@@ -37,4 +37,12 @@ export const useDeleteBooking = () => {
             toast.error("Failed to delete booking", error);
         },
     });
+};
+
+export const useSeasonalBookingsGraph = (year?: number) => {
+  return useQuery({
+    queryKey: ["bookings", "seasonal-graph", year],
+    queryFn: () => getSeasonalBookingsGraph(year),
+    select: (data) => data.data,
+  });
 };
