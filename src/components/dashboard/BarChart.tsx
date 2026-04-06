@@ -74,7 +74,7 @@ const BarChart = ({ filter, earnings }: BarChartProps) => {
             <RechartsBarChart
               accessibilityLayer
               data={formattedData}
-              margin={{ top: 20 }}
+              margin={{ top: 30 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis

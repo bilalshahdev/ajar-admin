@@ -222,7 +222,6 @@ const Users = () => {
         <SearchInput
           className="w-full"
           onChange={(value) => {
-            setPage(1);
             setSearch(value || undefined);
           }}
           placeholder="searchByNameOrEmail"

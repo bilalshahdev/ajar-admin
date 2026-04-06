@@ -52,9 +52,12 @@ export function DataTable<T>({
     if (!data) return;
 
     const items = data;
-    if (items.length === 0 && page && page > 1) {
+    // Only reset page if data is definitively empty and we're beyond the last page
+    if (items.length === 0 && page && page > 1 && total > 0) {
       const lastValidPage = Math.ceil(total / (limit || 10)) || 1;
-      setPage(Math.min(page - 1, lastValidPage));
+      if (page > lastValidPage) {
+        setPage(lastValidPage);
+      }
     }
   }, [data, page, limit, total, setPage]);
 

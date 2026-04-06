@@ -6,6 +6,7 @@ import BarChart from "@/components/dashboard/BarChart";
 import SeasonalBookingsChart from "@/components/dashboard/SeasonalBookingsChart";
 import { useStats } from "@/hooks/useStats";
 import { useSeasonalBookingsGraph } from "@/hooks/useBookings";
+import { useGetSubCategoriesList } from "@/hooks/useCategories";
 import StatsSkeleton from "@/components/skeletons/StatsSkeleton";
 import LineChartSkeleton from "@/components/skeletons/LineChartSkeleton";
 import BarChartSkeleton from "@/components/skeletons/BarChartSkeleton";
@@ -14,17 +15,27 @@ import ResponseError from "@/components/ResponseError";
 import DashboardStats from "../dashboard/DashboardStats";
 import { FilterOption } from "@/types";
 import BxSelect from "../BxSelect";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Dashboard() {
   const [selectedFilter, setSelectedFilter] = useState(chartFilters[0]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");  // ✅
 
   const { data, isLoading, error } = useStats(selectedFilter);
   const {
     data: seasonalData,
     isLoading: seasonalLoading,
-  } = useSeasonalBookingsGraph(CURRENT_YEAR);
+  } = useSeasonalBookingsGraph(CURRENT_YEAR, selectedCategory || undefined); // ✅
+
+  const { data: subCategoriesData, isLoading: subCategoriesLoading } = useGetSubCategoriesList(); // ✅
 
   const { stats, charts } = data?.data || {};
   const { users, earnings } = charts || {};
@@ -60,6 +71,26 @@ export default function Dashboard() {
             <BarChartSkeleton />
           </>
         )}
+      </div>
+
+      {/* ✅ Subcategory filter just above seasonal chart */}
+      <div className="flex justify-end">
+        <Select
+          value={selectedCategory}
+          onValueChange={(val) => setSelectedCategory(val)}
+        >
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder={subCategoriesLoading ? "Loading..." : "Filter by Subcategory"} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            {(subCategoriesData?.data || []).map((cat: any) => (
+              <SelectItem key={cat._id} value={cat._id} className="capitalize">
+                {cat.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <SeasonalBookingsChart

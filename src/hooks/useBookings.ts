@@ -6,14 +6,20 @@ export const useBookings = ({
     page = 1,
     limit = 10,
     zone,
+    subCategory,
+    checkIn,
+    checkOut
 }: {
     page: number;
     limit: number;
     zone?: string;
+    subCategory?: string;
+    checkIn?: string;
+    checkOut?: string;
 }) => {
     return useQuery({
-        queryKey: ["bookings", page, limit, zone],
-        queryFn: () => getBookings({ page, limit, zone }),
+        queryKey: ["bookings", page, limit, zone, subCategory, checkIn, checkOut],
+        queryFn: () => getBookings({ page, limit, zone, subCategory, checkIn, checkOut }),
     });
 };
 
@@ -39,10 +45,10 @@ export const useDeleteBooking = () => {
     });
 };
 
-export const useSeasonalBookingsGraph = (year?: number) => {
-  return useQuery({
-    queryKey: ["bookings", "seasonal-graph", year],
-    queryFn: () => getSeasonalBookingsGraph(year),
-    select: (data) => data.data,
-  });
+export const useSeasonalBookingsGraph = (year: number, subCategory?: string) => {
+    return useQuery({
+        queryKey: ["bookings", "seasonal-graph", year, subCategory],
+        queryFn: () => getSeasonalBookingsGraph(year, subCategory),
+        select: (data) => data.data,
+    });
 };

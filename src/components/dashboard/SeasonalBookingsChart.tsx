@@ -73,7 +73,7 @@ export default function SeasonalBookingsChart({ year, months, isLoading }: Props
                         <BarChart
                             accessibilityLayer
                             data={chartData}
-                            margin={{ top: 8, right: 8, left: -16, bottom: 0 }}
+                            margin={{ top: 30, right: 8, left: -16, bottom: 0 }}
                             barCategoryGap="20%"
                             barGap={2}
                         >

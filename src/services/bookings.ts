@@ -32,15 +32,24 @@ export const getBookings = async ({
     page = 1,
     limit = 10,
     zone,
+    subCategory,
+    checkIn,
+    checkOut,
 }: {
     page: number;
     limit: number;
     zone?: string;
+    subCategory?: string;
+    checkIn?: string;
+    checkOut?: string;
 }) => {
     const params = new URLSearchParams({
         page: String(page),
         limit: String(limit),
         ...(zone && { zone }),
+        ...(subCategory && { subCategory }),
+        ...(checkIn && { checkIn }),
+        ...(checkOut && { checkOut }),
     });
     const response = await api.get(`/bookings?${params}`);
     return response.data.data;
@@ -59,9 +68,10 @@ export const deleteBooking = async (id: string) => {
     return response.data;
 };
 
-export const getSeasonalBookingsGraph = async (year?: number): Promise<GetSeasonalGraphResponse> => {
+export const getSeasonalBookingsGraph = async (year?: number, subCategory?: string): Promise<GetSeasonalGraphResponse> => {
   const params = new URLSearchParams({
     ...(year && { year: String(year) }),
+    ...(subCategory && { subCategory }),
   });
   const response = await api.get(`/bookings/graph/seasonal?${params}`);
   return response.data.data;

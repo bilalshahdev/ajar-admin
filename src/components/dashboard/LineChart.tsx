@@ -73,7 +73,7 @@ const LineChart = ({ filter, users }: LineChartProps) => {
             <AreaChart
               accessibilityLayer
               data={formattedData}
-              margin={{ left: 12, right: 12 }}
+              margin={{ left: 12, right: 12, top: 30 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
