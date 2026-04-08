@@ -9,6 +9,9 @@ import { useGetTicket } from "@/hooks/useTickets";
 import { format } from "date-fns";
 import TicketDetailSkeleton from "../skeletons/TicketSkeleton";
 import { useTranslations } from "next-intl";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 const TicketDetail = ({ id }: { id: string }) => {
   const t = useTranslations();
@@ -89,13 +92,19 @@ const TicketDetail = ({ id }: { id: string }) => {
               <h3 className="text-lg font-medium">{t("translation.userInfo")}</h3>
               <Separator className="my-2" />
               <div className="flex items-center gap-4">
-                <MyImage
-                  src={user?.profilePicture || ""}
-                  width={50}
-                  height={50}
-                  alt="Profile"
-                  className="rounded-full w-14 h-14 object-cover"
-                />
+                <PhotoProvider>
+                  <PhotoView src={getImageUrl(user?.profilePicture || "")}>
+                    <div className="cursor-pointer hover:opacity-90 transition-opacity">
+                      <MyImage
+                        src={user?.profilePicture || ""}
+                        width={50}
+                        height={50}
+                        alt="Profile"
+                        className="rounded-full w-14 h-14 object-cover border shadow-sm"
+                      />
+                    </div>
+                  </PhotoView>
+                </PhotoProvider>
                 <div className="text-sm">
                   <div className="font-medium">{user.name}</div>
                   <div className="text-muted-foreground">{user.email}</div>
@@ -108,7 +117,7 @@ const TicketDetail = ({ id }: { id: string }) => {
           <div>
             <h3 className="text-lg font-medium">{t("translation.issue")}</h3>
             <Separator className="my-2" />
-            <div className="text-sm">
+            <div className="text-sm space-y-2">
               <div>
                 <span className="font-medium">{t("translation.type")}:</span> {issueType}
               </div>
@@ -119,6 +128,30 @@ const TicketDetail = ({ id }: { id: string }) => {
                 <span className="font-medium">{t("translation.refundIssued")}:</span> $
                 {additionalFees}
               </div>
+              
+              {/* Added Attachments Preview Section */}
+              {attachments && attachments.length > 0 && (
+                <div className="mt-4">
+                  <p className="font-medium mb-2">{t("translation.attachments")}:</p>
+                  <PhotoProvider>
+                    <div className="flex flex-wrap gap-2">
+                      {attachments.map((img: string, index: number) => (
+                        <PhotoView key={index} src={getImageUrl(img)}>
+                          <div className="cursor-pointer overflow-hidden rounded-md border">
+                            <MyImage
+                              src={img}
+                              alt={`attachment-${index}`}
+                              width={80}
+                              height={80}
+                              className="h-20 w-20 object-cover hover:scale-105 transition-transform"
+                            />
+                          </div>
+                        </PhotoView>
+                      ))}
+                    </div>
+                  </PhotoProvider>
+                </div>
+              )}
             </div>
           </div>
 

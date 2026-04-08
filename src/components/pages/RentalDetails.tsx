@@ -305,13 +305,19 @@ export default RentalListingDetail;
 
 const UserCard = ({ user }: { user: User }) => (
   <div className="flex items-center gap-4">
-    <MyImage
-      src={user?.profilePicture || ""}
-      alt={user?.name || ""}
-      width={60}
-      height={60}
-      className="w-14 h-14 rounded-full object-cover"
-    />
+    <PhotoProvider>
+      <PhotoView src={getImageUrl(user?.profilePicture || "")}>
+        <div className="cursor-pointer overflow-hidden rounded-full border shadow-sm hover:opacity-90 transition-opacity">
+          <MyImage
+            src={user?.profilePicture || ""}
+            alt={user?.name || ""}
+            width={256}
+            height={256}
+            className="w-14 h-14 object-cover"
+          />
+        </div>
+      </PhotoView>
+    </PhotoProvider>
     <div>
       <p className="text-base font-medium">{user.name}</p>
       <p className="text-sm text-muted-foreground">{user?.email}</p>

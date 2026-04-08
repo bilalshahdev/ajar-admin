@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import MyImage from "@/components/custom/MyImage";
 import { baseUrl } from "@/config/constants";
 import { useTranslations } from "next-intl";
+// Added imports for preview
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 interface FileInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -24,7 +27,7 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -37,6 +40,9 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
   const handleClick = () => {
     fileInputRef.current?.click();
   };
+
+  // Determine the current image source for both MyImage and PhotoView
+  const imageSrc = preview || (value ? `${baseUrl}/${value}` : null);
 
   return (
     <div className="space-y-2">
@@ -54,7 +60,7 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
           className="hidden"
           {...props}
         />
-        
+
         <div
           onClick={handleClick}
           className={`flex h-10 w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm cursor-pointer hover:bg-secondary/70 transition-colors ${
@@ -67,14 +73,20 @@ const FileInput = ({ label, control, name, ...props }: FileInputProps) => {
         </div>
       </div>
 
-      {(preview || value) && (
-        <MyImage
-          src={preview || `${baseUrl}/${value}`}
-          alt="preview"
-          width={20}
-          height={20}
-          className="h-20 w-20 object-cover rounded-md border"
-        />
+      {imageSrc && (
+        <PhotoProvider>
+          <PhotoView src={imageSrc}>
+            <div className="relative w-20 h-20 cursor-zoom-in hover:opacity-90 transition-opacity">
+              <MyImage
+                src={imageSrc}
+                alt="preview"
+                width={80}
+                height={80}
+                className="h-20 w-20 object-cover rounded-md border"
+              />
+            </div>
+          </PhotoView>
+        </PhotoProvider>
       )}
 
       {error && <p className="text-red-500 text-sm">{error.message}</p>}
