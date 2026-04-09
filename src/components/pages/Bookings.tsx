@@ -21,6 +21,7 @@ import {
 } from "../ui/select";
 import { useTranslations } from "next-intl";
 import DateRangePicker from "@/components/DateRangePicker";
+import { formatBookingDate } from "@/utils/formatBookingDate";
 
 const Bookings = () => {
   const t = useTranslations("translation");
@@ -80,8 +81,13 @@ const Bookings = () => {
     <>
       <TableCell>{booking._id.slice(-4)}</TableCell>
       <HighlightCell text={booking.leaser?.name} query={search} />
-      <TableCell>{new Date(booking.dates.checkIn).toLocaleDateString("en-GB")}</TableCell>
-      <TableCell>{new Date(booking.dates.checkOut).toLocaleDateString("en-GB")}</TableCell>
+      <TableCell className="whitespace-nowrap">
+        {formatBookingDate(booking.dates.checkIn, booking.pricingMeta.unit)}
+      </TableCell>
+    
+      <TableCell className="whitespace-nowrap">
+        {formatBookingDate(booking.dates.checkOut, booking.pricingMeta.unit)}
+      </TableCell>
       <TableCell>${booking.priceDetails.totalPrice.toFixed(2)}</TableCell>
       <TableCell>
         <span

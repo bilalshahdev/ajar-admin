@@ -20,6 +20,8 @@ export const useBookings = ({
     return useQuery({
         queryKey: ["bookings", page, limit, zone, subCategory, checkIn, checkOut],
         queryFn: () => getBookings({ page, limit, zone, subCategory, checkIn, checkOut }),
+        staleTime: 5 * 60 * 1000, 
+        gcTime: 10 * 60 * 1000,
     });
 };
 

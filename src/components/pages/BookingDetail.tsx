@@ -9,6 +9,7 @@ import ResponseError from "../ResponseError";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { Booking } from "@/types";
 import { getImageUrl } from "@/utils/getImageUrl";
+import { formatBookingDate } from "@/utils/formatBookingDate";
 
 type Renter = {
     _id: string;
@@ -74,11 +75,12 @@ const BookingDetails = ({ id }: { id: string }) => {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                         <InfoItem
                             label={t("checkIn")}
-                            value={new Date(dates.checkIn).toLocaleDateString()}
+                            value={formatBookingDate(dates.checkIn, pricingMeta.unit)}
                         />
+
                         <InfoItem
                             label={t("checkOut")}
-                            value={new Date(dates.checkOut).toLocaleDateString()}
+                            value={formatBookingDate(dates.checkOut, pricingMeta.unit)}
                         />
                         <InfoItem
                             label={t("unit")}
@@ -155,25 +157,25 @@ const BookingDetails = ({ id }: { id: string }) => {
 export default BookingDetails;
 
 const UserCard = ({ user }: { user: Renter }) => (
-  <div className="flex items-center gap-4">
-    <PhotoProvider>
-      <PhotoView src={getImageUrl(user?.profilePicture || "")}>
-        <div className="relative cursor-pointer hover:opacity-80 transition-opacity">
-          <MyImage
-            src={user?.profilePicture || ""}
-            alt={user?.name || ""}
-            width={256}
-            height={256}
-            className="w-14 h-14 rounded-full object-cover border shadow-sm"
-          />
+    <div className="flex items-center gap-4">
+        <PhotoProvider>
+            <PhotoView src={getImageUrl(user?.profilePicture || "")}>
+                <div className="relative cursor-pointer hover:opacity-80 transition-opacity">
+                    <MyImage
+                        src={user?.profilePicture || ""}
+                        alt={user?.name || ""}
+                        width={256}
+                        height={256}
+                        className="w-14 h-14 rounded-full object-cover border shadow-sm"
+                    />
+                </div>
+            </PhotoView>
+        </PhotoProvider>
+        <div>
+            <p className="text-base font-medium">{user.name}</p>
+            <p className="text-sm text-muted-foreground">{user?.email}</p>
         </div>
-      </PhotoView>
-    </PhotoProvider>
-    <div>
-      <p className="text-base font-medium">{user.name}</p>
-      <p className="text-sm text-muted-foreground">{user?.email}</p>
     </div>
-  </div>
 );
 
 const InfoItem = ({ label, value }: { label: string; value?: string }) => (
