@@ -561,7 +561,9 @@
     "seasonalBookings": "الحجوزات الموسمية",
     "totalBookings": "إجمالي الحجوزات",
     "showingSeasonalBookings": "عرض تفاصيل الحجوزات أسبوعياً لكل شهر",
-    "totalbooking": "المجموع"
+    "totalbooking": "المجموع",
+    "securityDeposit": "الإيداع الأمني",
+    "totalToWallet": "الإجمالي للمحفظة"
   },
   "confirm": {
     "logout": {

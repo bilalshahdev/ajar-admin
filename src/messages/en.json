@@ -564,7 +564,9 @@
     "seasonalBookings": "Seasonal Bookings",
     "totalBookings": "Total Bookings",
     "showingSeasonalBookings": "Showing bookings breakdown by week for each month",
-    "totalbooking": "Total"
+    "totalbooking": "Total",
+    "securityDeposit": "Security Deposit",
+    "totalToWallet": "Total to Wallet"
   },
   "confirm": {
     "logout": {

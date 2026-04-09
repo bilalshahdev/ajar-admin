@@ -37,6 +37,7 @@ const RefundDetail = ({ id }: { id: string }) => {
     user,
     deduction,
     totalRefundAmount,
+    securityDeposit,
     status,
     note,
     createdAt,
@@ -73,7 +74,7 @@ const RefundDetail = ({ id }: { id: string }) => {
                 {t("totalRefund")}
               </p>
               <p className="text-3xl font-bold text-green-600">
-                ${totalRefundAmount?.toFixed(2)}
+                ${((totalRefundAmount ?? 0) + (securityDeposit ?? 0)).toFixed(2)}
               </p>
             </div>
           </div>
@@ -90,7 +91,7 @@ const RefundDetail = ({ id }: { id: string }) => {
                   &quot;{reason}&quot;
                 </p>
               </div>
-              
+
               {note && (
                 <div>
                   <h4 className="text-lg font-semibold mb-1">{t("additionalNotes")}</h4>
@@ -103,7 +104,7 @@ const RefundDetail = ({ id }: { id: string }) => {
             </div>
 
             {/* Price Breakdown */}
-            <div className="space-y-3 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border h-[155px]">
+            <div className="space-y-3 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border">
               <h3 className="text-lg font-semibold text-muted-foreground">
                 {t("breakdown")}
               </h3>
@@ -111,9 +112,19 @@ const RefundDetail = ({ id }: { id: string }) => {
                 <span>{t("deduction")}</span>
                 <span className="text-destructive font-medium">-${deduction?.toFixed(2)}</span>
               </div>
+
+              {(securityDeposit ?? 0) > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span>{t("securityDeposit")}</span>
+                  <span className="text-emerald-600 font-medium">+${securityDeposit?.toFixed(2)}</span>
+                </div>
+              )}
+
               <div className="pt-3 border-t flex justify-between items-center">
-                <span className="font-semibold">{t("finalAmount")}</span>
-                <span className="text-xl font-bold">${totalRefundAmount?.toFixed(2)}</span>
+                <span className="font-semibold">{t("totalToWallet")}</span>
+                <span className="text-xl font-bold">
+                  ${((totalRefundAmount ?? 0) + (securityDeposit ?? 0)).toFixed(2)}
+                </span>
               </div>
             </div>
           </div>
@@ -173,7 +184,7 @@ const RefundDetail = ({ id }: { id: string }) => {
           <div className="space-y-2">
             <Textarea
               id="rejectionNote"
-              className="min-h-30" 
+              className="min-h-30"
               placeholder={t("rejectionNotePlaceholder")}
               value={rejectionNote}
               onChange={(e) => setRejectionNote(e.target.value)}
