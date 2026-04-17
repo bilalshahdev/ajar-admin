@@ -566,7 +566,8 @@
     "showingSeasonalBookings": "Showing bookings breakdown by week for each month",
     "totalbooking": "Total",
     "securityDeposit": "Security Deposit",
-    "totalToWallet": "Total to Wallet"
+    "totalToWallet": "Total to Wallet",
+    "damagedCharges": "Damaged Charges"
   },
   "confirm": {
     "logout": {

@@ -375,6 +375,7 @@ type Ticket = {
   issueType: string;
   additionalFees: number;
   attachments: any[]; // If you have a defined attachment structure, replace 'any'
+  damagedCharges: number;
   status: string;
   createdAt: string;
   updatedAt: string;
