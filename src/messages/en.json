@@ -610,6 +610,7 @@
     "active": "Active",
     "inactive": "Inactive",
     "blocked": "Blocked",
+    "resolved": "Resolved",
     "unblocked": "Unblocked",
     "approved": "Approved",
     "rejected": "Rejected",

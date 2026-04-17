@@ -607,6 +607,7 @@
     "active": "نشط",
     "inactive": "غير نشط",
     "blocked": "محظور",
+    "resolved": "تم الحل",
     "unblocked": "غير محظور",
     "approved": "تمت الموافقة",
     "rejected": "مرفوض",
