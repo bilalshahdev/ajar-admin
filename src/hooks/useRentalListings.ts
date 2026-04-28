@@ -13,14 +13,16 @@ export const useRentalListings = ({
   page = 1,
   limit = 10,
   zone,
+  search,
 }: {
   page: number;
   limit: number;
   zone?: string;
+  search?: string;
 }) => {
   return useQuery({
-    queryKey: ["rental-listings", page, limit, zone],
-    queryFn: () => getRentalListings({ page, limit, zone }),
+    queryKey: ["rental-listings", page, limit, zone, search],
+    queryFn: () => getRentalListings({ page, limit, zone, search }),
   });
 };
 

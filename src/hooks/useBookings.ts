@@ -8,7 +8,8 @@ export const useBookings = ({
     zone,
     subCategory,
     checkIn,
-    checkOut
+    checkOut,
+    search
 }: {
     page: number;
     limit: number;
@@ -16,10 +17,11 @@ export const useBookings = ({
     subCategory?: string;
     checkIn?: string;
     checkOut?: string;
+    search?: string;
 }) => {
     return useQuery({
-        queryKey: ["bookings", page, limit, zone, subCategory, checkIn, checkOut],
-        queryFn: () => getBookings({ page, limit, zone, subCategory, checkIn, checkOut }),
+        queryKey: ["bookings", page, limit, zone, subCategory, checkIn, checkOut, search],
+        queryFn: () => getBookings({ page, limit, zone, subCategory, checkIn, checkOut, search }),
         staleTime: 5 * 60 * 1000, 
         gcTime: 10 * 60 * 1000,
     });

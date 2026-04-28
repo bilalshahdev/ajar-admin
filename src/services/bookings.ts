@@ -35,6 +35,7 @@ export const getBookings = async ({
     subCategory,
     checkIn,
     checkOut,
+    search,
 }: {
     page: number;
     limit: number;
@@ -42,6 +43,7 @@ export const getBookings = async ({
     subCategory?: string;
     checkIn?: string;
     checkOut?: string;
+    search?: string;
 }) => {
     const params = new URLSearchParams({
         page: String(page),
@@ -50,6 +52,7 @@ export const getBookings = async ({
         ...(subCategory && { subCategory }),
         ...(checkIn && { checkIn }),
         ...(checkOut && { checkOut }),
+        ...(search && { search }),
     });
     const response = await api.get(`/bookings?${params}`);
     return response.data.data;

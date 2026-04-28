@@ -23,15 +23,18 @@ export const getRentalListings = async ({
   page = 1,
   limit = 10,
   zone,
+  search,
 }: {
   page: number;
   limit: number;
   zone?: string;
+  search?: string;
 }): Promise<GetRentalListingsResponse> => {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(limit),
     ...(zone && { zone }),
+    ...(search && { search }),
   });
   const response = await api.get(`/marketplace-listings?${params}`);
   return response.data;

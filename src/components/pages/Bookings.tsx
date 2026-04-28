@@ -3,8 +3,7 @@ import { useBookings, useDeleteBooking } from "@/hooks/useBookings";
 import { useGetZones } from "@/hooks/useZones";
 import { useGetSubCategoriesList } from "@/hooks/useCategories";
 import { Booking } from "@/types";
-import { filterData } from "@/utils/filterData";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import TableActions from "../Actions";
 import { DataTable } from "../custom/DataTable";
 import { SearchInput } from "../custom/SearchInput";
@@ -22,6 +21,8 @@ import {
 import { useTranslations } from "next-intl";
 import DateRangePicker from "@/components/DateRangePicker";
 import { formatBookingDate } from "@/utils/formatBookingDate";
+import { useDebounce } from "@/hooks/use-debounce";
+import { formatStatus, getStatusStyle } from "@/utils/getStatusStyle";
 
 const Bookings = () => {
   const t = useTranslations("translation");
@@ -30,6 +31,9 @@ const Bookings = () => {
   const [subCategory, setSubCategory] = useState<string | undefined>(undefined);
   const [checkIn, setCheckIn] = useState<string | undefined>(undefined);
   const [checkOut, setCheckOut] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 500);
 
   const { data: zonesData } = useGetZones({ page: 1, limit: 100 });
   const zones = zonesData?.data?.zones || [];
@@ -49,18 +53,12 @@ const Bookings = () => {
     subCategory,
     checkIn,
     checkOut,
+    search: debouncedSearch,
   });
+
   const { mutate: deleteBooking, isPending: deleteLoading } = useDeleteBooking();
 
-  const [search, setSearch] = useState("");
-  const filteredBookings = useMemo(() => {
-    const bookingList = bookings?.data?.bookings || [];
-    return filterData({
-      data: bookingList,
-      search,
-      searchKeys: ["leaser.name", "status"],
-    });
-  }, [bookings, search]);
+  const bookingList = bookings?.data?.bookings || [];
 
   const cols = [
     "id",
@@ -74,33 +72,23 @@ const Bookings = () => {
     "actions",
   ];
 
-  if (isLoading || isFetching) return <TableSkeleton cols={cols.length} rows={10} />;
+  // We keep the error return as it's a critical failure
   if (error) return <ResponseError error={error.message} />;
 
   const row = (booking: Booking) => (
     <>
       <TableCell>{booking._id.slice(-4)}</TableCell>
-      <HighlightCell text={booking.leaser?.name} query={search} />
+      <HighlightCell className="capitalize" text={booking.leaser?.name} query={debouncedSearch} />
       <TableCell className="whitespace-nowrap">
         {formatBookingDate(booking.dates.checkIn, booking.pricingMeta.unit)}
       </TableCell>
-    
       <TableCell className="whitespace-nowrap">
         {formatBookingDate(booking.dates.checkOut, booking.pricingMeta.unit)}
       </TableCell>
       <TableCell>${booking.priceDetails.totalPrice.toFixed(2)}</TableCell>
       <TableCell>
-        <span
-          className={`capitalize px-2 py-1 rounded-full text-xs font-medium ${booking.status === "approved"
-            ? "bg-green-100 text-green-700"
-            : booking.status === "cancelled"
-              ? "bg-red-100 text-red-700"
-              : booking.status === "in_progress"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-yellow-100 text-yellow-700"
-            }`}
-        >
-          {booking.status.replace("_", " ")}
+        <span className={`capitalize px-2 py-1 rounded-full text-xs font-medium ${getStatusStyle(booking.status as any)}`}>
+          {formatStatus(booking.status as any)}
         </span>
       </TableCell>
       <TableCell>{booking.pricingMeta.duration}</TableCell>
@@ -131,9 +119,8 @@ const Bookings = () => {
 
   return (
     <div className="flex flex-col gap-4 md:gap-8 h-full">
+      {/* 1. Filter bar remains rendered and interactive even when loading */}
       <div className="flex flex-wrap items-center justify-end gap-4">
-
-        {/* Zone filter */}
         <Select
           value={zone ?? "all"}
           onValueChange={(value) => {
@@ -147,12 +134,13 @@ const Bookings = () => {
           <SelectContent>
             <SelectItem value="all">{t("allZones")}</SelectItem>
             {zones.map((z: { _id: string; name: string }) => (
-              <SelectItem key={z._id} value={z._id}>{z.name}</SelectItem>
+              <SelectItem key={z._id} value={z._id}>
+                {z.name}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
-        {/* SubCategory filter */}
         <Select
           value={subCategory ?? "all"}
           onValueChange={(value) => {
@@ -166,35 +154,48 @@ const Bookings = () => {
           <SelectContent>
             <SelectItem value="all">All Subcategories</SelectItem>
             {subCategories.map((s: { _id: string; name: string }) => (
-              <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
+              <SelectItem key={s._id} value={s._id}>
+                {s.name}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
-        {/* CheckIn / CheckOut date range filter */}
         <DateRangePicker
           fromDate={checkIn}
           toDate={checkOut}
-          onFromChange={(val) => { setPage(1); setCheckIn(val); }}
-          onToChange={(val) => { setPage(1); setCheckOut(val); }}
+          onFromChange={(val) => {
+            setPage(1);
+            setCheckIn(val);
+          }}
+          onToChange={(val) => {
+            setPage(1);
+            setCheckOut(val);
+          }}
           fromLabel="Check In"
           toLabel="Check Out"
           placeholder="Check In → Check Out"
         />
 
         <SearchInput
-          className="w-full"
-          onChange={(e) => setSearch(e)}
+          className="w-full md:max-w-sm"
+          onChange={(e) => {
+            setSearch(e);
+          }}
           placeholder="searchBookings"
         />
       </div>
 
-      <DataTable
-        cols={cols}
-        data={filteredBookings as Booking[]}
-        row={row}
-        pagination={pagination}
-      />
+      {isLoading || isFetching ? (
+        <TableSkeleton cols={cols.length} rows={10} />
+      ) : (
+        <DataTable
+          cols={cols}
+          data={bookingList as Booking[]}
+          row={row}
+          pagination={pagination}
+        />
+      )}
     </div>
   );
 };

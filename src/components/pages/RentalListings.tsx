@@ -22,88 +22,66 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useTranslations } from "next-intl";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const RentalListings = () => {
   const t = useTranslations("translation");
   const [page, setPage] = useState(1);
   const [zone, setZone] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState("");
 
-  const { data: zonesData } = useGetZones({
-    page: 1,
-    limit: 10
-  });
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { data: zonesData } = useGetZones({ page: 1, limit: 10 });
   const zones = zonesData?.data?.zones || [];
 
   const {
     data: rentalRequests,
     isLoading,
+    isFetching,
     error,
   } = useRentalListings({
     page,
     limit: 10,
     zone,
+    search: debouncedSearch,
   });
-  const { mutate: deleteRentalListing, isPending: deleteLoading } =
-    useDeleteRentalListing();
 
-  const [search, setSearch] = useState("");
-  const filteredRentalRequests = useMemo(() => {
-    const rentalListings = rentalRequests?.data?.listings || [];
-    return filterData({
-      data: rentalListings,
-      search,
-      searchKeys: ["name", "subCategory.name", "leaser.name"],
-    });
-  }, [rentalRequests, search]);
+  const { mutate: deleteRentalListing, isPending: deleteLoading } = useDeleteRentalListing();
 
-  const cols = [
-    "id",
-    "productName",
-    "subCategory",
-    "owner",
-    "createdAt",
-    "actions",
-  ];
+  const rentalListings = rentalRequests?.data?.listings || [];
 
-  if (isLoading) {
-    return <TableSkeleton cols={cols.length} rows={10} />;
-  }
+  const cols = ["id", "productName", "subCategory", "owner", "createdAt", "actions"];
 
-  if (error) {
-    return <ResponseError error={error.message} />;
-  }
+  if (error) return <ResponseError error={error.message} />;
 
   const row = (rentalRequest: RentalListing) => (
-    <>
-      <TableCell>{rentalRequest._id.slice(-4)}</TableCell>
-      <HighlightCell text={rentalRequest.name} query={search} className="truncate w-28" />
-      <HighlightCell text={rentalRequest?.subCategory?.name} query={search} />
-      <HighlightCell text={rentalRequest?.leaser?.name} query={search} />
-      <TableCell>{rentalRequest.createdAt}</TableCell>
-      <TableCell>
-        <TableActions
-          id={rentalRequest._id}
-          baseRoute="/rental-listing"
-          actions={["view", "delete"]}
-          module="Listing"
-          onDelete={(id, closeDialog) =>
-            deleteRentalListing(id, {
-              onSuccess: () => {
-                closeDialog();
-              },
-            })
-          }
-          deleteLoading={deleteLoading}
-        />
-      </TableCell>
-    </>
-  );
+  <>
+    <TableCell>{rentalRequest._id.slice(-4)}</TableCell>
+    <HighlightCell text={rentalRequest.name} query={debouncedSearch} className="truncate w-28"/>
+    <HighlightCell text={rentalRequest?.subCategory?.name} query={debouncedSearch}/>
+    <HighlightCell text={rentalRequest?.leaser?.name} query={debouncedSearch}/>
+    <TableCell>{new Date(rentalRequest.createdAt).toLocaleDateString("en-GB")}</TableCell>
+    <TableCell>
+      <TableActions
+        id={rentalRequest._id}
+        baseRoute="/rental-listing"
+        actions={["view", "delete"]}
+        module="Listing"
+        onDelete={(id, closeDialog) =>
+          deleteRentalListing(id, {onSuccess: () => closeDialog()})
+        }
+        deleteLoading={deleteLoading}
+      />
+    </TableCell>
+  </>
+);
 
   const pagination = {
     total: rentalRequests?.data?.total || 0,
     page: rentalRequests?.data?.page || 1,
     limit: rentalRequests?.data?.limit || 10,
-    setPage: setPage,
+    setPage,
   };
 
   return (
@@ -130,16 +108,23 @@ const RentalListings = () => {
         </Select>
         <SearchInput
           className="w-full"
-          onChange={(e) => setSearch(e)}
+          onChange={(e) => {
+            setSearch(e);
+          }}
           placeholder="searchRentalRequest"
         />
       </div>
-      <DataTable
-        cols={cols}
-        data={filteredRentalRequests}
-        row={row}
-        pagination={pagination}
-      />
+
+      {isLoading || isFetching ? (
+        <TableSkeleton cols={cols.length} rows={10} />
+      ) : (
+        <DataTable
+          cols={cols}
+          data={rentalListings as RentalListing[]}
+          row={row}
+          pagination={pagination}
+        />
+      )}
     </div>
   );
 };
