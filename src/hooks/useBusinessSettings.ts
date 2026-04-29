@@ -38,9 +38,7 @@ export const useDeleteBusinessSettings = (pageName: SettingsPageName) => {
   return useMutation({
     mutationFn: () => deleteBusinessSettings(pageName),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["business-settings", pageName],
-      });
+      queryClient.setQueryData(["business-settings", pageName], null);
       toast.success("Business settings deleted successfully");
     },
     onError: (error: any) => {

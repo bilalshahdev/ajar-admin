@@ -66,6 +66,7 @@ export const navMenu: MenuItem[] = [
   { path: "/analytics", title: "reports" },
   { path: "/rental-listing", title: "listing" },
   { path: "/rental-policies", title: "rentalPolicies" },
+  { path: "/terms-and-conditions", title: "termsAndConditions" },
 ];
 
 export const businessNavMenu: MenuItem[] = [

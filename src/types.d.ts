@@ -291,7 +291,8 @@ type SettingsPageName =
   | "socialLogins"
   | "recaptcha"
   | "firebase"
-  | "pushNotifications";
+  | "pushNotifications"
+  | "termsAndConditions";
 
 interface Subcategory {
   name: string;

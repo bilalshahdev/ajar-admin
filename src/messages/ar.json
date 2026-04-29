@@ -564,7 +564,17 @@
     "totalbooking": "المجموع",
     "securityDeposit": "الإيداع الأمني",
     "totalToWallet": "الإجمالي للمحفظة",
-    "damagedCharges": "رسوم التلف"
+    "damagedCharges": "رسوم التلف",
+    "termsAndConditions": "الشروط والأحكام",
+    "termsAndConditionsDocument": "وثيقة الشروط والأحكام",
+    "dropYourPdfHere": "اسحب ملف PDF هنا",
+    "dragAndDropYourPdfFileHere": "اسحب ملف PDF هنا",
+    "orClickToBrowse": "أو انقر لتصفح",
+    "pdfOnly": "PDF فقط",
+    "max5mb": "الحد الأقصى 5MB",
+    "pleaseUploadAPdfFile": "يرجى تحميل ملف PDF",
+    "fileSizeMustBeLessThan5mb": "حجم الملف يجب أن يكون أقل من 5MB",
+    "onlyPdfFilesAreAllowed": "مسموح فقط بملفات PDF"
   },
   "confirm": {
     "logout": {

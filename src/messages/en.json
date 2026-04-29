@@ -567,7 +567,17 @@
     "totalbooking": "Total",
     "securityDeposit": "Security Deposit",
     "totalToWallet": "Total to Wallet",
-    "damagedCharges": "Damaged Charges"
+    "damagedCharges": "Damaged Charges",
+    "termsAndConditions": "Terms and Conditions",
+    "termsAndConditionsDocument": "Terms & Conditions Document",
+    "dropYourPdfHere": "Drop your PDF here",
+    "dragAndDropYourPdfFileHere": "Drag & drop your PDF file here",
+    "orClickToBrowse": "or click to browse",
+    "pdfOnly": "PDF only",
+    "max5mb": "Max 5MB",
+    "pleaseUploadAPdfFile": "Please upload a PDF file",
+    "fileSizeMustBeLessThan5mb": "File size must be less than 5MB",
+    "onlyPdfFilesAreAllowed": "Only PDF files are allowed"
   },
   "confirm": {
     "logout": {
