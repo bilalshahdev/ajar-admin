@@ -4,342 +4,228 @@ import MyImage from "@/components/custom/MyImage";
 import ResponseError from "@/components/ResponseError";
 import Status from "@/components/StatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { useGetTicket } from "@/hooks/useTickets";
+import { Button } from "@/components/ui/button";
+import { useGetTicket, useUpdateTicketStatus } from "@/hooks/useTickets";
 import { format } from "date-fns";
 import TicketDetailSkeleton from "../skeletons/TicketSkeleton";
 import { useTranslations } from "next-intl";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { getImageUrl } from "@/utils/getImageUrl";
+import {
+  CalendarDays, CalendarCheck, DollarSign,
+  AlertCircle, Mail, FileText, Paperclip, Users,
+} from "lucide-react";
 
 const TicketDetail = ({ id }: { id: string }) => {
-  const t = useTranslations();
+  const t = useTranslations("translation");
+  const tStatus = useTranslations("status");
   const { data, isLoading, error } = useGetTicket(id, true);
+  const { mutate: updateTicketStatus, isPending } = useUpdateTicketStatus();
   const ticket = data?.data;
 
   if (isLoading) return <TicketDetailSkeleton />;
   if (error) return <ResponseError error={error.message} />;
   if (!ticket) return null;
 
-  const {
-    booking,
-    user,
-    rentalText,
-    issueType,
-    damagedCharges,
-    attachments,
-    status,
-    createdAt,
-    updatedAt,
-  } = ticket;
+  const { booking, rentalText, issueType, damagedCharges, attachments, status, createdAt } = ticket;
+
+  // renter and leaser from populated booking
+  const renter = booking?.renter;
+  const leaser = booking?.leaser;
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl font-semibold flex justify-between items-center">
-            {t("translation.tickets")} ID: {id}
-            <Status value={t("status." + status.toLowerCase())} />
-          </CardTitle>
+    <div className="max-w-5xl mx-auto space-y-6">
+
+      {/* ── Header ── */}
+      <Card className="shadow-lg gap-2">
+        <CardHeader className="border-b">
+          <div className="flex flex-wrap justify-between items-start gap-4">
+            <div className="space-y-1">
+              <CardTitle className="text-2xl font-semibold">
+                {t("tickets")} #{id.slice(-8).toUpperCase()}
+              </CardTitle>
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                {createdAt && (
+                  <>
+                    <span>{format(new Date(createdAt), "PPp")}</span>
+                    <span>•</span>
+                  </>
+                )}
+                <Status value={tStatus(status.toLowerCase())} />
+              </div>
+            </div>
+            {damagedCharges > 0 && (
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">
+                  {t("damagedCharges")}
+                </p>
+                <p className="text-3xl font-bold text-destructive">
+                  ${Number(damagedCharges).toFixed(2)}
+                </p>
+              </div>
+            )}
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          
-          {/* 1. Booking Details */}
-          {booking && (
-            <div>
-              <h3 className="text-lg font-medium">{t("translation.bookingDetails")}</h3>
-              <Separator className="my-2" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="font-medium">{t("translation.checkIn")}:</span>{" "}
-                  {format(new Date(booking.dates.checkIn), "PPpp")}
-                </div>
-                <div>
-                  <span className="font-medium">{t("translation.checkOut")}:</span>{" "}
-                  {format(new Date(booking.dates.checkOut), "PPpp")}
-                </div>
-                <div>
-                  <span className="font-medium">{t("translation.totalPrice")}:</span> 
-                  <span className="ml-1">${booking.priceDetails?.totalPrice}</span>
-                </div>
-                <div>
-                  <span className="font-medium">{t("translation.status")}:</span>{" "}
-                  <span className="capitalize">{booking.status}</span>
-                </div>
-              </div>
-            </div>
-          )}
 
-          {/* 2. User Info */}
-          {user && (
-            <div>
-              <h3 className="text-lg font-medium">{t("translation.userInfo")}</h3>
-              <Separator className="my-2" />
-              <div className="flex items-center gap-4">
-                <PhotoProvider>
-                  <PhotoView src={getImageUrl(user?.profilePicture || "")}>
-                    <div className="cursor-pointer hover:opacity-90 transition-opacity">
-                      <MyImage
-                        src={user?.profilePicture || ""}
-                        width={56}
-                        height={56}
-                        alt="Profile"
-                        className="rounded-full w-14 h-14 object-cover border shadow-sm"
-                      />
-                    </div>
-                  </PhotoView>
-                </PhotoProvider>
-                <div className="text-sm">
-                  <div className="font-bold text-base">{user.name}</div>
-                  <div className="text-muted-foreground">{user.email}</div>
-                  <div className="text-muted-foreground">{user.phone}</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* 3. Issue Details */}
-          <div>
-            <h3 className="text-lg font-medium">{t("translation.issue")}</h3>
-            <Separator className="my-2" />
-            <div className="text-sm space-y-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div>
-                  <span className="font-medium">{t("translation.type")}:</span> {issueType}
-                </div>
-                <div>
-                  <span className="font-medium">{t("translation.damagedCharges")}:</span> ${damagedCharges}
-                </div>
-              </div>
-              <div>
-                <span className="font-medium">{t("translation.details")}:</span>
-                <p className="mt-1 p-3 bg-muted rounded-md">{rentalText}</p>
-              </div>
-              
-              {attachments && attachments.length > 0 && (
-                <div className="mt-4">
-                  <p className="font-medium mb-2">{t("translation.attachments")}:</p>
-                  <PhotoProvider>
-                    <div className="flex flex-wrap gap-2">
-                      {attachments.map((img: string, index: number) => (
-                        <PhotoView key={index} src={getImageUrl(img)}>
-                          <div className="cursor-pointer overflow-hidden rounded-md border">
-                            <MyImage
-                              src={img}
-                              alt={`attachment-${index}`}
-                              width={256}
-                              height={256}
-                              className="h-20 w-20 object-cover hover:scale-105 transition-transform"
-                            />
-                          </div>
-                        </PhotoView>
-                      ))}
-                    </div>
-                  </PhotoProvider>
-                </div>
-              )}
-            </div>
+        <CardContent className="pt-6 space-y-6">
+          {/* Issue Summary */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InfoItem icon={<AlertCircle className="w-4 h-4" />} label={t("type")} value={issueType} />
+            <InfoItem icon={<DollarSign className="w-4 h-4" />} label={t("damagedCharges")} value={`$${Number(damagedCharges || 0).toFixed(2)}`} />
           </div>
 
-          {/* 4. Administration */}
-          <div className="pt-2">
-            <h3 className="text-lg font-medium">{t("translation.administration")}</h3>
-            <Separator className="my-2" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-muted-foreground">
-              <div>
-                <span className="font-medium">{t("translation.created")}:</span>{" "}
-                {format(new Date(createdAt), "PPpp")}
+          {rentalText && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <FileText className="w-4 h-4 text-muted-foreground" />
+                <h3 className="text-sm font-semibold">{t("details")}</h3>
               </div>
+              <p className="text-sm text-muted-foreground bg-muted p-4 rounded-lg border break-words whitespace-pre-wrap first-letter:uppercase">
+                {rentalText}
+              </p>
+            </div>
+          )}
+
+          {attachments && attachments.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Paperclip className="w-4 h-4 text-muted-foreground" />
+                <h3 className="text-sm font-semibold">
+                  {t("attachments")}{" "}
+                  <span className="text-muted-foreground font-normal">({attachments.length})</span>
+                </h3>
+              </div>
+              <PhotoProvider>
+                <div className="flex flex-wrap gap-3">
+                  {attachments.map((img: string, index: number) => (
+                    <PhotoView key={index} src={getImageUrl(img)}>
+                      <div className="cursor-pointer overflow-hidden rounded-lg border shadow-sm hover:shadow-md transition-all">
+                        <MyImage src={img} alt={`attachment-${index}`} width={256} height={256}
+                          className="h-24 w-24 object-cover hover:scale-105 transition-transform" />
+                      </div>
+                    </PhotoView>
+                  ))}
+                </div>
+              </PhotoProvider>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* ── Booking Details ── */}
+      {booking && (
+        <Card className="shadow-md gap-2">
+          <CardHeader>
+            <CardTitle className="text-xl">{t("bookingDetails")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <InfoItem icon={<CalendarDays className="w-4 h-4" />} label={t("checkIn")}
+                value={format(new Date(booking.dates.checkIn), "PPp")} />
+              <InfoItem icon={<CalendarCheck className="w-4 h-4" />} label={t("checkOut")}
+                value={format(new Date(booking.dates.checkOut), "PPp")} />
+              <InfoItem icon={<DollarSign className="w-4 h-4" />} label={t("totalPrice")}
+                value={`$${Number(booking.priceDetails?.totalPrice || 0).toFixed(2)}`} />
               <div>
-                <span className="font-medium">{t("translation.updated")}:</span>{" "}
-                {format(new Date(updatedAt), "PPpp")}
+                <p className="text-xs text-muted-foreground mb-1">{t("status")}</p>
+                <Status value={booking.status?.toLowerCase()} />
               </div>
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ── Renter & Leaser ── */}
+      <Card className="shadow-md gap-2">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-muted-foreground" />
+            <CardTitle className="text-xl">{t("parties")}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* Leaser — the one who filed (user on ticket) */}
+            <UserCard
+              label={t("leaser")}
+              person={typeof leaser === "object" ? leaser : null}         // always populated — ticket's user field
+              badgeColor="bg-blue-50 text-blue-700 border-blue-100"
+            />
+
+            {/* Renter — from booking.renter (needs backend populate) */}
+            <UserCard
+              label={t("renter")}
+              person={typeof renter === "object" ? renter : null}
+              badgeColor="bg-violet-50 text-violet-700 border-violet-100"
+            />
+
           </div>
         </CardContent>
       </Card>
+
+      {/* ── Actions ── */}
+      {status === "pending" && (
+        <div className="space-y-3 pt-2">
+          <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-900/40 dark:bg-amber-950/30 p-3">
+            <AlertCircle className="w-4 h-4 mt-0.5 text-amber-600 dark:text-amber-500 shrink-0" />
+            <p className="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+              {t("ticketActionNote")}
+            </p>
+          </div>
+          <div className="flex justify-end gap-3">
+            <Button onClick={() => updateTicketStatus({ id, status: "rejected" })} disabled={isPending} variant="destructive">
+              {t("reject")}
+            </Button>
+            <Button onClick={() => updateTicketStatus({ id, status: "approved" })} disabled={isPending} variant="success">
+              {isPending ? t("processing") : t("approve")}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
+// ── Reusable user card ──
+const UserCard = ({ label, person, badgeColor }: { label: string; person: any; badgeColor: string }) => (
+  <div className="flex items-center gap-4 p-4 rounded-xl border bg-muted/30">
+    <PhotoProvider>
+      <PhotoView src={getImageUrl(person?.profilePicture || "")}>
+        <div className="cursor-pointer hover:opacity-90 transition-opacity shrink-0">
+          <MyImage
+            src={person?.profilePicture || ""}
+            width={256} height={256} alt={person?.name || label}
+            className="rounded-full w-14 h-14 object-cover border shadow-sm"
+          />
+        </div>
+      </PhotoView>
+    </PhotoProvider>
+    <div className="space-y-1 min-w-0">
+      <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full border ${badgeColor}`}>
+        {label}
+      </span>
+      <p className="font-semibold text-sm text-foreground truncate capitalize">{person?.name || "—"}</p>
+      {person?.email && (
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Mail className="w-3 h-3 shrink-0" />
+          <span className="truncate">{person.email}</span>
+        </div>
+      )}
+    </div>
+  </div>
+);
+
+// ── Reusable info item ──
+const InfoItem = ({ icon, label, value }: { icon?: React.ReactNode; label: string; value?: string | number }) => (
+  <div>
+    <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+      {icon}
+      <span>{label}</span>
+    </div>
+    <p className="font-medium text-sm capitalize break-words">{value || "-"}</p>
+  </div>
+);
+
 export default TicketDetail;
-// "use client";
-
-// import MyImage from "@/components/custom/MyImage";
-// import ResponseError from "@/components/ResponseError";
-// import Status from "@/components/StatusBadge";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Separator } from "@/components/ui/separator";
-// import { useGetTicket } from "@/hooks/useTickets";
-// import { format } from "date-fns";
-// import TicketDetailSkeleton from "../skeletons/TicketSkeleton";
-// import { useTranslations } from "next-intl";
-// import { PhotoProvider, PhotoView } from "react-photo-view";
-// import "react-photo-view/dist/react-photo-view.css";
-// import { getImageUrl } from "@/utils/getImageUrl";
-
-// const TicketDetail = ({ id }: { id: string }) => {
-//   const t = useTranslations();
-//   const { data, isLoading, error } = useGetTicket(id, true);
-//   const ticket = data?.data;
-//   console.log(ticket)
-
-//   if (isLoading) {
-//     return <TicketDetailSkeleton />;
-//   }
-
-//   if (error) {
-//     return <ResponseError error={error.message} />;
-//   }
-
-//   const {
-//     booking,
-//     user,
-//     rentalText,
-//     issueType,
-//     additionalFees,
-//     attachments,
-//     status,
-//     createdAt,
-//     updatedAt,
-//   } = ticket || {};
-
-//   const localeRoomType =
-//     booking?.languages?.find((lang) => lang.locale === "en")?.translations
-//       .roomType || booking?.roomType;
-
-//   return (
-//     <div className="space-y-6">
-//       <Card>
-//         <CardHeader>
-//           {status && (
-//             <CardTitle className="text-xl font-semibold flex justify-between items-center">
-//               {t("translation.tickets")} ID: {id}
-//               <Status value={t("status." + status.toLowerCase())} />
-//             </CardTitle>
-//           )}
-//         </CardHeader>
-//         <CardContent className="space-y-4">
-//           {booking && (
-//             <div>
-//               <h3 className="text-lg font-medium">{t("translation.bookingDetails")}</h3>
-//               <Separator className="my-2" />
-//               <div className="grid grid-cols-2 gap-4 text-sm">
-//                 <div>
-//                   <span className="font-medium">{t("translation.checkIn")}:</span>{" "}
-//                   {format(new Date(booking.dates.checkIn), "PP")}
-//                 </div>
-//                 <div>
-//                   <span className="font-medium">{t("translation.checkOut")}:</span>{" "}
-//                   {format(new Date(booking.dates.checkOut), "PP")}
-//                 </div>
-//                 <div>
-//                   <span className="font-medium">{t("translation.category")}:</span>{" "}
-//                   {localeRoomType}
-//                 </div>
-//                 <div>
-//                   <span className="font-medium">{t("translation.users")}:</span>{" "}
-//                   {booking.noOfGuests}
-//                 </div>
-//                 <div>
-//                   <span className="font-medium">{t("translation.totalEarnings")}:</span> $
-//                   {booking?.priceDetails?.totalPrice}
-//                 </div>
-//                 <div>
-//                   <span className="font-medium">{t("translation.totalEarning")}:</span> $
-//                   {booking?.extensionCharges?.totalPrice}
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-
-//           {user && (
-//             <div>
-//               <h3 className="text-lg font-medium">{t("translation.userInfo")}</h3>
-//               <Separator className="my-2" />
-//               <div className="flex items-center gap-4">
-//                 <PhotoProvider>
-//                   <PhotoView src={getImageUrl(user?.profilePicture || "")}>
-//                     <div className="cursor-pointer hover:opacity-90 transition-opacity">
-//                       <MyImage
-//                         src={user?.profilePicture || ""}
-//                         width={50}
-//                         height={50}
-//                         alt="Profile"
-//                         className="rounded-full w-14 h-14 object-cover border shadow-sm"
-//                       />
-//                     </div>
-//                   </PhotoView>
-//                 </PhotoProvider>
-//                 <div className="text-sm">
-//                   <div className="font-medium">{user.name}</div>
-//                   <div className="text-muted-foreground">{user.email}</div>
-//                   <div className="text-muted-foreground">{user.phone}</div>
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-
-//           <div>
-//             <h3 className="text-lg font-medium">{t("translation.issue")}</h3>
-//             <Separator className="my-2" />
-//             <div className="text-sm space-y-2">
-//               <div>
-//                 <span className="font-medium">{t("translation.type")}:</span> {issueType}
-//               </div>
-//               <div>
-//                 <span className="font-medium">{t("translation.details")}:</span> {rentalText}
-//               </div>
-//               <div>
-//                 <span className="font-medium">{t("translation.refundIssued")}:</span> $
-//                 {additionalFees}
-//               </div>
-              
-//               {/* Added Attachments Preview Section */}
-//               {attachments && attachments.length > 0 && (
-//                 <div className="mt-4">
-//                   <p className="font-medium mb-2">{t("translation.attachments")}:</p>
-//                   <PhotoProvider>
-//                     <div className="flex flex-wrap gap-2">
-//                       {attachments.map((img: string, index: number) => (
-//                         <PhotoView key={index} src={getImageUrl(img)}>
-//                           <div className="cursor-pointer overflow-hidden rounded-md border">
-//                             <MyImage
-//                               src={img}
-//                               alt={`attachment-${index}`}
-//                               width={80}
-//                               height={80}
-//                               className="h-20 w-20 object-cover hover:scale-105 transition-transform"
-//                             />
-//                           </div>
-//                         </PhotoView>
-//                       ))}
-//                     </div>
-//                   </PhotoProvider>
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-
-//           <div>
-//             <h3 className="text-lg font-medium">{t("translation.administration")}</h3>
-//             <Separator className="my-2" />
-//             <div className="grid grid-cols-2 gap-4 text-sm">
-//               <div>
-//                 <span className="font-medium">{t("translation.created")}:</span>{" "}
-//                 {format(new Date(createdAt!), "PPpp")}
-//               </div>
-//               <div>
-//                 <span className="font-medium">{t("translation.updated")}:</span>{" "}
-//                 {format(new Date(updatedAt!), "PPpp")}
-//               </div>
-//             </div>
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// };
-
-// export default TicketDetail;

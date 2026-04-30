@@ -577,7 +577,13 @@
     "max5mb": "Max 5MB",
     "pleaseUploadAPdfFile": "Please upload a PDF file",
     "fileSizeMustBeLessThan5mb": "File size must be less than 5MB",
-    "onlyPdfFilesAreAllowed": "Only PDF files are allowed"
+    "onlyPdfFilesAreAllowed": "Only PDF files are allowed",
+    "bookingExpiryEnabled": "Booking Expiry Enabled",
+    "eg15Minutes": "e.g. 15 minutes",
+    "expiryTimeMinutes": "Expiry Time (Minutes)",
+    "attachments": "Attachments",
+    "ticketActionNote": "Approving will deduct the amount from the renter and transfer it to the leaser. Rejecting will not deduct any amount.",
+    "parties": "Parties"
   },
   "confirm": {
     "logout": {
@@ -619,6 +625,7 @@
     "pending": "Pending",
     "active": "Active",
     "inactive": "Inactive",
+    "expired": "Expired",
     "blocked": "Blocked",
     "resolved": "Resolved",
     "unblocked": "Unblocked",

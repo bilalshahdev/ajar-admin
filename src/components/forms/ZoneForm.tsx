@@ -15,6 +15,8 @@ import TextInput from "./fields/TextInput";
 import SelectInput from "./fields/SelectInput";
 import { currencies } from "@/config/data";
 import { useTranslations } from "next-intl";
+import SwitchInput from "./fields/SwitchInput";
+import NumberInput from "./fields/NumberInput";
 
 const PolygonSearchMap = dynamic(() => import("../PolygonSearchMap"), {
   ssr: false,
@@ -45,12 +47,15 @@ const ZoneForm = ({
     formState: { isSubmitting, errors, isSubmitted },
     reset,
     setValue,
+    watch,
   } = useForm<ZoneFormValues>({
     resolver: zodResolver(ZoneSchema),
     defaultValues: {
       name: "",
       currency: "",
       polygons: [],
+      bookingExpiryEnabled: false,
+      expiryTimeMinutes: 15,
     },
   });
 
@@ -77,6 +82,8 @@ const ZoneForm = ({
         name: zone.name,
         currency: zone.currency,
         polygons: convertedPolygons,
+        bookingExpiryEnabled: zone.bookingExpiryEnabled || false,
+        expiryTimeMinutes: zone.expiryTimeMinutes || 15,
       });
       setPolygons(convertedPolygons);
     }
@@ -98,6 +105,8 @@ const ZoneForm = ({
   useEffect(() => {
     setValue("polygons", polygons);
   }, [polygons, setValue]);
+
+  const bookingExpiryEnabled = watch("bookingExpiryEnabled");
 
   const addZoneMutation = useAddZone();
   const updateZoneMutation = useUpdateZone();
@@ -159,6 +168,23 @@ const ZoneForm = ({
           valueKey="value"
           isTranslations={false}
         />
+
+        <SwitchInput
+          control={control}
+          name="bookingExpiryEnabled"
+          label="bookingExpiryEnabled"
+        />
+
+        {bookingExpiryEnabled && (
+          <NumberInput
+            control={control}
+            name="expiryTimeMinutes"
+            label="expiryTimeMinutes"
+            placeholder={t("translation.eg15Minutes")}
+            min={1}
+            max={1440}
+          />
+        )}
       </div>
 
       {/* Polygon Map */}

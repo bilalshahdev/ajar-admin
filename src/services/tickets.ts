@@ -36,11 +36,11 @@ export const addTicket = async (ticketData: Partial<Ticket>) => {
 };
 
 // ✅ Update a ticket
-export const updateTicket = async (
+export const updateTicketStatus = async (
   ticketId: string,
-  ticketData: Partial<Ticket>
+  ticketData: { status: string }
 ) => {
-  const response = await api.patch(`/tickets/${ticketId}`, ticketData);
+  const response = await api.patch(`/tickets/${ticketId}/status`, ticketData);
   return response.data;
 };
 

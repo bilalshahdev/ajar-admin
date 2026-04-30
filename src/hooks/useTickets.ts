@@ -2,8 +2,8 @@ import {
   getTickets,
   getTicket,
   addTicket,
-  updateTicket,
   deleteTicket,
+  updateTicketStatus,
 } from "@/services/tickets";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -40,6 +40,7 @@ export const useAddTicket = () => {
     mutationFn: addTicket,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tickets"] });
+      queryClient.invalidateQueries({ queryKey: ["ticket"] });
       toast.success("Ticket created successfully");
     },
     onError: (error: any) => {
@@ -49,11 +50,11 @@ export const useAddTicket = () => {
 };
 
 // ✅ Update ticket
-export const useUpdateTicket = () => {
+export const useUpdateTicketStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) =>
-      updateTicket(id, data),
+    mutationFn: ({ id, status }: { id: string; status: string }) =>
+      updateTicketStatus(id, { status }),
     onSuccess: ({ data }: { data: { _id: string } }) => {
       queryClient.invalidateQueries({ queryKey: ["tickets"] });
       queryClient.invalidateQueries({ queryKey: ["ticket", data._id] });

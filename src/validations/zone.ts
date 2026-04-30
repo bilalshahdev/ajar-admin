@@ -10,6 +10,8 @@ export const ZoneSchema = z.object({
         .min(1, "Each polygon must have at least one point")
     )
     .min(1, "At least one polygon is required"),
+  bookingExpiryEnabled: z.boolean().optional(),
+  expiryTimeMinutes: z.number().min(1).max(1440).optional(),
 });
 
 export type ZoneFormValues = z.infer<typeof ZoneSchema>;
