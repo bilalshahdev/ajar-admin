@@ -292,7 +292,8 @@ type SettingsPageName =
   | "recaptcha"
   | "firebase"
   | "pushNotifications"
-  | "termsAndConditions";
+  | "termsAndConditions"
+  | "privacyPolicy";
 
 interface Subcategory {
   name: string;

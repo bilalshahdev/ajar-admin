@@ -580,7 +580,13 @@
     "expiryTimeMinutes": "وقت الانتهاء (بالدقائق)",
     "attachments": "المرفقات",
     "ticketActionNote": "عند الموافقة سيتم خصم المبلغ من المستأجر وتحويله إلى المؤجر. عند الرفض لن يتم خصم أي مبلغ.",
-    "parties": "الأطراف"
+    "parties": "الأطراف",
+    "privacyPolicy": "سياسة الخصوصية",
+    "savePrivacyPolicy": "حفظ سياسة الخصوصية",
+    "privacyPolicyContent": "محتوى سياسة الخصوصية",
+    "htmlTagsSupported": "علامات HTML مدعومة (مثل <p>، <b>، <ul>)",
+    "enterPrivacyPolicyContent": "أدخل محتوى سياسة الخصوصية هنا... (HTML مدعوم)",
+    "preview": "معاينة"
   },
   "confirm": {
     "logout": {

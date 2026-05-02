@@ -583,7 +583,13 @@
     "expiryTimeMinutes": "Expiry Time (Minutes)",
     "attachments": "Attachments",
     "ticketActionNote": "Approving will deduct the amount from the renter and transfer it to the leaser. Rejecting will not deduct any amount.",
-    "parties": "Parties"
+    "parties": "Parties",
+    "privacyPolicy": "Privacy Policy",
+    "savePrivacyPolicy": "Save Privacy Policy",
+    "privacyPolicyContent": "Privacy Policy Content",
+    "htmlTagsSupported": "HTML tags are supported (e.g. <p>, <b>, <ul>)",
+    "enterPrivacyPolicyContent": "Enter your privacy policy content here... (HTML is supported)",
+    "preview": "Preview"
   },
   "confirm": {
     "logout": {
