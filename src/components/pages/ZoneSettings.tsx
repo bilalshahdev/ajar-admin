@@ -21,10 +21,10 @@ import { useEffect, useMemo, useState } from "react";
 import MultiSelect from "../forms/fields/MultiSelect";
 import { zoneFormSchema, ZoneFormValues } from "@/validations/zoneSettings";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl"; // Import for translation
+import { useTranslations } from "next-intl";
 
 const ZoneSettings = () => {
-  const t = useTranslations(); // Initialize translation
+  const t = useTranslations();
   const zoneId = useParams().id;
   const [subCategory, setSubCategory] = useState<string>("");
 
@@ -103,8 +103,6 @@ const SubcategorySettingsForm = ({
     zoneId,
     selectedSubCategory
   );
-  
-  console.log("zoneForm",zoneForm)
 
   useEffect(() => {
     reset(defaultValues);
@@ -136,8 +134,8 @@ const SubcategorySettingsForm = ({
         tax,
         expiry,
       },
-      userDocuments: zoneForm.data.userDocuments,
-      leaserDocuments: zoneForm.data.leaserDocuments,
+      userDocuments: zoneForm.data.userDocuments?.map((d: any) => d.value) || [],
+      leaserDocuments: zoneForm.data.leaserDocuments?.map((d: any) => d.value) || [],
     });
   }, [zoneForm, reset, zoneId, selectedSubCategory]);
 
@@ -156,8 +154,6 @@ const SubcategorySettingsForm = ({
   const error = updateError || addError;
 
   const onSubmit = async (data: any) => {
-    console.log("Form submitted:", data);
-
     if (zoneForm) {
       await updateZoneForm({ id: zoneForm?.data?._id, data });
     } else {
