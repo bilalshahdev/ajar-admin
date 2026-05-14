@@ -22,6 +22,7 @@ import MultiSelect from "../forms/fields/MultiSelect";
 import { zoneFormSchema, ZoneFormValues } from "@/validations/zoneSettings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 const ZoneSettings = () => {
   const t = useTranslations();
@@ -121,12 +122,28 @@ const SubcategorySettingsForm = ({
       expiry,
     } = setting;
 
+    // Extract field IDs, and also include dependsOn parent IDs for conditional fields
+    const fieldIds: string[] = [];
+    fields.forEach((f: any) => {
+      // Add the parent (dependsOn) first if it exists and isn't already added
+      if (f.conditional?.dependsOn?._id) {
+        const parentId = f.conditional.dependsOn._id;
+        if (!fieldIds.includes(parentId)) {
+          fieldIds.push(parentId);
+        }
+      }
+      // Then add the field itself
+      if (!fieldIds.includes(f._id)) {
+        fieldIds.push(f._id);
+      }
+    });
+
     reset({
       zone: zoneId,
       subCategory: selectedSubCategory,
       name,
       description,
-      fields: fields.map((f: any) => f._id),
+      fields: fieldIds, // <-- was: fields.map((f: any) => f._id)
       setting: {
         commissionType,
         leaserCommission,
@@ -173,6 +190,46 @@ const SubcategorySettingsForm = ({
     (f: Field) => !f.isFixed
   ) || [];
 
+  // Also collect dependsOn parents that aren't top-level fields
+  const existingIds = new Set(fields.map((f: any) => f._id));
+  const parentFields: Field[] = fields
+    .filter((f: any) => f.conditional?.dependsOn && !existingIds.has(f.conditional.dependsOn._id))
+    .map((f: any) => f.conditional.dependsOn);
+
+  const allFields: Field[] = [...fields, ...parentFields];
+
+  const handleFieldRemove = (removedId: string, currentValues: string[]) => {
+    // Check: kya removedId kisi selected child ka parent hai?
+    const orphanedChildren = allFields.filter((f: any) => {
+      const isSelected = currentValues.includes(f._id);
+      const parentId = f.conditional?.dependsOn?._id;
+      return isSelected && parentId === removedId;
+    });
+
+    if (orphanedChildren.length > 0) {
+      const childNames = orphanedChildren.map((f: any) => f.name).join(", ");
+      toast(`${allFields.find((f: any) => f._id === removedId)?.name} removed along with its dependent field(s): ${childNames}`);
+      // Remove parent + all orphaned children
+      const toRemove = new Set([removedId, ...orphanedChildren.map((f: any) => f._id)]);
+      return currentValues.filter((v) => !toRemove.has(v));
+    }
+
+    return currentValues.filter((v) => v !== removedId);
+  };
+
+  const handleFieldAdd = (addedId: string, currentValues: string[]) => {
+  const field = allFields.find((f: any) => f._id === addedId) as any;
+  const parentId = field?.conditional?.dependsOn?._id;
+
+  if (parentId && !currentValues.includes(parentId)) {
+    const parentName = field.conditional.dependsOn.name;
+    toast.info(`"${parentName}" auto-added as it is required by "${field.name}"`);
+    return [...currentValues, parentId, addedId];
+  }
+
+  return [...currentValues, addedId];
+};
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -194,13 +251,15 @@ const SubcategorySettingsForm = ({
           control={control}
           name={"fields"}
           label="selectCustomFields"
-          options={fields}
+          options={allFields}
           loading={fieldsLoading}
           getOptionValue={(f) => f._id}
           getOptionLabel={(f) => f.name}
           className="col-span-2"
           emptyText={t("translation.noFieldFound")}
           searchPlaceholder={t("translation.searchFields")}
+          onBeforeRemove={handleFieldRemove}
+          onBeforeAdd={handleFieldAdd}
         />
         {errors.fields && <p className="text-red-500 text-sm">{errors.fields.message}</p>}
         {documentsValues.length > 0 && (

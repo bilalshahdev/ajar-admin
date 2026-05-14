@@ -34,6 +34,7 @@ export const getZoneFormByZoneAndSubCategory = async (
     params: {
       zone: zoneId,
       subCategory: subCategoryId,
+      isAdmin: true
     },
   });
   return response.data;

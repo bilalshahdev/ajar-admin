@@ -53,6 +53,8 @@ export type MultiSelectProps<TOption, TForm extends BaseForm = BaseForm> = {
   className?: string;
   emptyText?: string;
   searchPlaceholder?: string;
+  onBeforeAdd?: (value: string, currentValues: string[]) => string[];
+  onBeforeRemove?: (value: string, currentValues: string[]) => string[];
 };
 
 export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
@@ -67,6 +69,8 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   className,
   emptyText = "No item found.",
   searchPlaceholder = "Search...",
+  onBeforeRemove,
+  onBeforeAdd,
 }: MultiSelectProps<TOption, TForm>) {
   const t = useTranslations();
   const { field, fieldState: { error } } = useController<TForm, FieldPath<TForm>>({
@@ -87,14 +91,16 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
 
   const toggle = (value: string) => {
     if (selectedValues.includes(value)) {
-      field.onChange(selectedValues.filter((v) => v !== value));
+      const newValues = onBeforeRemove
+        ? onBeforeRemove(value, selectedValues)
+        : selectedValues.filter((v) => v !== value);
+      field.onChange(newValues);
     } else {
-      field.onChange([...selectedValues, value]);
+      const newValues = onBeforeAdd
+        ? onBeforeAdd(value, selectedValues)
+        : [...selectedValues, value];
+      field.onChange(newValues);
     }
-  };
-
-  const remove = (value: string) => {
-    field.onChange(selectedValues.filter((v) => v !== value));
   };
 
   // DnD Kit setup
@@ -107,6 +113,13 @@ export function MultiSelect<TOption, TForm extends BaseForm = BaseForm>({
   );
 
   const selected = selectedOptions?.length
+
+  const remove = (value: string) => {
+    const newValues = onBeforeRemove
+      ? onBeforeRemove(value, selectedValues)
+      : selectedValues.filter((v) => v !== value);
+    field.onChange(newValues);
+  };
 
   return (
     <div className={cn("space-y-2", className)}>
