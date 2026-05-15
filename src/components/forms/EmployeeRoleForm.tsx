@@ -35,6 +35,7 @@ const accessOptions = [
   { value: "field", label: "Field" },
   { value: "users", label: "Users" },
   { value: "listing", label: "Listing" },
+  { value: "bookings", label: "Bookings" },
   { value: "business", label: "Business" },
   { value: "tickets", label: "Tickets" },
   { value: "refund", label: "Refund" },

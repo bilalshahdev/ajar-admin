@@ -65,6 +65,7 @@ const Users = () => {
     fromDate,
     toDate,
   });
+  
   const { mutate: deleteUser, isPending: deleteLoading } = useDeleteUser();
   const { mutate: updateUserStatus, isPending: updateLoading } = useUpdateUserStatus();
 

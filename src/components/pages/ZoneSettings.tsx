@@ -113,7 +113,7 @@ const SubcategorySettingsForm = ({
     if (!zoneForm?.data) return;
 
     const { name, description, fields = [], setting } = zoneForm.data;
-
+    
     const {
       commissionType,
       leaserCommission = {},
@@ -207,8 +207,8 @@ const SubcategorySettingsForm = ({
     });
 
     if (orphanedChildren.length > 0) {
-      const childNames = orphanedChildren.map((f: any) => f.name).join(", ");
-      toast(`${allFields.find((f: any) => f._id === removedId)?.name} removed along with its dependent field(s): ${childNames}`);
+      const childNames = orphanedChildren.map((f: any) => f.label).join(", ");
+      toast(`${allFields.find((f: any) => f._id === removedId)?.label} removed along with its dependent field(s): ${childNames}`);
       // Remove parent + all orphaned children
       const toRemove = new Set([removedId, ...orphanedChildren.map((f: any) => f._id)]);
       return currentValues.filter((v) => !toRemove.has(v));
@@ -222,8 +222,8 @@ const SubcategorySettingsForm = ({
   const parentId = field?.conditional?.dependsOn?._id;
 
   if (parentId && !currentValues.includes(parentId)) {
-    const parentName = field.conditional.dependsOn.name;
-    toast.info(`"${parentName}" auto-added as it is required by "${field.name}"`);
+    const parentName = field.conditional.dependsOn.label;
+    toast.info(`"${parentName}" auto-added as it is required by "${field.label}"`);
     return [...currentValues, parentId, addedId];
   }
 

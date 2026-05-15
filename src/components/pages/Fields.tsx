@@ -38,8 +38,8 @@ const Fields = () => {
 
   const row = (field: any) => (
     <>
-      <HighlightCell text={field.label ?? "—"} query={search} />
-      <HighlightCell text={field.name} query={search} />
+      <HighlightCell text={field.label ?? "—"} query={search} className="capitalize" />
+      <HighlightCell text={field.name} query={search} className="capitalize" />
       <TableCell className="capitalize">{field.type}</TableCell>
       <TableCell className="flex gap-4">
         <TableActions

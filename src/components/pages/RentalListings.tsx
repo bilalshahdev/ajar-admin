@@ -5,8 +5,7 @@ import {
 } from "@/hooks/useRentalListings";
 import { useGetZones } from "@/hooks/useZones";
 import { RentalListing } from "@/types";
-import { filterData } from "@/utils/filterData";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import TableActions from "../Actions";
 import { DataTable } from "../custom/DataTable";
 import { SearchInput } from "../custom/SearchInput";

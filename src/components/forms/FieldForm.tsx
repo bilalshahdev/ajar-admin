@@ -153,6 +153,9 @@ export default function FieldForm({ id }: { id?: string }) {
   const { data: fieldsList } = useGetChoiceFieldsList({ enabled: isChoiceField });
 
   const isEditMode = Boolean(id);
+  const hasConditional = Boolean(field?.data?.conditional?.dependsOn);
+  const hideChildToggle = isEditMode && !hasConditional;       // hide entirely when editing non-child
+  const disableChildToggle = !isChildFieldAllowed || (isEditMode && hasConditional); // disable when editing existing child
   const updateMutation = useUpdateField();
   const addMutation = useAddField();
 
@@ -197,9 +200,9 @@ export default function FieldForm({ id }: { id?: string }) {
       conditions,
     };
 
-    if (isChoiceField) {
-      formData.options = [];
-    }
+    // if (isChoiceField) {
+    //   formData.options = [];
+    // }
 
     const mutationPayload = id ? { id, data: formData } : formData;
     fieldMutation(mutationPayload, {
@@ -235,11 +238,11 @@ export default function FieldForm({ id }: { id?: string }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* ✅ isChildField switch — disabled for non select/radio types */}
+      {/* isChildField switch — disabled for non select/radio types */}
       <div className="inline-flex items-center gap-4 p-4 bg-accent rounded-md">
         <Label
           htmlFor="is-child-field"
-          className={`cursor-pointer ${!isChildFieldAllowed ? "opacity-50" : ""}`}
+          className={`cursor-pointer ${disableChildToggle ? "opacity-50" : ""}`}
         >
           {t("translation.isChildField")}
         </Label>
@@ -247,7 +250,7 @@ export default function FieldForm({ id }: { id?: string }) {
           id="is-child-field"
           className="cursor-pointer"
           checked={isChoiceField}
-          disabled={!isChildFieldAllowed}
+          disabled={disableChildToggle}
           onCheckedChange={handleDependsOnChange}
         />
         {!isChildFieldAllowed && (
@@ -264,6 +267,7 @@ export default function FieldForm({ id }: { id?: string }) {
               label="dependsOnField"
               options={fieldOptions || []}
               value={parentFieldId}
+              disabled={disableChildToggle}
               onChange={(id) => {
                 setParentFieldId(id);
                 setParentFieldOption(null);
