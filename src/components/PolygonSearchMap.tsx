@@ -8,27 +8,40 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useState,
 } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { Input } from "./ui/input";
 
 interface Props {
   onUserPolygonDrawn?: (points: { lat: number; lng: number }[][]) => void;
-  polygons?: { lat: number; lng: number }[][]; // passed from form
+  polygons?: { lat: number; lng: number }[][];
 }
 
 export interface PolygonSearchMapRef {
   clearMap: () => void;
 }
 
+const collectAllPolygons = (
+  drawnItems: L.FeatureGroup
+): { lat: number; lng: number }[][] => {
+  return drawnItems.getLayers().map((l: any) => {
+    const latLngs = l.getLatLngs();
+    const ring = Array.isArray(latLngs[0]) ? latLngs[0] : latLngs;
+    return ring.map((pt: any) => ({ lat: pt.lat, lng: pt.lng }));
+  });
+};
+
 const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
   ({ onUserPolygonDrawn, polygons }, ref) => {
     const map = useMap();
-    const drawnItems = useRef(new L.FeatureGroup()).current;
-    const [geoJsonLayer, setGeoJsonLayer] = useState<L.GeoJSON | null>(null);
+    const drawnItemsRef = useRef<L.FeatureGroup>(new L.FeatureGroup());
+    const drawnItems = drawnItemsRef.current;
 
-    // ⛳ DrawControl
+    // ✅ Key fix: once the user interacts (draw/edit/delete/search),
+    // we stop syncing from props so deletions aren't reverted.
+    const userHasControl = useRef(false);
+
+    // ⛳ Setup draw control + event listeners — runs ONCE
     useEffect(() => {
       map.addLayer(drawnItems);
 
@@ -48,47 +61,58 @@ const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
 
       map.addControl(drawControl);
 
-      map.on(L.Draw.Event.CREATED, (event: LeafletEvent) => {
+      const onCreated = (event: LeafletEvent) => {
+        userHasControl.current = true;
         const layer = (event as any).layer;
         drawnItems.addLayer(layer);
+        onUserPolygonDrawn?.(collectAllPolygons(drawnItems));
+      };
 
-        // ✅ collect ALL drawn polygons after adding the new one
-        const allPolygons = drawnItems.getLayers().map((l: any) =>
-          l.getLatLngs()[0].map((pt: any) => ({ lat: pt.lat, lng: pt.lng }))
-        );
+      const onEdited = () => {
+        userHasControl.current = true;
+        onUserPolygonDrawn?.(collectAllPolygons(drawnItems));
+      };
 
-        onUserPolygonDrawn?.(allPolygons);
-      });
+      const onDeleted = () => {
+        userHasControl.current = true;
+        // Collect whatever remains after deletion (may be empty array)
+        onUserPolygonDrawn?.(collectAllPolygons(drawnItems));
+      };
+
+      map.on(L.Draw.Event.CREATED, onCreated);
+      map.on(L.Draw.Event.EDITED, onEdited);
+      map.on(L.Draw.Event.DELETED, onDeleted);
 
       return () => {
         map.removeControl(drawControl);
+        map.removeLayer(drawnItems);
+        map.off(L.Draw.Event.CREATED, onCreated);
+        map.off(L.Draw.Event.EDITED, onEdited);
+        map.off(L.Draw.Event.DELETED, onDeleted);
       };
-    }, [map, onUserPolygonDrawn, drawnItems]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [map]);
 
-    // 📍 Load existing polygons when editing
+    // 📍 Load polygons from props ONLY on initial edit-mode open
     useEffect(() => {
-      if (polygons && polygons.length > 0) {
-        drawnItems.clearLayers(); // remove previous
+      if (userHasControl.current) return;      // user is driving — don't overwrite
+      if (!polygons || polygons.length === 0) return;
+      if (drawnItems.getLayers().length > 0) return; // already loaded once
 
-        polygons.forEach((polygonCoords) => {
-          const latLngs = polygonCoords.map(
-            (pt) => new L.LatLng(pt.lat, pt.lng)
-          );
-          const polygon = L.polygon(latLngs, {
-            color: "#007bff",
-            weight: 2,
-            fillOpacity: 0.3,
-          });
-
-          drawnItems.addLayer(polygon);
+      polygons.forEach((polygonCoords) => {
+        const latLngs = polygonCoords.map((pt) => new L.LatLng(pt.lat, pt.lng));
+        const polygon = L.polygon(latLngs, {
+          color: "#007bff",
+          weight: 2,
+          fillOpacity: 0.3,
         });
+        drawnItems.addLayer(polygon);
+      });
 
-        // Fit bounds to existing polygons
-        const bounds = L.latLngBounds(
-          polygons.flat().map((pt) => [pt.lat, pt.lng])
-        );
-        map.fitBounds(bounds);
-      }
+      const bounds = L.latLngBounds(
+        polygons.flat().map((pt) => [pt.lat, pt.lng] as [number, number])
+      );
+      map.fitBounds(bounds);
     }, [polygons, map, drawnItems]);
 
     // 🌍 Search Location Handler
@@ -107,54 +131,46 @@ const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
         const coordinates = feature.geometry.coordinates;
         const type = feature.geometry.type;
 
-        let latLngArray: { lat: number; lng: number }[][] = [];
+        let latLngArrays: { lat: number; lng: number }[][] = [];
 
         if (type === "Polygon") {
-          latLngArray = [
-            coordinates[0].map(([lng, lat]: [number, number]) => ({
-              lat,
-              lng,
-            })),
+          latLngArrays = [
+            coordinates[0].map(([lng, lat]: [number, number]) => ({ lat, lng })),
           ];
         } else if (type === "MultiPolygon") {
-          latLngArray = coordinates.map((polygon: [number, number][][]) =>
+          latLngArrays = coordinates.map((polygon: [number, number][][]) =>
             polygon[0].map(([lng, lat]) => ({ lat, lng }))
           );
         }
 
-        const existingPolygons = drawnItems.getLayers().map((l: any) =>
-          l.getLatLngs()[0].map((pt: any) => ({ lat: pt.lat, lng: pt.lng }))
-        );
-        onUserPolygonDrawn?.([...existingPolygons, ...latLngArray]);
+        userHasControl.current = true;
 
-        // Remove old layer if any
-        if (geoJsonLayer) {
-          map.removeLayer(geoJsonLayer);
-        }
-
-        const layer = L.geoJSON(feature, {
-          style: {
+        latLngArrays.forEach((coords) => {
+          const latLngs = coords.map((pt) => new L.LatLng(pt.lat, pt.lng));
+          const polygon = L.polygon(latLngs, {
             color: "#007bff",
             weight: 2,
             fillOpacity: 0.3,
-          },
+          });
+          drawnItems.addLayer(polygon);
         });
 
-        layer.addTo(map);
-        map.fitBounds(layer.getBounds());
-        setGeoJsonLayer(layer);
+        const bounds = L.latLngBounds(
+          latLngArrays.flat().map((pt) => [pt.lat, pt.lng] as [number, number])
+        );
+        map.fitBounds(bounds);
+
+        onUserPolygonDrawn?.(collectAllPolygons(drawnItems));
       } catch (err) {
         console.error("Search failed:", err);
       }
     };
 
-    // 🧹 Clear function
+    // 🧹 Clear (called after form submit)
     useImperativeHandle(ref, () => ({
       clearMap: () => {
         drawnItems.clearLayers();
-        if (geoJsonLayer) {
-          map.removeLayer(geoJsonLayer);
-        }
+        userHasControl.current = false; // reset so next dialog open loads from props
       },
     }));
 
@@ -168,7 +184,7 @@ const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              handlePlaceSearch((e.target as any).value);
+              handlePlaceSearch((e.target as HTMLInputElement).value);
             }
           }}
         />
@@ -178,7 +194,6 @@ const PolygonSearchMapComponent = forwardRef<PolygonSearchMapRef, Props>(
 );
 PolygonSearchMapComponent.displayName = "PolygonSearchMapComponent";
 
-// 📍 Wrapper with Theme + MapContainer
 const PolygonSearchMap = forwardRef<PolygonSearchMapRef, Props>(
   ({ onUserPolygonDrawn, polygons }, ref) => {
     const { theme } = useTheme();
