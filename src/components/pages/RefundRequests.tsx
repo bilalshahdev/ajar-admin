@@ -48,7 +48,9 @@ const RefundRequests = () => {
     "actions",
   ];
 
-  const row = (request: RefundRequest, index: number) => (
+  const row = (request: RefundRequest, index: number) => {
+    const totalRefundAmount = request?.totalRefundAmount + request?.booking?.priceDetails?.securityDeposit + request?.booking?.priceDetails?.adminFee + request?.booking?.priceDetails?.tax;
+    return (
     <>
       <TableCell>{index + 1}</TableCell>
       <TableCell className="font-medium">
@@ -56,7 +58,7 @@ const RefundRequests = () => {
       </TableCell>
       <TableCell>{request?.user?.name}</TableCell>
       <TableCell>{new Date(request?.createdAt).toLocaleDateString()}</TableCell>
-      <TableCell>${request?.totalRefundAmount.toFixed(2)}</TableCell>
+      <TableCell>${totalRefundAmount.toFixed(2)}</TableCell>
       <TableCell>
         <Status value={request?.status} />
       </TableCell>
@@ -70,6 +72,7 @@ const RefundRequests = () => {
       </TableCell>
     </>
   );
+};
 
   const pagination = {
     total,

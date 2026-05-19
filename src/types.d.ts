@@ -391,6 +391,12 @@ interface RefundRequest {
     marketplaceListingId: {
       name: string;
     };
+    priceDetails: {
+      securityDeposit: number;
+      adminFee: number;
+      platformFee: number;
+      tax: number;
+    };
   };
   user: {
     name: string;
