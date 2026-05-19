@@ -41,7 +41,17 @@ const RefundDetail = ({ id }: { id: string }) => {
     status,
     note,
     createdAt,
+    policy,
+    booking,
   } = refundResponse?.data || {};
+
+  const priceDetails = booking?.priceDetails;
+  const penaltyPercentage = policy?.tiers?.[0]?.percentage;
+
+  const adminFee = priceDetails?.adminFee ?? 0;
+  const tax = priceDetails?.tax ?? 0;
+  const secDep = securityDeposit ?? 0;
+  const totalToRenter = (totalRefundAmount ?? 0) + adminFee + tax + secDep;
 
   const handleUpdateStatus = (newStatus: "accept" | "reject", adminNote?: string) => {
     updateStatus(
@@ -57,7 +67,6 @@ const RefundDetail = ({ id }: { id: string }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Main Detail Card */}
       <Card className="shadow-lg">
         <CardHeader className="border-b">
           <div className="flex justify-between items-start">
@@ -71,22 +80,22 @@ const RefundDetail = ({ id }: { id: string }) => {
             </div>
             <div className="text-right">
               <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">
-                {t("totalRefund")}
+                Renter Refund
               </p>
               <p className="text-3xl font-bold text-green-600">
-                ${((totalRefundAmount ?? 0) + (securityDeposit ?? 0)).toFixed(2)}
+                ${totalToRenter.toFixed(2)}
               </p>
             </div>
           </div>
         </CardHeader>
 
         <CardContent className="pt-6 space-y-8">
-          {/* Reason Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            {/* Left — Reason & Note */}
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-semibold mb-2">{t("reasonForRefund")}</h3>
-                {/* Added break-words and whitespace-pre-wrap to fix the note issue */}
                 <p className="text-muted-foreground bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border italic break-words whitespace-pre-wrap">
                   &quot;{reason}&quot;
                 </p>
@@ -95,7 +104,6 @@ const RefundDetail = ({ id }: { id: string }) => {
               {note && (
                 <div>
                   <h4 className="text-lg font-semibold mb-1">{t("additionalNotes")}</h4>
-                  {/* Added break-words to fix the note issue */}
                   <p className="text-sm text-muted-foreground break-words whitespace-pre-wrap">
                     {note}
                   </p>
@@ -103,27 +111,40 @@ const RefundDetail = ({ id }: { id: string }) => {
               )}
             </div>
 
-            {/* Price Breakdown */}
+            {/* Right — Refund Breakdown */}
             <div className="space-y-3 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border">
-              <h3 className="text-lg font-semibold text-muted-foreground">
-                {t("breakdown")}
-              </h3>
+              <h3 className="text-lg font-semibold text-muted-foreground">{t("breakdown")}</h3>
+
               <div className="flex justify-between text-sm">
-                <span>{t("deduction")}</span>
-                <span className="text-destructive font-medium">-${deduction?.toFixed(2)}</span>
+                <span className="text-muted-foreground">Refundable Amount</span>
+                <span className="font-medium">${totalRefundAmount?.toFixed(2)}</span>
               </div>
 
-              {(securityDeposit ?? 0) > 0 && (
+              {adminFee > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span>{t("securityDeposit")}</span>
-                  <span className="text-emerald-600 font-medium">+${securityDeposit?.toFixed(2)}</span>
+                  <span className="text-muted-foreground">Admin Fee (returned)</span>
+                  <span className="text-emerald-600 font-medium">+${adminFee.toFixed(2)}</span>
                 </div>
               )}
 
-              <div className="pt-3 border-t flex justify-between items-center">
-                <span className="font-semibold">{t("totalToWallet")}</span>
-                <span className="text-xl font-bold">
-                  ${((totalRefundAmount ?? 0) + (securityDeposit ?? 0)).toFixed(2)}
+              {tax > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Tax (returned)</span>
+                  <span className="text-emerald-600 font-medium">+${tax.toFixed(2)}</span>
+                </div>
+              )}
+
+              {secDep > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Security Deposit (returned)</span>
+                  <span className="text-emerald-600 font-medium">+${secDep.toFixed(2)}</span>
+                </div>
+              )}
+
+              <div className="border-t pt-3 flex justify-between items-center">
+                <span className="font-semibold">Total to Renter Wallet</span>
+                <span className="text-xl font-bold text-green-600">
+                  ${totalToRenter.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -131,7 +152,7 @@ const RefundDetail = ({ id }: { id: string }) => {
         </CardContent>
       </Card>
 
-      {/* User Information (Reusing your UserCard style) */}
+      {/* User Information */}
       {user && typeof user === "object" && (
         <Card className="shadow-md">
           <CardHeader>
@@ -155,7 +176,7 @@ const RefundDetail = ({ id }: { id: string }) => {
         </Card>
       )}
 
-      {/* Actions - Same buttons as Rental Details */}
+      {/* Actions */}
       {status === "pending" && (
         <div className="flex justify-end gap-4 pt-2">
           <Button
