@@ -344,6 +344,7 @@ type Booking = {
     price: number;
     adminFee: number;
     tax: number;
+    securityDeposit?: number;
     totalPrice: number;
   };
   pricingMeta: {
@@ -355,18 +356,47 @@ type Booking = {
     additionalCharges: number;
     totalPrice?: number;
   };
+  bookingDates?: {
+    handover?: string | null;
+    returnDate?: string | null;
+  };
   extensionCharges?: {
     adminFee: number;
     additionalCharges: number;
     totalPrice: number;
   };
   isExtend: boolean;
-  extensions: unknown[];
+  extensions: BookingExtension[];
   reviews: unknown[];
   paymentStatus: string | null;
   actualReturnedAt?: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+type BookingExtension = {
+  _id: string;
+  name?: string;
+  extensionDate?: string | null;
+  handover?: string | null;
+  returnDate?: string | null;
+  priceDetails?: {
+    price: number;
+    adminFee: number;
+    tax: number;
+    securityDeposit?: number;
+    totalPrice: number;
+  };
+  pricingMeta?: {
+    priceFromListing: number;
+    unit: "hour" | "day" | "month";
+    duration: number;
+  };
+  extraRequestCharges?: {
+    additionalCharges: number;
+    totalPrice?: number;
+  };
+  paymentStatus?: string | null;
 };
 
 type Ticket = {
