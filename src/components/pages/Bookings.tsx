@@ -24,6 +24,14 @@ import { formatBookingDate } from "@/utils/formatBookingDate";
 import { useDebounce } from "@/hooks/use-debounce";
 import { formatStatus, getStatusStyle } from "@/utils/getStatusStyle";
 
+const getDeleteDescription = (booking: Booking) => {
+  const isActive = ["approved", "in_progress"].includes(booking.status);
+  if (isActive) {
+    return "This booking is currently active. Deleting it will refund the full amount to the renter's wallet. This action cannot be undone.";
+  }
+  return "This booking will be permanently deleted. This action cannot be undone.";
+};
+
 const Bookings = () => {
   const t = useTranslations("translation");
   const [page, setPage] = useState(1);
@@ -99,6 +107,7 @@ const Bookings = () => {
           baseRoute="/bookings"
           actions={["view", "delete"]}
           module="Booking"
+          deleteDescription={getDeleteDescription(booking)}
           onDelete={(id, closeDialog) =>
             deleteBooking(id, {
               onSuccess: () => closeDialog(),

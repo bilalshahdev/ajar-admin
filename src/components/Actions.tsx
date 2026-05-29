@@ -23,6 +23,7 @@ interface TableActionsProps {
   actions?: ActionType[];
   module?: string;
   onDelete?: (id: string, closeDialog: () => void) => void;
+  deleteDescription?: string;
   deleteLoading?: boolean;
 
   // Optional dialog-based edit support
@@ -48,6 +49,7 @@ const TableActions: React.FC<TableActionsProps> = ({
   actions = ["view", "edit", "delete", "settings"],
   module = "Item",
   onDelete,
+  deleteDescription,
   deleteLoading = false,
   editDialog,
   viewDialog,
@@ -166,8 +168,7 @@ const TableActions: React.FC<TableActionsProps> = ({
       {isDelete && actions.includes("delete") && onDelete && (
         <ConfirmDialog
           title={t("confirm.delete.title", { value: t(`translation.${module.toLowerCase()}`) })}
-          description={t("confirm.delete.description", { value: t(`translation.${module.toLowerCase()}`) })}
-          confirmText={t("translation.delete")}
+          description={deleteDescription ?? t("confirm.delete.description", { value: t(`translation.${module.toLowerCase()}`) })} confirmText={t("translation.delete")}
           cancelText="Cancel"
           onConfirm={(closeDialog) => onDelete(id, closeDialog)}
           loading={deleteLoading}
