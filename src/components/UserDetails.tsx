@@ -12,7 +12,6 @@ export default function UserDetailsLazy({ userId }: { userId: string }) {
   if (error) return <div className="text-destructive">Failed to load user</div>;
 
   const user = data?.data;
-
   return (
     <DocumentsTab userId={user?._id || ""} documents={user?.documents ?? []} />
   );

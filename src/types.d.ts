@@ -70,14 +70,17 @@ interface StripeInfo {
 
 type UserStatus = "active" | "inactive" | "blocked" | "unblocked";
 
-interface Document {
+type Document = {
   _id: string;
   name: string;
-  filesUrl: string[];
-  expiryDate: string;
+  fileUrl: string;
+  expiryDate?: string;
   status: "pending" | "approved" | "rejected";
   reason?: string;
-}
+  reminderSent?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+};
 
 interface User {
   _id: string;

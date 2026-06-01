@@ -30,15 +30,7 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import { toast } from "sonner";
 import MyImage from "./custom/MyImage";
 import { useTranslations } from "next-intl";
-
-type Document = {
-  _id: string;
-  name: string;
-  filesUrl: string[];
-  expiryDate?: string;
-  status: "pending" | "approved" | "rejected";
-  reason?: string;
-};
+import { Document } from "@/types";
 
 export default function DocumentsTab({
   userId,
@@ -94,7 +86,7 @@ function DocumentReviewCard({
     );
   };
 
-  const isImage = (u: string) => /\.(png|jpg|jpeg|gif|webp)$/i.test(u);
+  const isImage = (u: string) => /\.(png|jpg|jpeg|gif|webp|avif)$/i.test(u);
   const isPdf = (u: string) => /\.pdf$/i.test(u);
 
   return (
@@ -104,8 +96,8 @@ function DocumentReviewCard({
         doc.status === "approved"
           ? "bg-aqua/5"
           : doc.status === "rejected"
-          ? "bg-red-500/5"
-          : "bg-inherit"
+            ? "bg-red-500/5"
+            : "bg-inherit"
       )}
     >
       <CardHeader className="flex flex-row items-center justify-between">
@@ -118,8 +110,8 @@ function DocumentReviewCard({
             doc.status === "approved"
               ? "bg-aqua hover:bg-aqua"
               : doc.status === "rejected"
-              ? "bg-red-500 hover:bg-red-500"
-              : "bg-amber-500 hover:bg-amber-500"
+                ? "bg-red-500 hover:bg-red-500"
+                : "bg-amber-500 hover:bg-amber-500"
           )}
         >
           {doc.status}
@@ -134,18 +126,20 @@ function DocumentReviewCard({
         )}
 
         <div className="flex flex-wrap gap-2">
-          {doc.filesUrl?.map((u, i) => {
-            const url = safeUrl(u);
+          {(() => {
+            const url = safeUrl(doc.fileUrl);
+            console.log("fileUrl:", doc.fileUrl, "→ safeUrl:", url, "isImage:", isImage(url));
+
             if (isImage(url)) {
               return (
-                <PhotoProvider key={url}>
+                <PhotoProvider>
                   <PhotoView src={getImageUrl(url)}>
                     <MyImage
                       width={100}
                       height={100}
                       src={url}
-                      alt={`${doc.name}-${i}`}
-                      className="h-20 w-20 object-cover rounded border border-primary shadow "
+                      alt={doc.name}
+                      className="h-20 w-20 object-cover rounded border border-primary shadow"
                     />
                   </PhotoView>
                 </PhotoProvider>
@@ -154,17 +148,16 @@ function DocumentReviewCard({
             if (isPdf(url)) {
               return (
                 <Link
-                  key={i}
                   href={baseUrl + url}
                   target="_blank"
                   rel="noreferrer"
                   className="text-xs underline"
                 >
-                  View PDF {i + 1}
+                  View PDF
                 </Link>
               );
             }
-          })}
+          })()}
         </div>
 
         {doc.reason && doc.status === "rejected" && (
