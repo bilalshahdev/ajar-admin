@@ -75,7 +75,7 @@ type Document = {
   name: string;
   fileUrl: string;
   expiryDate?: string;
-  status: "pending" | "approved" | "rejected";
+  status: "pending" | "approved" | "rejected" | "expired";
   reason?: string;
   reminderSent?: boolean;
   createdAt?: string;

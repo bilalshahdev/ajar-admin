@@ -67,6 +67,7 @@ function DocumentReviewCard({
   userId: string;
   doc: Document;
 }) {
+  console.log(doc)
   const { mutate, isPending } = useReviewUserDocuments();
   const [rejectOpen, setRejectOpen] = useState(false);
   const [reason, setReason] = useState(doc.reason ?? "");
@@ -128,7 +129,6 @@ function DocumentReviewCard({
         <div className="flex flex-wrap gap-2">
           {(() => {
             const url = safeUrl(doc.fileUrl);
-            console.log("fileUrl:", doc.fileUrl, "→ safeUrl:", url, "isImage:", isImage(url));
 
             if (isImage(url)) {
               return (
@@ -166,48 +166,52 @@ function DocumentReviewCard({
       </CardContent>
 
       <CardFooter className="flex items-center gap-2">
-        <Button
-          size="sm"
-          variant="success"
-          onClick={approve}
-          disabled={isPending}
-        >
-          Approve
-        </Button>
-
-        <Dialog open={rejectOpen} onOpenChange={setRejectOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" variant="destructive" disabled={isPending}>
-              Reject
+        {doc.status !== "approved" && doc.status !== "rejected" && doc.status !== "expired"  &&(
+          <>
+            <Button
+              size="sm"
+              variant="success"
+              onClick={approve}
+              disabled={isPending}
+            >
+              Approve
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Reject document</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-2">
-              <label className="text-sm">Reason</label>
-              <Textarea
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="Provide a clear reason (e.g., blurry image, expired, mismatched details)"
-                rows={4}
-              />
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setRejectOpen(false)}>
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={reject}
-                disabled={isPending || !reason.trim()}
-              >
-                Confirm Reject
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+
+            <Dialog open={rejectOpen} onOpenChange={setRejectOpen}>
+              <DialogTrigger asChild>
+                <Button size="sm" variant="destructive" disabled={isPending}>
+                  Reject
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Reject document</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-2">
+                  <label className="text-sm">Reason</label>
+                  <Textarea
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    placeholder="Provide a clear reason (e.g., blurry image, expired, mismatched details)"
+                    rows={4}
+                  />
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setRejectOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={reject}
+                    disabled={isPending || !reason.trim()}
+                  >
+                    Confirm Reject
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
       </CardFooter>
     </Card>
   );

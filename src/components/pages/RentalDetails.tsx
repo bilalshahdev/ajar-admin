@@ -38,7 +38,7 @@ const RentalListingDetail = ({ id }: { id: string }) => {
   const { data: rentalRequest, isLoading, error } = useRentalListing(id);
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateRentalListing();
-
+    console.log(rentalRequest)
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [rejectionNote, setRejectionNote] = useState("");
 
@@ -231,24 +231,24 @@ const RentalListingDetail = ({ id }: { id: string }) => {
       )}
 
       {/* Actions */}
-      {status === "pending" && (
-        <div className="flex justify-end gap-4">
-          <Button
-            variant="destructive"
-            disabled={isUpdating}
-            onClick={() => setRejectDialogOpen(true)}
-          >
-            {t("reject")}
-          </Button>
-          <Button
-            variant="success"
-            disabled={isUpdating}
-            onClick={() => updateStatus({ id, status: "approved" })}
-          >
-            {t("approve")}
-          </Button>
-        </div>
-      )}
+      {status === "pending" && !documents?.some((doc) => doc.isExpired) && (
+  <div className="flex justify-end gap-4">
+    <Button
+      variant="destructive"
+      disabled={isUpdating}
+      onClick={() => setRejectDialogOpen(true)}
+    >
+      {t("reject")}
+    </Button>
+    <Button
+      variant="success"
+      disabled={isUpdating}
+      onClick={() => updateStatus({ id, status: "approved" })}
+    >
+      {t("approve")}
+    </Button>
+  </div>
+)}
 
       {/* Rejection Note Dialog */}
       <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
