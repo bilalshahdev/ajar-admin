@@ -399,7 +399,7 @@ type BookingExtension = {
     additionalCharges: number;
     totalPrice?: number;
   };
-  paymentStatus?: string | null;
+  status?: string | null;
 };
 
 type Ticket = {
