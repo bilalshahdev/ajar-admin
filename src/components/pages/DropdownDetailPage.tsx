@@ -164,9 +164,9 @@ export default function DropdownDetails({ name }: { name: string }) {
                     <TableRow>
                       <TableHead className="w-[30%]">{t(`translation.name`)}</TableHead>
                       <TableHead>{t(`translation.value`)}</TableHead>
-                      <TableHead>Has Expiry</TableHead>
-                      {showAutoApproval && <TableHead>Auto Approval</TableHead>}
-                      <TableHead className="w-[60px] text-right"></TableHead>
+                      {isDocumentType && <TableHead>{t(`translation.hasExpiry`)}</TableHead>}
+                      {isDocumentType && showAutoApproval && <TableHead>{t(`translation.autoApproval`)}</TableHead>}
+                      <TableHead className="w-[60px] text-right">{t(`translation.actions`)}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -179,20 +179,20 @@ export default function DropdownDetails({ name }: { name: string }) {
                         <TableCell>
                           <code className="rounded bg-muted px-2 py-1 text-xs">{v.value}</code>
                         </TableCell>
-                        <TableCell>
-                          <Badge variant={v.hasExpiry ? "default" : "secondary"}>
-                            {v.hasExpiry ? "Yes" : "No"}
-                          </Badge>
-                        </TableCell>
-                        {
-                          showAutoApproval && (
-                            <TableCell>
-                              <Badge variant={v.autoApproval ? "default" : "secondary"}>
-                                {v.autoApproval ? "Yes" : "No"}
-                              </Badge>
-                            </TableCell>
-                          )
-                        }
+                        {isDocumentType && (
+                          <TableCell>
+                            <Badge variant={v.hasExpiry ? "default" : "secondary"}>
+                              {v.hasExpiry ? "Yes" : "No"}
+                            </Badge>
+                          </TableCell>
+                        )}
+                        {isDocumentType && showAutoApproval && (
+                          <TableCell>
+                            <Badge variant={v.autoApproval ? "default" : "secondary"}>
+                              {v.autoApproval ? "Yes" : "No"}
+                            </Badge>
+                          </TableCell>
+                        )}
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
                             {isDocumentType && (

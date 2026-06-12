@@ -539,7 +539,7 @@
     "finalAmount": "Final Refund Amount",
     "requesterInformation": "Requester Information",
     "rejected": "Rejected",
-    "hasExpiry": "Has Expiry Date",
+    "hasExpiry": "Has Expiry",
     "autoApproval": "Auto Approval",
     "item": "Item",
     "cancellationTiers": "Cancellation Tiers",

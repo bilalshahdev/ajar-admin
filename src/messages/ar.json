@@ -586,7 +586,9 @@
     "privacyPolicyContent": "محتوى سياسة الخصوصية",
     "htmlTagsSupported": "علامات HTML مدعومة (مثل <p>، <b>، <ul>)",
     "enterPrivacyPolicyContent": "أدخل محتوى سياسة الخصوصية هنا... (HTML مدعوم)",
-    "preview": "معاينة"
+    "preview": "معاينة",
+    "hasExpiry": "يحتوي على تاريخ انتهاء",
+    "autoApproval": "موافقة تلقائية"
   },
   "confirm": {
     "logout": {
