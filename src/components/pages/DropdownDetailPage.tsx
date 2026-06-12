@@ -44,7 +44,6 @@ export default function DropdownDetails({ name }: { name: string }) {
   const t = useTranslations();
   const { data, isLoading, isError } = useGetDropdownByName(name, true);
   const doc: Dropdown | undefined = data?.data;
-
   const { mutateAsync: addValue, isPending: adding } = useAddDropdownValue();
   const { mutateAsync: removeValue, isPending: removing } =
     useRemoveDropdownValue();
