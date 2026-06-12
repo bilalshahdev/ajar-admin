@@ -1,4 +1,3 @@
-// hooks/useDropdowns.ts
 import {
   addValueToDropdown,
   createDropdown,
@@ -8,8 +7,9 @@ import {
   getDropdowns,
   removeValueFromDropdown,
   updateDropdown,
+  updateDropdownValueSettings,
 } from "@/services/dropdowns";
-import { ListDropdownsQuery } from "@/types";
+import { DropdownValue, ListDropdownsQuery } from "@/types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -85,6 +85,32 @@ export const useAddDropdownValue = () => {
     },
     onError: (e: any) =>
       toast.error(e?.response?.data?.message || "Failed to add value"),
+  });
+};
+
+export const useUpdateDropdownValueSettings = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      name,
+      data,
+    }: {
+      name: string;
+      data: {
+        _id: string;
+        hasExpiry?: DropdownValue["hasExpiry"];
+        autoApproval?: DropdownValue["autoApproval"];
+      };
+    }) => updateDropdownValueSettings(name, data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["dropdowns"], exact: false });
+      qc.invalidateQueries({ queryKey: ["dropdown-by-name"], exact: false });
+      toast.success("Dropdown value settings updated");
+    },
+    onError: (e: any) =>
+      toast.error(
+        e?.response?.data?.message || "Failed to update value settings"
+      ),
   });
 };
 

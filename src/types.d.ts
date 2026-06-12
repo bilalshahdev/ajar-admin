@@ -716,6 +716,7 @@ interface SendMessageData {
 }
 
 interface DropdownValue {
+  _id?: string;
   name: string;
   value: string;
   hasExpiry: boolean;

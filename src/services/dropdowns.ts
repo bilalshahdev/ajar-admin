@@ -5,6 +5,7 @@ import type {
   ApiError,
   ApiSuccessItem,
   Dropdown,
+  DropdownValue,
   GetDropdownByIdResponse,
   GetDropdownByNameResponse,
   ListDropdownsQuery,
@@ -54,6 +55,18 @@ export const addValueToDropdown = async (
   value: { name: string; value: string }
 ) => {
   const res = await api.post(`/dropdowns/${name}/value`, value);
+  return res.data;
+};
+
+export const updateDropdownValueSettings = async (
+  name: string,
+  data: {
+    _id: string;
+    hasExpiry?: DropdownValue["hasExpiry"];
+    autoApproval?: DropdownValue["autoApproval"];
+  }
+) => {
+  const res = await api.patch(`/dropdowns/${name}/value`, data);
   return res.data;
 };
 

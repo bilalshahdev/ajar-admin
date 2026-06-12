@@ -5,13 +5,22 @@ import { useMemo, useState } from "react";
 import {
   useAddDropdownValue,
   useGetDropdownByName,
-  useRemoveDropdownValue
+  useRemoveDropdownValue,
+  useUpdateDropdownValueSettings
 } from "@/hooks/useDropdowns";
 
 import Loading from "../Loading";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -24,9 +33,10 @@ import {
 } from "@/components/ui/table";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import { Dropdown } from "@/types";
-import { Database, Search, TriangleAlert, XCircle } from "lucide-react";
+import { Dropdown, DropdownValue } from "@/types";
+import { Database, Search, Settings2, TriangleAlert, XCircle } from "lucide-react";
 
+import ConfirmDialog from "../ConfirmDialog";
 import { AddValueForm } from "../forms/AddValueForm";
 import { useTranslations } from "next-intl";
 
@@ -38,9 +48,18 @@ export default function DropdownDetails({ name }: { name: string }) {
   const { mutateAsync: addValue, isPending: adding } = useAddDropdownValue();
   const { mutateAsync: removeValue, isPending: removing } =
     useRemoveDropdownValue();
+  const { mutateAsync: updateValueSettings, isPending: updatingValueSettings } =
+    useUpdateDropdownValueSettings();
 
+  const isDocumentType = doc
+    ? ["leaserDocuments", "renterDocuments", "userDocuments"].includes(doc.name)
+    : false;
   const showAutoApproval = name !== "leaserDocuments";
   const [q, setQ] = useState("");
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<DropdownValue | null>(null);
+  const [hasExpiry, setHasExpiry] = useState(false);
+  const [autoApproval, setAutoApproval] = useState(false);
 
   const filtered = useMemo(() => {
     const list = doc?.values ?? [];
@@ -53,10 +72,36 @@ export default function DropdownDetails({ name }: { name: string }) {
   }, [doc?.values, q]);
 
 
-  const handleRemoveValue = async (val: string) => {
+  const handleRemoveValue = async (val: string, closeDialog?: () => void) => {
     if (!doc?.name) return;
     try {
       await removeValue({ name: doc.name, value: val });
+      closeDialog?.();
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
+  const openSettingsDialog = (value: DropdownValue) => {
+    setSelectedValue(value);
+    setHasExpiry(!!value.hasExpiry);
+    setAutoApproval(!!value.autoApproval);
+    setSettingsOpen(true);
+  };
+
+  const handleUpdateValueSettings = async () => {
+    if (!doc?.name || !selectedValue?._id) return;
+
+    try {
+      await updateValueSettings({
+        name: doc.name,
+        data: {
+          _id: selectedValue._id,
+          hasExpiry,
+          ...(showAutoApproval ? { autoApproval } : {}),
+        },
+      });
+      setSettingsOpen(false);
     } catch (e: any) {
       console.log(e);
     }
@@ -149,14 +194,37 @@ export default function DropdownDetails({ name }: { name: string }) {
                           )
                         }
                         <TableCell className="text-right">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleRemoveValue(v.value)}
-                            disabled={removing}
-                          >
-                            <XCircle className="h-4 w-4 text-destructive" />
-                          </Button>
+                          <div className="flex justify-end gap-1">
+                            {isDocumentType && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openSettingsDialog(v)}
+                                disabled={!v._id || updatingValueSettings}
+                              >
+                                <Settings2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                            <ConfirmDialog
+                              title="Delete value?"
+                              description="This value will be removed from the dropdown."
+                              confirmText="Delete"
+                              variant="destructive"
+                              loading={removing}
+                              asChild
+                              onConfirm={(closeDialog) =>
+                                handleRemoveValue(v.value, closeDialog)
+                              }
+                            >
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={removing}
+                              >
+                                <XCircle className="h-4 w-4 text-destructive" />
+                              </Button>
+                            </ConfirmDialog>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -173,6 +241,75 @@ export default function DropdownDetails({ name }: { name: string }) {
                   </TableBody>
                 </Table>
               </div>
+
+              <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Update value settings</DialogTitle>
+                  </DialogHeader>
+
+                  <div className="space-y-4">
+                    <div className="rounded-md border p-3">
+                      <div className="text-sm font-medium">{selectedValue?.name}</div>
+                      <code className="text-xs text-muted-foreground">
+                        {selectedValue?.value}
+                      </code>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="editHasExpiry"
+                        checked={hasExpiry}
+                        onCheckedChange={(checked) => setHasExpiry(checked === true)}
+                        disabled={updatingValueSettings}
+                      />
+                      <label
+                        htmlFor="editHasExpiry"
+                        className="text-sm font-medium leading-none cursor-pointer"
+                      >
+                        Has Expiry
+                      </label>
+                    </div>
+
+                    {showAutoApproval && (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="editAutoApproval"
+                          checked={autoApproval}
+                          onCheckedChange={(checked) =>
+                            setAutoApproval(checked === true)
+                          }
+                          disabled={updatingValueSettings}
+                        />
+                        <label
+                          htmlFor="editAutoApproval"
+                          className="text-sm font-medium leading-none cursor-pointer"
+                        >
+                          Auto Approval
+                        </label>
+                      </div>
+                    )}
+                  </div>
+
+                  <DialogFooter className="gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setSettingsOpen(false)}
+                      disabled={updatingValueSettings}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={handleUpdateValueSettings}
+                      disabled={!selectedValue?._id || updatingValueSettings}
+                    >
+                      {updatingValueSettings ? "Updating..." : "Update"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </>
           )}
         </div>
